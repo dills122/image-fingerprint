@@ -20,7 +20,7 @@ BMVB output, public callback behavior, or npm release triggers.
 | Module output | CommonJS with modern Node resolution | Preserve the explicitly restored package contract while handling ESM dependencies correctly |
 | Lint | ESLint flat config plus typescript-eslint | Supported configuration model for current ESLint |
 | Tests | Vitest 4; offline suite by default | Current stable test runner without live-network flakiness |
-| CI | Node 22/24 matrix, explicit lint/types/tests, package integrity, dependency review, CodeQL, scheduled network smoke | Verify source, supply-chain changes, static security, and the artifact consumers actually load |
+| CI | Node 22/24 matrix, explicit lint/types/tests, package integrity, production audit, CodeQL, scheduled network smoke | Verify source, dependency risk, static security, and the artifact consumers actually load |
 | Publishing | Existing behavior preserved for now | Trigger/auth changes require explicit npm release-policy approval |
 
 The initial offline coverage baseline is 64.67% statements, 60.18% branches, 70% functions, and
@@ -57,7 +57,6 @@ missing package artifacts fail independently from the source test matrix.
 
 ## Dependency And Security Automation
 
-- Dependency review rejects pull requests that introduce high or critical known vulnerabilities.
 - Package verification audits production dependencies and fails on high or critical advisories.
 - CodeQL scans JavaScript, TypeScript, and GitHub Actions workflows on `main`, pull requests, and a
   weekly schedule using the `security-extended` query suite.
@@ -66,6 +65,11 @@ missing package artifacts fail independently from the source test matrix.
   isolated for deliberate review.
 - Dependabot limits each ecosystem to five open version-update pull requests so maintenance does not
   crowd out feature work.
+
+GitHub's dependency-review API does not support repositories classified as forks, so its action is
+not installed here. If this repository is detached from its upstream fork relationship, add the
+dependency-review action as a pull-request gate; until then, the production audit is the portable
+blocking dependency check.
 
 ## Deferred Work
 
