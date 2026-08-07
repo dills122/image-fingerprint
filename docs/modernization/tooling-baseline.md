@@ -69,7 +69,10 @@ missing package artifacts fail independently from the source test matrix.
 GitHub's dependency-review API does not support repositories classified as forks, so its action is
 not installed here. If this repository is detached from its upstream fork relationship, add the
 dependency-review action as a pull-request gate; until then, the production audit is the portable
-blocking dependency check.
+blocking dependency check. GitHub also requires an explicit one-time **Dependabot version updates**
+enablement under **Settings → Advanced Security** for forks after this configuration reaches the
+default branch. Dependabot alerts and security-update pull requests are already enabled at the
+repository level.
 
 ## Deferred Work
 
