@@ -113,11 +113,32 @@ interface BufferObject {
 
 ## Development
 
-I have made this with Typescript, ESLint, Jest, Babel and VSCode. All config files and global binaries are included. For developers using VS Code, make sure you have ESLint extension installed.
+The project uses Node.js 22.14 or newer, TypeScript, ESLint, Vitest, and pnpm. Node 24 is the
+recommended development runtime; pnpm is pinned through `packageManager`.
+
+```bash
+pnpm install --frozen-lockfile
+pnpm check
+```
+
+`pnpm check` runs linting, strict typechecking, offline tests with coverage floors, a build, and a
+smoke test against the packaged CommonJS entrypoint. Live remote-input tests are intentionally
+separate and can be run with `pnpm test:network`.
+
+Reusable Codex guidance is linked from the sibling `ai-central` checkout. Refresh those local links
+with `pnpm codex:links`, or set `AI_CENTRAL_HOME` if that checkout lives elsewhere. See
+[`.codex/AI_CENTRAL.md`](./.codex/AI_CENTRAL.md) for the selected profiles and bundles.
+
+Research and gated planning for modern image fingerprints lives in
+[`docs/modernization/`](./docs/modernization/). The proposed compatibility contract for adding
+algorithms is recorded in
+[`docs/architecture/0001-versioned-image-fingerprints.md`](./docs/architecture/0001-versioned-image-fingerprints.md).
 
 ## Testing
 
-`npm test`
+- Offline unit/integration suite: `pnpm test`
+- Full local quality gate: `pnpm check`
+- Opt-in live network tests: `pnpm test:network`
 
 ## Credit
 

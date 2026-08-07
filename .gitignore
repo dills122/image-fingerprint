@@ -29,6 +29,7 @@ build/Release
 # Dependency directories
 node_modules
 jspm_packages
+.pnpm-store
 
 # Optional npm cache directory
 .npm
@@ -37,3 +38,7 @@ jspm_packages
 .node_repl_history
 lib
 .DS_Store
+
+# Local AI Central links. Repository-owned Codex policy remains tracked.
+.codex/skills/
+.codex/steering/javascript-typescript-steering.md

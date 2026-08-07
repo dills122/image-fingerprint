@@ -1,4 +1,10 @@
-const median = (data) => {
+export interface ImageDataLike {
+  width: number;
+  height: number;
+  data: ArrayLike<number>;
+}
+
+const median = (data: number[]): number => {
   const mdarr = data.slice(0).sort((a, b) => a - b);
   if (mdarr.length % 2 === 0) {
     return (mdarr[mdarr.length / 2] + mdarr[mdarr.length / 2 + 1]) / 2.0;
@@ -6,7 +12,7 @@ const median = (data) => {
   return mdarr[Math.floor(mdarr.length / 2)];
 };
 
-const translateBlocksToBits = (blocks, pixelsPerBlock) => {
+const translateBlocksToBits = (blocks: number[], pixelsPerBlock: number): void => {
   const newblocks = blocks;
   const halfBlockValue = (pixelsPerBlock * 256 * 3) / 2;
   const bandsize = blocks.length / 4;
@@ -29,8 +35,8 @@ const translateBlocksToBits = (blocks, pixelsPerBlock) => {
   }
 };
 
-const bitsToHexhash = (bitsArray) => {
-  const hex = [];
+const bitsToHexhash = (bitsArray: number[]): string => {
+  const hex: string[] = [];
   for (let i = 0; i < bitsArray.length; i += 4) {
     const nibble = bitsArray.slice(i, i + 4);
     hex.push(parseInt(nibble.join(''), 2).toString(16));
@@ -39,11 +45,11 @@ const bitsToHexhash = (bitsArray) => {
   return hex.join('');
 };
 
-const bmvbhashEven = (data, bits) => {
+const bmvbhashEven = (data: ImageDataLike, bits: number): string => {
   const blocksizeX = Math.floor(data.width / bits);
   const blocksizeY = Math.floor(data.height / bits);
 
-  const result = [];
+  const result: number[] = [];
 
   for (let y = 0; y < bits; y += 1) {
     for (let x = 0; x < bits; x += 1) {
@@ -72,8 +78,8 @@ const bmvbhashEven = (data, bits) => {
   return bitsToHexhash(result);
 };
 
-const bmvbhash = (data, bits) => {
-  const result = [];
+const bmvbhash = (data: ImageDataLike, bits: number): string => {
+  const result: number[] = [];
   let weightTop;
   let weightBottom;
   let weightLeft;
@@ -88,7 +94,7 @@ const bmvbhash = (data, bits) => {
   let xMod;
   let xFrac;
   let xInt;
-  const blocks = [];
+  const blocks: number[][] = [];
 
   const evenX = data.width % bits === 0;
   const evenY = data.height % bits === 0;
@@ -184,8 +190,8 @@ const bmvbhash = (data, bits) => {
   return bitsToHexhash(result);
 };
 
-export default (imgData, bits, method) => {
-  let hash;
+export default (imgData: ImageDataLike, bits: number, method: number): string => {
+  let hash: string;
 
   if (method === 1) {
     hash = bmvbhashEven(imgData, bits);

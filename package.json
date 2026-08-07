@@ -4,12 +4,23 @@
   "description": "Create a hash from an image",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "engines": {
+    "node": ">=22.14.0"
+  },
+  "packageManager": "pnpm@11.20.0",
   "scripts": {
+    "codex:links": "./scripts/setup-codex-links.sh",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:network": "cross-env RUN_NETWORK_TESTS=1 vitest run",
+    "test:package": "pnpm build && node scripts/package-smoke.cjs",
     "test:watch": "vitest",
     "build": "tsc",
-    "lint": "eslint src/*.ts",
-    "lint:fix": "eslint src/*.ts --fix"
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint \"src/**/*.ts\" \"__tests__/**/*.ts\" \"*.config.{ts,mts}\"",
+    "lint:fix": "pnpm lint --fix",
+    "check": "pnpm lint && pnpm typecheck && pnpm test:coverage && pnpm test:package",
+    "prepack": "pnpm build"
   },
   "files": [
     "lib"
@@ -37,19 +48,14 @@
     "pngjs": "^7.0.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/node": "^24.5.2",
-    "@vitest/coverage-v8": "^3.2.4",
-    "eslint": "^9.36.0",
     "@types/pngjs": "^6.0.1",
-    "eslint-config-airbnb-typescript": "^18.0.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.25.4",
+    "@vitest/coverage-v8": "^4.1.10",
+    "cross-env": "^10.1.0",
+    "eslint": "^10.8.0",
     "typescript": "^5.9.2",
-    "vitest": "^3.2.4"
-  },
-  "pnpm": {
-    "overrides": {
-      "esbuild": "0.25.0"
-    }
+    "typescript-eslint": "^8.65.0",
+    "vitest": "^4.1.10"
   }
 }
