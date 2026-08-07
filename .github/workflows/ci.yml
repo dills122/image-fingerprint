@@ -5,6 +5,9 @@ on:
     branches: [ master, main ]
   pull_request:
     branches: [ master, main ]
+  schedule:
+    - cron: '17 10 * * 2'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -15,6 +18,7 @@ concurrency:
 
 jobs:
   verify:
+    name: Verify (Node.js ${{ matrix.node-version }})
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
@@ -24,6 +28,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v6
+      with:
+        persist-credentials: false
 
     - name: Setup pnpm
       uses: pnpm/action-setup@v6
@@ -38,12 +44,86 @@ jobs:
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
 
-    - name: Verify source and package
-      run: pnpm check
+    - name: Lint
+      run: pnpm lint
+
+    - name: Typecheck
+      run: pnpm typecheck
+
+    - name: Run offline tests with coverage
+      run: pnpm test:coverage
+
+    - name: Upload coverage report
+      if: matrix.node-version == 24
+      uses: actions/upload-artifact@v7
+      with:
+        name: coverage-node-24
+        path: coverage/
+        if-no-files-found: error
+        retention-days: 14
+
+  package-integrity:
+    name: Package integrity
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        persist-credentials: false
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v6
+
+    - name: Use Node.js 24.x
+      uses: actions/setup-node@v6
+      with:
+        node-version: 24.x
+        cache: 'pnpm'
+        cache-dependency-path: pnpm-lock.yaml
+
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+
+    - name: Audit production dependencies
+      run: pnpm audit --prod --audit-level=high
+
+    - name: Verify the built CommonJS package
+      run: pnpm test:package
+
+    - name: Inspect the npm package contents
+      run: npm pack --dry-run
+
+  network-smoke:
+    name: Live network smoke
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        persist-credentials: false
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v6
+
+    - name: Use Node.js 24.x
+      uses: actions/setup-node@v6
+      with:
+        node-version: 24.x
+        cache: 'pnpm'
+        cache-dependency-path: pnpm-lock.yaml
+
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+
+    - name: Run live remote-image tests
+      run: pnpm test:network
 
   deploy:
     runs-on: ubuntu-latest
-    needs: verify
+    needs: [ verify, package-integrity ]
     if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     timeout-minutes: 15
     permissions:

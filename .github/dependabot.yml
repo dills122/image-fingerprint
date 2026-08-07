@@ -1,0 +1,54 @@
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: America/Toronto
+    open-pull-requests-limit: 5
+    rebase-strategy: auto
+    versioning-strategy: increase-if-necessary
+    pull-request-branch-name:
+      separator: '-'
+    commit-message:
+      prefix: deps
+      include: scope
+    groups:
+      production-minor-and-patch:
+        applies-to: version-updates
+        dependency-type: production
+        update-types:
+          - minor
+          - patch
+      development-minor-and-patch:
+        applies-to: version-updates
+        dependency-type: development
+        update-types:
+          - minor
+          - patch
+      security-updates:
+        applies-to: security-updates
+        patterns:
+          - '*'
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:30'
+      timezone: America/Toronto
+    open-pull-requests-limit: 5
+    rebase-strategy: auto
+    pull-request-branch-name:
+      separator: '-'
+    commit-message:
+      prefix: ci
+      include: scope
+    groups:
+      actions:
+        patterns:
+          - '*'
