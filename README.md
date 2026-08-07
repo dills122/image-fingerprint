@@ -89,11 +89,9 @@ Image hash will log out warnings if environment variable `VERBOSE` is set to tru
 
 ```typescript
 // Url Request Object
-interface UrlRequestObject {
+interface UrlRequestObject extends RequestInit {
   encoding?: string | null,
   url: string | null,
-  // Additional fetch RequestInit options may be provided
-  [key: string]: unknown,
 };
 
 // Buffer Object

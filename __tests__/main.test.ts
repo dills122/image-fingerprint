@@ -1,8 +1,18 @@
-import { expect, describe, it } from 'vitest';
+import {
+  afterEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from 'vitest';
 import fs from 'fs';
 import { imageHash } from '../src/';
 
 const networkIt = process.env.RUN_NETWORK_TESTS === '1' ? it : it.skip;
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
 
 const fetchBuffer = async (url: string) => {
   if (typeof fetch !== 'function') {
@@ -168,6 +178,36 @@ describe('hash images', () => {
           return reject(err);
         }
         expect(res).toBe('dfffbe3ff83fc03fc43ffc17bc07f803f00ff00ff00fe00ff05fe00fe00fe00f');
+        resolve(res);
+      });
+    });
+  });
+
+  it('Should forward fetch options without request metadata', () => {
+    const imageData = fs.readFileSync(`${__dirname}/../example/_95695591_tv039055678.jpeg`);
+    const fetchMock = vi.fn().mockResolvedValue(new Response(imageData, { status: 200 }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    return new Promise((resolve, reject) => {
+      imageHash({
+        encoding: 'buffer',
+        headers: { accept: 'image/jpeg' },
+        method: 'GET',
+        url: 'https://example.test/image.jpeg',
+      }, 16, true, (error, res) => {
+        if (error) {
+          return reject(error);
+        }
+
+        expect(fetchMock).toHaveBeenCalledWith('https://example.test/image.jpeg', expect.objectContaining({
+          headers: { accept: 'image/jpeg' },
+          method: 'GET',
+        }));
+        const requestInit = fetchMock.mock.calls[0]?.[1];
+        expect(requestInit).not.toHaveProperty('data');
+        expect(requestInit).not.toHaveProperty('encoding');
+        expect(requestInit).not.toHaveProperty('url');
+        expect(res).toBe('0773063f063f36070e070a070f378e7f1f000fff0fff020103f00ffb0f810ff0');
         resolve(res);
       });
     });

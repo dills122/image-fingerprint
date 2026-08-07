@@ -6,10 +6,9 @@ import { URL } from 'url';
 import webp from '@cwasm/webp';
 import blockhash from './block-hash';
 
-export interface UrlRequestObject {
-  encoding?: string | null,
-  url: string | null,
-  [key: string]: unknown,
+export interface UrlRequestObject extends RequestInit {
+  encoding?: string | null;
+  url: string | null;
 }
 
 export interface BufferObject {
@@ -19,6 +18,8 @@ export interface BufferObject {
 }
 
 export type ImageHashCallback = (error: Error | null, data?: string) => void;
+
+type ValidUrlRequestObject = UrlRequestObject & { url: string };
 
 const toError = (error: unknown): Error => (
   error instanceof Error ? error : new Error(String(error))
@@ -69,7 +70,9 @@ const processWebp = (
   }
 };
 
-const isUrlRequestObject = (obj: UrlRequestObject | BufferObject): obj is UrlRequestObject => {
+const isUrlRequestObject = (
+  obj: UrlRequestObject | BufferObject,
+): obj is ValidUrlRequestObject => {
   const casted = (obj as UrlRequestObject);
   return typeof casted.url === 'string' && casted.url.length > 0;
 };
@@ -77,6 +80,40 @@ const isUrlRequestObject = (obj: UrlRequestObject | BufferObject): obj is UrlReq
 const isBufferObject = (obj: UrlRequestObject | BufferObject): obj is BufferObject => {
   const casted = (obj as BufferObject);
   return Buffer.isBuffer(casted.data);
+};
+
+const toRequestInit = (source: UrlRequestObject): RequestInit => {
+  const {
+    body,
+    cache,
+    credentials,
+    headers,
+    integrity,
+    keepalive,
+    method,
+    mode,
+    redirect,
+    referrer,
+    referrerPolicy,
+    signal,
+    window,
+  } = source;
+
+  return {
+    body,
+    cache,
+    credentials,
+    headers,
+    integrity,
+    keepalive,
+    method,
+    mode,
+    redirect,
+    referrer,
+    referrerPolicy,
+    signal,
+    window,
+  };
 };
 
 export const imageHash = (
@@ -138,29 +175,17 @@ export const imageHash = (
     });
   };
 
-  const fetchRemoteImage = async (remoteSrc: string | UrlRequestObject): Promise<void> => {
+  const fetchRemoteImage = async (
+    requestUrl: string,
+    init?: RequestInit,
+  ): Promise<void> => {
     if (typeof fetch !== 'function') {
       cb(new Error('Global fetch API is not available. Node.js 22.14+ is required.'));
       return;
     }
 
-    const requestUrl = typeof remoteSrc === 'string' ? remoteSrc : remoteSrc.url;
-
-    if (!requestUrl) {
-      cb(new Error('No URL provided for remote image.'));
-      return;
-    }
-
-    let init: { [key: string]: unknown } | undefined;
-
-    if (typeof remoteSrc !== 'string') {
-      init = { ...remoteSrc };
-      delete init.url;
-      delete init.encoding;
-    }
-
     try {
-      const response = await fetch(requestUrl, init as RequestInit | undefined);
+      const response = await fetch(requestUrl, init);
       if (!response || !response.ok) {
         const status = response ? `${response.status} ${response.statusText}` : 'Unknown status';
         throw new Error(`Failed to fetch image. HTTP status: ${status}`);
@@ -207,7 +232,7 @@ export const imageHash = (
     checkFileType(src.name, src.data);
   } else if (typeof src !== 'string' && isUrlRequestObject(src)) {
     // Request Object
-    fetchRemoteImage(src);
+    fetchRemoteImage(src.url, toRequestInit(src));
   } else if (typeof src === 'string') {
     // file
     fs.readFile(src, handleReadFile);
