@@ -1,16 +1,14 @@
 import fs from 'fs';
 import { Buffer } from 'buffer';
-import { fileTypeFromFile, fileTypeFromBuffer } from 'file-type';
 import jpeg from 'jpeg-js';
 import { PNG } from 'pngjs';
 import { URL } from 'url';
 import webp from '@cwasm/webp';
 import blockhash from './block-hash';
 
-export interface UrlRequestObject {
-  encoding?: string | null,
-  url: string | null,
-  [key: string]: unknown,
+export interface UrlRequestObject extends RequestInit {
+  encoding?: string | null;
+  url: string | null;
 }
 
 export interface BufferObject {
@@ -19,67 +17,127 @@ export interface BufferObject {
   name?: string
 }
 
-const processPNG = (data, bits, method, cb) => {
+export type ImageHashCallback = (error: Error | null, data?: string) => void;
+
+type ValidUrlRequestObject = UrlRequestObject & { url: string };
+
+const toError = (error: unknown): Error => (
+  error instanceof Error ? error : new Error(String(error))
+);
+
+const processPNG = (
+  data: Buffer,
+  bits: number,
+  method: boolean,
+  cb: ImageHashCallback,
+): void => {
   try {
     const png = PNG.sync.read(data);
     const res = blockhash(png, bits, method ? 2 : 1);
     cb(null, res);
-  } catch (e) {
-    cb(e);
+  } catch (error) {
+    cb(toError(error));
   }
 };
 
-const processJPG = (data, bits, method, cb) => {
+const processJPG = (
+  data: Buffer,
+  bits: number,
+  method: boolean,
+  cb: ImageHashCallback,
+): void => {
   try {
     const decoded = jpeg.decode(data);
     const res = blockhash(decoded, bits, method ? 2 : 1);
     cb(null, res);
-  } catch (e) {
-    cb(e);
+  } catch (error) {
+    cb(toError(error));
   }
 };
 
-const processWebp = (data, bits, method, cb) => {
+const processWebp = (
+  data: Buffer,
+  bits: number,
+  method: boolean,
+  cb: ImageHashCallback,
+): void => {
   try {
     const decoded = webp.decode(data);
     const res = blockhash(decoded, bits, method ? 2 : 1);
     cb(null, res);
-  } catch (e) {
-    cb(e);
+  } catch (error) {
+    cb(toError(error));
   }
 };
 
-const isUrlRequestObject = (obj: UrlRequestObject | BufferObject): obj is UrlRequestObject => {
+const isUrlRequestObject = (
+  obj: UrlRequestObject | BufferObject,
+): obj is ValidUrlRequestObject => {
   const casted = (obj as UrlRequestObject);
-  return casted.url && casted.url.length > 0;
+  return typeof casted.url === 'string' && casted.url.length > 0;
 };
 
 const isBufferObject = (obj: UrlRequestObject | BufferObject): obj is BufferObject => {
   const casted = (obj as BufferObject);
-  return Buffer.isBuffer(casted.data)
-    || (Buffer.isBuffer(casted.data) && (casted.ext && casted.ext.length > 0));
+  return Buffer.isBuffer(casted.data);
 };
 
-// eslint-disable-next-line
-export const imageHash = (oldSrc: string | UrlRequestObject | BufferObject, bits, method, cb) => {
+const toRequestInit = (source: UrlRequestObject): RequestInit => {
+  const {
+    body,
+    cache,
+    credentials,
+    headers,
+    integrity,
+    keepalive,
+    method,
+    mode,
+    redirect,
+    referrer,
+    referrerPolicy,
+    signal,
+    window,
+  } = source;
+
+  return {
+    body,
+    cache,
+    credentials,
+    headers,
+    integrity,
+    keepalive,
+    method,
+    mode,
+    redirect,
+    referrer,
+    referrerPolicy,
+    signal,
+    window,
+  };
+};
+
+export const imageHash = (
+  oldSrc: string | UrlRequestObject | BufferObject,
+  bits: number,
+  method: boolean,
+  cb: ImageHashCallback,
+): void => {
   const src = oldSrc;
 
-  const getFileType = async (data: Buffer | string) => {
+  const getFileType = async (data: Buffer) => {
     if (typeof src !== 'string' && isBufferObject(src) && src.ext) {
       return {
         mime: src.ext,
       };
     }
-    if (Buffer.isBuffer(data)) {
-      return fileTypeFromBuffer(data);
-    }
-    if (typeof src === 'string') {
-      return fileTypeFromFile(src);
-    }
-    return '';
+
+    // file-type is ESM-only. Keeping this as a native dynamic import preserves the
+    // package's CommonJS entrypoint while using modern Node module resolution.
+    const { fileTypeFromBuffer } = await import('file-type');
+    return fileTypeFromBuffer(data);
   };
 
-  const checkFileType = (name, data: Buffer | string) => {
+  const checkFileType = (name: string | undefined, data: Buffer): void => {
     getFileType(data).then((type) => {
       // what is the image type
       if (!type) {
@@ -90,7 +148,7 @@ export const imageHash = (oldSrc: string | UrlRequestObject | BufferObject, bits
         const ext = name
           .split('.')
           .pop()
-          .toLowerCase();
+          ?.toLowerCase();
         if (ext === 'png' && type.mime === 'image/png') {
           processPNG(data, bits, method, cb);
         } else if ((ext === 'jpg' || ext === 'jpeg') && type.mime === 'image/jpeg') {
@@ -117,25 +175,13 @@ export const imageHash = (oldSrc: string | UrlRequestObject | BufferObject, bits
     });
   };
 
-  const fetchRemoteImage = async (remoteSrc: string | UrlRequestObject) => {
-    if (fetch && typeof fetch !== 'function') {
-      cb(new Error('Global fetch API is not available. Node.js 18+ is required.'));
+  const fetchRemoteImage = async (
+    requestUrl: string,
+    init?: RequestInit,
+  ): Promise<void> => {
+    if (typeof fetch !== 'function') {
+      cb(new Error('Global fetch API is not available. Node.js 22.14+ is required.'));
       return;
-    }
-
-    const requestUrl = typeof remoteSrc === 'string' ? remoteSrc : remoteSrc.url;
-
-    if (!requestUrl) {
-      cb(new Error('No URL provided for remote image.'));
-      return;
-    }
-
-    let init: { [key: string]: unknown } | undefined;
-
-    if (typeof remoteSrc !== 'string') {
-      init = { ...remoteSrc };
-      delete init.url;
-      delete init.encoding;
     }
 
     try {
@@ -152,22 +198,22 @@ export const imageHash = (oldSrc: string | UrlRequestObject | BufferObject, bits
       try {
         const url = new URL(response.url || requestUrl);
         pathname = url.pathname;
-      } catch (err) {
+      } catch {
         pathname = '';
       }
 
       checkFileType(pathname, buffer);
     } catch (error) {
-      cb(error);
+      cb(toError(error));
     }
   };
 
-  const handleReadFile = (err, res) => {
+  const handleReadFile = (err: NodeJS.ErrnoException | null, res: Buffer): void => {
     if (err) {
-      cb(new Error(err));
+      cb(err);
       return;
     }
-    checkFileType(src, res);
+    checkFileType(typeof src === 'string' ? src : undefined, res);
   };
 
   // check source
@@ -186,9 +232,11 @@ export const imageHash = (oldSrc: string | UrlRequestObject | BufferObject, bits
     checkFileType(src.name, src.data);
   } else if (typeof src !== 'string' && isUrlRequestObject(src)) {
     // Request Object
-    fetchRemoteImage(src);
-  } else {
+    fetchRemoteImage(src.url, toRequestInit(src));
+  } else if (typeof src === 'string') {
     // file
     fs.readFile(src, handleReadFile);
+  } else {
+    cb(new Error('Invalid image source'));
   }
 };
