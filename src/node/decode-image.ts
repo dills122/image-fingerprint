@@ -1,4 +1,4 @@
-import { readFile, stat } from 'node:fs/promises';
+import { open } from 'node:fs/promises';
 import {
   ImagePreparationError,
 } from '../core/image-decoder';
@@ -70,17 +70,23 @@ const readEncodedSource = async (
   }
 
   try {
-    const fileStats = await raceWithAbort(stat(source), signal);
-    assertEncodedByteLimit(fileStats.size, {
-      maxEncodedBytes,
-      maxPixels: Number.MAX_SAFE_INTEGER,
-    });
-    const data = await raceWithAbort(readFile(source), signal);
-    assertEncodedByteLimit(data.byteLength, {
-      maxEncodedBytes,
-      maxPixels: Number.MAX_SAFE_INTEGER,
-    });
-    return data;
+    const file = await open(source, 'r');
+    try {
+      throwIfAborted(signal);
+      const fileStats = await raceWithAbort(file.stat(), signal);
+      assertEncodedByteLimit(fileStats.size, {
+        maxEncodedBytes,
+        maxPixels: Number.MAX_SAFE_INTEGER,
+      });
+      const data = await raceWithAbort(file.readFile(), signal);
+      assertEncodedByteLimit(data.byteLength, {
+        maxEncodedBytes,
+        maxPixels: Number.MAX_SAFE_INTEGER,
+      });
+      return data;
+    } finally {
+      await file.close();
+    }
   } catch (error) {
     throw translatePreparationError(
       error,

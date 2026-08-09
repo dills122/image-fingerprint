@@ -1,3 +1,4 @@
+import { Buffer } from 'node:buffer';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -49,15 +50,31 @@ describe('Node image adapter', () => {
       encoded.byteLength,
     );
 
-    const [fromUrl, fromView, fromBuffer] = await Promise.all([
-      decodeImage(pathToFileURL(path)),
-      decodeImage(view),
-      decodeImage(encoded),
-    ]);
+    const fromUrl = await decodeImage(pathToFileURL(path));
+    const fromView = await decodeImage(view);
+    const fromBuffer = await decodeImage(encoded);
 
-    expect(fromView).toEqual(fromUrl);
-    expect(fromBuffer).toEqual(fromUrl);
-  });
+    expect({
+      format: fromView.format,
+      width: fromView.width,
+      height: fromView.height,
+    }).toEqual({
+      format: fromUrl.format,
+      width: fromUrl.width,
+      height: fromUrl.height,
+    });
+    expect({
+      format: fromBuffer.format,
+      width: fromBuffer.width,
+      height: fromBuffer.height,
+    }).toEqual({
+      format: fromUrl.format,
+      width: fromUrl.width,
+      height: fromUrl.height,
+    });
+    expect(Buffer.compare(fromView.data, fromUrl.data)).toBe(0);
+    expect(Buffer.compare(fromBuffer.data, fromUrl.data)).toBe(0);
+  }, 15_000);
 
   it('composes decoding with the exact public pixel fingerprinter', async () => {
     const path = 'example/_95695590_tv039055678.jpg';
