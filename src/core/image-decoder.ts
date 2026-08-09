@@ -67,11 +67,26 @@ export class ImagePreparationError extends Error {
   }
 }
 
+/**
+ * Decode one runtime-specific source to the portable normalized-pixel boundary.
+ *
+ * Exact reproducibility begins at the returned RGBA bytes. Different decoder
+ * implementations or versions can return different pixels for the same encoded
+ * image, particularly when ICC color profiles or alpha are involved.
+ */
 export type DecodeImageFunction<Source> = (
   source: Source,
   options?: DecodeImageOptions,
 ) => Promise<Rgba8PixelSource>;
 
+/**
+ * Decode and fingerprint one image with the selected runtime adapter.
+ *
+ * Do not assume fingerprint string equality when the same encoded image is
+ * independently decoded in Node.js and browsers. Use one controlled decoder
+ * pipeline for exact reproducibility or a calibrated Hamming-distance policy
+ * for cross-decoder matching.
+ */
 export type FingerprintImageFunction<Source> = (
   source: Source,
   options: FingerprintImageOptions,

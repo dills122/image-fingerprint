@@ -212,14 +212,31 @@ const fingerprint = await fingerprintImage('./scan.jpg', {
 });
 ```
 
+> [!WARNING]
+> The same encoded image is **not guaranteed to produce the same fingerprint in Node.js and every
+> browser**. Sharp and browser engines can decode, color-convert, orient, and round pixels
+> differently—especially for ICC/wide-gamut color profiles and alpha. `fingerprintPixels()` is
+> exact for identical normalized pixels, and repeated decodes were stable in the measured
+> configurations, but separately decoded encoded files may have a nonzero Hamming distance.
+
 `fingerprintImage()` is initially PDQ-only. The default limits are 32 MiB encoded and 40 million
 decoded pixels. Static JPEG, PNG, and WebP are supported; animated inputs are rejected explicitly.
 Preparation failures are `ImagePreparationError` values with stable `code` fields documented in
 [ADR 0003](./docs/architecture/0003-runtime-image-decoder-contract.md).
 
-Exact determinism begins at the normalized raw-pixel boundary. A Node decoder and a browser engine
-can produce slightly different pixels from the same encoded file, so encoded-image behavior is
-tolerance-tested separately rather than promised byte-for-byte across runtimes.
+When fingerprints cross runtime or browser boundaries:
+
+- Do not require fingerprint string equality for independently decoded encoded images. Use
+  `compareFingerprints()` or `evaluatePdqMatch()` with a policy calibrated on representative images.
+- If exact reproducibility is required, normalize and hash through one controlled decoder pipeline,
+  and retain that decoder/configuration version with persisted fingerprints.
+- Recalibrate before changing decoder versions or relying on wide-gamut/ICC-heavy inputs. The
+  current small conformance corpus found exact repeats within each decoder but a browser-specific
+  Display P3 result at Hamming distance 12 from the Node/Sharp reference.
+
+See the [encoded-image adapter conformance report](./docs/modernization/pdq-adapter-conformance.md)
+for the measured Node, Chromium, Firefox, and WebKit results and corpus limitations. These
+cross-decoder measurements are compatibility evidence, not a universal application threshold.
 
 ## Use
 
