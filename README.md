@@ -1,4 +1,4 @@
-# image-hash
+# image-fingerprint
 
 A compatibility wrapper around
 [block-hash](https://github.com/commonsmachinery/blockhash-js), plus a runtime-neutral pixel API for
@@ -8,31 +8,37 @@ The legacy Node.js adapter supports JPG, PNG and WebP. The browser and core entr
 decoded, tightly packed gray, RGB, or RGBA pixels so fingerprint algorithms remain independent of
 runtime I/O and image decoders.
 
+> [!NOTE]
+> This package has not been released yet. The legacy Node implementation remains temporarily as a
+> compatibility oracle while the portable implementation is checked against it. The legacy-only
+> surface will be removed before the first release; `image-fingerprint` does not continue the
+> `image-hash` version line.
+
 ## Install
 
 ```bash
-npm i -S image-hash
+npm install image-fingerprint
 ```
 
 ## Entrypoints
 
 | Import | Runtime | Purpose |
 | --- | --- | --- |
-| `image-hash` | Node.js | Existing callback API plus the portable pixel API |
-| `image-hash/node` | Node.js | Explicit Node.js entrypoint for paths, URLs, and buffers |
-| `image-hash/core` | Node.js or browser | Runtime-neutral pixel fingerprinting |
-| `image-hash/browser` | Browser | Browser-safe ESM entrypoint; currently accepts decoded pixels |
+| `image-fingerprint` | Node.js | Existing callback API plus the portable pixel API |
+| `image-fingerprint/node` | Node.js | Explicit Node.js entrypoint for paths, URLs, and buffers |
+| `image-fingerprint/core` | Node.js or browser | Runtime-neutral pixel fingerprinting |
+| `image-fingerprint/browser` | Browser | Browser-safe ESM entrypoint; currently accepts decoded pixels |
 
-The root entrypoint remains Node.js-compatible so existing `require('image-hash')` consumers retain
-their current behavior. Browser applications should use `image-hash/browser` and Node applications
-may use either the root or explicit Node.js entrypoint.
+The root entrypoint remains Node.js-compatible while the legacy implementation is retained as a
+parity oracle. Browser applications should use `image-fingerprint/browser` and Node applications
+may use either the root or explicit Node.js entrypoint during the pre-release period.
 
 ## Cross-runtime pixel API
 
 The same decoded pixels produce the same versioned fingerprint in Node.js and browsers:
 
 ```typescript
-import { fingerprintPixels } from 'image-hash/browser';
+import { fingerprintPixels } from 'image-fingerprint/browser';
 
 const context = canvas.getContext('2d');
 if (!context) throw new Error('2D canvas is unavailable');
@@ -58,7 +64,7 @@ console.log(fingerprint);
 PDQ is opt-in through the same synchronous pixel API:
 
 ```typescript
-import { fingerprintPixels } from 'image-hash/core';
+import { fingerprintPixels } from 'image-fingerprint/core';
 
 const fingerprint = fingerprintPixels({
   format: 'rgba8',
@@ -107,7 +113,7 @@ orientation, alpha, and color-normalization adapters will be added against the s
 ## Use
 
 ```javascript
-const { imageHash }= require('image-hash');
+const { imageHash } = require('image-fingerprint');
 
 // remote file simple
 imageHash('https://ichef-1.bbci.co.uk/news/660/cpsprodpb/7F76/production/_95703623_mediaitem95703620.jpg', 16, true, (error, data) => {
@@ -230,11 +236,26 @@ algorithms is recorded in
 
 - Offline unit/integration suite: `pnpm test`
 - Full local quality gate: `pnpm check`
+- Published file-set verification: `pnpm pack:check`
 - Opt-in live network tests: `pnpm test:network`
 
-## Credit
+## Releasing
 
-The hard bit of this comes with thanks from [commonsmachinery](https://github.com/commonsmachinery) for [blockhash-js](https://github.com/commonsmachinery/blockhash-js)
+The repository must have an `NPM_TOKEN` Actions secret with permission to publish
+`image-fingerprint`. Update the version in `package.json`, merge that change, then push a matching
+tag such as `v0.1.0`. The release workflow verifies the tag and package, publishes to npm with
+provenance, and creates a GitHub release containing the npm tarball.
+
+## Origins and attribution
+
+`image-fingerprint` began as a port of Daniel Morrison's
+[`image-hash`](https://github.com/danm/image-hash), with its history and contributors preserved for
+attribution. The Block Mean Value implementation ultimately derives from
+[`blockhash-js`](https://github.com/commonsmachinery/blockhash-js) by Commons Machinery.
+
+This is a new package with its own API and release history. Compatibility with legacy
+`image-hash` output is used as a migration invariant, not as a commitment to retain its Node-only
+API.
 
 ## License
 

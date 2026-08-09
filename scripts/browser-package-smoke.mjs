@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { fingerprintPixels } from 'image-hash/browser';
+import { fingerprintPixels } from 'image-fingerprint/browser';
 
-const { imageHash: imageHashFromNode } = await import('image-hash/node');
+const { imageHash: imageHashFromNode } = await import('image-fingerprint/node');
 assert.equal(typeof imageHashFromNode, 'function');
 
 const fingerprint = fingerprintPixels({
