@@ -94,8 +94,8 @@ candidate or ranking signal after consistent normalization, not the sole exact-p
 - Raw-pixel PDQ matches the pinned Meta C++ reference exactly. Captured Node, browser, performance,
   and MTG matching evidence is linked from `docs/modernization/README.md`.
 
-The current `image-fingerprint@0.1.0-rc.0` dry-run tarball contains 108 files, is 84.8 kB compressed
-and 357.0 kB unpacked, and has npm dry-run shasum
+The published `image-fingerprint@0.1.0-rc.0` tarball contains 108 files, is 84.8 kB compressed
+and 357.0 kB unpacked, and has npm registry shasum
 `eb96731b0433427fd9ecaec4b29263ed2b8a9583`.
 Packed CommonJS and ESM runtimes, TypeScript Node16/NodeNext/Bundler resolution, and browser
 main-thread/module-worker consumers all passed.
@@ -121,8 +121,8 @@ of all 720 results captured from the published `image-hash@7.0.1` tarball.
 
 ## Release Checklist
 
-- [ ] Merge `0.1.0-rc.0` after all required CI and CodeQL checks pass.
-- [ ] Publish `0.1.0-rc.0` manually under `next` using the
+- [x] Merge `0.1.0-rc.0` after all required CI and CodeQL checks pass.
+- [x] Publish `0.1.0-rc.0` manually under `next` using the
   [trusted-publishing bootstrap](./trusted-publishing-bootstrap.md).
 - [ ] Configure npm trusted publishing for `dills122/image-fingerprint` and `release.yml`.
 - [ ] Publish `0.1.0-rc.1` under `next` through GitHub Actions and verify npm provenance.

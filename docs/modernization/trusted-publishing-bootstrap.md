@@ -23,14 +23,17 @@ The final command is the only manual publish. It requires an interactively authe
 with 2FA or a short-lived granular access token allowed to publish. Never place that credential in
 the repository or GitHub Actions.
 
-Verify that the prerelease did not create a stable `latest` tag:
+Verify the prerelease tags:
 
 ```bash
 npm view image-fingerprint@next version
 npm view image-fingerprint dist-tags --json
 ```
 
-The expected `next` value is `0.1.0-rc.0`; `latest` should still be absent.
+The expected `next` value is `0.1.0-rc.0`. npm requires every published package to have a
+`latest` tag, so the first-ever publish also points `latest` at `0.1.0-rc.0` even though the publish
+used `--tag next`. That temporary pointer cannot be removed while this is the package's only
+version. The stable `0.1.0` publish replaces it.
 
 ## 2. Configure npm trusted publishing
 
