@@ -39,7 +39,13 @@ type ImageFingerprint =
     };
 
 type FingerprintComparison =
-  | { comparable: true; algorithm: FingerprintAlgorithm; distance: number; bitLength: number }
+  | {
+      comparable: true;
+      algorithm: FingerprintAlgorithm;
+      distance: number;
+      bitLength: number;
+      normalizedDistance: number;
+    }
   | {
       comparable: false;
       reason: 'algorithm-mismatch' | 'parameter-mismatch' | 'bit-length-mismatch';

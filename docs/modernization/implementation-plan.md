@@ -1,6 +1,6 @@
 # PDQ v1 Implementation Plan
 
-Status: Task 8 implemented and reviewed locally; Tasks 1–7 complete and merged
+Status: Task 8 committed; Task 9 implemented and reviewed locally
 Updated: 2026-08-09
 
 ## Overview
@@ -323,22 +323,24 @@ the runtime-neutral public API.
 
 ### Task 9: Implement Hamming comparison and opt-in PDQ match policy
 
+**Status:** Implemented and reviewed locally on `codex/fingerprint-codec` on 2026-08-09.
+
 **Description:** Add mathematical comparison with explicit incompatibility and a separate named
 policy helper.
 
 **Acceptance criteria:**
 
-- [ ] Hamming distance is symmetric, bounded, and tested at 0, 31, 32, and 256.
-- [ ] Algorithm, BlockHash parameter, and bit-length mismatches return `comparable: false` with the
+- [x] Hamming distance is symmetric, bounded, and tested at 0, 31, 32, and 256.
+- [x] Algorithm, BlockHash parameter, and bit-length mismatches return `comparable: false` with the
   approved reason instead of `matches: false`.
-- [ ] `PDQ_STARTING_POLICY` is explicit; policy eligibility requires both qualities to meet the
+- [x] `PDQ_STARTING_POLICY` is explicit; policy eligibility requires both qualities to meet the
   selected minimum and never alters distance.
 
 **Verification:**
 
-- [ ] `pnpm test -- __tests__/fingerprint-comparison.test.ts`
-- [ ] Property tests or seeded loops verify symmetry and identity.
-- [ ] `pnpm lint && pnpm typecheck`
+- [x] `pnpm test -- __tests__/fingerprint-comparison.test.ts`
+- [x] Property tests or seeded loops verify symmetry and identity.
+- [x] `pnpm lint && pnpm typecheck`
 
 **Dependencies:** Task 8.
 

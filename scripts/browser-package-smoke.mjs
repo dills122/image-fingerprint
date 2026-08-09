@@ -5,6 +5,9 @@ import {
   fingerprintPixels,
   parseFingerprint,
   serializeFingerprint,
+  compareFingerprints,
+  evaluatePdqMatch,
+  PDQ_STARTING_POLICY,
 } from 'image-fingerprint/browser';
 
 const { imageHash: imageHashFromNode } = await import('image-fingerprint/node');
@@ -63,6 +66,28 @@ assert.deepEqual(pdqFingerprint, {
 
 const serializedFingerprint = serializeFingerprint(pdqFingerprint);
 assert.deepEqual(parseFingerprint(serializedFingerprint), pdqFingerprint);
+assert.deepEqual(compareFingerprints(pdqFingerprint, pdqFingerprint), {
+  comparable: true,
+  algorithm: 'pdq-v1',
+  distance: 0,
+  bitLength: 256,
+  normalizedDistance: 0,
+});
+assert.deepEqual(evaluatePdqMatch(
+  pdqFingerprint,
+  pdqFingerprint,
+  PDQ_STARTING_POLICY,
+), {
+  eligible: true,
+  matches: true,
+  comparison: {
+    comparable: true,
+    algorithm: 'pdq-v1',
+    distance: 0,
+    bitLength: 256,
+    normalizedDistance: 0,
+  },
+});
 
 const libDirectory = fileURLToPath(new URL('../lib/esm', import.meta.url));
 const files = await readdir(libDirectory, { recursive: true });

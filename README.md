@@ -127,6 +127,39 @@ records and `serializeFingerprint` output always use canonical lowercase hexadec
 also revalidates its input at runtime. BlockHash records must carry the method and `bitsPerSide`
 that agree with their bit length and hexadecimal hash length.
 
+### Compare fingerprints and apply policy
+
+`compareFingerprints` reports mathematical Hamming distance only. Incompatible algorithms,
+BlockHash parameters, or bit lengths produce an explicit non-comparable result:
+
+```typescript
+import {
+  compareFingerprints,
+  evaluatePdqMatch,
+  PDQ_STARTING_POLICY,
+} from 'image-fingerprint/core';
+
+const comparison = compareFingerprints(firstFingerprint, secondFingerprint);
+if (comparison.comparable) {
+  console.log(comparison.distance);
+  console.log(comparison.normalizedDistance); // distance / bitLength
+} else {
+  console.log(comparison.reason);
+}
+
+const policyResult = evaluatePdqMatch(
+  firstPdqFingerprint,
+  secondPdqFingerprint,
+  PDQ_STARTING_POLICY,
+);
+```
+
+`PDQ_STARTING_POLICY` is the explicit `{ maxDistance: 31, minQuality: 50 }` starting point from the
+PDQ ecosystem; it is never applied automatically. `evaluatePdqMatch` requires a policy argument.
+Both fingerprints must meet its minimum quality before the result is eligible, while the underlying
+distance remains unchanged. Product thresholds should be calibrated against representative data.
+`normalizedDistance` is not a probability or semantic-similarity percentage.
+
 Encoded-image decoding is deliberately outside this core boundary. Browser `File`, `Blob`, URL,
 orientation, alpha, and color-normalization adapters will be added against the same contract.
 

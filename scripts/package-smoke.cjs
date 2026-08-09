@@ -5,15 +5,18 @@ const {
   imageHash,
   parseFingerprint,
   serializeFingerprint,
+  compareFingerprints,
 } = require('image-fingerprint');
 const legacyBlockHash = require('image-fingerprint/lib/block-hash').default;
 const {
   fingerprintPixels: fingerprintPixelsFromBrowser,
   parseFingerprint: parseFingerprintFromBrowser,
+  PDQ_STARTING_POLICY,
 } = require('image-fingerprint/browser');
 const {
   fingerprintPixels: fingerprintPixelsFromCore,
   serializeFingerprint: serializeFingerprintFromCore,
+  evaluatePdqMatch,
 } = require('image-fingerprint/core');
 const { imageHash: imageHashFromNode } = require('image-fingerprint/node');
 
@@ -112,3 +115,21 @@ assert.equal(serializeFingerprint(expectedPdq), canonicalPdq);
 assert.equal(serializeFingerprintFromCore(expectedPdq), canonicalPdq);
 assert.deepEqual(parseFingerprint(canonicalPdq), expectedPdq);
 assert.deepEqual(parseFingerprintFromBrowser(canonicalPdq), expectedPdq);
+assert.deepEqual(compareFingerprints(expectedPdq, expectedPdq), {
+  comparable: true,
+  algorithm: 'pdq-v1',
+  distance: 0,
+  bitLength: 256,
+  normalizedDistance: 0,
+});
+assert.deepEqual(evaluatePdqMatch(expectedPdq, expectedPdq, PDQ_STARTING_POLICY), {
+  eligible: true,
+  matches: true,
+  comparison: {
+    comparable: true,
+    algorithm: 'pdq-v1',
+    distance: 0,
+    bitLength: 256,
+    normalizedDistance: 0,
+  },
+});

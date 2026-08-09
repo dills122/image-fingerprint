@@ -645,3 +645,22 @@ primary-source verification before entering contract documentation.
 - Existing packed-package smoke tests already exercise root, `/core`, browser CommonJS, and browser
   ESM surfaces. Task 8 extends those same checks with codec round trips so declaration/build/export
   drift is caught without adding a new harness.
+
+## 2026-08-09 Task 9 Comparison Contract
+
+- `compareFingerprints(left, right)` is mathematical only. Comparable results contain algorithm,
+  Hamming distance, bit length, and `distance / bitLength`; incompatible results use exactly
+  `algorithm-mismatch`, `parameter-mismatch`, or `bit-length-mismatch`.
+- Compatibility checks are ordered by algorithm, BlockHash parameters, then bit length. This makes
+  different BlockHash configurations explicitly incompatible rather than treating them as valid
+  non-matches.
+- Comparison does not apply quality or a distance threshold. Hamming is computed over validated
+  equal-length hexadecimal strings and remains bounded by the declared bit length.
+- Task 9 will export `PDQ_STARTING_POLICY` as `{ maxDistance: 31, minQuality: 50 }`, but no function
+  uses it implicitly.
+- The explicit policy API will be
+  `evaluatePdqMatch(left: PdqFingerprint, right: PdqFingerprint, policy: PdqMatchPolicy)`.
+  Its result retains the unchanged comparable PDQ distance and distinguishes an ineligible
+  `quality-below-minimum` result from an eligible distance match/non-match.
+- Policy fields are runtime validated as integers: `maxDistance` from 0 through 256 and
+  `minQuality` from 0 through 100.

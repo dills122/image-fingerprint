@@ -641,3 +641,42 @@ plan is awaiting maintainer review; production implementation remains behind tha
   untrusted fields before returning or serializing, adds no dependency, stays synchronous and
   runtime-neutral, preserves the legacy callback/hash contract, and does not absorb Task 9 matching
   policy or Task 12 decoding concerns.
+
+## 2026-08-09 — Task 9 Authorization
+
+- The maintainer requested the reviewed Task 8 checkpoint be committed and authorized moving to
+  Task 9 on the current feature branch as a separate commit.
+- The first `git add`/`git commit` attempt was blocked because the workspace sandbox could not
+  create `.git/index.lock`. Retrying the same scoped Git operation with approved Git metadata
+  access succeeded; Task 8 is committed as `2da5ae8` (`Add canonical fingerprint codec`).
+- Task 9 is limited to mathematical Hamming comparison, explicit incompatibility, a named PDQ
+  starting-policy constant, and an opt-in policy evaluator. Task 10 differential expansion and
+  later runtime adapters remain out of scope.
+- RED: added 22 focused tests covering distances 0, 31, 32, and 256; BlockHash comparison;
+  algorithm/parameter/bit-length incompatibility; malformed hashes; 100 seeded symmetry/identity
+  iterations; explicit starting and custom policies; quality eligibility; and invalid policy
+  bounds. Fifteen behavior tests fail because the Task 9 exports do not exist; seven rejection tests
+  currently throw for that same missing-function reason and must be rechecked after implementation.
+- GREEN: implemented decoder-free hexadecimal Hamming comparison, explicit incompatibility,
+  `PDQ_STARTING_POLICY`, policy/runtime validation, and a discriminated opt-in PDQ policy result.
+  All 22 focused tests pass; strict TypeScript and ESLint also pass under Node 22.22.1.
+- The first combined documentation/package-smoke patch used README context with an incorrect line
+  break and was rejected atomically. No README, smoke script, or progress content changed before
+  the narrower patches below.
+- FULL GREEN before review: `pnpm check` passes on Node 22.22.1 and Node 24.19.0 with 123 tests
+  passing, five unchanged network tests skipped, 94.43% statement / 91.08% branch coverage, strict
+  types, builds, and packed root/core/browser comparison-policy smoke checks.
+- REVIEW RED: four new JavaScript-boundary regressions fail against the initial implementation:
+  unsupported identical algorithms, invalid schema/encoding headers, and equal but internally
+  inconsistent PDQ/BlockHash bit lengths were incorrectly reported as comparable.
+- REVIEW GREEN: comparison now validates supported schema headers and internal algorithm metadata
+  before returning a comparable result. Genuine differences between valid records still return the
+  approved incompatibility reasons. The focused suite passes all 36 tests, including untyped
+  non-object, parameter, quality, policy, algorithm, and incompatible-input guards.
+- POST-REVIEW FINAL GREEN: `pnpm check` passes on Node 22.22.1 and Node 24.19.0 with 137 tests
+  passing, five unchanged network tests skipped, 95% statement / 92.35% branch coverage, strict
+  types, builds, and packed root/core/browser smoke tests.
+- Multi-axis review verdict: approve Task 9. Comparison is deterministic, symmetric, bounded, and
+  linear in the fixed fingerprint text; policy cannot silently affect distance; incompatible and
+  invalid inputs remain distinguishable; the implementation adds no dependency or runtime I/O and
+  stays inside the pure browser-safe core.

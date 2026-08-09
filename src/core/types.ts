@@ -78,3 +78,46 @@ export type ImageFingerprint = BlockHashFingerprint | PdqFingerprint;
 export type FingerprintOptions = (
   BlockHashFingerprintOptions | PdqFingerprintOptions
 );
+
+export interface ComparableFingerprintComparison {
+  readonly comparable: true;
+  readonly algorithm: FingerprintAlgorithm;
+  readonly distance: number;
+  readonly bitLength: number;
+  readonly normalizedDistance: number;
+}
+
+export interface IncompatibleFingerprintComparison {
+  readonly comparable: false;
+  readonly reason: (
+    'algorithm-mismatch' | 'parameter-mismatch' | 'bit-length-mismatch'
+  );
+}
+
+export type FingerprintComparison = (
+  ComparableFingerprintComparison | IncompatibleFingerprintComparison
+);
+
+export interface PdqMatchPolicy {
+  readonly maxDistance: number;
+  readonly minQuality: number;
+}
+
+export type PdqFingerprintComparison = ComparableFingerprintComparison & {
+  readonly algorithm: 'pdq-v1';
+  readonly bitLength: 256;
+};
+
+export type PdqMatchResult = (
+  | {
+      readonly eligible: true;
+      readonly matches: boolean;
+      readonly comparison: PdqFingerprintComparison;
+    }
+  | {
+      readonly eligible: false;
+      readonly matches: false;
+      readonly reason: 'quality-below-minimum';
+      readonly comparison: PdqFingerprintComparison;
+    }
+);
