@@ -1,0 +1,1932 @@
+{
+  "profileVersion": 1,
+  "mode": "differential",
+  "algorithm": "pdq-v1",
+  "repeatCount": 2,
+  "browsers": [
+    "chromium",
+    "firefox",
+    "webkit"
+  ],
+  "referencePipeline": {
+    "decoder": {
+      "name": "sharp",
+      "version": "0.35.3",
+      "operations": [
+        "autoOrient",
+        "toColourspace:srgb",
+        "ensureAlpha",
+        "raw"
+      ],
+      "output": "straight-alpha-rgba8-srgb"
+    },
+    "oracle": {
+      "repository": "https://github.com/facebook/ThreatExchange.git",
+      "commit": "baefb4ed67b6cdc1d4c82dbaef858d50866ac424",
+      "input": "rgba8-composited-over-white-to-rgb8"
+    }
+  },
+  "gate": {
+    "minimumQuality": 80,
+    "maximumHammingDistance": 10,
+    "eligibility": "minimum(reference-quality,candidate-quality)"
+  },
+  "fixtures": {
+    "corpus": "pdq-adapter-tolerance-v1",
+    "count": 8,
+    "encodedBytes": 239747
+  },
+  "categories": [
+    "alpha",
+    "exif-orientation",
+    "format:jpeg",
+    "format:png",
+    "format:webp",
+    "grayscale",
+    "icc:p3",
+    "icc:srgb",
+    "lossless",
+    "lossy",
+    "opaque"
+  ],
+  "documentedExceptions": [
+    {
+      "fixture": "opaque-p3-png",
+      "runtime": "browser",
+      "engine": "firefox",
+      "maximumDistance": 12,
+      "category": "icc-color-management",
+      "rationale": "Firefox Display P3 conversion differs from the pinned Sharp sRGB reference; see docs/modernization/pdq-adapter-conformance.md."
+    }
+  ],
+  "manifestSha256": "bc6738851f8ce1775ecc0e459c4f90c236ca72d643e3392c6fde10d380232944",
+  "fixtureBytesSha256": "5a0aa9f978fa22f85260452b0bea8133c039340b12bab07682ecea68db306ebb",
+  "generatedAt": "2026-08-09T19:34:35.346Z",
+  "host": {
+    "platform": "darwin",
+    "architecture": "arm64",
+    "node": "v24.19.0"
+  },
+  "oracle": {
+    "protocolVersion": 1,
+    "referenceRepository": "https://github.com/facebook/ThreatExchange.git",
+    "referenceCommit": "baefb4ed67b6cdc1d4c82dbaef858d50866ac424"
+  },
+  "decoder": {
+    "sharp": {
+      "aom": "3.14.1",
+      "archive": "3.8.8",
+      "cairo": "1.18.4",
+      "cgif": "0.5.3",
+      "exif": "0.6.26",
+      "expat": "2.8.2",
+      "ffi": "3.6.0",
+      "fontconfig": "2.18.1",
+      "freetype": "2.14.3",
+      "fribidi": "1.0.16",
+      "glib": "2.89.1",
+      "harfbuzz": "14.2.1",
+      "heif": "1.23.1",
+      "highway": "1.4.0",
+      "imagequant": "2.4.1",
+      "lcms": "2.19.1",
+      "mozjpeg": "0826579",
+      "pango": "1.58.0",
+      "pixman": "0.46.4",
+      "png": "1.6.58",
+      "proxy-libintl": "0.5",
+      "rsvg": "2.62.90",
+      "tiff": "d01a94b",
+      "uhdr": "1acdbed",
+      "vips": "8.18.3",
+      "webp": "1.6.0",
+      "xml2": "2.15.3",
+      "zlib-ng": "2.3.3",
+      "sharp": "0.35.3"
+    },
+    "browsers": [
+      {
+        "name": "chromium",
+        "version": "151.0.7922.34"
+      },
+      {
+        "name": "firefox",
+        "version": "153.0"
+      },
+      {
+        "name": "webkit",
+        "version": "26.5"
+      }
+    ]
+  },
+  "results": {
+    "node": [
+      {
+        "id": "opaque-srgb-png",
+        "categories": [
+          "format:png",
+          "icc:srgb",
+          "opaque",
+          "lossless"
+        ],
+        "encodedSha256": "adc2292fcb26f0d2b25185f3326f64596711d2a1a814f51891fe1e4eb142aa58",
+        "width": 144,
+        "height": 192,
+        "pixelSha256": "82f463b011e073b8c7a6a4a518db8cf4855413e22c1380952994cf41c993fa4d",
+        "fingerprint": {
+          "hash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+          "quality": 100
+        },
+        "reference": {
+          "hash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+          "quality": 100
+        },
+        "repeatedExactly": true,
+        "oracleRepeatedExactly": true,
+        "typescriptExact": true
+      },
+      {
+        "id": "opaque-srgb-jpeg",
+        "categories": [
+          "format:jpeg",
+          "icc:srgb",
+          "opaque",
+          "lossy"
+        ],
+        "encodedSha256": "95de8a5a6d8388dea2063dcaba3667a4e01af11b4b726398009c476b8c233eee",
+        "width": 144,
+        "height": 192,
+        "pixelSha256": "8923d634a4a77be6be29e73938355e5be01cba0001232782e09b0553ccdfd481",
+        "fingerprint": {
+          "hash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+          "quality": 100
+        },
+        "reference": {
+          "hash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+          "quality": 100
+        },
+        "repeatedExactly": true,
+        "oracleRepeatedExactly": true,
+        "typescriptExact": true
+      },
+      {
+        "id": "opaque-srgb-webp",
+        "categories": [
+          "format:webp",
+          "icc:srgb",
+          "opaque",
+          "lossy"
+        ],
+        "encodedSha256": "1658ee3f8e89495005a46c1bfb1267689428acb72a6bff7dbf6371f4d1f2a6a1",
+        "width": 144,
+        "height": 192,
+        "pixelSha256": "acdf028e70b6fa4d51117f614530d4fdb75a26eb00ed677cbd385997b6588a4e",
+        "fingerprint": {
+          "hash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+          "quality": 100
+        },
+        "reference": {
+          "hash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+          "quality": 100
+        },
+        "repeatedExactly": true,
+        "oracleRepeatedExactly": true,
+        "typescriptExact": true
+      },
+      {
+        "id": "grayscale-srgb-png",
+        "categories": [
+          "format:png",
+          "icc:srgb",
+          "grayscale",
+          "lossless"
+        ],
+        "encodedSha256": "c38cd7b4aa38c72721225782b0b065518a38c6f8672b506189f1644e3ba21849",
+        "width": 144,
+        "height": 192,
+        "pixelSha256": "972cbc14fc6c442ed64733757462ee5363aad6ea79da1657f425e15489164e8e",
+        "fingerprint": {
+          "hash": "0ef3ccf1ece60b0c3aba2c665aeb0a937aa6f12ca6eba086efae1a466fea0804",
+          "quality": 100
+        },
+        "reference": {
+          "hash": "0ef3ccf1ece60b0c3aba2c665aeb0a937aa6f12ca6eba086efae1a466fea0804",
+          "quality": 100
+        },
+        "repeatedExactly": true,
+        "oracleRepeatedExactly": true,
+        "typescriptExact": true
+      },
+      {
+        "id": "alpha-srgb-png",
+        "categories": [
+          "format:png",
+          "icc:srgb",
+          "alpha",
+          "lossless"
+        ],
+        "encodedSha256": "cbbc223fd2e5ea12d02ce9fa6afa5d2b3f71fd42a54bca0873f3c7a04db1c128",
+        "width": 144,
+        "height": 192,
+        "pixelSha256": "ea68069918ba2d5c1d4396f680dc21ea3fc19034914e49c1d7bd76df54d768d0",
+        "fingerprint": {
+          "hash": "dd48011b64829957f56a215f0bf75e903319f6506b7acc0f93cb368d436c9e0f",
+          "quality": 100
+        },
+        "reference": {
+          "hash": "dd48011b64829957f56a215f0bf75e903319f6506b7acc0f93cb368d436c9e0f",
+          "quality": 100
+        },
+        "repeatedExactly": true,
+        "oracleRepeatedExactly": true,
+        "typescriptExact": true
+      },
+      {
+        "id": "alpha-srgb-webp",
+        "categories": [
+          "format:webp",
+          "icc:srgb",
+          "alpha",
+          "lossy"
+        ],
+        "encodedSha256": "a236804148553d6f8be83ecffd3c8e772cb2cf9130e97be6a3d722a7fe50e9c7",
+        "width": 144,
+        "height": 192,
+        "pixelSha256": "bb23bb0d0eb3187ca52cafc82294135fe03ee0efef5a3d4692291743f7c17503",
+        "fingerprint": {
+          "hash": "dd48811b64829957f56a215f0bf75e903319f650637acc0f93cb368d436c9e0f",
+          "quality": 100
+        },
+        "reference": {
+          "hash": "dd48811b64829957f56a215f0bf75e903319f650637acc0f93cb368d436c9e0f",
+          "quality": 100
+        },
+        "repeatedExactly": true,
+        "oracleRepeatedExactly": true,
+        "typescriptExact": true
+      },
+      {
+        "id": "orientation-6-srgb-jpeg",
+        "categories": [
+          "format:jpeg",
+          "icc:srgb",
+          "exif-orientation",
+          "lossy"
+        ],
+        "encodedSha256": "b1399e4a7d5c7b699a717f33fb19cfe3d9f214fcc6dd4641b7f5ea52247f2794",
+        "width": 192,
+        "height": 144,
+        "pixelSha256": "bd993f2198ab609c18d859b6fab6fc6d9906081d748926834320a523c6d138fb",
+        "fingerprint": {
+          "hash": "2628279cf9a4df812ada886f8e7b4d1c2eeeb273b3aa9ce54e3a4188faca9260",
+          "quality": 100
+        },
+        "reference": {
+          "hash": "2628279cf9a4df812ada886f8e7b4d1c2eeeb273b3aa9ce54e3a4188faca9260",
+          "quality": 100
+        },
+        "repeatedExactly": true,
+        "oracleRepeatedExactly": true,
+        "typescriptExact": true
+      },
+      {
+        "id": "opaque-p3-png",
+        "categories": [
+          "format:png",
+          "icc:p3",
+          "opaque",
+          "lossless"
+        ],
+        "encodedSha256": "8dd421658b64310a3abd2541df967ad80aefb8abb950cbca76afbb0a2384e033",
+        "width": 144,
+        "height": 192,
+        "pixelSha256": "ec4e424c70c8736833b2e9dbc1450af31aba57261fee2f5ee0eafa7d9d186279",
+        "fingerprint": {
+          "hash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+          "quality": 100
+        },
+        "reference": {
+          "hash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+          "quality": 100
+        },
+        "repeatedExactly": true,
+        "oracleRepeatedExactly": true,
+        "typescriptExact": true
+      }
+    ],
+    "browsers": [
+      {
+        "name": "chromium",
+        "version": "151.0.7922.34",
+        "fixtures": [
+          {
+            "id": "opaque-srgb-png",
+            "width": 144,
+            "height": 192,
+            "pixelSha256": "82f463b011e073b8c7a6a4a518db8cf4855413e22c1380952994cf41c993fa4d",
+            "fingerprint": {
+              "hash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+              "quality": 100
+            },
+            "repeatedExactly": true
+          },
+          {
+            "id": "opaque-srgb-jpeg",
+            "width": 144,
+            "height": 192,
+            "pixelSha256": "8923d634a4a77be6be29e73938355e5be01cba0001232782e09b0553ccdfd481",
+            "fingerprint": {
+              "hash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+              "quality": 100
+            },
+            "repeatedExactly": true
+          },
+          {
+            "id": "opaque-srgb-webp",
+            "width": 144,
+            "height": 192,
+            "pixelSha256": "acdf028e70b6fa4d51117f614530d4fdb75a26eb00ed677cbd385997b6588a4e",
+            "fingerprint": {
+              "hash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+              "quality": 100
+            },
+            "repeatedExactly": true
+          },
+          {
+            "id": "grayscale-srgb-png",
+            "width": 144,
+            "height": 192,
+            "pixelSha256": "972cbc14fc6c442ed64733757462ee5363aad6ea79da1657f425e15489164e8e",
+            "fingerprint": {
+              "hash": "0ef3ccf1ece60b0c3aba2c665aeb0a937aa6f12ca6eba086efae1a466fea0804",
+              "quality": 100
+            },
+            "repeatedExactly": true
+          },
+          {
+            "id": "alpha-srgb-png",
+            "width": 144,
+            "height": 192,
+            "pixelSha256": "5573e345d3c414077ac324afb061ad8ae254d02d3d73fa754a8f2d49da558c2e",
+            "fingerprint": {
+              "hash": "dd48011b64829957f56a215f0bf75e903319f6506b7acc0f93cb368d436c9e0f",
+              "quality": 100
+            },
+            "repeatedExactly": true
+          },
+          {
+            "id": "alpha-srgb-webp",
+            "width": 144,
+            "height": 192,
+            "pixelSha256": "986184534941b75019897a88ee9210a9dac16c01fcdc1a15fba60b49892eecd7",
+            "fingerprint": {
+              "hash": "dd48811b64829957f56a215f0bf75e903319f650637acc0f93cb368d436c9e0f",
+              "quality": 100
+            },
+            "repeatedExactly": true
+          },
+          {
+            "id": "orientation-6-srgb-jpeg",
+            "width": 192,
+            "height": 144,
+            "pixelSha256": "bd993f2198ab609c18d859b6fab6fc6d9906081d748926834320a523c6d138fb",
+            "fingerprint": {
+              "hash": "2628279cf9a4df812ada886f8e7b4d1c2eeeb273b3aa9ce54e3a4188faca9260",
+              "quality": 100
+            },
+            "repeatedExactly": true
+          },
+          {
+            "id": "opaque-p3-png",
+            "width": 144,
+            "height": 192,
+            "pixelSha256": "8d54549fa13b345cd2b46b37fe9b3ab18dfc2dcdb2423127bae0dd081c110bdd",
+            "fingerprint": {
+              "hash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+              "quality": 100
+            },
+            "repeatedExactly": true
+          }
+        ]
+      },
+      {
+        "name": "firefox",
+        "version": "153.0",
+        "fixtures": [
+          {
+            "id": "opaque-srgb-png",
+            "width": 144,
+            "height": 192,
+            "pixelSha256": "82f463b011e073b8c7a6a4a518db8cf4855413e22c1380952994cf41c993fa4d",
+            "fingerprint": {
+              "hash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+              "quality": 100
+            },
+            "repeatedExactly": true
+          },
+          {
+            "id": "opaque-srgb-jpeg",
+            "width": 144,
+            "height": 192,
+            "pixelSha256": "8923d634a4a77be6be29e73938355e5be01cba0001232782e09b0553ccdfd481",
+            "fingerprint": {
+              "hash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+              "quality": 100
+            },
+            "repeatedExactly": true
+          },
+          {
+            "id": "opaque-srgb-webp",
+            "width": 144,
+            "height": 192,
+            "pixelSha256": "acdf028e70b6fa4d51117f614530d4fdb75a26eb00ed677cbd385997b6588a4e",
+            "fingerprint": {
+              "hash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+              "quality": 100
+            },
+            "repeatedExactly": true
+          },
+          {
+            "id": "grayscale-srgb-png",
+            "width": 144,
+            "height": 192,
+            "pixelSha256": "972cbc14fc6c442ed64733757462ee5363aad6ea79da1657f425e15489164e8e",
+            "fingerprint": {
+              "hash": "0ef3ccf1ece60b0c3aba2c665aeb0a937aa6f12ca6eba086efae1a466fea0804",
+              "quality": 100
+            },
+            "repeatedExactly": true
+          },
+          {
+            "id": "alpha-srgb-png",
+            "width": 144,
+            "height": 192,
+            "pixelSha256": "8b4ce4a01205dbb64da1b012d3ed9ae105056fc9a99649de2573dccaa2971e52",
+            "fingerprint": {
+              "hash": "dd48011b64829957f56a215f0bf75e903319f6506b7acc0f93cb368d436c9e0f",
+              "quality": 100
+            },
+            "repeatedExactly": true
+          },
+          {
+            "id": "alpha-srgb-webp",
+            "width": 144,
+            "height": 192,
+            "pixelSha256": "9bed66b3abe7ae91ab3411ec98d58acb60a19471629dcae47102882bf93b3320",
+            "fingerprint": {
+              "hash": "dd48811b64829957f56a215f0bf75e903319f650637acc0f93cb368d436c9e0f",
+              "quality": 100
+            },
+            "repeatedExactly": true
+          },
+          {
+            "id": "orientation-6-srgb-jpeg",
+            "width": 192,
+            "height": 144,
+            "pixelSha256": "bd993f2198ab609c18d859b6fab6fc6d9906081d748926834320a523c6d138fb",
+            "fingerprint": {
+              "hash": "2628279cf9a4df812ada886f8e7b4d1c2eeeb273b3aa9ce54e3a4188faca9260",
+              "quality": 100
+            },
+            "repeatedExactly": true
+          },
+          {
+            "id": "opaque-p3-png",
+            "width": 144,
+            "height": 192,
+            "pixelSha256": "706dc5039a875a9677cbcbe4a9291d9441ccee79fe733bec5ae9c32ad6cff09a",
+            "fingerprint": {
+              "hash": "0eb3ccf1e9e60b0c3aba2866dacb0e937aa6f12ca6fba486cfae1a462fea0904",
+              "quality": 100
+            },
+            "repeatedExactly": true
+          }
+        ]
+      },
+      {
+        "name": "webkit",
+        "version": "26.5",
+        "fixtures": [
+          {
+            "id": "opaque-srgb-png",
+            "width": 144,
+            "height": 192,
+            "pixelSha256": "82f463b011e073b8c7a6a4a518db8cf4855413e22c1380952994cf41c993fa4d",
+            "fingerprint": {
+              "hash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+              "quality": 100
+            },
+            "repeatedExactly": true
+          },
+          {
+            "id": "opaque-srgb-jpeg",
+            "width": 144,
+            "height": 192,
+            "pixelSha256": "3a0bbdb6ef8bb9f7d110d89804162c888558ee88bd1bdcd746dcff6df4fc691d",
+            "fingerprint": {
+              "hash": "2eb3c8f1e9e61b0c3aba4864d2cb0e9378a6f16ca6fba486cfae12462fea4984",
+              "quality": 100
+            },
+            "repeatedExactly": true
+          },
+          {
+            "id": "opaque-srgb-webp",
+            "width": 144,
+            "height": 192,
+            "pixelSha256": "acdf028e70b6fa4d51117f614530d4fdb75a26eb00ed677cbd385997b6588a4e",
+            "fingerprint": {
+              "hash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+              "quality": 100
+            },
+            "repeatedExactly": true
+          },
+          {
+            "id": "grayscale-srgb-png",
+            "width": 144,
+            "height": 192,
+            "pixelSha256": "972cbc14fc6c442ed64733757462ee5363aad6ea79da1657f425e15489164e8e",
+            "fingerprint": {
+              "hash": "0ef3ccf1ece60b0c3aba2c665aeb0a937aa6f12ca6eba086efae1a466fea0804",
+              "quality": 100
+            },
+            "repeatedExactly": true
+          },
+          {
+            "id": "alpha-srgb-png",
+            "width": 144,
+            "height": 192,
+            "pixelSha256": "89e82e83ec229364672cc4bfd7ca097f231362f3ca2912094c51cdb4ed2495eb",
+            "fingerprint": {
+              "hash": "dd48011b64829957f56a215f0bf75e903319f6506b7acc0f93cb368d436c9e0f",
+              "quality": 100
+            },
+            "repeatedExactly": true
+          },
+          {
+            "id": "alpha-srgb-webp",
+            "width": 144,
+            "height": 192,
+            "pixelSha256": "5efddc9d263912dc8c2078aad47dc192576691916f8d8c94224dc390bfc42941",
+            "fingerprint": {
+              "hash": "dd48811b64829957f56a215f0bf75e903319f650637acc0f93cb368d436c9e0f",
+              "quality": 100
+            },
+            "repeatedExactly": true
+          },
+          {
+            "id": "orientation-6-srgb-jpeg",
+            "width": 192,
+            "height": 144,
+            "pixelSha256": "313d83775553b678b3642d318bf72907e98fb23d7ebd3b113930022f5d6ca538",
+            "fingerprint": {
+              "hash": "2628279cf9a4df812ada886f8e7b4d1c2eeeb273b3aa9ce54e3a4188faca9260",
+              "quality": 100
+            },
+            "repeatedExactly": true
+          },
+          {
+            "id": "opaque-p3-png",
+            "width": 144,
+            "height": 192,
+            "pixelSha256": "0eda2291106e1b9fa686bb1d3407e6c0e73b6d7705cee61bc13e674fa972e2e2",
+            "fingerprint": {
+              "hash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+              "quality": 100
+            },
+            "repeatedExactly": true
+          }
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "fixture": "opaque-srgb-png",
+        "categories": [
+          "format:png",
+          "icc:srgb",
+          "opaque",
+          "lossless"
+        ],
+        "runtime": "node",
+        "engine": "sharp",
+        "referenceHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "referenceQuality": 100,
+        "candidateHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "opaque-srgb-jpeg",
+        "categories": [
+          "format:jpeg",
+          "icc:srgb",
+          "opaque",
+          "lossy"
+        ],
+        "runtime": "node",
+        "engine": "sharp",
+        "referenceHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "referenceQuality": 100,
+        "candidateHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "opaque-srgb-webp",
+        "categories": [
+          "format:webp",
+          "icc:srgb",
+          "opaque",
+          "lossy"
+        ],
+        "runtime": "node",
+        "engine": "sharp",
+        "referenceHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "referenceQuality": 100,
+        "candidateHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "grayscale-srgb-png",
+        "categories": [
+          "format:png",
+          "icc:srgb",
+          "grayscale",
+          "lossless"
+        ],
+        "runtime": "node",
+        "engine": "sharp",
+        "referenceHash": "0ef3ccf1ece60b0c3aba2c665aeb0a937aa6f12ca6eba086efae1a466fea0804",
+        "referenceQuality": 100,
+        "candidateHash": "0ef3ccf1ece60b0c3aba2c665aeb0a937aa6f12ca6eba086efae1a466fea0804",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "alpha-srgb-png",
+        "categories": [
+          "format:png",
+          "icc:srgb",
+          "alpha",
+          "lossless"
+        ],
+        "runtime": "node",
+        "engine": "sharp",
+        "referenceHash": "dd48011b64829957f56a215f0bf75e903319f6506b7acc0f93cb368d436c9e0f",
+        "referenceQuality": 100,
+        "candidateHash": "dd48011b64829957f56a215f0bf75e903319f6506b7acc0f93cb368d436c9e0f",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "alpha-srgb-webp",
+        "categories": [
+          "format:webp",
+          "icc:srgb",
+          "alpha",
+          "lossy"
+        ],
+        "runtime": "node",
+        "engine": "sharp",
+        "referenceHash": "dd48811b64829957f56a215f0bf75e903319f650637acc0f93cb368d436c9e0f",
+        "referenceQuality": 100,
+        "candidateHash": "dd48811b64829957f56a215f0bf75e903319f650637acc0f93cb368d436c9e0f",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "orientation-6-srgb-jpeg",
+        "categories": [
+          "format:jpeg",
+          "icc:srgb",
+          "exif-orientation",
+          "lossy"
+        ],
+        "runtime": "node",
+        "engine": "sharp",
+        "referenceHash": "2628279cf9a4df812ada886f8e7b4d1c2eeeb273b3aa9ce54e3a4188faca9260",
+        "referenceQuality": 100,
+        "candidateHash": "2628279cf9a4df812ada886f8e7b4d1c2eeeb273b3aa9ce54e3a4188faca9260",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "opaque-p3-png",
+        "categories": [
+          "format:png",
+          "icc:p3",
+          "opaque",
+          "lossless"
+        ],
+        "runtime": "node",
+        "engine": "sharp",
+        "referenceHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "referenceQuality": 100,
+        "candidateHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "opaque-srgb-png",
+        "categories": [
+          "format:png",
+          "icc:srgb",
+          "opaque",
+          "lossless"
+        ],
+        "runtime": "browser",
+        "engine": "chromium",
+        "referenceHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "referenceQuality": 100,
+        "candidateHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "opaque-srgb-jpeg",
+        "categories": [
+          "format:jpeg",
+          "icc:srgb",
+          "opaque",
+          "lossy"
+        ],
+        "runtime": "browser",
+        "engine": "chromium",
+        "referenceHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "referenceQuality": 100,
+        "candidateHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "opaque-srgb-webp",
+        "categories": [
+          "format:webp",
+          "icc:srgb",
+          "opaque",
+          "lossy"
+        ],
+        "runtime": "browser",
+        "engine": "chromium",
+        "referenceHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "referenceQuality": 100,
+        "candidateHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "grayscale-srgb-png",
+        "categories": [
+          "format:png",
+          "icc:srgb",
+          "grayscale",
+          "lossless"
+        ],
+        "runtime": "browser",
+        "engine": "chromium",
+        "referenceHash": "0ef3ccf1ece60b0c3aba2c665aeb0a937aa6f12ca6eba086efae1a466fea0804",
+        "referenceQuality": 100,
+        "candidateHash": "0ef3ccf1ece60b0c3aba2c665aeb0a937aa6f12ca6eba086efae1a466fea0804",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "alpha-srgb-png",
+        "categories": [
+          "format:png",
+          "icc:srgb",
+          "alpha",
+          "lossless"
+        ],
+        "runtime": "browser",
+        "engine": "chromium",
+        "referenceHash": "dd48011b64829957f56a215f0bf75e903319f6506b7acc0f93cb368d436c9e0f",
+        "referenceQuality": 100,
+        "candidateHash": "dd48011b64829957f56a215f0bf75e903319f6506b7acc0f93cb368d436c9e0f",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "alpha-srgb-webp",
+        "categories": [
+          "format:webp",
+          "icc:srgb",
+          "alpha",
+          "lossy"
+        ],
+        "runtime": "browser",
+        "engine": "chromium",
+        "referenceHash": "dd48811b64829957f56a215f0bf75e903319f650637acc0f93cb368d436c9e0f",
+        "referenceQuality": 100,
+        "candidateHash": "dd48811b64829957f56a215f0bf75e903319f650637acc0f93cb368d436c9e0f",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "orientation-6-srgb-jpeg",
+        "categories": [
+          "format:jpeg",
+          "icc:srgb",
+          "exif-orientation",
+          "lossy"
+        ],
+        "runtime": "browser",
+        "engine": "chromium",
+        "referenceHash": "2628279cf9a4df812ada886f8e7b4d1c2eeeb273b3aa9ce54e3a4188faca9260",
+        "referenceQuality": 100,
+        "candidateHash": "2628279cf9a4df812ada886f8e7b4d1c2eeeb273b3aa9ce54e3a4188faca9260",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "opaque-p3-png",
+        "categories": [
+          "format:png",
+          "icc:p3",
+          "opaque",
+          "lossless"
+        ],
+        "runtime": "browser",
+        "engine": "chromium",
+        "referenceHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "referenceQuality": 100,
+        "candidateHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "opaque-srgb-png",
+        "categories": [
+          "format:png",
+          "icc:srgb",
+          "opaque",
+          "lossless"
+        ],
+        "runtime": "browser",
+        "engine": "firefox",
+        "referenceHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "referenceQuality": 100,
+        "candidateHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "opaque-srgb-jpeg",
+        "categories": [
+          "format:jpeg",
+          "icc:srgb",
+          "opaque",
+          "lossy"
+        ],
+        "runtime": "browser",
+        "engine": "firefox",
+        "referenceHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "referenceQuality": 100,
+        "candidateHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "opaque-srgb-webp",
+        "categories": [
+          "format:webp",
+          "icc:srgb",
+          "opaque",
+          "lossy"
+        ],
+        "runtime": "browser",
+        "engine": "firefox",
+        "referenceHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "referenceQuality": 100,
+        "candidateHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "grayscale-srgb-png",
+        "categories": [
+          "format:png",
+          "icc:srgb",
+          "grayscale",
+          "lossless"
+        ],
+        "runtime": "browser",
+        "engine": "firefox",
+        "referenceHash": "0ef3ccf1ece60b0c3aba2c665aeb0a937aa6f12ca6eba086efae1a466fea0804",
+        "referenceQuality": 100,
+        "candidateHash": "0ef3ccf1ece60b0c3aba2c665aeb0a937aa6f12ca6eba086efae1a466fea0804",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "alpha-srgb-png",
+        "categories": [
+          "format:png",
+          "icc:srgb",
+          "alpha",
+          "lossless"
+        ],
+        "runtime": "browser",
+        "engine": "firefox",
+        "referenceHash": "dd48011b64829957f56a215f0bf75e903319f6506b7acc0f93cb368d436c9e0f",
+        "referenceQuality": 100,
+        "candidateHash": "dd48011b64829957f56a215f0bf75e903319f6506b7acc0f93cb368d436c9e0f",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "alpha-srgb-webp",
+        "categories": [
+          "format:webp",
+          "icc:srgb",
+          "alpha",
+          "lossy"
+        ],
+        "runtime": "browser",
+        "engine": "firefox",
+        "referenceHash": "dd48811b64829957f56a215f0bf75e903319f650637acc0f93cb368d436c9e0f",
+        "referenceQuality": 100,
+        "candidateHash": "dd48811b64829957f56a215f0bf75e903319f650637acc0f93cb368d436c9e0f",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "orientation-6-srgb-jpeg",
+        "categories": [
+          "format:jpeg",
+          "icc:srgb",
+          "exif-orientation",
+          "lossy"
+        ],
+        "runtime": "browser",
+        "engine": "firefox",
+        "referenceHash": "2628279cf9a4df812ada886f8e7b4d1c2eeeb273b3aa9ce54e3a4188faca9260",
+        "referenceQuality": 100,
+        "candidateHash": "2628279cf9a4df812ada886f8e7b4d1c2eeeb273b3aa9ce54e3a4188faca9260",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "opaque-p3-png",
+        "categories": [
+          "format:png",
+          "icc:p3",
+          "opaque",
+          "lossless"
+        ],
+        "runtime": "browser",
+        "engine": "firefox",
+        "referenceHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "referenceQuality": 100,
+        "candidateHash": "0eb3ccf1e9e60b0c3aba2866dacb0e937aa6f12ca6fba486cfae1a462fea0904",
+        "candidateQuality": 100,
+        "distance": 12,
+        "eligible": true,
+        "withinGate": false
+      },
+      {
+        "fixture": "opaque-srgb-png",
+        "categories": [
+          "format:png",
+          "icc:srgb",
+          "opaque",
+          "lossless"
+        ],
+        "runtime": "browser",
+        "engine": "webkit",
+        "referenceHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "referenceQuality": 100,
+        "candidateHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "opaque-srgb-jpeg",
+        "categories": [
+          "format:jpeg",
+          "icc:srgb",
+          "opaque",
+          "lossy"
+        ],
+        "runtime": "browser",
+        "engine": "webkit",
+        "referenceHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "referenceQuality": 100,
+        "candidateHash": "2eb3c8f1e9e61b0c3aba4864d2cb0e9378a6f16ca6fba486cfae12462fea4984",
+        "candidateQuality": 100,
+        "distance": 2,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "opaque-srgb-webp",
+        "categories": [
+          "format:webp",
+          "icc:srgb",
+          "opaque",
+          "lossy"
+        ],
+        "runtime": "browser",
+        "engine": "webkit",
+        "referenceHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "referenceQuality": 100,
+        "candidateHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "grayscale-srgb-png",
+        "categories": [
+          "format:png",
+          "icc:srgb",
+          "grayscale",
+          "lossless"
+        ],
+        "runtime": "browser",
+        "engine": "webkit",
+        "referenceHash": "0ef3ccf1ece60b0c3aba2c665aeb0a937aa6f12ca6eba086efae1a466fea0804",
+        "referenceQuality": 100,
+        "candidateHash": "0ef3ccf1ece60b0c3aba2c665aeb0a937aa6f12ca6eba086efae1a466fea0804",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "alpha-srgb-png",
+        "categories": [
+          "format:png",
+          "icc:srgb",
+          "alpha",
+          "lossless"
+        ],
+        "runtime": "browser",
+        "engine": "webkit",
+        "referenceHash": "dd48011b64829957f56a215f0bf75e903319f6506b7acc0f93cb368d436c9e0f",
+        "referenceQuality": 100,
+        "candidateHash": "dd48011b64829957f56a215f0bf75e903319f6506b7acc0f93cb368d436c9e0f",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "alpha-srgb-webp",
+        "categories": [
+          "format:webp",
+          "icc:srgb",
+          "alpha",
+          "lossy"
+        ],
+        "runtime": "browser",
+        "engine": "webkit",
+        "referenceHash": "dd48811b64829957f56a215f0bf75e903319f650637acc0f93cb368d436c9e0f",
+        "referenceQuality": 100,
+        "candidateHash": "dd48811b64829957f56a215f0bf75e903319f650637acc0f93cb368d436c9e0f",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "orientation-6-srgb-jpeg",
+        "categories": [
+          "format:jpeg",
+          "icc:srgb",
+          "exif-orientation",
+          "lossy"
+        ],
+        "runtime": "browser",
+        "engine": "webkit",
+        "referenceHash": "2628279cf9a4df812ada886f8e7b4d1c2eeeb273b3aa9ce54e3a4188faca9260",
+        "referenceQuality": 100,
+        "candidateHash": "2628279cf9a4df812ada886f8e7b4d1c2eeeb273b3aa9ce54e3a4188faca9260",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      },
+      {
+        "fixture": "opaque-p3-png",
+        "categories": [
+          "format:png",
+          "icc:p3",
+          "opaque",
+          "lossless"
+        ],
+        "runtime": "browser",
+        "engine": "webkit",
+        "referenceHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "referenceQuality": 100,
+        "candidateHash": "0eb3c8f1e9e61b0c3aba4864d2cb0e9378b6f16ca6fba486cfae12462fea4984",
+        "candidateQuality": 100,
+        "distance": 0,
+        "eligible": true,
+        "withinGate": true
+      }
+    ]
+  },
+  "summary": {
+    "percentileMethod": "nearest-rank",
+    "groups": [
+      {
+        "runtime": "node",
+        "engine": "sharp",
+        "category": "all",
+        "count": 8,
+        "eligibleCount": 8,
+        "belowQualityCount": 0,
+        "passCount": 8,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "node",
+        "engine": "sharp",
+        "category": "format:png",
+        "count": 4,
+        "eligibleCount": 4,
+        "belowQualityCount": 0,
+        "passCount": 4,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "node",
+        "engine": "sharp",
+        "category": "icc:srgb",
+        "count": 7,
+        "eligibleCount": 7,
+        "belowQualityCount": 0,
+        "passCount": 7,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "node",
+        "engine": "sharp",
+        "category": "opaque",
+        "count": 4,
+        "eligibleCount": 4,
+        "belowQualityCount": 0,
+        "passCount": 4,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "node",
+        "engine": "sharp",
+        "category": "lossless",
+        "count": 4,
+        "eligibleCount": 4,
+        "belowQualityCount": 0,
+        "passCount": 4,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "node",
+        "engine": "sharp",
+        "category": "format:jpeg",
+        "count": 2,
+        "eligibleCount": 2,
+        "belowQualityCount": 0,
+        "passCount": 2,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "node",
+        "engine": "sharp",
+        "category": "lossy",
+        "count": 4,
+        "eligibleCount": 4,
+        "belowQualityCount": 0,
+        "passCount": 4,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "node",
+        "engine": "sharp",
+        "category": "format:webp",
+        "count": 2,
+        "eligibleCount": 2,
+        "belowQualityCount": 0,
+        "passCount": 2,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "node",
+        "engine": "sharp",
+        "category": "grayscale",
+        "count": 1,
+        "eligibleCount": 1,
+        "belowQualityCount": 0,
+        "passCount": 1,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "node",
+        "engine": "sharp",
+        "category": "alpha",
+        "count": 2,
+        "eligibleCount": 2,
+        "belowQualityCount": 0,
+        "passCount": 2,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "node",
+        "engine": "sharp",
+        "category": "exif-orientation",
+        "count": 1,
+        "eligibleCount": 1,
+        "belowQualityCount": 0,
+        "passCount": 1,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "node",
+        "engine": "sharp",
+        "category": "icc:p3",
+        "count": 1,
+        "eligibleCount": 1,
+        "belowQualityCount": 0,
+        "passCount": 1,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "chromium",
+        "category": "all",
+        "count": 8,
+        "eligibleCount": 8,
+        "belowQualityCount": 0,
+        "passCount": 8,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "chromium",
+        "category": "format:png",
+        "count": 4,
+        "eligibleCount": 4,
+        "belowQualityCount": 0,
+        "passCount": 4,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "chromium",
+        "category": "icc:srgb",
+        "count": 7,
+        "eligibleCount": 7,
+        "belowQualityCount": 0,
+        "passCount": 7,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "chromium",
+        "category": "opaque",
+        "count": 4,
+        "eligibleCount": 4,
+        "belowQualityCount": 0,
+        "passCount": 4,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "chromium",
+        "category": "lossless",
+        "count": 4,
+        "eligibleCount": 4,
+        "belowQualityCount": 0,
+        "passCount": 4,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "chromium",
+        "category": "format:jpeg",
+        "count": 2,
+        "eligibleCount": 2,
+        "belowQualityCount": 0,
+        "passCount": 2,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "chromium",
+        "category": "lossy",
+        "count": 4,
+        "eligibleCount": 4,
+        "belowQualityCount": 0,
+        "passCount": 4,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "chromium",
+        "category": "format:webp",
+        "count": 2,
+        "eligibleCount": 2,
+        "belowQualityCount": 0,
+        "passCount": 2,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "chromium",
+        "category": "grayscale",
+        "count": 1,
+        "eligibleCount": 1,
+        "belowQualityCount": 0,
+        "passCount": 1,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "chromium",
+        "category": "alpha",
+        "count": 2,
+        "eligibleCount": 2,
+        "belowQualityCount": 0,
+        "passCount": 2,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "chromium",
+        "category": "exif-orientation",
+        "count": 1,
+        "eligibleCount": 1,
+        "belowQualityCount": 0,
+        "passCount": 1,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "chromium",
+        "category": "icc:p3",
+        "count": 1,
+        "eligibleCount": 1,
+        "belowQualityCount": 0,
+        "passCount": 1,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "firefox",
+        "category": "all",
+        "count": 8,
+        "eligibleCount": 8,
+        "belowQualityCount": 0,
+        "passCount": 7,
+        "exceptionCount": 1,
+        "distance": {
+          "p50": 0,
+          "p95": 12,
+          "maximum": 12
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "firefox",
+        "category": "format:png",
+        "count": 4,
+        "eligibleCount": 4,
+        "belowQualityCount": 0,
+        "passCount": 3,
+        "exceptionCount": 1,
+        "distance": {
+          "p50": 0,
+          "p95": 12,
+          "maximum": 12
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "firefox",
+        "category": "icc:srgb",
+        "count": 7,
+        "eligibleCount": 7,
+        "belowQualityCount": 0,
+        "passCount": 7,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "firefox",
+        "category": "opaque",
+        "count": 4,
+        "eligibleCount": 4,
+        "belowQualityCount": 0,
+        "passCount": 3,
+        "exceptionCount": 1,
+        "distance": {
+          "p50": 0,
+          "p95": 12,
+          "maximum": 12
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "firefox",
+        "category": "lossless",
+        "count": 4,
+        "eligibleCount": 4,
+        "belowQualityCount": 0,
+        "passCount": 3,
+        "exceptionCount": 1,
+        "distance": {
+          "p50": 0,
+          "p95": 12,
+          "maximum": 12
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "firefox",
+        "category": "format:jpeg",
+        "count": 2,
+        "eligibleCount": 2,
+        "belowQualityCount": 0,
+        "passCount": 2,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "firefox",
+        "category": "lossy",
+        "count": 4,
+        "eligibleCount": 4,
+        "belowQualityCount": 0,
+        "passCount": 4,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "firefox",
+        "category": "format:webp",
+        "count": 2,
+        "eligibleCount": 2,
+        "belowQualityCount": 0,
+        "passCount": 2,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "firefox",
+        "category": "grayscale",
+        "count": 1,
+        "eligibleCount": 1,
+        "belowQualityCount": 0,
+        "passCount": 1,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "firefox",
+        "category": "alpha",
+        "count": 2,
+        "eligibleCount": 2,
+        "belowQualityCount": 0,
+        "passCount": 2,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "firefox",
+        "category": "exif-orientation",
+        "count": 1,
+        "eligibleCount": 1,
+        "belowQualityCount": 0,
+        "passCount": 1,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "firefox",
+        "category": "icc:p3",
+        "count": 1,
+        "eligibleCount": 1,
+        "belowQualityCount": 0,
+        "passCount": 0,
+        "exceptionCount": 1,
+        "distance": {
+          "p50": 12,
+          "p95": 12,
+          "maximum": 12
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "webkit",
+        "category": "all",
+        "count": 8,
+        "eligibleCount": 8,
+        "belowQualityCount": 0,
+        "passCount": 8,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 2,
+          "maximum": 2
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "webkit",
+        "category": "format:png",
+        "count": 4,
+        "eligibleCount": 4,
+        "belowQualityCount": 0,
+        "passCount": 4,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "webkit",
+        "category": "icc:srgb",
+        "count": 7,
+        "eligibleCount": 7,
+        "belowQualityCount": 0,
+        "passCount": 7,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 2,
+          "maximum": 2
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "webkit",
+        "category": "opaque",
+        "count": 4,
+        "eligibleCount": 4,
+        "belowQualityCount": 0,
+        "passCount": 4,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 2,
+          "maximum": 2
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "webkit",
+        "category": "lossless",
+        "count": 4,
+        "eligibleCount": 4,
+        "belowQualityCount": 0,
+        "passCount": 4,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "webkit",
+        "category": "format:jpeg",
+        "count": 2,
+        "eligibleCount": 2,
+        "belowQualityCount": 0,
+        "passCount": 2,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 2,
+          "maximum": 2
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "webkit",
+        "category": "lossy",
+        "count": 4,
+        "eligibleCount": 4,
+        "belowQualityCount": 0,
+        "passCount": 4,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 2,
+          "maximum": 2
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "webkit",
+        "category": "format:webp",
+        "count": 2,
+        "eligibleCount": 2,
+        "belowQualityCount": 0,
+        "passCount": 2,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "webkit",
+        "category": "grayscale",
+        "count": 1,
+        "eligibleCount": 1,
+        "belowQualityCount": 0,
+        "passCount": 1,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "webkit",
+        "category": "alpha",
+        "count": 2,
+        "eligibleCount": 2,
+        "belowQualityCount": 0,
+        "passCount": 2,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "webkit",
+        "category": "exif-orientation",
+        "count": 1,
+        "eligibleCount": 1,
+        "belowQualityCount": 0,
+        "passCount": 1,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "runtime": "browser",
+        "engine": "webkit",
+        "category": "icc:p3",
+        "count": 1,
+        "eligibleCount": 1,
+        "belowQualityCount": 0,
+        "passCount": 1,
+        "exceptionCount": 0,
+        "distance": {
+          "p50": 0,
+          "p95": 0,
+          "maximum": 0
+        }
+      }
+    ],
+    "exceptions": [
+      {
+        "fixture": "opaque-p3-png",
+        "runtime": "browser",
+        "engine": "firefox",
+        "categories": [
+          "format:png",
+          "icc:p3",
+          "opaque",
+          "lossless"
+        ],
+        "distance": 12,
+        "referenceQuality": 100,
+        "candidateQuality": 100,
+        "documented": true,
+        "exceptionCategory": "icc-color-management",
+        "acceptedMaximumDistance": 12
+      }
+    ],
+    "unacceptedExceptions": []
+  },
+  "checks": {
+    "exactNodeConformance": true,
+    "exactBrowserRepeatability": true,
+    "initialToleranceGate": false,
+    "documentedExceptionGate": true,
+    "passed": true
+  }
+}

@@ -1,6 +1,6 @@
 # Image Preparation And Runtime Adapter Plan
 
-Status: Tasks 12–14 implemented and verified on `codex/image-preparation-adapters`; Task 15 open
+Status: Tasks 12–15 implemented and verified
 Updated: 2026-08-09
 
 ## Goal
@@ -49,7 +49,7 @@ Task 11 real-browser/worker proof
 - [x] Support paths, `file:` URLs, `Uint8Array`, and Buffer-compatible input.
 - [x] Apply orientation, convert to sRGB, retain straight alpha, and return RGBA8.
 - [x] Verify path/byte parity, orientation, alpha, limits, errors, abort, and composition.
-- [ ] Add licensed ICC/profile fixtures to the adapter differential corpus.
+- [x] Add licensed ICC/profile fixtures to the adapter differential corpus.
 
 ### A4. Browser adapter
 
@@ -71,7 +71,7 @@ Task 11 real-browser/worker proof
 
 - [x] Run Task 11 real-browser/worker and TypeScript-resolution verification after rebasing onto
   `631ac3f`.
-- [ ] Run Task 15 encoded decoder-tolerance corpus by format, orientation, alpha, ICC, and runtime.
+- [x] Run Task 15 encoded decoder-tolerance corpus by format, orientation, alpha, ICC, and runtime.
 - [ ] Record p50/p95 decode time, core time, memory, and browser responsiveness under Task 16.
 - [x] Reconcile shared Task 8–11 exports, packed consumers, documentation, and browser harness; run
   the full Node 22 gate and the real-engine adapter matrix.
@@ -87,5 +87,6 @@ pnpm check
 ```
 
 Release evidence includes unchanged legacy golden hashes and callback tests, exact raw-pixel PDQ
-fixtures, the browser forbidden-import scan, and real-engine/worker adapter results. Task 15 still
-owns cross-decoder tolerance and ICC/profile corpus evidence.
+fixtures, the browser forbidden-import scan, real-engine/worker adapter results, and the Task 15
+cross-decoder report. See `pdq-adapter-conformance.md` for ICC/profile evidence and the bounded
+Firefox Display P3 exception.

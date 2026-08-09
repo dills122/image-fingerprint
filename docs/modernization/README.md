@@ -6,9 +6,10 @@ pre-release transition.
 
 ## Status
 
-The PDQ core and adapter contracts are approved. Tasks 1–14 are implemented and verified: the
+The PDQ core and adapter contracts are approved. Tasks 1–15 are implemented and verified: the
 cross-runtime core, record/comparison APIs, packed runtime matrix, and Node/browser image adapters
-are complete. Task 15 retains cross-decoder tolerance and ICC/profile corpus evidence.
+are complete, and encoded-image decoder tolerance is measured with a documented Firefox Display P3
+exception. Tasks 16–18 retain performance, product calibration, and final release evidence.
 
 ## Documents
 
@@ -28,6 +29,8 @@ are complete. Task 15 retains cross-decoder tolerance and ICC/profile corpus evi
   verification commands, checkpoints, risks, and remaining release decisions.
 - [Image preparation and adapter plan](./image-preparation-adapter-plan.md): approved shared helper,
   Node/Sharp, browser-native, packaging, and release-gate work kept separate from Tasks 8–11.
+- [PDQ adapter conformance](./pdq-adapter-conformance.md): encoded-image corpus, reference boundary,
+  cross-decoder distance evidence, and the bounded ICC/color-management exception.
 - [Tooling baseline](./tooling-baseline.md): runtime, package-manager, compiler, lint, test, and CI
   foundation established before algorithm implementation.
 
@@ -37,4 +40,5 @@ are complete. Task 15 retains cross-decoder tolerance and ICC/profile corpus evi
 2. Stabilize the cross-runtime foundation and build the pinned C++ oracle.
 3. Implement the TypeScript core test-first against exact generated vectors.
 4. Prove records, comparison, packaging, browsers, and workers.
-5. Add encoded-image adapters, performance evidence, and product calibration behind later gates.
+5. Measure encoded-image adapters, then add performance evidence and product calibration behind
+   later gates.

@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "corpus": "pdq-adapter-tolerance-v1",
+  "description": "Deterministic synthetic encoded-image corpus for decoder tolerance measurement.",
+  "generator": {
+    "file": "generate-adapter-fixtures.mjs",
+    "sha256": "f81218e270940f602ed270517014382d195f64908ab66ef895ad2d536c4674ba",
+    "sharp": "0.35.3",
+    "libvips": "8.18.3"
+  },
+  "documentedExceptions": [
+    {
+      "fixture": "opaque-p3-png",
+      "runtime": "browser",
+      "engine": "firefox",
+      "maximumDistance": 12,
+      "category": "icc-color-management",
+      "rationale": "Firefox Display P3 conversion differs from the pinned Sharp sRGB reference; see docs/modernization/pdq-adapter-conformance.md."
+    }
+  ],
+  "fixtures": [
+    {
+      "id": "opaque-srgb-png",
+      "file": "images/opaque-srgb.png",
+      "sha256": "adc2292fcb26f0d2b25185f3326f64596711d2a1a814f51891fe1e4eb142aa58",
+      "byteLength": 56617,
+      "format": "png",
+      "mediaType": "image/png",
+      "expectedWidth": 144,
+      "expectedHeight": 192,
+      "categories": [
+        "format:png",
+        "icc:srgb",
+        "opaque",
+        "lossless"
+      ],
+      "provenance": {
+        "kind": "generated",
+        "recipe": "generate-adapter-fixtures.mjs",
+        "sourceLicense": "CC0-1.0"
+      }
+    },
+    {
+      "id": "opaque-srgb-jpeg",
+      "file": "images/opaque-srgb.jpg",
+      "sha256": "95de8a5a6d8388dea2063dcaba3667a4e01af11b4b726398009c476b8c233eee",
+      "byteLength": 16495,
+      "format": "jpeg",
+      "mediaType": "image/jpeg",
+      "expectedWidth": 144,
+      "expectedHeight": 192,
+      "categories": [
+        "format:jpeg",
+        "icc:srgb",
+        "opaque",
+        "lossy"
+      ],
+      "provenance": {
+        "kind": "generated",
+        "recipe": "generate-adapter-fixtures.mjs",
+        "sourceLicense": "CC0-1.0"
+      }
+    },
+    {
+      "id": "opaque-srgb-webp",
+      "file": "images/opaque-srgb.webp",
+      "sha256": "1658ee3f8e89495005a46c1bfb1267689428acb72a6bff7dbf6371f4d1f2a6a1",
+      "byteLength": 12396,
+      "format": "webp",
+      "mediaType": "image/webp",
+      "expectedWidth": 144,
+      "expectedHeight": 192,
+      "categories": [
+        "format:webp",
+        "icc:srgb",
+        "opaque",
+        "lossy"
+      ],
+      "provenance": {
+        "kind": "generated",
+        "recipe": "generate-adapter-fixtures.mjs",
+        "sourceLicense": "CC0-1.0"
+      }
+    },
+    {
+      "id": "grayscale-srgb-png",
+      "file": "images/grayscale-srgb.png",
+      "sha256": "c38cd7b4aa38c72721225782b0b065518a38c6f8672b506189f1644e3ba21849",
+      "byteLength": 17658,
+      "format": "png",
+      "mediaType": "image/png",
+      "expectedWidth": 144,
+      "expectedHeight": 192,
+      "categories": [
+        "format:png",
+        "icc:srgb",
+        "grayscale",
+        "lossless"
+      ],
+      "provenance": {
+        "kind": "generated",
+        "recipe": "generate-adapter-fixtures.mjs",
+        "sourceLicense": "CC0-1.0"
+      }
+    },
+    {
+      "id": "alpha-srgb-png",
+      "file": "images/alpha-srgb.png",
+      "sha256": "cbbc223fd2e5ea12d02ce9fa6afa5d2b3f71fd42a54bca0873f3c7a04db1c128",
+      "byteLength": 46758,
+      "format": "png",
+      "mediaType": "image/png",
+      "expectedWidth": 144,
+      "expectedHeight": 192,
+      "categories": [
+        "format:png",
+        "icc:srgb",
+        "alpha",
+        "lossless"
+      ],
+      "provenance": {
+        "kind": "generated",
+        "recipe": "generate-adapter-fixtures.mjs",
+        "sourceLicense": "CC0-1.0"
+      }
+    },
+    {
+      "id": "alpha-srgb-webp",
+      "file": "images/alpha-srgb.webp",
+      "sha256": "a236804148553d6f8be83ecffd3c8e772cb2cf9130e97be6a3d722a7fe50e9c7",
+      "byteLength": 15714,
+      "format": "webp",
+      "mediaType": "image/webp",
+      "expectedWidth": 144,
+      "expectedHeight": 192,
+      "categories": [
+        "format:webp",
+        "icc:srgb",
+        "alpha",
+        "lossy"
+      ],
+      "provenance": {
+        "kind": "generated",
+        "recipe": "generate-adapter-fixtures.mjs",
+        "sourceLicense": "CC0-1.0"
+      }
+    },
+    {
+      "id": "orientation-6-srgb-jpeg",
+      "file": "images/orientation-6-srgb.jpg",
+      "sha256": "b1399e4a7d5c7b699a717f33fb19cfe3d9f214fcc6dd4641b7f5ea52247f2794",
+      "byteLength": 16685,
+      "format": "jpeg",
+      "mediaType": "image/jpeg",
+      "expectedWidth": 192,
+      "expectedHeight": 144,
+      "categories": [
+        "format:jpeg",
+        "icc:srgb",
+        "exif-orientation",
+        "lossy"
+      ],
+      "provenance": {
+        "kind": "generated",
+        "recipe": "generate-adapter-fixtures.mjs",
+        "sourceLicense": "CC0-1.0"
+      }
+    },
+    {
+      "id": "opaque-p3-png",
+      "file": "images/opaque-p3.png",
+      "sha256": "8dd421658b64310a3abd2541df967ad80aefb8abb950cbca76afbb0a2384e033",
+      "byteLength": 57424,
+      "format": "png",
+      "mediaType": "image/png",
+      "expectedWidth": 144,
+      "expectedHeight": 192,
+      "categories": [
+        "format:png",
+        "icc:p3",
+        "opaque",
+        "lossless"
+      ],
+      "provenance": {
+        "kind": "generated",
+        "recipe": "generate-adapter-fixtures.mjs",
+        "sourceLicense": "CC0-1.0"
+      }
+    }
+  ]
+}

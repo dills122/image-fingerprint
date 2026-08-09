@@ -49,6 +49,8 @@
     "pdq:dct-matrix:generate": "node scripts/generate-pdq-dct-matrix.mjs",
     "pdq:wasm:compare": "node scripts/compare-pdq-wasm-oracle.mjs",
     "pdq:differential": "pnpm build && node scripts/pdq-differential.mjs",
+    "pdq:adapter:fixtures:generate": "node benchmarks/pdq/generate-adapter-fixtures.mjs",
+    "pdq:adapter:differential": "pnpm build && node benchmarks/pdq/adapter-differential.mjs",
     "test:package": "pnpm build && node scripts/package-smoke.cjs && node scripts/browser-package-smoke.mjs && node scripts/packed-package-smoke.mjs",
     "test:browser": "node scripts/browser-engine-smoke.mjs",
     "test:watch": "vitest",
