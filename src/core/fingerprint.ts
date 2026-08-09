@@ -1,8 +1,9 @@
 import blockHash from '../block-hash';
+import { validateBlockHashPixelSource } from './pixels';
 import type {
+  BlockHashPixelSource,
   FingerprintOptions,
   ImageFingerprint,
-  RgbaImageData,
 } from './types';
 
 const validatePositiveInteger = (value: number, name: string): void => {
@@ -11,32 +12,8 @@ const validatePositiveInteger = (value: number, name: string): void => {
   }
 };
 
-const validatePixels = (image: RgbaImageData): void => {
-  validatePositiveInteger(image.width, 'Image width');
-  validatePositiveInteger(image.height, 'Image height');
-
-  const pixelDataType = Object.prototype.toString.call(image.data);
-  if (
-    pixelDataType !== '[object Uint8Array]'
-    && pixelDataType !== '[object Uint8ClampedArray]'
-  ) {
-    throw new TypeError('Pixel data must be a Uint8Array or Uint8ClampedArray');
-  }
-
-  const expectedLength = image.width * image.height * 4;
-  if (!Number.isSafeInteger(expectedLength)) {
-    throw new RangeError('Image dimensions are too large');
-  }
-
-  if (image.data.length !== expectedLength) {
-    throw new RangeError(
-      `Expected ${expectedLength} RGBA values for a ${image.width}x${image.height} image, received ${image.data.length}`,
-    );
-  }
-};
-
 export const fingerprintPixels = (
-  image: RgbaImageData,
+  image: BlockHashPixelSource,
   options: FingerprintOptions,
 ): ImageFingerprint => {
   const algorithm: string = options.algorithm;
@@ -44,7 +21,7 @@ export const fingerprintPixels = (
     throw new RangeError(`Unsupported fingerprint algorithm: ${algorithm}`);
   }
 
-  validatePixels(image);
+  validateBlockHashPixelSource(image);
   validatePositiveInteger(options.bitsPerSide, 'bitsPerSide');
 
   if (options.method !== 1 && options.method !== 2) {

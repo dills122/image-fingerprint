@@ -1,7 +1,7 @@
 # Image Hashing Modernization Specification
 
-Status: draft for maintainer review — not approved
-Updated: 2026-08-07
+Status: approved for implementation planning
+Updated: 2026-08-09
 
 ## 1. Objective
 
@@ -13,43 +13,57 @@ and cross-language fixtures.
 The initial outcome is a trustworthy hashing and comparison library. Semantic search, content
 moderation policy, and large-scale database indexing are not part of this increment.
 
-## 2. Proposed Public Contract
+## 2. Approved Public Contract
 
-The exact naming remains subject to review, but new fingerprints should be self-describing in typed
-APIs and persistent records:
+New fingerprints are self-describing in typed APIs and persistent records:
 
 ```ts
 type FingerprintAlgorithm = 'blockhash-v1' | 'pdq-v1';
 
-interface ImageFingerprint {
-  algorithm: FingerprintAlgorithm;
-  hash: string;
-  bits: 256;
-  quality?: number;
-}
+type ImageFingerprint =
+  | {
+      schemaVersion: 1;
+      algorithm: 'blockhash-v1';
+      encoding: 'hex';
+      hash: string;
+      bitLength: number;
+      parameters: { bitsPerSide: number; method: 1 | 2 };
+    }
+  | {
+      schemaVersion: 1;
+      algorithm: 'pdq-v1';
+      encoding: 'hex';
+      hash: string;
+      bitLength: 256;
+      quality: number;
+    };
 
-interface MatchResult {
-  algorithm: FingerprintAlgorithm;
-  distance: number;
-  threshold: number;
-  matches: boolean;
-}
+type FingerprintComparison =
+  | { comparable: true; algorithm: FingerprintAlgorithm; distance: number; bitLength: number }
+  | {
+      comparable: false;
+      reason: 'algorithm-mismatch' | 'parameter-mismatch' | 'bit-length-mismatch';
+    };
 ```
 
 `blockhash-v1` names the current serialized BMVB behavior. `pdq-v1` would name a conformant PDQ
 raw-pixel and serialization contract. Bare hash strings remain supported by the legacy API, but new
 storage should retain the algorithm identifier.
 
+Matching policy is separate from comparison. The library may export a named PDQ starting policy of
+distance at most 31 and quality at least 50, but comparison never applies it silently.
+
 ## 3. Technical Stack
 
-- TypeScript package for Node.js.
+- TypeScript package with a shared Node.js and modern-browser algorithm core.
 - pnpm for reproducible development installs.
 - Vitest for unit, integration, fixture, and differential tests.
 - Existing format-specific decoders remain in place for the legacy path during evaluation.
-- A PDQ implementation dependency or WASM binary is not yet approved; the spike must compare an
-  auditable TypeScript port, a Meta-derived WASM build, and credible existing packages.
-- Target runtime and module format remain open decisions. The existing dependency graph already
-  requires a modern Node version, which must become explicit.
+- The production target is an auditable TypeScript port. Conformance and performance tests compare
+  it with a Meta-derived WASM build and credible existing packages without making them runtime
+  dependencies.
+- Node.js retains a CommonJS-compatible entrypoint; browsers consume an ESM entrypoint that excludes
+  Node.js built-ins and decoder dependencies.
 
 ## 4. Commands
 
@@ -73,9 +87,11 @@ The intended boundary is:
 src/
   legacy/             existing BMVB behavior, compatibility-locked
   algorithms/         pure raw-pixel fingerprint implementations
+  core/               cross-runtime contracts and algorithm dispatch
   decoders/           encoded bytes -> normalized pixel buffers
   inputs/             paths, URLs, buffers, and fetch concerns
   matching/           typed distance and threshold helpers
+  browser.ts           browser-safe decoded-pixel entrypoint
   index.ts             public compatibility and versioned API exports
 __tests__/
   compatibility/      existing API and golden BMVB outputs
@@ -91,14 +107,15 @@ only when the approved implementation needs the boundary.
 
 ## 6. Engineering Conventions
 
-- Pure algorithms accept explicit width, height, channel/layout, and pixel data; they do not read
-  files, fetch URLs, or infer MIME types.
-- Decoder normalization owns EXIF orientation, alpha/background policy, grayscale expansion, and
-  color-layout conversion.
+- Pure algorithms accept explicit width, height, pixel format, and tightly packed pixel data; they
+  do not read files, fetch URLs, or infer MIME types.
+- Decoder normalization owns EXIF orientation, grayscale expansion, and color-layout conversion.
+  Each algorithm profile owns the alpha/background rule that affects its fingerprint identity.
 - Algorithm/version identifiers are explicit in every new result and persisted example.
 - No floating threshold defaults are hidden in comparison code; defaults are named and overridable.
 - Hash serialization is lowercase, fixed-width, and independently testable.
-- Errors identify the failed boundary: input, MIME detection, decoding, hashing, or comparison.
+- Invalid dimensions, data lengths, formats, fingerprints, and incompatible comparisons are
+  distinguishable; adapter errors additionally identify input, MIME detection, and decoding.
 - New code uses explicit TypeScript types and avoids implicit `any`.
 
 ## 7. Testing Strategy
@@ -115,7 +132,8 @@ only when the approved implementation needs the boundary.
 
 - Exact results for raw RGB and grayscale vectors compared with the pinned Meta C++ reference.
 - Exact bit order, median tie behavior (`>` rather than `>=`), hex serialization, and quality.
-- Meta regression fixtures including resize, grayscale, dihedral, and EXIF-orientation cases.
+- Locally generated raw vectors with expected results from the pinned Meta C++ oracle, plus
+  separately licensed resize, grayscale, dihedral, and EXIF-orientation cases.
 - Decoder-level tolerance evaluated separately from exact raw-pixel conformance.
 
 ### Matching quality
@@ -132,7 +150,7 @@ only when the approved implementation needs the boundary.
 
 - Measure decode time and hash-core time separately.
 - Record throughput and peak memory by image size and format.
-- Test every supported Node version and CI architecture.
+- Test every supported Node version, browser engine, and CI architecture.
 - Compare TypeScript/WASM/package candidates on identical decoded pixels.
 
 ## 8. Boundaries
@@ -163,42 +181,43 @@ only when the approved implementation needs the boundary.
 ## 9. Success Criteria
 
 - Existing local BMVB golden hashes and public callback behavior remain unchanged.
-- PDQ raw-pixel output matches the pinned Meta reference exactly across the conformance corpus.
+- PDQ raw-pixel output matches the pinned Meta reference exactly across the conformance corpus in
+  Node.js and supported browsers.
 - Decoder-produced hashes satisfy an agreed tolerance and are deterministic on supported platforms.
-- The result includes a 64-character lowercase hash, `pdq-v1`, 256 bits, and quality from 0 through
-  100.
+- The result includes schema version 1, a 64-character lowercase hash, `pdq-v1`, 256 bits, and
+  required quality from 0 through 100.
 - Hamming comparison has documented defaults and threshold-boundary tests.
 - The benchmark publishes accuracy and performance evidence for every candidate and selected
   threshold.
 - Runtime, module, decoder, licensing, migration, and release decisions are documented.
 - A downstream consumer can dual-write/compare legacy and PDQ fingerprints without ambiguity.
 
-## 10. Initial Assumptions Requiring Review
+## 10. Established Direction
 
-1. Existing BMVB behavior stays available indefinitely as `blockhash-v1`; PDQ launches opt-in.
-2. The first supported PDQ environment is Node.js; a raw-pixel core remains browser-portable.
-3. The new API may be Promise-first while the current callback function remains intact.
-4. New persisted values include the algorithm identifier rather than storing an untyped hex string.
-5. Initial scope includes hashing and pairwise comparison, not an image database or nearest-neighbor
-   index.
+1. Existing BMVB behavior stays available as `blockhash-v1`; PDQ launches opt-in.
+2. Node.js, modern browsers, and Web Workers share one synchronous raw-pixel core.
+3. Runtime decoding adapters are Promise-based while the current callback function remains intact.
+4. New persisted values include record schema and algorithm versions rather than an untyped string.
+5. Initial scope includes hashing and mathematical pairwise comparison, not an image database or
+   nearest-neighbor index.
 6. Quality below 50 and distance at most 31 are benchmark starting points, not hard-coded policy.
-7. Remote URL loading remains a compatibility adapter, not part of the algorithm API.
+7. Remote URL loading remains an adapter concern, not part of the algorithm API.
+8. Meta C++ at commit `baefb4ed67b6cdc1d4c82dbaef858d50866ac424` is the normative
+   oracle; TypeScript is the production target and WASM is a comparator.
 
-## 11. Open Decisions
+## 11. Remaining Release Decisions
 
-- Is browser support a first release requirement or a later packaging target?
-- Which Node versions and CJS/ESM combinations must be supported?
-- Should the new versioned API be Promise-only, dual Promise/callback, or callback-compatible?
+- Which Chromium, Firefox, and WebKit versions define the initial browser adapter support matrix?
 - Do existing downstream projects need an explicit stored-hash migration/dual-write helper?
 - Must remote URL/request-object inputs remain first-class for new algorithms?
-- Is `pdq-v1` intended to become the default after a deprecation period, or stay opt-in?
 - What real downstream positive/negative image pairs can be used, with suitable licenses, to
   calibrate thresholds?
-- Are deep crops, large overlays, or semantic similarity requirements for this package? If yes,
-  PDQ alone is insufficient and a second algorithm track is required.
+- Which Node decoder formats and animation/orientation/color-profile policies belong in the first
+  encoded-image adapter release?
+- What absolute performance and memory budgets trigger consideration of an optional WASM backend?
 
 ## 12. Approval Record
 
-- Specification owner: pending
-- Approved revision/date: pending
-- Required amendments: pending
+- Specification owner: image-hash maintainer
+- Approved revision/date: 2026-08-09
+- Required amendments: none for pure-core implementation planning

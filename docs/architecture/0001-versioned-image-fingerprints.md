@@ -1,7 +1,7 @@
 # ADR 0001: Versioned Image Fingerprints
 
-Status: proposed
-Updated: 2026-08-07
+Status: accepted
+Updated: 2026-08-09
 
 ## Context
 
@@ -21,23 +21,40 @@ Expand the package around versioned fingerprint results instead of replacing ima
 - Name existing behavior blockhash-v1 and preserve its exact serialized output.
 - Introduce PDQ, if it passes the repository conformance and benchmark gates, as pdq-v1.
 - Keep the legacy callback API as a compatibility adapter.
-- Add a typed API whose result carries algorithm, hash, bit count, and optional quality.
+- Add a schema-versioned typed record whose discriminated result makes PDQ quality mandatory.
 - Keep raw-pixel algorithms independent of paths, URLs, MIME detection, and encoded-image decoders.
-- Keep matching explicit: hashes from different algorithms cannot be compared.
+- Require new raw-pixel algorithms to run against the same portable contract in Node.js and modern
+  browsers.
+- Keep matching explicit: hashes from different algorithms cannot be compared, and incompatible
+  fingerprints are not reported as valid non-matches.
 - Launch new algorithms opt-in. A default change requires a separate migration decision.
 
-The proposed result boundary is:
+The proposed persistent result boundary is:
 
 ~~~ts
 type FingerprintAlgorithm = 'blockhash-v1' | 'pdq-v1';
 
-interface ImageFingerprint {
-  algorithm: FingerprintAlgorithm;
-  hash: string;
-  bits: number;
-  quality?: number;
-}
+type ImageFingerprint =
+  | {
+      schemaVersion: 1;
+      algorithm: 'blockhash-v1';
+      encoding: 'hex';
+      hash: string;
+      bitLength: number;
+      parameters: { bitsPerSide: number; method: 1 | 2 };
+    }
+  | {
+      schemaVersion: 1;
+      algorithm: 'pdq-v1';
+      encoding: 'hex';
+      hash: string;
+      bitLength: 256;
+      quality: number;
+    };
 ~~~
+
+`schemaVersion` versions the record envelope; `algorithm` versions the complete normalized-pixel-
+to-fingerprint profile. They must not be used interchangeably.
 
 This is a contract direction, not approval of a particular PDQ dependency or implementation.
 
@@ -73,6 +90,7 @@ Costs:
 
 - Callers using new APIs must retain algorithm metadata.
 - The package needs an algorithm registry/dispatch boundary and more fixture classes.
+- Runtime-specific input and decoder adapters require separate package entrypoints and tests.
 - Each algorithm version has a long-lived compatibility and documentation burden.
 
 ## Non-Goals
@@ -87,11 +105,12 @@ Costs:
 
 - [Modernization specification](../modernization/image-hashing-modernization-spec.md)
 - [PDQ reference material](../modernization/pdq-reference-material.md)
+- [PDQ contract research](../modernization/pdq-contract-research.md)
 - [Benchmark requirements](../modernization/benchmark-requirements.md)
 - [Implementation phase gates](../modernization/implementation-plan.md)
 
 ## Approval
 
-- Decision owner: pending
-- Accepted revision/date: pending
-- Amendments: pending
+- Decision owner: image-hash maintainer
+- Accepted revision/date: 2026-08-09
+- Amendments: none

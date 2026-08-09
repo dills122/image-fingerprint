@@ -55,15 +55,26 @@ console.log(fingerprint);
 // }
 ```
 
-The pixel contract is a positive integer `width` and `height` with exactly `width * height * 4`
-row-major RGBA8 values in a `Uint8Array` or `Uint8ClampedArray`. For `blockhash-v1`,
-`bitsPerSide` must be a positive even integer no larger than either image dimension, and `method`
-must be `1` (quick) or `2` (precise). The returned `bitLength` is `bitsPerSide ** 2`. Pixel values are
-interpreted as sRGB with straight alpha; callers and future runtime adapters own color and alpha
-normalization before invoking the core.
+Existing BlockHash callers may continue to pass an untagged positive integer `width` and `height`
+with exactly `width * height * 4` row-major RGBA8 values in a `Uint8Array` or
+`Uint8ClampedArray`. They may also add `format: 'rgba8'`; tagged input requires each dimension to be
+at least 5 pixels and produces the identical BlockHash result from the same bytes.
+
+The portable core also defines the tagged `PixelSource` contract for the forthcoming `pdq-v1` API:
+tightly packed `gray8` and `rgb8` use `Uint8Array`, while straight-alpha `rgba8` accepts
+`Uint8Array` or `Uint8ClampedArray`. Tagged dimensions are positive safe integers of at least 5
+pixels and packed lengths must be exact. `gray8` and `rgb8` are not BlockHash inputs; they become
+callable when the separate PDQ dispatcher is implemented.
+
+For `blockhash-v1`, `bitsPerSide` must be a positive even integer no larger than either image
+dimension, and `method` must be `1` (quick) or `2` (precise). The returned `bitLength` is
+`bitsPerSide ** 2`. Pixel values are interpreted as sRGB with straight alpha. PDQ-tagged `rgba8`
+normalization composites over white with the versioned deterministic rule documented in the
+[modernization contract](./docs/modernization/pdq-contract-research.md); encoded-image adapters
+remain responsible for producing correctly oriented original-size pixels.
 
 Encoded-image decoding is deliberately outside this core boundary. Browser `File`, `Blob`, URL,
-orientation, alpha-compositing, and color-normalization adapters will be added against the same
+orientation, alpha, and color-normalization adapters will be added against the same
 contract; this separation also gives the planned `pdq-v1` implementation one portable input.
 
 ## Use

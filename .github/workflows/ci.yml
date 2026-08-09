@@ -94,6 +94,37 @@ jobs:
     - name: Inspect the npm package contents
       run: npm pack --dry-run
 
+  pdq-oracle-conformance:
+    name: PDQ oracle conformance (Linux)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        persist-credentials: false
+
+    - name: Use Node.js 24.x
+      uses: actions/setup-node@v6
+      with:
+        node-version: 24.x
+        package-manager-cache: false
+
+    - name: Build the pinned C++ oracle
+      run: ./scripts/build-pdq-oracle.sh --output "$RUNNER_TEMP/pdq-oracle-build"
+      env:
+        PDQ_ORACLE_CXX: clang++-18
+
+    - name: Verify the oracle protocol and raw-pixel behavior
+      run: node scripts/pdq-oracle-smoke.mjs --oracle "$RUNNER_TEMP/pdq-oracle-build/pdq-oracle"
+
+    - name: Regenerate and compare the synthetic corpus
+      run: |
+        node scripts/generate-pdq-fixtures.mjs \
+          --oracle "$RUNNER_TEMP/pdq-oracle-build/pdq-oracle" \
+          --output "$RUNNER_TEMP/raw-vectors.json"
+        cmp __tests__/fixtures/pdq/raw-vectors.json "$RUNNER_TEMP/raw-vectors.json"
+
   network-smoke:
     name: Live network smoke
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
@@ -123,7 +154,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: [ verify, package-integrity ]
+    needs: [ verify, package-integrity, pdq-oracle-conformance ]
     if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     timeout-minutes: 15
     permissions:

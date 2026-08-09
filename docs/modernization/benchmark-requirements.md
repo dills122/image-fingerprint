@@ -1,7 +1,7 @@
 # Image Fingerprint Benchmark Requirements
 
 Status: draft input to implementation planning
-Updated: 2026-08-07
+Updated: 2026-08-09
 
 ## Purpose
 
@@ -13,7 +13,7 @@ variance distinguishable.
 | Layer | Purpose | Expected assertion |
 | --- | --- | --- |
 | Synthetic raw pixels | Numeric and serialization conformance | Exact hash and quality |
-| Meta regression fixtures | Cross-implementation behavior | Exact raw-pixel result; documented decoder tolerance |
+| Locally generated Meta-oracle vectors | Cross-implementation behavior | Exact raw-pixel hash and quality |
 | Current package examples | Legacy compatibility | Exact existing BMVB strings |
 | Licensed transformation pairs | Product robustness | Labeled distance distributions |
 | Licensed unrelated pairs | False-positive calibration | Labeled negative distributions |
@@ -21,6 +21,8 @@ variance distinguishable.
 
 Every non-synthetic fixture needs provenance, license, expected relationship, and allowed
 transformations. Do not copy an upstream corpus into the published npm artifact by default.
+Meta's bundled test images require separate authorization outside their stated open-source testing
+use, so their presence in the reference repository alone is not redistribution approval.
 
 ## Transformation Matrix
 
@@ -45,7 +47,7 @@ Test controlled levels, retaining the original parameters with each derived fixt
 - Threshold sweep for precision, recall, false-positive rate, and false-negative rate.
 - Decode latency, core latency, total latency, throughput, and peak resident memory.
 - Artifact/package size and cold-start cost for WASM/native candidates.
-- Determinism across repeated runs, supported Node versions, and CI architectures.
+- Determinism across repeated runs, supported Node versions, browser engines, and CI architectures.
 
 Report p50, p95, and p99 latency where the sample size supports percentiles. Accuracy reports must
 include corpus size and confidence/uncertainty, not only a single aggregate score.

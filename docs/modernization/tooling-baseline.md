@@ -1,7 +1,7 @@
 # Tooling Baseline
 
 Status: implemented baseline
-Updated: 2026-08-07
+Updated: 2026-08-09
 
 ## Objective
 
@@ -17,7 +17,7 @@ BMVB output, public callback behavior, or npm release triggers.
 | Development runtime | Node 24 | Current LTS baseline |
 | Package manager | pnpm 11.20.0 | Reproducible local/CI version and compatible with the runtime floor |
 | Compiler | TypeScript 5.9 | Stable existing major; avoid coupling this slice to the newly released TypeScript 7 migration |
-| Module output | CommonJS with modern Node resolution | Preserve the explicitly restored package contract while handling ESM dependencies correctly |
+| Module output | CommonJS root/Node output plus isolated browser ESM | Preserve the restored Node.js contract while keeping browser graphs free of Node.js built-ins |
 | Lint | ESLint flat config plus typescript-eslint | Supported configuration model for current ESLint |
 | Tests | Vitest 4; offline suite by default | Current stable test runner without live-network flakiness |
 | CI | Node 22/24 matrix, explicit lint/types/tests, package integrity, production audit, CodeQL, scheduled network smoke | Verify source, dependency risk, static security, and the artifact consumers actually load |
@@ -50,10 +50,12 @@ detecting decoder or fixture drift.
 
 ## Package Verification
 
-The package smoke test must load the built CommonJS entrypoint and hash a local fixture to its
-existing golden value. This specifically catches compiler/package-boundary problems that Vitest's
-source transformation can hide. CI also inspects `npm pack --dry-run` output so unexpected files or
-missing package artifacts fail independently from the source test matrix.
+The package smoke tests must load the built CommonJS root, Node.js, core, and browser entrypoints;
+hash a local fixture to its existing golden value; run a synthetic pixel fingerprint through each
+portable entrypoint; and reject Node.js built-ins in emitted browser ESM. This catches
+compiler/package-boundary problems that Vitest's source transformation can hide. CI also inspects
+`npm pack --dry-run` output so unexpected files or missing package artifacts fail independently from
+the source test matrix.
 
 ## Dependency And Security Automation
 
@@ -79,7 +81,7 @@ repository level.
 - TypeScript 7 evaluation after typescript-eslint and the package ecosystem are deliberately
   validated together.
 - Decoder dependency changes, because different decoded pixels can change stored hashes.
-- ESM or dual-package output, because a prior ESM-only release was reverted.
+- ESM output at the root Node.js entrypoint; browser ESM remains isolated behind explicit subpaths.
 - Strict coverage thresholds until the offline/network test split is complete and a baseline is
   recorded.
 - npm trusted publishing and tag/release automation. npm recommends OIDC trusted publishing, but it
