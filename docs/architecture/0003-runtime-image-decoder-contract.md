@@ -73,6 +73,12 @@ Exact fingerprint determinism begins at the returned normalized RGBA bytes. Node
 decoders are separately configured and tolerance-tested; the same encoded file is not promised to
 produce byte-identical pixels across runtimes or browser engines.
 
+Applications must not require fingerprint string equality across independently decoded runtimes.
+They should either normalize and hash through one controlled, versioned decoder pipeline or use a
+Hamming-distance policy calibrated on representative inputs. The measured cross-decoder evidence,
+including the bounded Firefox Display P3 exception, is published in the
+[PDQ adapter conformance report](../modernization/pdq-adapter-conformance.md).
+
 Changing the decoder backend or normalization configuration requires adapter-contract review and
 new tolerance evidence. It does not change `pdq-v1` unless normalized-pixel-to-fingerprint behavior
 also changes.
