@@ -552,3 +552,7 @@ plan is awaiting maintainer review; production implementation remains behind tha
 - POST-REVIEW FINAL GREEN: complete Node 22.22.1 and Node 24.19.0 gates pass again (61 tests plus
   five network skips), alongside ShellCheck, actionlint, JavaScript syntax checks, native oracle
   smoke, deterministic matrix regeneration, package/browser smoke, and `git diff --check`.
+- Committed the portability checkpoint as `826190a` and pushed draft PR #6. GitHub run
+  `31323883320` passes Linux arm64 oracle conformance for both new unfused corpora, Node 22, Node 24,
+  and package integrity. Workflow analysis and CodeQL also pass. The portability checkpoint is
+  complete and Tasks 7–11 remain awaiting authorization.

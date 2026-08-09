@@ -1,6 +1,6 @@
 # Image Hashing Modernization Plan
 
-Status: Tasks 1–6 and portability hardening complete locally; Tasks 7–11 awaiting authorization
+Status: Tasks 1–6 and portability hardening complete and CI-verified; Tasks 7–11 awaiting authorization
 Task ID: `image-hashing-modernization`
 Updated: 2026-08-09
 
@@ -99,7 +99,7 @@ first GitHub x64 oracle job exposed architecture-sensitive native answers. That 
 canonical arm64 CI, freezes numeric constants, and evaluates same-source WASM before Task 7 public
 dispatch. That checkpoint is complete locally with an accepted portable unfused profile. Tasks 7–11
 otherwise require the next implementation decision, and encoded-image adapters remain separately
-gated at Task 12. The updated profile still requires its hosted Linux confirmation after push.
+gated at Task 12. The updated profile passed its hosted Linux arm64 confirmation.
 
 ## Current Decisions
 
