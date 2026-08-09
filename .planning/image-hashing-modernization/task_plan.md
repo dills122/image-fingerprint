@@ -1,6 +1,6 @@
 # Image Hashing Modernization Plan
 
-Status: Tasks 8–9 committed; Task 10 implemented and reviewed locally
+Status: Tasks 8–10 committed; Task 11 implemented and reviewed locally
 Task ID: `image-hashing-modernization`
 Updated: 2026-08-09
 
@@ -87,6 +87,7 @@ block pure-core implementation planning.
 - [x] Task 8: implement strict fingerprint parsing and canonical serialization.
 - [x] Task 9: implement Hamming comparison and explicit PDQ match policy.
 - [x] Task 10: run a reproducible 10,000-vector differential and freeze numeric-discipline evidence.
+- [x] Task 11: verify packed CJS, ESM, browser-engine, worker, and TypeScript consumer behavior.
 - [ ] Lock legacy contracts and baseline benchmarks.
 - [ ] Implement the selected raw-pixel PDQ core/adapter.
 - [ ] Add decoder adapters and public versioned API.
@@ -105,9 +106,9 @@ dispatch. That checkpoint is complete with an accepted portable unfused profile 
   arm64 confirmation. The maintainer authorized Task 7 on 2026-08-09, and its reviewed local
   implementation is merged. The maintainer authorized Task 8 on 2026-08-09, and its local
   implementation was committed as `2da5ae8`. The maintainer authorized Task 9 on 2026-08-09;
-  Task 9 was committed as `bb80bc9`. The maintainer authorized Task 10 on 2026-08-09; its local
-  implementation has passed review and both supported-runtime gates. Task 11 still requires a
-  separate implementation decision, and encoded-image adapters remain gated at Task 12.
+  Task 9 was committed as `bb80bc9`, and Task 10 was committed as `779b67b`. The maintainer
+  authorized Task 11 on 2026-08-09; its local implementation has passed review, real-browser
+  execution, and both supported-runtime gates. Encoded-image adapters remain gated at Task 12.
 
 ## Current Decisions
 

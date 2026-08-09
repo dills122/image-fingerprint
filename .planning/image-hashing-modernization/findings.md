@@ -694,3 +694,32 @@ primary-source verification before entering contract documentation.
 - Because mismatch count was zero, Task 10 requires no new regression fixture and no numeric code
   adjustment. The existing explicit `Math.fround`/`Float32Array` profile is sufficient for this
   expanded corpus.
+
+## 2026-08-09 Task 11 Browser And Package Design
+
+- The current `test:package` exercises root/core/browser CommonJS plus browser ESM from Node's
+  package self-reference. `scripts/browser-smoke.html` is never launched by CI and covers only the
+  main thread, so it cannot satisfy real-engine or worker conformance.
+- Task 11 will test a tarball extracted into an isolated temporary consumer. Runtime checks will
+  cover CommonJS, ESM, root, `/node`, `/core`, `/browser`, historical `lib` paths, and package
+  metadata; TypeScript checks will compile consumers under `node16`, `nodenext`, and `bundler`.
+- A small Playwright library runner is sufficient; the project does not need a second general test
+  framework. It will serve the extracted package over loopback and run the same exact raw PDQ bytes
+  on the main thread and in a module worker under Chromium, Firefox, and WebKit.
+- Official Playwright documentation requires browser binaries matched to the installed Playwright
+  version and documents `playwright install --with-deps` for CI. It supports Chromium, Firefox, and
+  WebKit from one library API. Official TypeScript documentation confirms that `node16`, `nodenext`,
+  and `bundler` all honor package `exports`; bundler differs by not requiring relative extensions.
+- The registry reports Playwright 1.62.1 as current on 2026-08-09. It will be a development-only
+  dependency; no Playwright code or browser binary may enter the published package.
+
+Primary sources: <https://playwright.dev/docs/browsers>, <https://playwright.dev/docs/ci>,
+<https://playwright.dev/docs/api/class-browsertype>, and
+<https://www.typescriptlang.org/tsconfig/moduleResolution>.
+
+- Accepted local engine evidence is Chromium 151.0.7922.34, Firefox 153.0, and WebKit 26.5 through
+  Playwright 1.62.1. Each engine loaded the extracted npm tarball and returned exact expected PDQ
+  hash and quality for all three packed formats on both execution surfaces.
+- The isolated runtime matrix uses direct named ESM imports, CommonJS requires, and the exact
+  published export map. TypeScript compilation is performed from outside the repository package
+  using the declarations inside the extracted tarball.

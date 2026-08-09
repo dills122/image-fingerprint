@@ -272,9 +272,16 @@ pnpm install --frozen-lockfile
 pnpm check
 ```
 
-`pnpm check` runs linting, strict typechecking, offline tests with coverage floors, a build, and a
-smoke test against the packaged CommonJS entrypoint. Live remote-input tests are intentionally
-separate and can be run with `pnpm test:network`.
+`pnpm check` runs linting, strict typechecking, offline tests with coverage floors, a build, and
+isolated CommonJS, ESM, and TypeScript checks against the packed tarball. Live remote-input tests
+are intentionally separate and can be run with `pnpm test:network`.
+
+Install Playwright's matched engines once, then run the opt-in real-browser and module-worker gate:
+
+```bash
+pnpm exec playwright install chromium firefox webkit
+pnpm test:browser
+```
 
 Reusable Codex guidance is linked from the sibling `ai-central` checkout. Refresh those local links
 with `pnpm codex:links`, or set `AI_CENTRAL_HOME` if that checkout lives elsewhere. See
@@ -290,6 +297,7 @@ algorithms is recorded in
 - Offline unit/integration suite: `pnpm test`
 - Full local quality gate: `pnpm check`
 - Published file-set verification: `pnpm pack:check`
+- Packed Chromium, Firefox, WebKit, and module-worker conformance: `pnpm test:browser`
 - Opt-in live network tests: `pnpm test:network`
 
 ## Releasing

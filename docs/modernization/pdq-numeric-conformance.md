@@ -68,8 +68,8 @@ Frozen artifact SHA-256 values:
 
 The regular Node 22 and Node 24 CI jobs prove the pure TypeScript implementation on x64 Linux. The
 separate Linux arm64 job rebuilds the pinned native oracle with contraction disabled and requires
-byte-identical raw and stage corpora. Real Chromium, Firefox, WebKit, and worker execution remains a
-separate browser-conformance gate before release.
+byte-identical raw and stage corpora. The packed browser-conformance gate runs exact gray, RGB, and
+RGBA inputs in real Chromium, Firefox, and WebKit on both the main thread and a module worker.
 
 ### Large seeded differential
 

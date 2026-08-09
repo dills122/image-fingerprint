@@ -1,6 +1,6 @@
 # PDQ v1 Implementation Plan
 
-Status: Tasks 8–9 committed; Task 10 implemented and reviewed locally
+Status: Tasks 8–10 committed; Task 11 implemented and reviewed locally
 Updated: 2026-08-09
 
 ## Overview
@@ -18,7 +18,7 @@ Tasks 6–11 remain separately gated.
 ## Approved Architecture
 
 - The root `imageHash()` callback API and every legacy hash remain compatibility-locked.
-- `pdq-v1` is a synchronous TypeScript algorithm exposed through `image-hash/core` and re-exported
+- `pdq-v1` is a synchronous TypeScript algorithm exposed through `image-fingerprint/core` and re-exported
   by explicit Node and browser entrypoints.
 - Meta ThreatExchange commit `baefb4ed67b6cdc1d4c82dbaef858d50866ac424` is normative.
 - Same-source WASM is the primary differential/performance comparator; `pdq-wasm` is secondary.
@@ -394,22 +394,24 @@ use same-source WASM only to investigate discrepancies and establish a performan
 
 ### Task 11: Verify packed CJS, ESM, browser, and worker behavior
 
+**Status:** Implemented and reviewed locally on `codex/fingerprint-codec` on 2026-08-09.
+
 **Description:** Expand package checks from Node-imported browser ESM to real browser engines and a
 Web Worker using identical raw fixture bytes.
 
 **Acceptance criteria:**
 
-- [ ] Packed root, `/node`, `/core`, `/browser`, historical `lib` paths, and `package.json` work in
+- [x] Packed root, `/node`, `/core`, `/browser`, historical `lib` paths, and `package.json` work in
   isolated consumers with the documented module formats.
-- [ ] Chromium, Firefox, and WebKit produce exact hash and quality equality for the same raw vectors
+- [x] Chromium, Firefox, and WebKit produce exact hash and quality equality for the same raw vectors
   on the main thread and in a worker.
-- [ ] Browser graphs contain no Node built-ins, Node decoders, native addon, or unexpected WASM.
+- [x] Browser graphs contain no Node built-ins, Node decoders, native addon, or unexpected WASM.
 
 **Verification:**
 
-- [ ] `pnpm test:package`
-- [ ] Run the browser-engine/worker conformance command.
-- [ ] Test TypeScript consumers under `node16`, `nodenext`, and `bundler` resolution.
+- [x] `pnpm test:package`
+- [x] Run the browser-engine/worker conformance command.
+- [x] Test TypeScript consumers under `node16`, `nodenext`, and `bundler` resolution.
 
 **Dependencies:** Task 10.
 
@@ -425,9 +427,9 @@ Web Worker using identical raw fixture bytes.
 
 ## Checkpoint E: Core Release Candidate
 
-- [ ] Exact PDQ is proven in supported Node and browser engines plus workers.
-- [ ] Legacy root and deep-import compatibility remain green.
-- [ ] The pure pixel API can independently ship or proceed to adapter work.
+- [x] Exact PDQ is proven in supported Node and browser engines plus workers.
+- [x] Legacy root and deep-import compatibility remain green.
+- [x] The pure pixel API can independently ship or proceed to adapter work.
 
 ## Phase 5: Add Encoded-Image Adapters Behind a Separate Gate
 

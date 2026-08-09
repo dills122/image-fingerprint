@@ -720,3 +720,52 @@ plan is awaiting maintainer review; production implementation remains behind tha
   pnpm invocation. The change is development-only, validates all framed and oracle boundaries, adds
   no dependency or runtime WASM/native path, preserves legacy and public core behavior, and provides
   reproducible exact equality evidence at the required scale.
+
+## 2026-08-09 — Task 11 Authorization
+
+- Committed Task 10 as `779b67b` (`Add large PDQ differential testing`) with a clean worktree. The
+  maintainer authorized Task 11 on the current feature branch.
+- Audited the current package/browser smoke scripts and CI. Existing browser ESM is executed only
+  inside Node; the HTML fixture is not launched, has no worker, and no TypeScript consumer-resolution
+  matrix exists.
+- A broad shell inspection used the ambient runtime for `pnpm list` and hit an incompatible Corepack
+  path, then an explicit Node 22 retry hit the sandboxed pnpm store database. Neither command changed
+  package state; all implementation commands will keep using the approved explicit Node runtime.
+- The first registry lookup was blocked by sandbox DNS and was stopped before its long final retry.
+  The approved network retry returned current Playwright version 1.62.1.
+- RED: added four focused plan-contract tests. The two positive tests failed because the packed
+  package and browser-engine runners did not exist; strict unknown-argument cases already exited
+  nonzero for the same missing-script reason.
+- GREEN (packed consumers): the tarball-only harness passes two runtime consumers (CommonJS and ESM),
+  six public/compatibility subpaths, and strict TypeScript consumers under `node16`, `nodenext`, and
+  `bundler` resolution.
+- Added Playwright 1.62.1 as a development-only dependency after the repository's supply-chain
+  policy accepted the lockfile update. Its local license is Apache-2.0.
+- The first browser run was blocked solely because the workspace sandbox prohibits loopback listen.
+  The approved unchanged retry passed Chromium 151.0.7922.34, Firefox 153.0, and WebKit 26.5.
+- GREEN (real browsers): all three engines produced exact expected hash and quality for gray8, rgb8,
+  and rgba8 on both the main thread and a module worker. The observed request graphs contained only
+  the HTML page, worker module, packed browser entry, and packed core chunk, with no WASM request.
+- GREEN (package command): the expanded `pnpm test:package` passes the existing self-reference and
+  browser-graph checks plus the new isolated tarball runtime/type matrix.
+- REVIEW: the initial isolated ESM fixture accessed root and `/node` through their CommonJS default
+  objects, which would not catch a named-export interop regression. It now imports the documented
+  `imageHash` and `fingerprintPixels` names directly.
+- Dependency review: Playwright is a direct standalone development path and Apache-2.0 licensed.
+  The production audit is clean. A full development audit reports pre-existing high advisories in
+  ESLint's `flatted` path and Vitest/typescript-eslint's older `picomatch` path; neither traverses
+  Playwright or enters the published dependency graph.
+- POST-REVIEW FINAL GREEN: `pnpm check` passes on Node 22.22.1 and Node 24.19.0 with 148 tests
+  passing, five unchanged network skips, 95% statement / 92.35% branch coverage, strict types,
+  builds, static browser-graph checks, and isolated packed runtime/type consumers.
+- The opt-in real-browser gate passes under both Node 22 and Node 24 for Chromium, Firefox, and
+  WebKit on the main thread and in a module worker. The package dry-run still contains only LICENSE,
+  README, `lib/**`, and `package.json`; Playwright code, browser binaries, harnesses, and fixtures are
+  not published.
+- Multi-axis review verdict: approve Task 11 after strengthening named ESM interop coverage. The
+  loopback server is path-confined to a generated temporary consumer, cleanup targets only its
+  `mkdtemp` root, commands avoid shell interpolation, browser processes close in `finally`, and CI
+  pins execution through the lockfile-matched Playwright/browser versions.
+- The first workflow-YAML syntax probe used a keyword supported only by newer Ruby/Psych and failed
+  before parsing. Repeating the read with the system Ruby 2.6-compatible call parsed the workflow
+  successfully; `git diff --check` is also clean.

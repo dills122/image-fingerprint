@@ -18,9 +18,9 @@ boundaries and tests.
 ## Decision
 
 - Keep the existing root entrypoint and callback behavior as the Node.js compatibility API.
-- Add an explicit `image-hash/node` alias for Node.js input and decoder behavior.
-- Add `image-hash/core` for runtime-neutral pixel algorithms, result types, and matching helpers.
-- Add a browser-safe ESM entrypoint at `image-hash/browser`.
+- Add an explicit `image-fingerprint/node` alias for Node.js input and decoder behavior.
+- Add `image-fingerprint/core` for runtime-neutral pixel algorithms, result types, and matching helpers.
+- Add a browser-safe ESM entrypoint at `image-fingerprint/browser`.
 - Preserve the previously reachable CommonJS `lib` runtime paths when introducing package exports;
   they remain compatibility paths rather than newly recommended public APIs.
 - Define portable algorithm inputs as explicitly tagged, tightly packed sRGB typed-array pixels
@@ -31,7 +31,8 @@ boundaries and tests.
   length, and algorithm parameters required for safe comparison.
 - Keep encoded-image loading, MIME detection, decoding, orientation, alpha, and color normalization
   in runtime adapters rather than algorithm implementations.
-- Require browser package smoke tests to reject Node.js built-ins in the emitted browser graph.
+- Require browser package smoke tests to reject Node.js built-ins in the emitted browser graph and
+  execute exact raw-pixel fixtures in Chromium, Firefox, WebKit, and a module worker.
 
 The initial browser entrypoint accepts decoded pixels. Browser decoding adapters for `File`, `Blob`,
 URLs, `ImageBitmap`, and `ImageData` can be added incrementally without changing the algorithm
@@ -59,8 +60,12 @@ Costs:
 - Existing Node.js golden hashes and callback tests remain unchanged.
 - The same synthetic RGBA fixtures produce identical versioned results through the core, Node.js,
   and browser entrypoints.
-- Package smoke tests load the CommonJS root and Node.js/core subpaths.
-- Browser package smoke tests load the ESM browser subpath and scan emitted ESM for Node.js built-ins.
+- Isolated packed-package smoke tests load CommonJS and ESM root, Node.js, core, browser, historical
+  `lib`, and package-metadata subpaths.
+- Packed TypeScript consumers compile under `node16`, `nodenext`, and `bundler` resolution.
+- Chromium, Firefox, and WebKit browser smoke tests load the packed ESM browser subpath, hash exact
+  gray/RGB/RGBA fixtures on the main thread and in a module worker, and reject unexpected WASM.
+- Static browser-graph checks reject Node.js built-ins.
 
 ## Sources
 
@@ -68,6 +73,8 @@ Costs:
 - [Vite library mode](https://vite.dev/guide/build.html#library-mode)
 - [TypeScript runtime library declarations](https://www.typescriptlang.org/tsconfig/lib.html)
 - [Canvas RGBA pixel access](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getImageData)
+- [Playwright browsers](https://playwright.dev/docs/browsers)
+- [Playwright continuous integration](https://playwright.dev/docs/ci)
 
 ## Related Material
 
