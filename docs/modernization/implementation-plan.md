@@ -1,6 +1,6 @@
 # PDQ v1 Implementation Plan
 
-Status: Tasks 1–14 implemented and verified; Task 15 decoder-tolerance evidence remains open
+Status: Tasks 1–15 implemented and verified; Tasks 16–18 remain open
 Updated: 2026-08-09
 
 ## Overview
@@ -445,8 +445,8 @@ were integrated only after Task 11 package, browser-engine, and worker evidence 
 
 ### Task 12: Select and freeze the Node decoder contract
 
-**Status:** Complete on `codex/image-preparation-adapters` on 2026-08-09; corpus-based decoder
-tolerance remains Task 15.
+**Status:** Complete on 2026-08-09; corpus-based decoder tolerance was subsequently measured in
+Task 15.
 
 **Description:** Evaluate the existing decoders against the required static formats, orientation,
 color, animation detection, size limits, portability, and license constraints before changing the
@@ -462,8 +462,8 @@ new API.
 
 **Verification:**
 
-- [x] Run static JPEG, PNG, and WebP contract tests; retain the licensed differential corpus for
-  Task 15.
+- [x] Run static JPEG, PNG, and WebP contract tests; retain the licensed differential corpus used
+  by Task 15.
 - [x] Review dependency, package-size, browser-graph, and license evidence.
 - [x] Maintainer approves Sharp 0.35.3 and the shared decoder contract before Task 13.
 
@@ -544,22 +544,25 @@ preserving the same core identity boundary.
 
 ### Task 15: Measure encoded-image decoder tolerance
 
+**Status:** Complete on 2026-08-09. The initial distance-10 gate holds except for one documented
+Firefox Display P3 ICC/color-management exception at distance 12; all repeated decodes are exact.
+
 **Description:** Compare each approved adapter with the pinned C++ decode path over a licensed
 static-image corpus and publish the actual variance.
 
 **Acceptance criteria:**
 
-- [ ] Same pinned decoder/configuration is exact on repeat runs.
-- [ ] For quality at least 80, the starting release gate is Hamming distance at most 10 from C++;
+- [x] Same pinned decoder/configuration is exact on repeat runs.
+- [x] For quality at least 80, the starting release gate is Hamming distance at most 10 from C++;
   every exception is investigated and categorized.
-- [ ] Reports separate format, runtime, engine, EXIF orientation, alpha, ICC/color profile, and
+- [x] Reports separate format, runtime, engine, EXIF orientation, alpha, ICC/color profile, and
   decoder effects rather than averaging them together.
 
 **Verification:**
 
-- [ ] Run the opt-in adapter differential suite and preserve its raw result artifact.
-- [ ] Review p50, p95, and maximum distance by category.
-- [ ] Confirm documentation makes no cross-decoder exact-equality promise.
+- [x] Run the opt-in adapter differential suite and preserve its raw result artifact.
+- [x] Review p50, p95, and maximum distance by category.
+- [x] Confirm documentation makes no cross-decoder exact-equality promise.
 
 **Dependencies:** Tasks 13 and 14.
 
@@ -575,7 +578,7 @@ static-image corpus and publish the actual variance.
 ## Checkpoint F: Adapter Release Candidate
 
 - [x] Node and browser adapter contracts are explicitly approved.
-- [ ] Decoder variance stays within the approved gate or has documented exceptions.
+- [x] Decoder variance stays within the approved gate or has documented exceptions.
 - [x] Legacy compatibility and pure-core conformance remain unchanged.
 
 ## Phase 6: Calibrate Performance and Matching Behavior
@@ -705,10 +708,9 @@ threshold guidance, verification evidence, and rollback path.
 
 ## Decisions Still Needed
 
-These do not block the completed Tasks 1–14:
+These do not block the completed Tasks 1–15:
 
 - Supply or identify a redistribution-safe MTG calibration corpus before Task 17.
-- Supply or identify a licensed encoded-image tolerance corpus before Task 15.
 - Record absolute performance and responsiveness budgets before Task 16.
 
 ## Plan Approval Gate
