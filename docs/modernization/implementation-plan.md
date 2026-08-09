@@ -1,6 +1,6 @@
 # PDQ v1 Implementation Plan
 
-Status: Tasks 1–5 complete; Tasks 6–11 awaiting authorization
+Status: Tasks 1–6 complete; Tasks 7–11 awaiting authorization
 Updated: 2026-08-09
 
 ## Overview
@@ -12,7 +12,7 @@ pixel core, record/comparison utilities, runtime packaging, encoded-image adapte
 release evidence.
 
 The cross-runtime foundation landed on `main` in `2686eac`; this plan is based on `d4f88fa`, which
-also includes the later `file-type` lockfile update. Tasks 2–5 are implemented in the current work;
+also includes the later `file-type` lockfile update. Tasks 2–6 are implemented in the current work;
 Tasks 6–11 remain separately gated.
 
 ## Approved Architecture
@@ -225,15 +225,15 @@ discipline and stage-level tests.
 
 **Acceptance criteria:**
 
-- [ ] The 64-to-16 DCT preserves reference operation order and float32 behavior.
-- [ ] Torben median and strict `>` thresholding match tie-heavy reference cases.
-- [ ] Bit positions serialize exactly as 64 lowercase hex characters in Meta word order.
+- [x] The 64-to-16 DCT preserves reference operation order and float32 behavior.
+- [x] Torben median and strict `>` thresholding match tie-heavy reference cases.
+- [x] Bit positions serialize exactly as 64 lowercase hex characters in Meta word order.
 
 **Verification:**
 
-- [ ] Run DCT/median/bit-order unit tests.
-- [ ] Compare fixed stage outputs and final hash text with the oracle.
-- [ ] `pnpm lint && pnpm typecheck`
+- [x] Run DCT/median/bit-order unit tests.
+- [x] Compare fixed stage outputs and final hash text with the oracle.
+- [x] `pnpm lint && pnpm typecheck`
 
 **Dependencies:** Task 3.
 

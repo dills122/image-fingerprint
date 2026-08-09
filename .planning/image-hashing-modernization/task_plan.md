@@ -1,6 +1,6 @@
 # Image Hashing Modernization Plan
 
-Status: Tasks 1–5 complete; Tasks 6–11 awaiting authorization
+Status: Tasks 1–6 complete; Tasks 7–11 awaiting authorization
 Task ID: `image-hashing-modernization`
 Updated: 2026-08-09
 
@@ -90,9 +90,9 @@ block pure-core implementation planning.
 No PDQ production implementation work should begin until the task sequence in
 `docs/modernization/implementation-plan.md` is approved or amended by a maintainer.
 
-Tasks 1–5 are complete. The maintainer authorized Task 4's additive tagged-pixel contract and a
-Linux CI oracle-conformance job, then Task 5's first-half PDQ numeric pipeline. Tasks 6–11 require
-the next implementation decision, and
+Tasks 1–6 are complete. The maintainer authorized Task 4's additive tagged-pixel contract and a
+Linux CI oracle-conformance job, Task 5's first-half PDQ numeric pipeline, and Task 6's
+DCT/median/canonical-bit stages. Tasks 7–11 require the next implementation decision, and
 encoded-image adapters remain separately gated at Task 12. Checkpoint B's two-environment criterion
 is satisfied locally; the first Ubuntu/Clang CI run remains the recurring-evidence confirmation.
 

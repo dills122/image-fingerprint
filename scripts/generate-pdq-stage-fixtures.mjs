@@ -99,7 +99,7 @@ const specifications = [
     width: 5,
     height: 5,
     bytes: makeBytes(5, 5, 1, (x, y) => [(x * 41 + y * 13) & 0xff]),
-    stages: ['luma', 'downsample'],
+    stages: ['luma', 'downsample', 'dct'],
   },
   {
     id: 'minimum-rgb-coefficients-5x5',
@@ -121,7 +121,7 @@ const specifications = [
     width: 129,
     height: 131,
     bytes: seededBytes(129 * 131 * 3, 0x5eed1234),
-    stages: ['downsample'],
+    stages: ['downsample', 'dct'],
   },
 ];
 
@@ -148,6 +148,13 @@ const runDiagnostics = (specification) => {
     || parsed.lumaBits.length !== specification.width * specification.height
     || !Array.isArray(parsed.downsampledBits)
     || parsed.downsampledBits.length !== 64 * 64
+    || !Array.isArray(parsed.dctIntermediateBits)
+    || parsed.dctIntermediateBits.length !== 16 * 64
+    || !Array.isArray(parsed.dctOutputBits)
+    || parsed.dctOutputBits.length !== 16 * 16
+    || !Number.isInteger(parsed.medianBits)
+    || typeof parsed.hash !== 'string'
+    || !/^[0-9a-f]{64}$/.test(parsed.hash)
     || !Number.isInteger(parsed.quality)
     || parsed.quality < 0
     || parsed.quality > 100) {
@@ -173,6 +180,14 @@ const vectors = specifications.map((specification) => {
         ? {
           downsampledBits: diagnostics.downsampledBits,
           quality: diagnostics.quality,
+        }
+        : {}),
+      ...(specification.stages.includes('dct')
+        ? {
+          dctIntermediateBits: diagnostics.dctIntermediateBits,
+          dctOutputBits: diagnostics.dctOutputBits,
+          medianBits: diagnostics.medianBits,
+          hash: diagnostics.hash,
         }
         : {}),
     },

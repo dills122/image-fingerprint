@@ -400,6 +400,53 @@ Sources: <https://github.com/Raudbjorn/pdq-wasm>,
   foundation as in progress and claiming no PDQ numeric code existed. Update it to distinguish the
   completed internal first-half stages from the still-gated DCT, serialization, and public dispatch.
 
+## Task 6 Numeric Scope
+
+- Task 6 is limited to the pinned 64-to-16 DCT, Torben median, strict greater-than thresholding,
+  256 bit positions, and canonical 64-character lowercase hexadecimal output. Public fingerprint
+  dispatch and records remain Task 7.
+- The disposable Meta checkout used for Task 5 is still present and verifies at the exact pinned
+  commit `baefb4ed67b6cdc1d4c82dbaef858d50866ac424`; it is suitable for read-only source inspection.
+- Authoritative seams are `dct64To16` and `pdqBuffer16x16ToBits` in `pdqhashing.cpp`, `torben.cpp`,
+  `Hash256::setBit` in `pdqhashtypes.h`, and `Hash256::format` in `pdqhashtypes.cpp`.
+- The DCT coefficient matrix is 16 by 64 and represents frequency slots 1 through 16, deliberately
+  excluding DC. Its float scale is `sqrt(2/64)`; each coefficient is the float assignment of that
+  scale times a double-precision cosine.
+- The transform is explicitly two matrix passes: `T = D * A` for 16 by 64, then `B = T * D^T` for
+  16 by 16. Each 64-term accumulation is written as float `sum += product` in increasing `k` order.
+- Torben median scans without sorting, using float min/max/guess values and counts. For 256 values,
+  its comparisons use `(n + 1) / 2 == 128`; ties can therefore return an existing value or the
+  rounded midpoint guess depending on the count path.
+- Bit index `i * 16 + j` sets bit `j` of internal 16-bit word `i`. Canonical formatting prints
+  words 15 down to 0, each as four lowercase hex digits; threshold equality leaves a bit clear.
+- The optimized native ARM64 oracle contracts scalar multiply/add operations into `fmadd`/`fmla`,
+  while the pinned Java and PHP ports express the same increasing-index scalar sequence. Exact
+  intermediate diagnostics should therefore use a non-contracted C++ build that preserves the
+  source operation boundaries available to JavaScript and baseline WebAssembly; the final hash
+  must also agree with the normally optimized reference binary.
+- The pinned Java implementation independently confirms the 16-by-64 DCT matrix formula, float
+  coefficient storage, two-pass transform, Torben median, and strict thresholding seams.
+- The existing oracle build deliberately pins Clang `-O3` and documents that its saved corpus is
+  byte-identical across Apple Clang 21 and Debian Clang 19 on arm64; changing the global oracle
+  flags would alter an already accepted Task 4 contract. Task 6 should extend the diagnostic
+  protocol without weakening that build provenance, then use explicit JavaScript float32 rounding
+  and compare canonical hashes to the normal oracle output.
+- The first Task 6 lint run localized six style failures without any typecheck failure: ESLint
+  rejects the C++ source's over-precise decimal pi literal, and detects five median loop-state
+  initializers that are overwritten before their first read. `Math.PI` is the same IEEE-754 binary64
+  value as the pinned C++ literal; declaring the loop-carried result tuple inside the loop removes
+  the redundant assignments without changing Torben's decisions.
+- Multi-axis review found no correctness, security, architecture, or performance blocker. The
+  implementation is bounded to 81,920 DCT multiply/adds per normalized image plus small fixed-size
+  median/hash work; it adds no dependency, I/O, or public dispatch and preserves legacy behavior.
+- `Math.cos` is used only once at module initialization and every coefficient is immediately rounded
+  to float32. The exact Node 22/24 and pinned-oracle results agree; actual Chromium/Firefox/WebKit
+  agreement remains a deliberate Task 11 gate before the browser exactness promise is released.
+- Package dry-run confirms fixtures, generator/oracle tooling, planning files, and third-party source
+  stay out of the tarball. TypeScript-emitted internal PDQ modules are present under `lib`, as they
+  already were after Task 5, but are not package-export entrypoints until Task 7 composes the public
+  API.
+
 ## Cross-Runtime Foundation Baseline
 
 The cross-runtime foundation landed on `main` as `2686eac` and is included in the synchronized

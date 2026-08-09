@@ -1,5 +1,6 @@
 #include <pdq/cpp/common/pdqhashtypes.h>
 #include <pdq/cpp/hashing/pdqhashing.h>
+#include <pdq/cpp/hashing/torben.h>
 
 #include <cstdint>
 #include <cstring>
@@ -168,11 +169,20 @@ int main(int argc, char** argv) {
         quality);
 
     if (diagnostics) {
+      const float median = facebook::pdq::hashing::torben(
+          &buffer16x16[0][0],
+          16 * 16);
       std::cout << "{\"lumaBits\":";
       writeFloatBits(sourceLuma.data(), sourceLuma.size());
       std::cout << ",\"downsampledBits\":";
       writeFloatBits(&buffer64x64[0][0], 64U * 64U);
-      std::cout << ",\"quality\":" << quality << "}\n";
+      std::cout << ",\"dctIntermediateBits\":";
+      writeFloatBits(&buffer16x64[0][0], 16U * 64U);
+      std::cout << ",\"dctOutputBits\":";
+      writeFloatBits(&buffer16x16[0][0], 16U * 16U);
+      std::cout << ",\"medianBits\":" << floatBits(median)
+                << ",\"hash\":\"" << hash.format()
+                << "\",\"quality\":" << quality << "}\n";
     } else {
       std::cout << "{\"hash\":\"" << hash.format() << "\",\"quality\":"
                 << quality << "}\n";

@@ -24,7 +24,7 @@
 ## Current Gate
 
 Primary-source research, contract approval, the cross-runtime foundation, and implementation Tasks
-2–5 are complete. Tasks 6–11 await the next maintainer authorization. Checkpoint B's second native
+2–6 are complete. Tasks 7–11 await the next maintainer authorization. Checkpoint B's second native
 environment was reproduced locally on Linux; its recurring Ubuntu CI job awaits the first run.
 
 ## 2026-08-07 — Tooling Prerequisite
@@ -390,3 +390,53 @@ plan is awaiting maintainer review; production implementation remains behind tha
   fixtures, oracle source/binary, checkout, planning file, or generator script is published.
 - Final quality-review verdict: approve Task 5. Correctness, readability, architecture, security,
   performance, compatibility, fixture provenance, and package-boundary findings are resolved.
+
+## 2026-08-09 — Task 6 Authorization
+
+- The maintainer asked to continue implementation and testing after opening draft PR #6. Task 6 is
+  the next approved bounded increment: reference-compatible 64-to-16 DCT, Torben median, strict
+  greater-than bit thresholding, and canonical 256-bit hexadecimal serialization.
+- Public `pdq-v1` dispatch, fingerprint records, and later Tasks 7–11 remain out of scope.
+- Work will again use the pinned Meta source and oracle-generated stage diagnostics, with failing
+  DCT/median/bit-order tests written before production modules.
+- Source inspection confirmed the DCT transform and median/serialization contracts across the
+  pinned C++ and Java implementations. The optimized native compiler contracts DCT arithmetic, so
+  Task 6 diagnostics will preserve scalar float operation boundaries for exact intermediate tests
+  and retain normally optimized final-hash conformance as a separate check.
+- Extended and rebuilt the pinned Clang oracle diagnostics to emit all 1,024 DCT intermediate bits,
+  all 256 DCT output bits, the median bits, and canonical hash. Oracle smoke passes and the stage
+  corpus now freezes those answers for both the minimum-size gray and filtered seeded RGB vectors.
+- RED: the focused stage suite now specifies exact two-pass DCT bits, frozen median/hash answers,
+  Torben even/tie behavior, strict threshold equality, Meta word order, and invalid shapes. It fails
+  at import time because the Task 6 production modules do not exist, as intended.
+- Initial GREEN: added isolated DCT, Torben median, and hash serialization modules. The focused suite
+  passes all 10 tests, including every frozen intermediate/output float bit and both complete
+  64-character oracle hashes.
+- Static-gate recovery complete: replaced the over-precise source literal with equivalent
+  `Math.PI` and scoped Torben's loop state to its actual lifetime. Lint, typecheck, and all 10
+  focused Task 6 tests now pass with the oracle answers unchanged.
+- Expanded final-hash conformance beyond the two stage vectors: the production DCT/median/hash
+  pipeline exactly matches all 15 frozen raw-vector oracle hashes and qualities, including gray,
+  RGB, normalized RGBA, minimum dimensions, extreme aspect ratios, flat inputs, and seeded data.
+- Deterministic regeneration confirmed the expanded stage corpus SHA-256 remains
+  `5cd906f5b3a836b0beb3081a4a5f55077b5f5ba60f128d09b8edefef5482cc1c`. The focused suite also
+  passes on Node 24.19.0. The full Node 22 coverage run passes 60 tests with five existing network
+  skips and 93.69% statement / 88.29% branch coverage; one Torben narrowing branch remains an
+  uncovered Task 6 line and should receive a focused regression case before review.
+- Added the smallest three-value Torben case that reaches the generic upper-candidate return. The
+  full coverage gate remains green and Task 6's DCT, median, and hash modules now have 100% line and
+  statement coverage; repository totals are 93.88% statements and 88.78% branches.
+- FULL GREEN on Node 22.21.1 and Node 24.19.0: lint, typecheck, 60-test coverage, build, CommonJS
+  package smoke, and browser-package graph smoke all pass with five unchanged network skips. The
+  browser/core bundle remains Node-built-in-free and is 8.27 kB before gzip / 2.42 kB gzip.
+- Entered the required multi-axis review checkpoint after both supported-runtime gates passed.
+  Review scope covers tests first, then correctness, readability, architecture, security,
+  performance, package contents, and documentation accuracy.
+- Multi-axis review verdict: approve Task 6. Exact operation order, median ties, strict threshold,
+  Meta serialization, 15-vector end-to-end conformance, fixed-size performance, package boundaries,
+  and supported-runtime gates are all resolved. Dynamic cosine cross-engine confirmation remains
+  assigned to the existing Task 11 real-browser gate, not silently claimed here.
+- POST-DOCUMENTATION FINAL GREEN: complete `pnpm check` passes on Node 22.21.1 and Node 24.19.0.
+  The rebuilt oracle smoke passes, stage regeneration remains byte-identical at SHA-256
+  `5cd906f5b3a836b0beb3081a4a5f55077b5f5ba60f128d09b8edefef5482cc1c`, and `git diff --check`
+  reports no whitespace errors.

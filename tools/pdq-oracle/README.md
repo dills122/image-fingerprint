@@ -72,8 +72,9 @@ Errors are written to stderr and return status 2. RGBA is intentionally absent f
 the project fixture generator applies the approved deterministic white-compositing rule and records
 both the source RGBA checksum and normalized RGB oracle-input checksum.
 
-The diagnostics form accepts the same input and emits the initial luminance and 64 by 64
-downsample buffers as arrays of unsigned float32 bit patterns, plus quality. It exists only to
+The diagnostics form accepts the same input and emits the initial luminance, 64 by 64 downsample,
+16 by 64 DCT intermediate, and 16 by 16 DCT output buffers as arrays of unsigned float32 bit
+patterns. It also emits the median bit pattern, canonical hash, and quality. It exists only to
 generate exact intermediate-stage fixtures for the pure TypeScript port.
 
 `--metadata` returns protocol version 1, the official repository URL, and the pinned commit. The

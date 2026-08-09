@@ -54,8 +54,14 @@ const runDiagnostics = (format, width, height, bytes) => {
   const parsed = JSON.parse(result.stdout.toString('utf8'));
   assert.equal(parsed.lumaBits.length, width * height);
   assert.equal(parsed.downsampledBits.length, 64 * 64);
+  assert.equal(parsed.dctIntermediateBits.length, 16 * 64);
+  assert.equal(parsed.dctOutputBits.length, 16 * 16);
   assert.ok(parsed.lumaBits.every(Number.isInteger));
   assert.ok(parsed.downsampledBits.every(Number.isInteger));
+  assert.ok(parsed.dctIntermediateBits.every(Number.isInteger));
+  assert.ok(parsed.dctOutputBits.every(Number.isInteger));
+  assert.ok(Number.isInteger(parsed.medianBits));
+  assert.match(parsed.hash, /^[0-9a-f]{64}$/);
   assert.ok(Number.isInteger(parsed.quality));
   return parsed;
 };
@@ -100,6 +106,9 @@ process.stdout.write(`${JSON.stringify({
   diagnostics: {
     lumaValues: diagnostics.lumaBits.length,
     downsampledValues: diagnostics.downsampledBits.length,
+    dctIntermediateValues: diagnostics.dctIntermediateBits.length,
+    dctOutputValues: diagnostics.dctOutputBits.length,
+    hash: diagnostics.hash,
     quality: diagnostics.quality,
   },
 })}\n`);

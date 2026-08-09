@@ -6,8 +6,11 @@ import {
   expect,
   it,
 } from 'vitest';
+import { computePdqDct } from '../src/core/algorithms/pdq/dct';
 import { downsampleToPdqSize } from '../src/core/algorithms/pdq/downsample';
+import { hashPdqDct } from '../src/core/algorithms/pdq/hash';
 import { toFloatLuma } from '../src/core/algorithms/pdq/luminance';
+import { torbenMedian } from '../src/core/algorithms/pdq/median';
 import { computePdqQuality } from '../src/core/algorithms/pdq/quality';
 
 const PINNED_COMMIT = 'baefb4ed67b6cdc1d4c82dbaef858d50866ac424';
@@ -28,6 +31,10 @@ interface StageVector {
   readonly expected: {
     readonly lumaBits?: readonly number[];
     readonly downsampledBits?: readonly number[];
+    readonly dctIntermediateBits?: readonly number[];
+    readonly dctOutputBits?: readonly number[];
+    readonly medianBits?: number;
+    readonly hash?: string;
     readonly quality?: number;
   };
 }
@@ -50,6 +57,7 @@ interface RawVector {
     readonly format: 'gray8' | 'rgb8';
   };
   readonly expected: {
+    readonly hash: string;
     readonly quality: number;
   };
 }
@@ -152,7 +160,7 @@ describe('PDQ numeric stages', () => {
     }
   });
 
-  it('matches every frozen raw-vector quality answer', () => {
+  it('matches every frozen raw-vector hash and quality answer', () => {
     for (const vector of loadRawCorpus().vectors) {
       const luma = toFloatLuma({
         format: vector.oracleInput.format,
@@ -162,7 +170,85 @@ describe('PDQ numeric stages', () => {
       });
       const downsampled = downsampleToPdqSize(luma, vector.width, vector.height);
       expect(computePdqQuality(downsampled), vector.id).toBe(vector.expected.quality);
+      expect(hashPdqDct(computePdqDct(downsampled).output), vector.id).toBe(
+        vector.expected.hash,
+      );
     }
+  });
+
+  it('matches both DCT matrix passes bit for bit', () => {
+    const vectors = loadStageCorpus().vectors.filter(
+      (vector) => vector.expected.dctOutputBits !== undefined,
+    );
+
+    expect(vectors.length).toBeGreaterThanOrEqual(2);
+    for (const vector of vectors) {
+      const luma = toFloatLuma({
+        format: vector.format,
+        width: vector.width,
+        height: vector.height,
+        data: decode(vector.source),
+      });
+      const downsampled = downsampleToPdqSize(luma, vector.width, vector.height);
+      const dct = computePdqDct(downsampled);
+      expect(floatBits(dct.intermediate), vector.id).toEqual(
+        vector.expected.dctIntermediateBits,
+      );
+      expect(floatBits(dct.output), vector.id).toEqual(
+        vector.expected.dctOutputBits,
+      );
+    }
+  });
+
+  it('matches frozen median bits and canonical hashes', () => {
+    const vectors = loadStageCorpus().vectors.filter(
+      (vector) => vector.expected.hash !== undefined,
+    );
+
+    expect(vectors.length).toBeGreaterThanOrEqual(2);
+    for (const vector of vectors) {
+      const luma = toFloatLuma({
+        format: vector.format,
+        width: vector.width,
+        height: vector.height,
+        data: decode(vector.source),
+      });
+      const downsampled = downsampleToPdqSize(luma, vector.width, vector.height);
+      const dct = computePdqDct(downsampled);
+      expect(floatBits(Float32Array.of(torbenMedian(dct.output))), vector.id)
+        .toEqual([vector.expected.medianBits]);
+      expect(hashPdqDct(dct.output), vector.id).toBe(vector.expected.hash);
+    }
+  });
+
+  it('uses Torben lower-median behavior for even and tie-heavy inputs', () => {
+    expect(torbenMedian(Float32Array.from([
+      ...Array<number>(128).fill(0),
+      ...Array<number>(128).fill(1),
+    ]))).toBe(0);
+    expect(torbenMedian(Float32Array.from([
+      ...Array<number>(127).fill(0),
+      0.5,
+      0.5,
+      ...Array<number>(127).fill(1),
+    ]))).toBe(0.5);
+    expect(torbenMedian(Float32Array.from([
+      ...Array<number>(127).fill(0),
+      ...Array<number>(129).fill(1),
+    ]))).toBe(1);
+    expect(torbenMedian(Float32Array.of(0, 2, 3))).toBe(2);
+  });
+
+  it('uses strict thresholding and Meta word serialization order', () => {
+    expect(hashPdqDct(new Float32Array(256))).toBe('0'.repeat(64));
+
+    const coefficients = new Float32Array(256);
+    for (const index of [0, 15, 16, 255]) {
+      coefficients[index] = 1;
+    }
+    expect(hashPdqDct(coefficients)).toBe(
+      `8000${'0000'.repeat(13)}00018001`,
+    );
   });
 
   it('preserves the exact 64 by 64 fast path and quality endpoints', () => {
@@ -190,6 +276,15 @@ describe('PDQ numeric stages', () => {
     );
     expect(() => computePdqQuality(new Float32Array(4095))).toThrow(
       /Expected 4096 downsampled luma values/,
+    );
+    expect(() => computePdqDct(new Float32Array(4095))).toThrow(
+      /Expected 4096 downsampled luma values/,
+    );
+    expect(() => torbenMedian(new Float32Array())).toThrow(
+      /at least one value/,
+    );
+    expect(() => hashPdqDct(new Float32Array(255))).toThrow(
+      /Expected 256 DCT coefficients/,
     );
   });
 });

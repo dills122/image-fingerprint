@@ -5,10 +5,10 @@ changing hashes already stored by consumers.
 
 ## Status
 
-The PDQ core contract and dependency-ordered implementation plan are approved. Tasks 1–5 are
+The PDQ core contract and dependency-ordered implementation plan are approved. Tasks 1–6 are
 complete: the cross-runtime foundation, pinned oracle/corpus, normalized pixel boundary, and the
-internal luminance/Jarosz/quality stages are implemented. DCT, canonical hash output, and public
-`pdq-v1` dispatch remain gated in Tasks 6–11.
+internal luminance/Jarosz/quality/DCT/median/hash stages are implemented. Public `pdq-v1` dispatch
+and fingerprint records remain gated in Tasks 7–11.
 
 ## Documents
 
