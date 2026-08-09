@@ -132,6 +132,35 @@ jobs:
           --output "$RUNNER_TEMP/stage-vectors.json"
         cmp __tests__/fixtures/pdq/stage-vectors.json "$RUNNER_TEMP/stage-vectors.json"
 
+  browser-conformance:
+    name: Browser and worker conformance
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        persist-credentials: false
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+
+    - name: Use Node.js 24.x
+      uses: actions/setup-node@v6
+      with:
+        node-version: 24.x
+        cache: 'pnpm'
+        cache-dependency-path: pnpm-lock.yaml
+
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+
+    - name: Install matched browser engines
+      run: pnpm exec playwright install --with-deps chromium firefox webkit
+
+    - name: Verify packed browser and worker behavior
+      run: pnpm test:browser
+
   network-smoke:
     name: Live network smoke
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'

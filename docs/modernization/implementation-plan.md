@@ -1,6 +1,6 @@
 # PDQ v1 Implementation Plan
 
-Status: Tasks 1–7 complete; Tasks 8–11 awaiting authorization
+Status: Tasks 8–10 committed; Task 11 implemented and reviewed locally
 Updated: 2026-08-09
 
 ## Overview
@@ -18,7 +18,7 @@ Tasks 6–11 remain separately gated.
 ## Approved Architecture
 
 - The root `imageHash()` callback API and every legacy hash remain compatibility-locked.
-- `pdq-v1` is a synchronous TypeScript algorithm exposed through `image-hash/core` and re-exported
+- `pdq-v1` is a synchronous TypeScript algorithm exposed through `image-fingerprint/core` and re-exported
   by explicit Node and browser entrypoints.
 - Meta ThreatExchange commit `baefb4ed67b6cdc1d4c82dbaef858d50866ac424` is normative.
 - Same-source WASM is the primary differential/performance comparator; `pdq-wasm` is secondary.
@@ -294,19 +294,21 @@ the runtime-neutral public API.
 
 ### Task 8: Implement fingerprint parsing and canonical serialization
 
+**Status:** Implemented and reviewed locally on `codex/fingerprint-codec` on 2026-08-09.
+
 **Description:** Add strict runtime validation and round-trip helpers for schema version 1 records.
 
 **Acceptance criteria:**
 
-- [ ] PDQ parsing validates schema, algorithm, encoding, 64 hex characters, bit length 256, and
+- [x] PDQ parsing validates schema, algorithm, encoding, 64 hex characters, bit length 256, and
   integer quality 0–100.
-- [ ] Uppercase input may be accepted but always serializes to canonical lowercase.
-- [ ] BlockHash record validation also checks `bitsPerSide`, method, and derived bit length.
+- [x] Uppercase input may be accepted but always serializes to canonical lowercase.
+- [x] BlockHash record validation also checks `bitsPerSide`, method, and derived bit length.
 
 **Verification:**
 
-- [ ] Run valid, malformed, unknown-field, and round-trip record tests.
-- [ ] `pnpm typecheck`
+- [x] Run valid, malformed, unknown-field, and round-trip record tests.
+- [x] `pnpm typecheck`
 
 **Dependencies:** Task 7.
 
@@ -321,22 +323,24 @@ the runtime-neutral public API.
 
 ### Task 9: Implement Hamming comparison and opt-in PDQ match policy
 
+**Status:** Implemented and reviewed locally on `codex/fingerprint-codec` on 2026-08-09.
+
 **Description:** Add mathematical comparison with explicit incompatibility and a separate named
 policy helper.
 
 **Acceptance criteria:**
 
-- [ ] Hamming distance is symmetric, bounded, and tested at 0, 31, 32, and 256.
-- [ ] Algorithm, BlockHash parameter, and bit-length mismatches return `comparable: false` with the
+- [x] Hamming distance is symmetric, bounded, and tested at 0, 31, 32, and 256.
+- [x] Algorithm, BlockHash parameter, and bit-length mismatches return `comparable: false` with the
   approved reason instead of `matches: false`.
-- [ ] `PDQ_STARTING_POLICY` is explicit; policy eligibility requires both qualities to meet the
+- [x] `PDQ_STARTING_POLICY` is explicit; policy eligibility requires both qualities to meet the
   selected minimum and never alters distance.
 
 **Verification:**
 
-- [ ] `pnpm test -- __tests__/fingerprint-comparison.test.ts`
-- [ ] Property tests or seeded loops verify symmetry and identity.
-- [ ] `pnpm lint && pnpm typecheck`
+- [x] `pnpm test -- __tests__/fingerprint-comparison.test.ts`
+- [x] Property tests or seeded loops verify symmetry and identity.
+- [x] `pnpm lint && pnpm typecheck`
 
 **Dependencies:** Task 8.
 
@@ -351,21 +355,23 @@ policy helper.
 
 ### Task 10: Run large differential and numeric-discipline tests
 
+**Status:** Implemented and reviewed locally on `codex/fingerprint-codec` on 2026-08-09.
+
 **Description:** Prove the TypeScript implementation against thousands of seeded C++ vectors and
 use same-source WASM only to investigate discrepancies and establish a performance goalpost.
 
 **Acceptance criteria:**
 
-- [ ] At least 10,000 valid seeded raw inputs have exact hash and quality equality with C++.
-- [ ] Every mismatch is reduced to a committed regression vector before numeric code changes.
-- [ ] The minimum necessary `Math.fround`/`Float32Array` discipline is documented; no runtime WASM
+- [x] At least 10,000 valid seeded raw inputs have exact hash and quality equality with C++.
+- [x] Every mismatch is reduced to a committed regression vector before numeric code changes.
+- [x] The minimum necessary `Math.fround`/`Float32Array` discipline is documented; no runtime WASM
   dependency is introduced.
 
 **Verification:**
 
-- [ ] Run the opt-in differential command with its seed and summary recorded.
-- [ ] Repeat the accepted seed with identical results.
-- [ ] Run `pnpm check` after any numeric adjustment.
+- [x] Run the opt-in differential command with its seed and summary recorded.
+- [x] Repeat the accepted seed with identical results.
+- [x] Run `pnpm check` (no numeric adjustment was necessary).
 
 **Dependencies:** Tasks 2, 7, and 9.
 
@@ -380,30 +386,32 @@ use same-source WASM only to investigate discrepancies and establish a performan
 
 ## Checkpoint D: Public Core
 
-- [ ] Schema, codec, comparison, and policy behavior are reviewed as public contracts.
-- [ ] Fixed and randomized oracle conformance are exact.
-- [ ] `pnpm check` passes without a production WASM dependency.
+- [x] Schema, codec, comparison, and policy behavior are reviewed as public contracts.
+- [x] Fixed and randomized oracle conformance are exact.
+- [x] `pnpm check` passes without a production WASM dependency.
 
 ## Phase 4: Prove Packaging and Real Browser Execution
 
 ### Task 11: Verify packed CJS, ESM, browser, and worker behavior
+
+**Status:** Implemented and reviewed locally on `codex/fingerprint-codec` on 2026-08-09.
 
 **Description:** Expand package checks from Node-imported browser ESM to real browser engines and a
 Web Worker using identical raw fixture bytes.
 
 **Acceptance criteria:**
 
-- [ ] Packed root, `/node`, `/core`, `/browser`, historical `lib` paths, and `package.json` work in
+- [x] Packed root, `/node`, `/core`, `/browser`, historical `lib` paths, and `package.json` work in
   isolated consumers with the documented module formats.
-- [ ] Chromium, Firefox, and WebKit produce exact hash and quality equality for the same raw vectors
+- [x] Chromium, Firefox, and WebKit produce exact hash and quality equality for the same raw vectors
   on the main thread and in a worker.
-- [ ] Browser graphs contain no Node built-ins, Node decoders, native addon, or unexpected WASM.
+- [x] Browser graphs contain no Node built-ins, Node decoders, native addon, or unexpected WASM.
 
 **Verification:**
 
-- [ ] `pnpm test:package`
-- [ ] Run the browser-engine/worker conformance command.
-- [ ] Test TypeScript consumers under `node16`, `nodenext`, and `bundler` resolution.
+- [x] `pnpm test:package`
+- [x] Run the browser-engine/worker conformance command.
+- [x] Test TypeScript consumers under `node16`, `nodenext`, and `bundler` resolution.
 
 **Dependencies:** Task 10.
 
@@ -419,9 +427,9 @@ Web Worker using identical raw fixture bytes.
 
 ## Checkpoint E: Core Release Candidate
 
-- [ ] Exact PDQ is proven in supported Node and browser engines plus workers.
-- [ ] Legacy root and deep-import compatibility remain green.
-- [ ] The pure pixel API can independently ship or proceed to adapter work.
+- [x] Exact PDQ is proven in supported Node and browser engines plus workers.
+- [x] Legacy root and deep-import compatibility remain green.
+- [x] The pure pixel API can independently ship or proceed to adapter work.
 
 ## Phase 5: Add Encoded-Image Adapters Behind a Separate Gate
 

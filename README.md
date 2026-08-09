@@ -107,6 +107,59 @@ describes the image's information content; it is not a similarity score. Hamming
 quality policy, and match thresholds remain explicit later API layers rather than hidden behavior
 inside fingerprint generation. PDQ is a copy-similarity signal, not a cryptographic hash.
 
+### Store and restore fingerprints
+
+Use the codec helpers when persisting a fingerprint or reading one from an untrusted store:
+
+```typescript
+import {
+  parseFingerprint,
+  serializeFingerprint,
+} from 'image-fingerprint/core';
+
+const serialized = serializeFingerprint(fingerprint);
+const restored = parseFingerprint(serialized);
+```
+
+`parseFingerprint` accepts one schema-versioned JSON record and rejects missing, unknown, or
+inconsistent fields. Uppercase hexadecimal input is accepted for interoperability, while parsed
+records and `serializeFingerprint` output always use canonical lowercase hexadecimal. Serialization
+also revalidates its input at runtime. BlockHash records must carry the method and `bitsPerSide`
+that agree with their bit length and hexadecimal hash length.
+
+### Compare fingerprints and apply policy
+
+`compareFingerprints` reports mathematical Hamming distance only. Incompatible algorithms,
+BlockHash parameters, or bit lengths produce an explicit non-comparable result:
+
+```typescript
+import {
+  compareFingerprints,
+  evaluatePdqMatch,
+  PDQ_STARTING_POLICY,
+} from 'image-fingerprint/core';
+
+const comparison = compareFingerprints(firstFingerprint, secondFingerprint);
+if (comparison.comparable) {
+  console.log(comparison.distance);
+  console.log(comparison.normalizedDistance); // distance / bitLength
+} else {
+  console.log(comparison.reason);
+}
+
+const policyResult = evaluatePdqMatch(
+  firstPdqFingerprint,
+  secondPdqFingerprint,
+  PDQ_STARTING_POLICY,
+);
+```
+
+`PDQ_STARTING_POLICY` is the explicit `{ maxDistance: 31, minQuality: 50 }` starting point from the
+PDQ ecosystem; it is never applied automatically. `evaluatePdqMatch` requires a policy argument.
+Both fingerprints must meet its minimum quality before the result is eligible, while the underlying
+distance remains unchanged. Product thresholds should be calibrated against representative data.
+`normalizedDistance` is not a probability or semantic-similarity percentage.
+
 Encoded-image decoding is deliberately outside this core boundary. Browser `File`, `Blob`, URL,
 orientation, alpha, and color-normalization adapters will be added against the same contract.
 
@@ -219,9 +272,16 @@ pnpm install --frozen-lockfile
 pnpm check
 ```
 
-`pnpm check` runs linting, strict typechecking, offline tests with coverage floors, a build, and a
-smoke test against the packaged CommonJS entrypoint. Live remote-input tests are intentionally
-separate and can be run with `pnpm test:network`.
+`pnpm check` runs linting, strict typechecking, offline tests with coverage floors, a build, and
+isolated CommonJS, ESM, and TypeScript checks against the packed tarball. Live remote-input tests
+are intentionally separate and can be run with `pnpm test:network`.
+
+Install Playwright's matched engines once, then run the opt-in real-browser and module-worker gate:
+
+```bash
+pnpm exec playwright install chromium firefox webkit
+pnpm test:browser
+```
 
 Reusable Codex guidance is linked from the sibling `ai-central` checkout. Refresh those local links
 with `pnpm codex:links`, or set `AI_CENTRAL_HOME` if that checkout lives elsewhere. See
@@ -237,6 +297,7 @@ algorithms is recorded in
 - Offline unit/integration suite: `pnpm test`
 - Full local quality gate: `pnpm check`
 - Published file-set verification: `pnpm pack:check`
+- Packed Chromium, Firefox, WebKit, and module-worker conformance: `pnpm test:browser`
 - Opt-in live network tests: `pnpm test:network`
 
 ## Releasing

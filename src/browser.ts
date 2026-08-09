@@ -1,4 +1,11 @@
-export { fingerprintPixels } from './core';
+export {
+  fingerprintPixels,
+  parseFingerprint,
+  serializeFingerprint,
+  compareFingerprints,
+  evaluatePdqMatch,
+  PDQ_STARTING_POLICY,
+} from './core';
 export type {
   BlockHashFingerprint,
   BlockHashFingerprintOptions,
@@ -6,11 +13,17 @@ export type {
   BlockHashParameters,
   FingerprintAlgorithm,
   FingerprintEncoding,
+  FingerprintComparison,
   FingerprintOptions,
   FingerprintSchemaVersion,
+  ComparableFingerprintComparison,
+  IncompatibleFingerprintComparison,
   ImageFingerprint,
   PdqFingerprint,
+  PdqFingerprintComparison,
   PdqFingerprintOptions,
+  PdqMatchPolicy,
+  PdqMatchResult,
   Gray8PixelSource,
   PixelSource,
   Rgb8PixelSource,

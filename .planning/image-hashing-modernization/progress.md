@@ -609,3 +609,163 @@ plan is awaiting maintainer review; production implementation remains behind tha
 - POST-REVIEW FINAL GREEN: complete `pnpm check` passes on Node 22.22.1 and Node 24.19.0 with 68
   passing tests, five unchanged network skips, 94.04% statement / 88.88% branch coverage, strict
   types, builds, and exact root/core/browser package smoke. Task 7 is ready for commit and CI.
+
+## 2026-08-09 — Task 8 Authorization
+
+- PR #7 merged as `b2edec5` with Node 22, Node 24, package integrity, Linux arm64 oracle,
+  workflow-analysis, and CodeQL checks green.
+- Fast-forwarded local `main` to `b2edec5` and created `codex/fingerprint-codec` from that clean
+  baseline. The maintainer authorized Task 8; Tasks 9–11 and adapters remain out of scope.
+- Task 8 will be test-driven against the approved schema-1 PDQ and BlockHash record contracts,
+  strict malformed-input rejection, canonical lowercase output, and round-trip behavior.
+- RED: added focused codec tests for canonical PDQ and BlockHash round trips, uppercase
+  normalization, malformed fixed fields, invalid derived BlockHash metadata, unknown fields,
+  invalid JSON, and serialization-time revalidation. The valid cases fail because the codec is not
+  implemented (`3 failed, 25 passed`); malformed cases currently throw for that same missing export
+  and must be rechecked after implementation.
+- The first combined implementation patch did not apply because its progress-file context used
+  wording that differed from the existing authorization entry. `apply_patch` rejected the patch
+  atomically, so no production file or export was partially changed.
+- GREEN: the minimal codec implementation and public re-exports make all 28 focused cases pass.
+  TypeScript and ESLint also pass under Node 22.22.1.
+- FULL GREEN before review: `pnpm check` passes on Node 22.22.1 and Node 24.19.0 with 96 tests
+  passing, five unchanged network tests skipped, 94.15% statement / 89.72% branch coverage, strict
+  typecheck, builds, and packed root/core/browser codec smoke checks.
+- Multi-axis review found one small cleanup: remove an unreachable internal algorithm assertion and
+  explicitly cover PDQ quality endpoints, both valid BlockHash methods, non-string JavaScript
+  input, unsafe derived bit lengths, and canonical field reordering.
+- POST-REVIEW FINAL GREEN: `pnpm check` passes on Node 22.22.1 and Node 24.19.0 with 101 tests
+  passing, five unchanged network tests skipped, 94.64% statement / 90.9% branch coverage, strict
+  typecheck, builds, and packed entrypoint smoke tests. `git diff --check` is clean.
+- Review verdict: approve Task 8. The codec reconstructs exact schema-v1 records, validates all
+  untrusted fields before returning or serializing, adds no dependency, stays synchronous and
+  runtime-neutral, preserves the legacy callback/hash contract, and does not absorb Task 9 matching
+  policy or Task 12 decoding concerns.
+
+## 2026-08-09 — Task 9 Authorization
+
+- The maintainer requested the reviewed Task 8 checkpoint be committed and authorized moving to
+  Task 9 on the current feature branch as a separate commit.
+- The first `git add`/`git commit` attempt was blocked because the workspace sandbox could not
+  create `.git/index.lock`. Retrying the same scoped Git operation with approved Git metadata
+  access succeeded; Task 8 is committed as `2da5ae8` (`Add canonical fingerprint codec`).
+- Task 9 is limited to mathematical Hamming comparison, explicit incompatibility, a named PDQ
+  starting-policy constant, and an opt-in policy evaluator. Task 10 differential expansion and
+  later runtime adapters remain out of scope.
+- RED: added 22 focused tests covering distances 0, 31, 32, and 256; BlockHash comparison;
+  algorithm/parameter/bit-length incompatibility; malformed hashes; 100 seeded symmetry/identity
+  iterations; explicit starting and custom policies; quality eligibility; and invalid policy
+  bounds. Fifteen behavior tests fail because the Task 9 exports do not exist; seven rejection tests
+  currently throw for that same missing-function reason and must be rechecked after implementation.
+- GREEN: implemented decoder-free hexadecimal Hamming comparison, explicit incompatibility,
+  `PDQ_STARTING_POLICY`, policy/runtime validation, and a discriminated opt-in PDQ policy result.
+  All 22 focused tests pass; strict TypeScript and ESLint also pass under Node 22.22.1.
+- The first combined documentation/package-smoke patch used README context with an incorrect line
+  break and was rejected atomically. No README, smoke script, or progress content changed before
+  the narrower patches below.
+- FULL GREEN before review: `pnpm check` passes on Node 22.22.1 and Node 24.19.0 with 123 tests
+  passing, five unchanged network tests skipped, 94.43% statement / 91.08% branch coverage, strict
+  types, builds, and packed root/core/browser comparison-policy smoke checks.
+- REVIEW RED: four new JavaScript-boundary regressions fail against the initial implementation:
+  unsupported identical algorithms, invalid schema/encoding headers, and equal but internally
+  inconsistent PDQ/BlockHash bit lengths were incorrectly reported as comparable.
+- REVIEW GREEN: comparison now validates supported schema headers and internal algorithm metadata
+  before returning a comparable result. Genuine differences between valid records still return the
+  approved incompatibility reasons. The focused suite passes all 36 tests, including untyped
+  non-object, parameter, quality, policy, algorithm, and incompatible-input guards.
+- POST-REVIEW FINAL GREEN: `pnpm check` passes on Node 22.22.1 and Node 24.19.0 with 137 tests
+  passing, five unchanged network tests skipped, 95% statement / 92.35% branch coverage, strict
+  types, builds, and packed root/core/browser smoke tests.
+- Multi-axis review verdict: approve Task 9. Comparison is deterministic, symmetric, bounded, and
+  linear in the fixed fingerprint text; policy cannot silently affect distance; incompatible and
+  invalid inputs remain distinguishable; the implementation adds no dependency or runtime I/O and
+  stays inside the pure browser-safe core.
+
+## 2026-08-09 — Task 10 Authorization
+
+- Committed reviewed Task 9 as `bb80bc9` (`Add fingerprint comparison policy`) after its cached
+  diff check passed. The maintainer authorized moving directly to Task 10.
+- Task 10 will add only development conformance tooling, an opt-in native-oracle batch seam, seeded
+  differential tests, mismatch reduction guidance, and numeric-discipline evidence. It will not
+  change `pdq-v1`, add runtime WASM, or begin Task 11 browser-engine work.
+- Two exploratory Node 22 type-stripping commands failed as expected for this source layout: first
+  directory resolution could not find `./src/core`, then explicit `index.ts` loading could not
+  resolve extensionless ESM imports. The harness will use the normal built `lib/core` artifact
+  instead of repeating source-loader experiments.
+- Captured the TDD red baseline for the deterministic runner: the focused Vitest suite fails because `scripts/pdq-differential.mjs` does not exist yet.
+- Captured the TDD red baseline for batch mode with the current metadata/diagnostics-capable native oracle: all existing smoke checks reach the new `--batch` assertion, which fails with the pre-batch usage response.
+- GREEN: rebuilt the pinned Apple Clang 21 arm64 oracle with `-ffp-contract=off`; legacy single,
+  metadata, diagnostics, two-request batch, and truncated-batch smoke checks pass.
+- GREEN: all six deterministic runner CLI tests pass, the distributable core builds, and a
+  100-vector end-to-end trial returned exact hash and quality equality.
+- ACCEPTED DIFFERENTIAL: two runs of 10,000 vectors with seed `0x5eedc0de` each returned 10,000
+  exact matches and zero mismatches. Stable source/oracle-input checksums were identical; measured
+  comparison times were 4,089.338 ms and 4,122.152 ms.
+- REVIEW: found and fixed a deterministic-generator collision where numeric seed zero was silently
+  mapped to `0x6d2b79f5`. Zero now remains a distinct (degenerate but valid) xorshift32 stream, and a
+  regression test freezes that distinction. Oracle result parsing also rejects quality outside
+  the public 0–100 contract.
+- REVIEW: executing the initially documented `pnpm pdq:differential -- --plan-only ...` form proved
+  that pnpm 11 forwards the standalone separator to this strict script, which correctly rejected it.
+  The documented package invocation now omits that separator and matches the verified command.
+- POST-REVIEW FINAL GREEN: `pnpm check` passes on Node 22.22.1 and Node 24.19.0 with 144 tests
+  passing, five unchanged network skips, 95% statement / 92.35% branch coverage, strict types,
+  builds, and packed root/core/browser smoke tests. The rebuilt native oracle also passes all single,
+  diagnostic, metadata, batch, and malformed-batch smoke checks.
+- The first package dry-run reached a successful prepack build but failed on the user's pre-existing
+  root-owned npm cache. Repeating it with a fresh isolated `/tmp` cache passed and confirmed the 75
+  published files remain limited to LICENSE, README, `lib/**`, and `package.json`; the native wrapper,
+  differential runner, fixtures, tests, and planning files are excluded.
+- Multi-axis review verdict: approve Task 10 after fixing the zero-seed collision and documented
+  pnpm invocation. The change is development-only, validates all framed and oracle boundaries, adds
+  no dependency or runtime WASM/native path, preserves legacy and public core behavior, and provides
+  reproducible exact equality evidence at the required scale.
+
+## 2026-08-09 — Task 11 Authorization
+
+- Committed Task 10 as `779b67b` (`Add large PDQ differential testing`) with a clean worktree. The
+  maintainer authorized Task 11 on the current feature branch.
+- Audited the current package/browser smoke scripts and CI. Existing browser ESM is executed only
+  inside Node; the HTML fixture is not launched, has no worker, and no TypeScript consumer-resolution
+  matrix exists.
+- A broad shell inspection used the ambient runtime for `pnpm list` and hit an incompatible Corepack
+  path, then an explicit Node 22 retry hit the sandboxed pnpm store database. Neither command changed
+  package state; all implementation commands will keep using the approved explicit Node runtime.
+- The first registry lookup was blocked by sandbox DNS and was stopped before its long final retry.
+  The approved network retry returned current Playwright version 1.62.1.
+- RED: added four focused plan-contract tests. The two positive tests failed because the packed
+  package and browser-engine runners did not exist; strict unknown-argument cases already exited
+  nonzero for the same missing-script reason.
+- GREEN (packed consumers): the tarball-only harness passes two runtime consumers (CommonJS and ESM),
+  six public/compatibility subpaths, and strict TypeScript consumers under `node16`, `nodenext`, and
+  `bundler` resolution.
+- Added Playwright 1.62.1 as a development-only dependency after the repository's supply-chain
+  policy accepted the lockfile update. Its local license is Apache-2.0.
+- The first browser run was blocked solely because the workspace sandbox prohibits loopback listen.
+  The approved unchanged retry passed Chromium 151.0.7922.34, Firefox 153.0, and WebKit 26.5.
+- GREEN (real browsers): all three engines produced exact expected hash and quality for gray8, rgb8,
+  and rgba8 on both the main thread and a module worker. The observed request graphs contained only
+  the HTML page, worker module, packed browser entry, and packed core chunk, with no WASM request.
+- GREEN (package command): the expanded `pnpm test:package` passes the existing self-reference and
+  browser-graph checks plus the new isolated tarball runtime/type matrix.
+- REVIEW: the initial isolated ESM fixture accessed root and `/node` through their CommonJS default
+  objects, which would not catch a named-export interop regression. It now imports the documented
+  `imageHash` and `fingerprintPixels` names directly.
+- Dependency review: Playwright is a direct standalone development path and Apache-2.0 licensed.
+  The production audit is clean. A full development audit reports pre-existing high advisories in
+  ESLint's `flatted` path and Vitest/typescript-eslint's older `picomatch` path; neither traverses
+  Playwright or enters the published dependency graph.
+- POST-REVIEW FINAL GREEN: `pnpm check` passes on Node 22.22.1 and Node 24.19.0 with 148 tests
+  passing, five unchanged network skips, 95% statement / 92.35% branch coverage, strict types,
+  builds, static browser-graph checks, and isolated packed runtime/type consumers.
+- The opt-in real-browser gate passes under both Node 22 and Node 24 for Chromium, Firefox, and
+  WebKit on the main thread and in a module worker. The package dry-run still contains only LICENSE,
+  README, `lib/**`, and `package.json`; Playwright code, browser binaries, harnesses, and fixtures are
+  not published.
+- Multi-axis review verdict: approve Task 11 after strengthening named ESM interop coverage. The
+  loopback server is path-confined to a generated temporary consumer, cleanup targets only its
+  `mkdtemp` root, commands avoid shell interpolation, browser processes close in `finally`, and CI
+  pins execution through the lockfile-matched Playwright/browser versions.
+- The first workflow-YAML syntax probe used a keyword supported only by newer Ruby/Psych and failed
+  before parsing. Repeating the read with the system Ruby 2.6-compatible call parsed the workflow
+  successfully; `git diff --check` is also clean.

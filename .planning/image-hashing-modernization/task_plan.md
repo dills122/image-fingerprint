@@ -1,6 +1,6 @@
 # Image Hashing Modernization Plan
 
-Status: Tasks 1–7 and portability hardening complete locally; Tasks 8–11 awaiting authorization
+Status: Tasks 8–10 committed; Task 11 implemented and reviewed locally
 Task ID: `image-hashing-modernization`
 Updated: 2026-08-09
 
@@ -84,6 +84,10 @@ block pure-core implementation planning.
 - [x] Freeze the DCT matrix as exact float32 bits and remove runtime transcendental math.
 - [x] Build a same-source WASM differential and decide the final portable `pdq-v1` arithmetic profile.
 - [x] Task 7: compose and expose the runtime-neutral `pdq-v1` raw-pixel dispatch.
+- [x] Task 8: implement strict fingerprint parsing and canonical serialization.
+- [x] Task 9: implement Hamming comparison and explicit PDQ match policy.
+- [x] Task 10: run a reproducible 10,000-vector differential and freeze numeric-discipline evidence.
+- [x] Task 11: verify packed CJS, ESM, browser-engine, worker, and TypeScript consumer behavior.
 - [ ] Lock legacy contracts and baseline benchmarks.
 - [ ] Implement the selected raw-pixel PDQ core/adapter.
 - [ ] Add decoder adapters and public versioned API.
@@ -100,8 +104,11 @@ first GitHub x64 oracle job exposed architecture-sensitive native answers. That 
 canonical arm64 CI, freezes numeric constants, and evaluates same-source WASM before Task 7 public
 dispatch. That checkpoint is complete with an accepted portable unfused profile and hosted Linux
   arm64 confirmation. The maintainer authorized Task 7 on 2026-08-09, and its reviewed local
-  implementation is complete; Tasks 8–11 still require a separate implementation decision, and
-  encoded-image adapters remain gated at Task 12.
+  implementation is merged. The maintainer authorized Task 8 on 2026-08-09, and its local
+  implementation was committed as `2da5ae8`. The maintainer authorized Task 9 on 2026-08-09;
+  Task 9 was committed as `bb80bc9`, and Task 10 was committed as `779b67b`. The maintainer
+  authorized Task 11 on 2026-08-09; its local implementation has passed review, real-browser
+  execution, and both supported-runtime gates. Encoded-image adapters remain gated at Task 12.
 
 ## Current Decisions
 

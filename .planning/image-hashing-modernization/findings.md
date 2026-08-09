@@ -622,3 +622,104 @@ primary-source verification before entering contract documentation.
 - Apple Clang 21 with `-ffp-contract=off` regenerates the accepted raw and stage corpora exactly for
   both arm64 and x86_64 targets. Disabling contraction therefore removes the original x64 split on
   the fixed corpus; production TypeScript additionally removes runtime coefficient generation.
+
+## 2026-08-09 Task 8 Codec Contract
+
+- The approved schema-v1 record is an object/JSON envelope. Task 8 will expose
+  `parseFingerprint(serialized: string): ImageFingerprint` and
+  `serializeFingerprint(fingerprint: ImageFingerprint): string` as the smallest explicit
+  round-trip API.
+- Parsing is strict: JSON must decode to exactly one supported record shape, with no unknown
+  top-level fields and no unknown BlockHash parameter fields. Serialization repeats runtime
+  validation so untyped JavaScript callers cannot emit invalid persisted records.
+- Canonical JSON is produced by reconstructing records in schema order before `JSON.stringify`.
+  Accepted uppercase hexadecimal is normalized to lowercase in both parsed records and serialized
+  output.
+- `pdq-v1` requires schema version 1, `hex`, exactly 64 hexadecimal characters, bit length 256,
+  and integer quality from 0 through 100.
+- `blockhash-v1` requires a positive even safe-integer `bitsPerSide`, method 1 or 2, bit length
+  exactly equal to `bitsPerSide ** 2`, and a hexadecimal hash whose length is `bitLength / 4`.
+  This mirrors the legacy nibble serialization and the existing portable dispatcher contract.
+- Codec exports belong to `/core` and are re-exported from the browser and root/Node surfaces; the
+  implementation remains decoder-free and runtime-neutral.
+- Existing packed-package smoke tests already exercise root, `/core`, browser CommonJS, and browser
+  ESM surfaces. Task 8 extends those same checks with codec round trips so declaration/build/export
+  drift is caught without adding a new harness.
+
+## 2026-08-09 Task 9 Comparison Contract
+
+- `compareFingerprints(left, right)` is mathematical only. Comparable results contain algorithm,
+  Hamming distance, bit length, and `distance / bitLength`; incompatible results use exactly
+  `algorithm-mismatch`, `parameter-mismatch`, or `bit-length-mismatch`.
+- Compatibility checks are ordered by algorithm, BlockHash parameters, then bit length. This makes
+  different BlockHash configurations explicitly incompatible rather than treating them as valid
+  non-matches.
+- Comparison does not apply quality or a distance threshold. Hamming is computed over validated
+  equal-length hexadecimal strings and remains bounded by the declared bit length.
+- Task 9 will export `PDQ_STARTING_POLICY` as `{ maxDistance: 31, minQuality: 50 }`, but no function
+  uses it implicitly.
+- The explicit policy API will be
+  `evaluatePdqMatch(left: PdqFingerprint, right: PdqFingerprint, policy: PdqMatchPolicy)`.
+  Its result retains the unchanged comparable PDQ distance and distinguishes an ineligible
+  `quality-below-minimum` result from an eligible distance match/non-match.
+- Policy fields are runtime validated as integers: `maxDistance` from 0 through 256 and
+  `minQuality` from 0 through 100.
+
+## 2026-08-09 Task 10 Differential Design
+
+- The current native oracle accepts exactly one gray/RGB request per process. Spawning it 10,000
+  times would measure process startup and make the required gate unnecessarily slow. Add an opt-in
+  `--batch` protocol to the development-only wrapper while preserving its existing single-request,
+  diagnostics, metadata, and 64 MiB-per-input contracts.
+- The batch wire format will be length-delimited binary requests and newline-delimited JSON answers.
+  It needs explicit version/magic bytes, format, dimensions, byte length, per-request size checks,
+  truncation rejection, and a clean EOF boundary.
+- A deterministic Node runner will generate seeded `gray8`, `rgb8`, and `rgba8` sources. RGBA is
+  hashed directly by TypeScript and composited over white to RGB for the C++ oracle, preserving the
+  approved normalized-pixel contract.
+- The runner will use one native oracle process, compare exact hash and quality against the built
+  TypeScript core, emit a seed/count/profile/timing/mismatch JSON report, and exit nonzero on any
+  mismatch. It will run twice with the same seed as the acceptance gate.
+- Production source must not import the oracle or WASM. The differential command may build the
+  existing package first and consume `lib/core`; all native artifacts, request streams, and reports
+  remain outside the published package unless a mismatch is intentionally reduced to the committed
+  regression fixture.
+- Node's type-stripping execution cannot import the current extensionless ESM-style TypeScript
+  source graph directly. The differential package command should therefore build first instead of
+  depending on experimental source execution or adding a loader dependency.
+- The accepted version-1 profile produced exact hash and quality equality for all 10,000 vectors
+  twice with seed `0x5eedc0de`. Both runs reproduced source checksum
+  `3e38c867c8f245147dc69b19f918954e1eb2271b22bfbad4130cbcac6a480def` and oracle-input checksum
+  `2c1d2c56498dbbb9ccea121c5cafee99c880f26b8f9e99b79b3b35de862d36f7`.
+- Because mismatch count was zero, Task 10 requires no new regression fixture and no numeric code
+  adjustment. The existing explicit `Math.fround`/`Float32Array` profile is sufficient for this
+  expanded corpus.
+
+## 2026-08-09 Task 11 Browser And Package Design
+
+- The current `test:package` exercises root/core/browser CommonJS plus browser ESM from Node's
+  package self-reference. `scripts/browser-smoke.html` is never launched by CI and covers only the
+  main thread, so it cannot satisfy real-engine or worker conformance.
+- Task 11 will test a tarball extracted into an isolated temporary consumer. Runtime checks will
+  cover CommonJS, ESM, root, `/node`, `/core`, `/browser`, historical `lib` paths, and package
+  metadata; TypeScript checks will compile consumers under `node16`, `nodenext`, and `bundler`.
+- A small Playwright library runner is sufficient; the project does not need a second general test
+  framework. It will serve the extracted package over loopback and run the same exact raw PDQ bytes
+  on the main thread and in a module worker under Chromium, Firefox, and WebKit.
+- Official Playwright documentation requires browser binaries matched to the installed Playwright
+  version and documents `playwright install --with-deps` for CI. It supports Chromium, Firefox, and
+  WebKit from one library API. Official TypeScript documentation confirms that `node16`, `nodenext`,
+  and `bundler` all honor package `exports`; bundler differs by not requiring relative extensions.
+- The registry reports Playwright 1.62.1 as current on 2026-08-09. It will be a development-only
+  dependency; no Playwright code or browser binary may enter the published package.
+
+Primary sources: <https://playwright.dev/docs/browsers>, <https://playwright.dev/docs/ci>,
+<https://playwright.dev/docs/api/class-browsertype>, and
+<https://www.typescriptlang.org/tsconfig/moduleResolution>.
+
+- Accepted local engine evidence is Chromium 151.0.7922.34, Firefox 153.0, and WebKit 26.5 through
+  Playwright 1.62.1. Each engine loaded the extracted npm tarball and returned exact expected PDQ
+  hash and quality for all three packed formats on both execution surfaces.
+- The isolated runtime matrix uses direct named ESM imports, CommonJS requires, and the exact
+  published export map. TypeScript compilation is performed from outside the repository package
+  using the declarations inside the extracted tarball.

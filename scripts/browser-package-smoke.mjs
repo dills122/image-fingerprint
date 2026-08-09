@@ -1,7 +1,14 @@
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { fingerprintPixels } from 'image-fingerprint/browser';
+import {
+  fingerprintPixels,
+  parseFingerprint,
+  serializeFingerprint,
+  compareFingerprints,
+  evaluatePdqMatch,
+  PDQ_STARTING_POLICY,
+} from 'image-fingerprint/browser';
 
 const { imageHash: imageHashFromNode } = await import('image-fingerprint/node');
 assert.equal(typeof imageHashFromNode, 'function');
@@ -55,6 +62,31 @@ assert.deepEqual(pdqFingerprint, {
   hash: 'd4b5348d96a593a4695a93b493a4d9263b0ec67196a59b2693a4348d6cdb6ccb',
   bitLength: 256,
   quality: 59,
+});
+
+const serializedFingerprint = serializeFingerprint(pdqFingerprint);
+assert.deepEqual(parseFingerprint(serializedFingerprint), pdqFingerprint);
+assert.deepEqual(compareFingerprints(pdqFingerprint, pdqFingerprint), {
+  comparable: true,
+  algorithm: 'pdq-v1',
+  distance: 0,
+  bitLength: 256,
+  normalizedDistance: 0,
+});
+assert.deepEqual(evaluatePdqMatch(
+  pdqFingerprint,
+  pdqFingerprint,
+  PDQ_STARTING_POLICY,
+), {
+  eligible: true,
+  matches: true,
+  comparison: {
+    comparable: true,
+    algorithm: 'pdq-v1',
+    distance: 0,
+    bitLength: 256,
+    normalizedDistance: 0,
+  },
 });
 
 const libDirectory = fileURLToPath(new URL('../lib/esm', import.meta.url));

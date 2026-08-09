@@ -4,75 +4,88 @@
     <meta charset="utf-8">
     <title>image-fingerprint browser smoke</title>
   </head>
-  <body data-status="pending">Running browser package smoke…</body>
+  <body data-status="pending" data-main-status="pending" data-worker-status="pending">
+    Running browser package smoke…
+  </body>
   <script type="module">
-    import { fingerprintPixels } from '../lib/esm/browser.mjs';
+    import { fingerprintPixels } from '/node_modules/image-fingerprint/lib/esm/browser.mjs';
 
-    const fingerprint = fingerprintPixels({
-      width: 2,
-      height: 2,
-      data: new Uint8ClampedArray([
-        0, 0, 0, 255,
-        255, 255, 255, 255,
-        64, 64, 64, 255,
-        192, 192, 192, 255,
-      ]),
-    }, {
-      algorithm: 'blockhash-v1',
-      bitsPerSide: 2,
-      method: 2,
-    });
-
-    const expected = JSON.stringify({
-      schemaVersion: 1,
-      algorithm: 'blockhash-v1',
-      encoding: 'hex',
-      hash: '5',
-      bitLength: 4,
-      parameters: {
-        bitsPerSide: 2,
-        method: 2,
-      },
-    });
-    const actual = JSON.stringify(fingerprint);
-
-    if (actual !== expected) {
-      document.body.dataset.status = 'failed';
-      document.body.textContent = `Expected ${expected}, received ${actual}`;
-      throw new Error(document.body.textContent);
-    }
-
-    const pdqFingerprint = fingerprintPixels({
-      format: 'gray8',
-      width: 5,
-      height: 5,
-      data: Uint8Array.from([
-        0, 41, 82, 123, 164,
-        13, 54, 95, 136, 177,
-        26, 67, 108, 149, 190,
-        39, 80, 121, 162, 203,
-        52, 93, 134, 175, 216,
-      ]),
-    }, {
-      algorithm: 'pdq-v1',
-    });
-    const expectedPdq = JSON.stringify({
+    const gray = [
+      0, 41, 82, 123, 164,
+      13, 54, 95, 136, 177,
+      26, 67, 108, 149, 190,
+      39, 80, 121, 162, 203,
+      52, 93, 134, 175, 216,
+    ];
+    const sources = {
+      gray8: gray,
+      rgb8: gray.flatMap((value) => [value, value, value]),
+      rgba8: gray.flatMap((value) => [value, value, value, 255]),
+    };
+    const expected = {
       schemaVersion: 1,
       algorithm: 'pdq-v1',
       encoding: 'hex',
       hash: 'd4b5348d96a593a4695a93b493a4d9263b0ec67196a59b2693a4348d6cdb6ccb',
       bitLength: 256,
       quality: 59,
-    });
-    const actualPdq = JSON.stringify(pdqFingerprint);
+    };
 
-    if (actualPdq !== expectedPdq) {
+    const hashSources = () => Object.fromEntries(Object.entries(sources).map(([format, data]) => [
+      format,
+      fingerprintPixels({
+        format,
+        width: 5,
+        height: 5,
+        data: Uint8Array.from(data),
+      }, {
+        algorithm: 'pdq-v1',
+      }),
+    ]));
+
+    const assertResults = (results, context) => {
+      for (const [format, fingerprint] of Object.entries(results)) {
+        if (JSON.stringify(fingerprint) !== JSON.stringify(expected)) {
+          throw new Error(
+            `${context} ${format}: expected ${JSON.stringify(expected)}, received ${JSON.stringify(fingerprint)}`,
+          );
+        }
+      }
+    };
+
+    const fail = (error) => {
       document.body.dataset.status = 'failed';
-      document.body.textContent = `Expected ${expectedPdq}, received ${actualPdq}`;
-      throw new Error(document.body.textContent);
-    }
+      document.body.textContent = error instanceof Error ? error.message : String(error);
+      throw error;
+    };
 
-    document.body.dataset.status = 'passed';
-    document.body.textContent = JSON.stringify({ blockhash: fingerprint, pdq: pdqFingerprint });
+    try {
+      const mainThread = hashSources();
+      assertResults(mainThread, 'main-thread');
+      document.body.dataset.mainStatus = 'passed';
+
+      const worker = new Worker('/scripts/browser-smoke-worker.mjs', { type: 'module' });
+      worker.addEventListener('error', fail, { once: true });
+      worker.addEventListener('message', ({ data }) => {
+        try {
+          if (data.error !== undefined) {
+            throw new Error(data.error);
+          }
+          assertResults(data.results, 'module-worker');
+          document.body.dataset.workerStatus = 'passed';
+          document.body.dataset.status = 'passed';
+          document.body.textContent = JSON.stringify({
+            mainThread,
+            moduleWorker: data.results,
+          });
+          worker.terminate();
+        } catch (error) {
+          fail(error);
+        }
+      }, { once: true });
+      worker.postMessage(sources);
+    } catch (error) {
+      fail(error);
+    }
   </script>
 </html>
