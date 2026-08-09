@@ -109,9 +109,10 @@ canonical arm64 CI, freezes numeric constants, and evaluates same-source WASM be
 dispatch. That checkpoint is complete with an accepted portable unfused profile and hosted Linux
   arm64 confirmation. The maintainer authorized Task 7 on 2026-08-09, and its reviewed local
   implementation is merged. The maintainer authorized Task 8 on 2026-08-09, and its local
-  implementation was committed as `2da5ae8`. The maintainer authorized Task 9 on 2026-08-09;
-  Task 9 was committed as `bb80bc9`, and Task 10 was committed as `779b67b`. The maintainer
-  authorized Task 11 on 2026-08-09; its authoritative rebased tip is `631ac3f`. The approved adapter work was
+  implementation is now at rebased commit `bfd48d5`. The maintainer authorized Task 9 on 2026-08-09;
+  Task 9 is now at `723d26f`, and Task 10 is now at `c375daa`. The maintainer
+  authorized Task 11 on 2026-08-09; its authoritative rebased tip is `631ac3f`. The approved
+  adapter work was
   rebased onto that exact tip, and Tasks 12–14 now pass packed-package, Node, and real-browser
   main-thread/worker gates. Task 15 remains the separate decoder-tolerance evidence gate.
 

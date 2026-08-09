@@ -60,7 +60,7 @@ The package declares `sideEffects: false`. `/core` and `/browser` have separate 
 contain no Sharp, Node.js built-ins, or legacy decoder dependencies. `/node` is a separate CommonJS-
 compatible entrypoint and loads Sharp dynamically.
 
-The accepted local build adds 13.01 kB uncompressed and 3.62 kB gzip to the browser entry artifact,
+The accepted integrated build produces a 13.23 kB uncompressed and 3.71 kB gzip browser entry,
 guarded by a 10 KiB gzip package-smoke budget.
 Registry evidence for Sharp 0.35.3 showed approximately 8.5–9 MB compressed and 19–20 MB unpacked
 for one common native platform. That install cost is accepted for the single package. A companion

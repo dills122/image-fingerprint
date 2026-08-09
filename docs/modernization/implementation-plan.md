@@ -294,7 +294,7 @@ the runtime-neutral public API.
 
 ### Task 8: Implement fingerprint parsing and canonical serialization
 
-**Status:** Complete in `2da5ae8` on 2026-08-09.
+**Status:** Complete in rebased commit `bfd48d5` on 2026-08-09.
 
 **Description:** Add strict runtime validation and round-trip helpers for schema version 1 records.
 
@@ -323,7 +323,7 @@ the runtime-neutral public API.
 
 ### Task 9: Implement Hamming comparison and opt-in PDQ match policy
 
-**Status:** Complete in `bb80bc9` on 2026-08-09.
+**Status:** Complete in rebased commit `723d26f` on 2026-08-09.
 
 **Description:** Add mathematical comparison with explicit incompatibility and a separate named
 policy helper.
@@ -355,7 +355,7 @@ policy helper.
 
 ### Task 10: Run large differential and numeric-discipline tests
 
-**Status:** Complete in `779b67b` on 2026-08-09.
+**Status:** Complete in rebased commit `c375daa` on 2026-08-09.
 
 **Description:** Prove the TypeScript implementation against thousands of seeded C++ vectors and
 use same-source WASM only to investigate discrepancies and establish a performance goalpost.
