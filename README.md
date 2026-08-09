@@ -1,14 +1,70 @@
 # image-hash
 
-A wrapper around [block-hash](https://github.com/commonsmachinery/blockhash-js) to easily hash a local or remote file with Node.
+A compatibility wrapper around
+[block-hash](https://github.com/commonsmachinery/blockhash-js), plus a runtime-neutral pixel API for
+building deterministic image fingerprints in Node.js and browsers.
 
-Supports JPG, PNG and WebP
+The legacy Node.js adapter supports JPG, PNG and WebP. The browser and core entrypoints accept
+decoded, tightly packed RGBA pixels so fingerprint algorithms remain independent of runtime I/O and
+image decoders.
 
 ## Install
 
 ```bash
 npm i -S image-hash
 ```
+
+## Entrypoints
+
+| Import | Runtime | Purpose |
+| --- | --- | --- |
+| `image-hash` | Node.js | Existing callback API plus the portable pixel API |
+| `image-hash/node` | Node.js | Explicit Node.js entrypoint for paths, URLs, and buffers |
+| `image-hash/core` | Node.js or browser | Runtime-neutral pixel fingerprinting |
+| `image-hash/browser` | Browser | Browser-safe ESM entrypoint; currently accepts decoded pixels |
+
+The root entrypoint remains Node.js-compatible so existing `require('image-hash')` consumers retain
+their current behavior. Browser applications should use `image-hash/browser` and Node applications
+may use either the root or explicit Node.js entrypoint.
+
+## Cross-runtime pixel API
+
+The same decoded pixels produce the same versioned fingerprint in Node.js and browsers:
+
+```typescript
+import { fingerprintPixels } from 'image-hash/browser';
+
+const context = canvas.getContext('2d');
+if (!context) throw new Error('2D canvas is unavailable');
+
+const pixels = context.getImageData(0, 0, canvas.width, canvas.height);
+const fingerprint = fingerprintPixels(pixels, {
+  algorithm: 'blockhash-v1',
+  bitsPerSide: 16,
+  method: 2,
+});
+
+console.log(fingerprint);
+// {
+//   schemaVersion: 1,
+//   algorithm: 'blockhash-v1',
+//   encoding: 'hex',
+//   hash: '...',
+//   bitLength: 256,
+//   parameters: { bitsPerSide: 16, method: 2 },
+// }
+```
+
+The pixel contract is a positive integer `width` and `height` with exactly `width * height * 4`
+row-major RGBA8 values in a `Uint8Array` or `Uint8ClampedArray`. For `blockhash-v1`,
+`bitsPerSide` must be a positive even integer no larger than either image dimension, and `method`
+must be `1` (quick) or `2` (precise). The returned `bitLength` is `bitsPerSide ** 2`. Pixel values are
+interpreted as sRGB with straight alpha; callers and future runtime adapters own color and alpha
+normalization before invoking the core.
+
+Encoded-image decoding is deliberately outside this core boundary. Browser `File`, `Blob`, URL,
+orientation, alpha-compositing, and color-normalization adapters will be added against the same
+contract; this separation also gives the planned `pdq-v1` implementation one portable input.
 
 ## Use
 

@@ -1,9 +1,37 @@
 {
   "name": "image-hash",
   "version": "7.0.1",
-  "description": "Create a hash from an image",
+  "description": "Create deterministic image fingerprints in Node.js and browsers",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "require": "./lib/index.js",
+      "default": "./lib/index.js"
+    },
+    "./node": {
+      "types": "./lib/index.d.ts",
+      "require": "./lib/index.js",
+      "default": "./lib/index.js"
+    },
+    "./browser": {
+      "types": "./lib/browser.d.ts",
+      "import": "./lib/esm/browser.mjs",
+      "require": "./lib/browser.js",
+      "default": "./lib/esm/browser.mjs"
+    },
+    "./core": {
+      "types": "./lib/core/index.d.ts",
+      "import": "./lib/esm/core.mjs",
+      "require": "./lib/core/index.js",
+      "default": "./lib/esm/core.mjs"
+    },
+    "./lib": "./lib/index.js",
+    "./lib/*.js": "./lib/*.js",
+    "./lib/*": "./lib/*.js",
+    "./package.json": "./package.json"
+  },
   "engines": {
     "node": ">=22.14.0"
   },
@@ -13,9 +41,10 @@
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:network": "cross-env RUN_NETWORK_TESTS=1 vitest run",
-    "test:package": "pnpm build && node scripts/package-smoke.cjs",
+    "test:package": "pnpm build && node scripts/package-smoke.cjs && node scripts/browser-package-smoke.mjs",
     "test:watch": "vitest",
-    "build": "tsc",
+    "build": "pnpm clean && tsc && vite build --config vite.lib.config.mts",
+    "clean": "node scripts/clean.cjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"src/**/*.ts\" \"__tests__/**/*.ts\" \"*.config.{ts,mts}\"",
     "lint:fix": "pnpm lint --fix",
@@ -56,6 +85,7 @@
     "eslint": "^10.8.0",
     "typescript": "^5.9.2",
     "typescript-eslint": "^8.65.0",
+    "vite": "^8.2.1",
     "vitest": "^4.1.10"
   }
 }

@@ -6,6 +6,19 @@ import { URL } from 'url';
 import webp from '@cwasm/webp';
 import blockhash from './block-hash';
 
+export { fingerprintPixels } from './core';
+export type {
+  BlockHashFingerprint,
+  BlockHashFingerprintOptions,
+  BlockHashParameters,
+  FingerprintAlgorithm,
+  FingerprintEncoding,
+  FingerprintOptions,
+  FingerprintSchemaVersion,
+  ImageFingerprint,
+  RgbaImageData,
+} from './core';
+
 export interface UrlRequestObject extends RequestInit {
   encoding?: string | null;
   url: string | null;
