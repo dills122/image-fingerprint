@@ -1,0 +1,40 @@
+[
+  {
+    "date": "2026-08-09",
+    "macrostructure": "Split Studio",
+    "theme": "Cobalt + Warm Dusk",
+    "theme_axes": "light + mid-dark / grotesk-sans / warm neutral with cool code surface",
+    "enrichment": "E4 real domain imagery",
+    "nav": "N9",
+    "footer": "Ft2",
+    "brief": "Image Fingerprint naming, responsive spacing audit, and distinct dark code treatment"
+  },
+  {
+    "date": "2026-08-09",
+    "macrostructure": "Split Studio",
+    "theme": "Cobalt + Warm Dusk",
+    "theme_axes": "light + mid-dark / grotesk-sans / cool signal on warm neutral",
+    "enrichment": "E4 real domain imagery",
+    "nav": "N9",
+    "footer": "Ft2",
+    "brief": "Persistent warm charcoal dark theme for the Astro project site"
+  },
+  {
+    "date": "2026-08-09",
+    "macrostructure": "Workbench",
+    "theme": "Cobalt",
+    "enrichment": "none",
+    "nav": "N13",
+    "footer": "Ft5",
+    "brief": "image-hash project site for engineers and product owners"
+  },
+  {
+    "date": "2026-08-09",
+    "macrostructure": "Split Studio",
+    "theme": "Cobalt",
+    "enrichment": "E4 floating screenshot without chrome, using real domain imagery",
+    "nav": "N9",
+    "footer": "Ft2",
+    "brief": "Astro redesign with a guided Magic card perceptual-hash playground"
+  }
+]
