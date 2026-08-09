@@ -7,6 +7,7 @@ import {
   it,
 } from 'vitest';
 import { computePdqDct } from '../src/core/algorithms/pdq/dct';
+import { createPdqDctMatrix } from '../src/core/algorithms/pdq/dct-matrix';
 import { downsampleToPdqSize } from '../src/core/algorithms/pdq/downsample';
 import { hashPdqDct } from '../src/core/algorithms/pdq/hash';
 import { toFloatLuma } from '../src/core/algorithms/pdq/luminance';
@@ -33,6 +34,7 @@ interface StageVector {
     readonly downsampledBits?: readonly number[];
     readonly dctIntermediateBits?: readonly number[];
     readonly dctOutputBits?: readonly number[];
+    readonly dctMatrixBits?: readonly number[];
     readonly medianBits?: number;
     readonly hash?: string;
     readonly quality?: number;
@@ -109,7 +111,7 @@ describe('PDQ numeric stages', () => {
       repository: 'https://github.com/facebook/ThreatExchange.git',
       commit: PINNED_COMMIT,
     });
-    expect(corpus.vectors).toHaveLength(3);
+    expect(corpus.vectors).toHaveLength(4);
 
     for (const vector of corpus.vectors) {
       const source = decode(vector.source);
@@ -118,6 +120,15 @@ describe('PDQ numeric stages', () => {
       expect(sha256(source)).toBe(vector.source.sha256);
       expect(vector.description.length).toBeGreaterThan(0);
     }
+  });
+
+  it('freezes every DCT matrix coefficient to the oracle float32 bits', () => {
+    const vector = loadStageCorpus().vectors.find(
+      ({ id }) => id === 'dct-identity-basis-gray-64x64',
+    );
+
+    expect(vector?.expected.dctMatrixBits).toHaveLength(16 * 64);
+    expect(floatBits(createPdqDctMatrix())).toEqual(vector?.expected.dctMatrixBits);
   });
 
   it('matches gray casts and RGB float coefficient ordering bit for bit', () => {

@@ -560,3 +560,39 @@ primary-source verification before entering contract documentation.
 - The CI repair uses GitHub's explicit `ubuntu-24.04-arm` runner label, renames the check so its
   architecture is visible, and compares both `raw-vectors.json` and `stage-vectors.json`. The
   ordinary x64 Node jobs remain the cross-platform check for the TypeScript implementation.
+- The current TypeScript DCT constructs all 1,024 coefficients at module initialization with
+  `Math.cos`; all subsequent arithmetic is explicitly rounded through `Math.fround`. Freezing the
+  matrix can therefore be isolated to a constant module without changing the DCT loop structure.
+- An exact 64-by-64 identity luminance input makes the native oracle's first DCT pass equal the
+  16-by-64 coefficient matrix: each row/column accumulation contains one multiplication by one and
+  otherwise zero terms. This provides an oracle-derived coefficient fixture without duplicating
+  Meta's matrix formula in the wrapper.
+- The frozen matrix will use a generated hexadecimal uint32-bit payload decoded with `DataView`,
+  keeping the bit contract explicit and endian-independent without Node APIs or a runtime
+  dependency. A checked-in generator will derive that module only from the self-checking identity
+  fixture, and the DCT module will retain a single decoded `Float32Array` instance.
+- The pinned upstream `pdq/wasm` project is an encoded-file browser demo built with Emscripten
+  3.1.7, ImageMagick, Node hosting, Selenium, and .NET tests. It is not a suitable differential for
+  the decoder-free pixel contract and would conflate codec behavior with numeric behavior.
+- Local Emscripten tools are absent but Docker is installed. The appropriate same-source experiment
+  is a disposable, decoder-free Emscripten build of the existing raw oracle wrapper and the exact
+  pinned C++ translation units, with the frozen raw bytes supplied from JavaScript. No generated
+  WASM or Emscripten glue should enter the npm package.
+- A native Apple Clang 21 arm64 build with only `-ffp-contract=off` produces raw and stage corpora
+  byte-for-byte identical to Emscripten 3.1.7 WASM. Their SHA-256 values are respectively
+  `14aaeec3f68da5ca98a1e76915af746e164e6771ae9f566b68bcf537bd78552f` and
+  `0ad88a5ef3c38e7b75919634989d286136a1ea93b6f7403cffcb0af3c618a9d5`. This proves floating-point
+  contraction is the complete cause of the observed WASM split on this corpus; coefficient bits,
+  decoder behavior, and architecture are excluded.
+- Because `pdq-v1` is not public yet, the portable unfused profile is the safer persisted contract:
+  it is source-faithful, naturally reproducible in WebAssembly, byte-identical in native Clang with
+  one explicit flag, and expressible in JavaScript as a float32-rounded multiply followed by a
+  separately float32-rounded add. Retaining the fused arm64 profile would be deterministic in pure
+  TypeScript but would require software FMA semantics in any future WASM backend and preserve an
+  avoidable architecture-specific oracle assumption.
+- The downloaded Emscripten 3.1.7 toolchain resolves to immutable image digest
+  `sha256:6143f5b3d58fe6e7faf9f279d27ea9ea975983ee2b5490478abda126a6762f34`.
+  The checked-in development build script should use this digest, not only the mutable tag.
+- Apple Clang 21 with `-ffp-contract=off` regenerates the accepted raw and stage corpora exactly for
+  both arm64 and x86_64 targets. Disabling contraction therefore removes the original x64 split on
+  the fixed corpus; production TypeScript additionally removes runtime coefficient generation.

@@ -220,6 +220,8 @@ discipline and stage-level tests.
 
 ### Task 6: Implement DCT, Torben median, and canonical hash bits
 
+**Status:** Complete on 2026-08-09, including the pre-public portability hardening checkpoint.
+
 **Description:** Port the second half of PDQ and independently prove median ties, bit order, and
 64-character serialization.
 
@@ -233,6 +235,8 @@ discipline and stage-level tests.
 
 - [x] Run DCT/median/bit-order unit tests.
 - [x] Compare fixed stage outputs and final hash text with the oracle.
+- [x] Freeze all DCT coefficient bits, disable native contraction, and prove the accepted profile
+  against same-source WASM before public dispatch.
 - [x] `pnpm lint && pnpm typecheck`
 
 **Dependencies:** Task 3.
@@ -243,6 +247,7 @@ discipline and stage-level tests.
 - `src/core/algorithms/pdq/median.ts`
 - `src/core/algorithms/pdq/hash.ts`
 - `__tests__/pdq-stages.test.ts`
+- `docs/modernization/pdq-numeric-conformance.md`
 
 **Estimated scope:** Medium.
 

@@ -203,7 +203,8 @@ only when the approved implementation needs the boundary.
 6. Quality below 50 and distance at most 31 are benchmark starting points, not hard-coded policy.
 7. Remote URL loading remains an adapter concern, not part of the algorithm API.
 8. Meta C++ at commit `baefb4ed67b6cdc1d4c82dbaef858d50866ac424` is the normative
-   oracle; TypeScript is the production target and WASM is a comparator.
+   source; the accepted unfused float32 profile makes its answers portable across native Clang,
+   same-source WASM, and TypeScript. TypeScript is the production target and WASM is a comparator.
 
 ## 11. Remaining Release Decisions
 

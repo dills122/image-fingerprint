@@ -63,6 +63,8 @@ This is a contract direction, not approval of a particular PDQ dependency or imp
 - Existing imageHash inputs, callback behavior, and golden BMVB outputs remain locked.
 - Persisted fingerprints created by new APIs include an algorithm identifier.
 - Serialization or preprocessing changes require a new algorithm version.
+- `pdq-v1` includes the accepted portable unfused float32 profile and frozen DCT coefficient bits;
+  numeric-boundary changes require a new algorithm version.
 - Decoder normalization—orientation, alpha background, grayscale, and channel order—is specified
   and tested separately from the algorithm core.
 - Thresholds are named configuration/defaults backed by benchmark evidence, not properties hidden
@@ -108,6 +110,7 @@ Costs:
 - [PDQ contract research](../modernization/pdq-contract-research.md)
 - [Benchmark requirements](../modernization/benchmark-requirements.md)
 - [Implementation phase gates](../modernization/implementation-plan.md)
+- [PDQ numeric conformance profile](../modernization/pdq-numeric-conformance.md)
 
 ## Approval
 

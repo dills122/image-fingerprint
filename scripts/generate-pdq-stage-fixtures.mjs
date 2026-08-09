@@ -93,6 +93,15 @@ const seededBytes = (length, seed) => {
 
 const specifications = [
   {
+    id: 'dct-identity-basis-gray-64x64',
+    description: 'Identity basis whose first DCT pass exposes every matrix coefficient.',
+    format: 'gray8',
+    width: 64,
+    height: 64,
+    bytes: makeBytes(64, 64, 1, (x, y) => [x === y ? 1 : 0]),
+    stages: ['dctMatrix'],
+  },
+  {
     id: 'minimum-gray-gradient-5x5',
     description: 'Gray cast and center-based decimation at the minimum dimensions.',
     format: 'gray8',
@@ -189,6 +198,9 @@ const vectors = specifications.map((specification) => {
           medianBits: diagnostics.medianBits,
           hash: diagnostics.hash,
         }
+        : {}),
+      ...(specification.stages.includes('dctMatrix')
+        ? { dctMatrixBits: diagnostics.dctIntermediateBits }
         : {}),
     },
   };

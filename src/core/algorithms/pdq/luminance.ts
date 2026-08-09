@@ -10,14 +10,12 @@ const multiplyFloat32 = (left: number, right: number): number => (
   Math.fround(left * right)
 );
 
-const fusedMultiplyAddFloat32 = (
+const multiplyThenAddFloat32 = (
   left: number,
   right: number,
   addend: number,
 ): number => (
-  // These operands fit in an exact binary64 intermediate; one final rounding
-  // reproduces the two float32 FMAs emitted by the pinned Clang oracle.
-  Math.fround(left * right + addend)
+  Math.fround(multiplyFloat32(left, right) + addend)
 );
 
 /** @internal Converts normalized gray or RGB bytes to PDQ float32 luminance. */
@@ -31,12 +29,12 @@ export const toFloatLuma = (image: LumaPixelSource): Float32Array => {
     sourceIndex < image.data.length;
     sourceIndex += 3, targetIndex += 1) {
     const green = multiplyFloat32(GREEN_COEFFICIENT, image.data[sourceIndex + 1]);
-    const redGreen = fusedMultiplyAddFloat32(
+    const redGreen = multiplyThenAddFloat32(
       RED_COEFFICIENT,
       image.data[sourceIndex],
       green,
     );
-    luma[targetIndex] = fusedMultiplyAddFloat32(
+    luma[targetIndex] = multiplyThenAddFloat32(
       BLUE_COEFFICIENT,
       image.data[sourceIndex + 2],
       redGreen,

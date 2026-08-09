@@ -1,32 +1,17 @@
+import { createPdqDctMatrix } from './dct-matrix';
+
 const PDQ_INPUT_DIMENSION = 64;
 const PDQ_OUTPUT_DIMENSION = 16;
 const PDQ_INPUT_LENGTH = PDQ_INPUT_DIMENSION * PDQ_INPUT_DIMENSION;
 const DCT_MATRIX_LENGTH = PDQ_OUTPUT_DIMENSION * PDQ_INPUT_DIMENSION;
-const DCT_SCALE = Math.fround(Math.sqrt(2 / PDQ_INPUT_DIMENSION));
 
 const multiplyAddFloat32 = (
   left: number,
   right: number,
   accumulator: number,
-): number => Math.fround(left * right + accumulator);
+): number => Math.fround(Math.fround(left * right) + accumulator);
 
-const createDctMatrix = (): Float32Array => {
-  const matrix = new Float32Array(DCT_MATRIX_LENGTH);
-  for (let row = 0; row < PDQ_OUTPUT_DIMENSION; row += 1) {
-    for (let column = 0; column < PDQ_INPUT_DIMENSION; column += 1) {
-      matrix[row * PDQ_INPUT_DIMENSION + column] = Math.fround(
-        DCT_SCALE * Math.cos(
-          (Math.PI / 2 / PDQ_INPUT_DIMENSION)
-          * (row + 1)
-          * (2 * column + 1),
-        ),
-      );
-    }
-  }
-  return matrix;
-};
-
-const DCT_MATRIX = createDctMatrix();
+const DCT_MATRIX = createPdqDctMatrix();
 
 export interface PdqDctResult {
   readonly intermediate: Float32Array;
@@ -35,8 +20,8 @@ export interface PdqDctResult {
 
 /**
  * @internal Applies PDQ's 64x64 to 16x16 DCT, excluding the DC coefficients.
- * Each multiply/add has one float32 rounding to match the pinned Clang oracle's
- * contracted scalar operation.
+ * Multiplication and addition are separately rounded to float32, matching the
+ * portable unfused C++/WebAssembly numeric profile.
  */
 export const computePdqDct = (
   downsampledLuma: Float32Array,

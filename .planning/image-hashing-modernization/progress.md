@@ -464,3 +464,91 @@ plan is awaiting maintainer review; production implementation remains behind tha
   adds no dependency or production path, preserves the independent x64 Node matrix, documents the
   native-reference boundary, and introduces no security or performance exposure. The real hosted
   runner remains the final verification for compiler availability and exact fixture agreement.
+- Added an oracle-derived 64-by-64 identity-basis stage vector and a test that requires a frozen
+  1,024-coefficient production matrix. Regeneration produced a four-vector corpus. The first RED
+  command did not reach Vitest because the ambient `node` executable was older than the Corepack
+  version on `PATH`; rerun must use the repository's supported fnm-selected Node 22 executable.
+- Environment diagnosis confirmed ambient `/usr/local/bin/node` is Node 16 while supported Node
+  22.21.1, 22.22.1, and 24.19.0 are available through fnm. The first fnm retry then hit pnpm's
+  documented non-TTY dependency reconciliation guard; the established local recipe is `CI=true`
+  with fnm-selected Node, not a product-code change.
+- RED confirmed under supported Node 22: the focused stage suite failed at import because the
+  frozen DCT matrix module did not exist. GREEN: the checked-in generator derived all 1,024 uint32
+  coefficient bits from the identity fixture, `dct.ts` now decodes that constant once instead of
+  calling `Math.cos`, and all 11 focused stage tests pass.
+- The generated constant is 9,596 source bytes and contains no runtime `Math.cos`, `Math.sin`, or
+  `Math.sqrt`. Lint and typecheck pass, and a second generator run leaves the matrix module
+  byte-identical, proving deterministic derivation from the fixture. The four-vector stage corpus
+  SHA-256 is `2fae33786cb4ae09021bc8fda9fa9e457908d10837ecd790b41830dd8374f185`.
+- GitHub run `31322966626` fully passes. The hosted `PDQ oracle conformance (Linux arm64)` job built
+  the pinned Clang 18 oracle and accepted both exact corpora; Node 22, Node 24, package integrity,
+  workflow analysis, and CodeQL also pass. The canonical CI checkpoint is closed.
+- WASM reconnaissance found no local Emscripten toolchain. Docker is available and its daemon is
+  reachable outside the sandbox, but the upstream-documented `emscripten/emsdk:3.1.7` image is not
+  cached. A network pull is required for the disposable same-source build.
+- Pulled the upstream-documented Emscripten 3.1.7 image and successfully compiled the exact raw
+  oracle wrapper plus pinned translation units into a disposable 201 KiB `.wasm` and 93 KiB Node
+  launcher. Docker emulated the image's amd64 platform on the arm64 host. Direct execution of the
+  generated launcher is unavailable from the temporary mount, so comparisons will invoke it
+  through supported Node explicitly.
+- The first explicit Node launch exits before oracle metadata and prints the minified one-line
+  launcher as source context, which obscures the actual exception in normal terminal truncation.
+  The next diagnostic captures only the child status/stdout and stderr suffix to identify the glue
+  compatibility issue before changing compiler flags.
+- Child-process inspection shows status 7, no stdout, and stderr truncated at exactly 65,536 bytes
+  after only the source-location line and minified source line. The useful exception text is lost
+  behind the one-line optimized glue; retrying the 2022-era launcher on its contemporary Node 16
+  runtime is the smallest compatibility diagnostic before rebuilding with readable assertions.
+- Node 16 runs the Emscripten 3.1.7 launcher correctly. The new decoder-free comparator confirms
+  pinned metadata, then runs all committed raw and stage inputs. WASM matches all 1,024 identity-
+  basis coefficient bits, all qualities, 8 of 16 raw hashes, and 1 of 4 complete stage vectors.
+  Differences begin in arithmetic: 1 RGB luma bit, 3,815 filtered-downsample bits, 973/1,012 DCT
+  intermediate bits, and 256/252 DCT output bits on the two diagnostic image vectors. This isolates
+  the split from coefficient generation and demonstrates fused native versus unfused WASM float
+  evaluation, not decoder variance.
+- Built a second Apple Clang 21 arm64 native oracle with `-ffp-contract=off`. Its generated raw and
+  four-vector stage files are byte-identical to the WASM files, proving contraction is the sole
+  cause of every observed differential in this corpus. The same-source WASM checkpoint is complete.
+- PORTABLE-PROFILE RED: regenerated the committed raw and stage answers from the unfused native
+  oracle. The existing fused TypeScript implementation now fails five focused behaviors: RGB luma,
+  filtered downsample propagation, full raw hashes, both DCT passes, and median/final hashes. The
+  frozen identity-basis coefficient test remains valid because coefficients are unchanged.
+- PORTABLE-PROFILE GREEN: RGB luminance and DCT now separately round float32 multiplication and
+  addition; the native oracle build pins `-ffp-contract=off`. All 11 focused tests pass, and the
+  same-source WASM comparator reports 16/16 exact raw vectors plus 4/4 exact complete stage vectors
+  with no mismatch at any checked coefficient, luma, downsample, DCT, median, hash, or quality field.
+- Accepted and documented the portable unfused `pdq-v1` numeric profile, its exact operation
+  boundaries, versioning rule, artifact checksums, native/WASM evidence, and no-runtime-WASM
+  boundary. ADR 0001, the approved specification, implementation plan, fixture provenance, and
+  oracle documentation now point to the same contract.
+- Added a reproducible local-only WASM oracle build script pinned to the immutable Emscripten 3.1.7
+  image digest. It verifies the upstream checkout and keeps all generated artifacts outside the
+  repository/package. The script help path, executable mode, ShellCheck, and `git diff --check`
+  pass; a clean scripted rebuild and differential remain to verify.
+- Scripted rebuild diagnostics found two invocation issues before Docker ran: the ambient Node 16
+  Corepack mismatch requires the established fnm/CI recipe, and pnpm 11 forwards the documented
+  separator as a literal leading `--`. Both native and WASM shell builders must accept that
+  separator so their documented package-script commands are actually executable.
+- Added leading-separator support to both builders. The digest-pinned WASM script now rebuilds
+  successfully and its comparator is exactly 16/16 raw plus 4/4 stage. The corrected native package
+  command rebuilds Apple Clang 21 with `-ffp-contract=off`; regenerated raw and stage fixtures are
+  both byte-identical to the committed portable corpus.
+- FULL GREEN on Node 22.22.1 and Node 24.19.0: lint, typecheck, 61-test coverage, build, CommonJS
+  package smoke, and browser-package graph smoke all pass with five unchanged network skips.
+  Coverage is 93.92% statements, 88.78% branches, 94.33% functions, and 93.60% lines. No WASM,
+  oracle source, fixture, or generator enters the current public bundle.
+- Multi-axis review found two required cleanup items before approval: the oracle README retains one
+  stale pre-profile claim about the old saved corpus, and the differential report should name the
+  immutable Emscripten image digest while validating array lengths explicitly. Correctness,
+  architecture, security, and performance review otherwise found no blocking issue.
+- Review follow-up passes: documentation now describes only the accepted corpus, comparator arrays
+  validate exact lengths, and reports identify the immutable Emscripten digest. An Apple Clang 21
+  x86_64 unfused build also regenerates both accepted corpora byte-for-byte, closing the original
+  architecture concern directly.
+- Final local review verdict: approve. Tests specify the coefficient and arithmetic contract before
+  implementation; production changes are pure, fixed-size, browser-safe TypeScript; build tooling
+  pins source, compiler semantics, and image digest; artifacts stay outside the package; no secret,
+  unbounded input, runtime dependency, or public API change is introduced.
+- POST-REVIEW FINAL GREEN: complete Node 22.22.1 and Node 24.19.0 gates pass again (61 tests plus
+  five network skips), alongside ShellCheck, actionlint, JavaScript syntax checks, native oracle
+  smoke, deterministic matrix regeneration, package/browser smoke, and `git diff --check`.

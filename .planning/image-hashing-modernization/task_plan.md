@@ -1,6 +1,6 @@
 # Image Hashing Modernization Plan
 
-Status: Tasks 1–6 complete; portability hardening authorized and in progress; Tasks 7–11 awaiting authorization
+Status: Tasks 1–6 and portability hardening complete locally; Tasks 7–11 awaiting authorization
 Task ID: `image-hashing-modernization`
 Updated: 2026-08-09
 
@@ -80,9 +80,9 @@ block pure-core implementation planning.
 - [x] Task 4: generalize and validate the tagged pixel contract.
 - [x] Task 5: implement reference-compatible luminance, Jarosz downsample, and quality stages.
 - [x] Task 6: implement reference-compatible DCT, Torben median, and canonical hash bits.
-- [ ] Repair canonical oracle CI on Linux arm64 and compare both raw and stage corpora.
-- [ ] Freeze the DCT matrix as exact float32 bits and remove runtime transcendental math.
-- [ ] Build a same-source WASM differential and decide the final portable `pdq-v1` arithmetic profile.
+- [x] Repair canonical oracle CI on Linux arm64 and compare both raw and stage corpora.
+- [x] Freeze the DCT matrix as exact float32 bits and remove runtime transcendental math.
+- [x] Build a same-source WASM differential and decide the final portable `pdq-v1` arithmetic profile.
 - [ ] Lock legacy contracts and baseline benchmarks.
 - [ ] Implement the selected raw-pixel PDQ core/adapter.
 - [ ] Add decoder adapters and public versioned API.
@@ -97,9 +97,9 @@ No PDQ production implementation work should begin until the task sequence in
 Tasks 1–6 are complete. The maintainer authorized a portability-hardening checkpoint after the
 first GitHub x64 oracle job exposed architecture-sensitive native answers. That checkpoint repairs
 canonical arm64 CI, freezes numeric constants, and evaluates same-source WASM before Task 7 public
-dispatch. Tasks 7–11 otherwise require the next implementation decision, and
-encoded-image adapters remain separately gated at Task 12. Checkpoint B's two-environment criterion
-is satisfied locally; the first Ubuntu/Clang CI run remains the recurring-evidence confirmation.
+dispatch. That checkpoint is complete locally with an accepted portable unfused profile. Tasks 7–11
+otherwise require the next implementation decision, and encoded-image adapters remain separately
+gated at Task 12. The updated profile still requires its hosted Linux confirmation after push.
 
 ## Current Decisions
 
@@ -111,8 +111,9 @@ is satisfied locally; the first Ubuntu/Clang CI run remains the recurring-eviden
   decoding adapters.
 - Exact conformance is defined at the normalized-pixel boundary; separately decoded encoded images
   are evaluated with documented tolerance rather than promised byte-for-byte equality.
-- Meta's pinned C++ implementation is normative. A WASM build from the same pinned source is a
-  differential and performance oracle; third-party WASM packages are secondary comparators.
+- Meta's pinned C++ implementation is the normative source. `pdq-v1` freezes its coefficients and
+  unfused float32 operation boundaries; a WASM build from the same source is a differential and
+  performance oracle, while third-party WASM packages are secondary comparators.
 - Hamming distance is mathematical output. Match thresholds and minimum quality are explicit policy,
   not hidden generic defaults.
 - The existing package root remains CommonJS-compatible and does not select different behavior by

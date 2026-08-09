@@ -32,6 +32,7 @@ oracle_dir=$(mktemp -d)
 pnpm pdq:oracle:smoke -- --oracle "$oracle_dir/pdq-oracle"
 pnpm pdq:fixtures:generate -- --oracle "$oracle_dir/pdq-oracle"
 pnpm pdq:stages:generate -- --oracle "$oracle_dir/pdq-oracle"
+pnpm pdq:dct-matrix:generate
 ```
 
 The build script fetches only the pinned commit, verifies the checkout, refuses any upstream
@@ -44,15 +45,18 @@ modifications, and prints the compiler version and flags. For an already verifie
 ```
 
 Set `PDQ_ORACLE_CXX` to choose a different compiler. The baseline flags are
-`-std=c++11 -O3 -Wall -Wextra -Werror` with the verified checkout root as the include path.
+`-std=c++11 -O3 -ffp-contract=off -Wall -Wextra -Werror` with the verified checkout root as the
+include path. Disabling contraction defines separate float32 multiply/add rounding and matches the
+same-source WebAssembly build.
 
-Fixture regeneration uses Clang as part of the oracle toolchain contract. The saved corpus was
-byte-identical under Apple clang 21.0.0 on macOS arm64 and Debian Clang 19.1.7 on Linux arm64. A
-Debian GCC 14.2.0 build and an Ubuntu Clang 18.1.3 Linux x64 build produced different threshold bits
-for several synthetic vectors. Do not refresh golden answers with either environment. CI pins the
-GitHub-hosted `ubuntu-24.04-arm` image and its installed `clang++-18`, then requires byte-identical
-raw-pixel and internal-stage corpora. This arm64 native-oracle job validates the frozen reference;
-the ordinary Node.js matrix separately validates the TypeScript implementation on x64 Linux.
+Fixture regeneration uses Clang as part of the oracle toolchain contract. The portable corpus was
+byte-identical under Apple Clang 21.0.0 on macOS arm64 and x86_64, plus the same-source Emscripten
+3.1.7 WASM build. Before contraction was disabled, a Debian GCC 14.2.0 build and an Ubuntu Clang
+18.1.3 Linux x64 build produced different threshold bits for several synthetic vectors. The
+canonical toolchain now disables contraction explicitly and freezes coefficient bits separately.
+CI pins the GitHub-hosted `ubuntu-24.04-arm` image and its installed `clang++-18`, then requires
+byte-identical raw-pixel and internal-stage corpora. The ordinary Node.js matrix separately
+validates the TypeScript implementation on x64 Linux.
 
 ## Oracle Protocol
 
@@ -78,6 +82,30 @@ The diagnostics form accepts the same input and emits the initial luminance, 64 
 16 by 64 DCT intermediate, and 16 by 16 DCT output buffers as arrays of unsigned float32 bit
 patterns. It also emits the median bit pattern, canonical hash, and quality. It exists only to
 generate exact intermediate-stage fixtures for the pure TypeScript port.
+
+The stage corpus includes a deterministic 64 by 64 identity-basis image. Its first DCT pass exposes
+all 1,024 native coefficient bit patterns. `pdq:dct-matrix:generate` validates that self-checking
+fixture and regenerates the browser-safe TypeScript constant without calling runtime transcendental
+functions.
+
+For the development-only WebAssembly differential, compile this same wrapper and the listed
+translation units with the pinned upstream Emscripten 3.1.7 image digest, then run:
+
+```sh
+wasm_dir=$(mktemp -d)
+pnpm pdq:wasm:build -- \
+  --output "$wasm_dir" \
+  --source /absolute/path/to/ThreatExchange
+pnpm pdq:wasm:compare -- \
+  --node /path/to/a/toolchain-compatible/node \
+  --oracle-js "$wasm_dir/pdq-oracle.js"
+```
+
+The comparator feeds the committed raw bytes to the WASM build and reports exact raw-hash,
+coefficient, intermediate, output, median, and quality differences. Emscripten output remains a
+disposable development artifact and must not be added to the package. Emscripten 3.1.7's generated
+Node launcher requires an era-compatible runtime (Node 16 was used for the recorded comparison);
+this glue limitation does not affect the production TypeScript runtime support.
 
 `--metadata` returns protocol version 1, the official repository URL, and the pinned commit. The
 fixture generator refuses to produce answers unless this identity exactly matches its own frozen

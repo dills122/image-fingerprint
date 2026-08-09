@@ -28,7 +28,7 @@
         "sha256": "b170f095ea046628f11bd4f3f3c7c5a91271f762a02bfa0776d0fd971ca9d2ed"
       },
       "expected": {
-        "hash": "348d6c5b96a5348d94a5d6b5695a9b268b626cdbc3f0972769da93a4318c649d",
+        "hash": "d4b5348d96a593a4695a93b493a4d9263b0ec67196a59b2693a4348d6cdb6ccb",
         "quality": 59
       }
     },
@@ -54,7 +54,7 @@
         "sha256": "3c392a1f01f7cc55d5317c7a4326f488fdde2591021f237d02a0eddfaf8eaaa5"
       },
       "expected": {
-        "hash": "afffa00aaaaa8822aaaaa8a0aaaa882affff80a8aaff8aaaaaaa8022ffff88aa",
+        "hash": "ffff28a2aaaaa220aaa882aaffff8088aaaaa2a8ffff8282aaaaa002fddf0a82",
         "quality": 100
       }
     },
@@ -106,7 +106,7 @@
         "sha256": "8b16aab7ad044f8100e97a0f54f9e1ee8f1d77c99ba75418378495e48f992233"
       },
       "expected": {
-        "hash": "6666cccccccc3333cccc9999333333336666333399996666cccc666633339999",
+        "hash": "9999333366666664cccccccccccc7333193b66666666333333333333cccc6666",
         "quality": 61
       }
     },
@@ -132,7 +132,7 @@
         "sha256": "80ef704efe64fed3f52d645784a4a610e84aeba9352b29588b666ef7cccf475a"
       },
       "expected": {
-        "hash": "d5e8644ecfb08076ecb0f4dbb7e118a1fdb6e492c0c4dd9c20a9a33a77f20938",
+        "hash": "01c215490765515411684c893ddf146c0a25930601017719306d2b76421a8324",
         "quality": 7
       }
     },
@@ -182,7 +182,7 @@
         "sha256": "1a7493ff2f2bde5f78405d46eb01abfeaea9b0a95fa5b6cec211b05faa0cf1d3"
       },
       "expected": {
-        "hash": "2b2ee996c808dc13827761d552364a56300bbd29407f27f39a5536ca27a9be6e",
+        "hash": "00001134000011342c4b00002c4b1134000000002c4b2c4b00002c4b8200554b",
         "quality": 0
       }
     },
@@ -208,7 +208,7 @@
         "sha256": "fb89b9cc3608ce78350214f2eb971ee60a6f4563cb1293c154264941a7f3361d"
       },
       "expected": {
-        "hash": "e6c41b9be6c4e66439936464e46413bb1bb111bb13999919ec6464e4b9b31bb1",
+        "hash": "6e4c6644000066646644466c6644391b0000193b193b1193113bb113b1136446",
         "quality": 55
       }
     },
@@ -234,7 +234,7 @@
         "sha256": "43944eaf68b7a06bb8e34f8cbc33eede772b2131971b967e2862350102b135e8"
       },
       "expected": {
-        "hash": "d5d52a2ad5d5d5d50005f7ffd5d5f7f7d5d52a2ad5d52a2a44802a2a94102a2a",
+        "hash": "40053e6fd0000014401011054501fe6fc1042beb10542fbb1510eb2f0440eb2e",
         "quality": 100
       }
     },
@@ -312,7 +312,7 @@
         "sha256": "201ad4217993006d3493f4dcaa43eb07616ba99ad352acc9a7b1288c6f9c74aa"
       },
       "expected": {
-        "hash": "2b2ee996c808dc13827761d552364a56300bbd29407f27f39a5536ca27a9be6e",
+        "hash": "00001134000011342c4b00002c4b1134000000002c4b2c4b00002c4b8200554b",
         "quality": 0
       }
     },
