@@ -1,17 +1,17 @@
 # image-fingerprint
 
-A compatibility wrapper around
-[block-hash](https://github.com/commonsmachinery/blockhash-js), plus a runtime-neutral pixel API for
-building deterministic image fingerprints in Node.js and browsers.
+A versioned image-fingerprinting library with a runtime-neutral pixel core, Node.js and browser
+image adapters, PDQ matching tools, and exact migration support for hashes created by
+[`image-hash@7`](https://github.com/danm/image-hash).
 
-The legacy Node.js adapter supports JPG, PNG and WebP. New Node and browser adapters prepare static
-JPEG, PNG, and WebP images for the same decoded-pixel fingerprint core.
+Node and browser adapters prepare static JPEG, PNG, and WebP images for the same decoded-pixel
+fingerprint core.
 
 > [!NOTE]
-> This package has not been released yet. The legacy Node implementation remains temporarily as a
-> compatibility oracle while the portable implementation is checked against it. The legacy-only
-> surface will be removed before the first release; `image-fingerprint` does not continue the
-> `image-hash` version line.
+> Existing `image-hash@7` values remain reproducible through the explicit Node-only
+> `decoderMode: 'image-hash-v7'` policy. New encoded-image calls default to normalized decoding.
+> Decoder mode is part of reproducibility and should be stored with fingerprints derived from
+> encoded images.
 
 ## Install
 
@@ -23,14 +23,13 @@ npm install image-fingerprint
 
 | Import | Runtime | Purpose |
 | --- | --- | --- |
-| `image-fingerprint` | Node.js | Existing callback API plus the portable pixel API |
-| `image-fingerprint/node` | Node.js | Sharp-backed paths, file URLs, encoded bytes, and pixel APIs |
+| `image-fingerprint` | Node.js | Portable pixel fingerprint, codec, comparison, and policy APIs |
+| `image-fingerprint/node` | Node.js | Normalized and historical encoded-image policies, paths, file URLs, bytes, and pixel APIs |
 | `image-fingerprint/core` | Node.js or browser | Runtime-neutral pixels, regions, decoder contracts, and fingerprinting |
 | `image-fingerprint/browser` | Browser or worker | Native `Blob`, `File`, `ImageData`, and pixel APIs |
 
-The root entrypoint remains Node.js-compatible while the legacy implementation is retained as a
-parity oracle. Browser applications should use `image-fingerprint/browser` and Node applications
-may use either the root or explicit Node.js entrypoint during the pre-release period.
+Browser applications should use `image-fingerprint/browser`. Node applications should use the
+explicit Node entrypoint for encoded images.
 
 ## Cross-runtime pixel API
 
@@ -213,7 +212,7 @@ Regions use integer coordinates in the already-oriented image, must be fully in 
 copied into a new tightly packed buffer. The helper does not detect, clamp, pad, or resize crops.
 Each region dimension must be at least 5 pixels.
 
-For a single PDQ fingerprint:
+For a single encoded-image fingerprint:
 
 ```typescript
 import { fingerprintImage } from 'image-fingerprint/node';
@@ -224,6 +223,18 @@ const fingerprint = await fingerprintImage('./scan.jpg', {
 });
 ```
 
+BlockHash uses the same Promise-based flow and returns a versioned record:
+
+```typescript
+import { fingerprintImage } from 'image-fingerprint/node';
+
+const fingerprint = await fingerprintImage('./scan.jpg', {
+  algorithm: 'blockhash-v1',
+  bitsPerSide: 16,
+  method: 2,
+});
+```
+
 > [!WARNING]
 > The same encoded image is **not guaranteed to produce the same fingerprint in Node.js and every
 > browser**. Sharp and browser engines can decode, color-convert, orient, and round pixels
@@ -231,9 +242,9 @@ const fingerprint = await fingerprintImage('./scan.jpg', {
 > exact for identical normalized pixels, and repeated decodes were stable in the measured
 > configurations, but separately decoded encoded files may have a nonzero Hamming distance.
 
-`fingerprintImage()` is initially PDQ-only. The default limits are 32 MiB encoded and 40 million
-decoded pixels. Static JPEG, PNG, and WebP are supported; animated inputs are rejected explicitly.
-Preparation failures are `ImagePreparationError` values with stable `code` fields documented in
+The default limits are 32 MiB encoded and 40 million decoded pixels. Static JPEG, PNG, and WebP are
+supported; animated inputs are rejected explicitly. Preparation failures are
+`ImagePreparationError` values with stable `code` fields documented in
 [ADR 0003](./docs/architecture/0003-runtime-image-decoder-contract.md).
 
 When fingerprints cross runtime or browser boundaries:
@@ -245,109 +256,41 @@ When fingerprints cross runtime or browser boundaries:
 - Recalibrate before changing decoder versions or relying on wide-gamut/ICC-heavy inputs. The
   current small conformance corpus found exact repeats within each decoder but a browser-specific
   Display P3 result at Hamming distance 12 from the Node/Sharp reference.
+- Persist a decoder/normalization identifier next to any fingerprint that must be reproduced from
+  encoded bytes. The fingerprint record describes the algorithm, not the decoder pipeline.
 
 See the [encoded-image adapter conformance report](./docs/modernization/pdq-adapter-conformance.md)
 for the measured Node, Chromium, Firefox, and WebKit results and corpus limitations. These
 cross-decoder measurements are compatibility evidence, not a universal application threshold.
 
-## Use
+### Reproduce image-hash@7 BlockHash values
 
-```javascript
-const { imageHash } = require('image-fingerprint');
-
-// remote file simple
-imageHash('https://ichef-1.bbci.co.uk/news/660/cpsprodpb/7F76/production/_95703623_mediaitem95703620.jpg', 16, true, (error, data) => {
-  if (error) throw error;
-  console.log(data);
-  // 0773063f063f36070e070a070f378e7f1f000fff0fff020103f00ffb0f810ff0
-});
-
-// remote file with fetch config object
-const config = {
-  url: 'https://ichef-1.bbci.co.uk/news/660/cpsprodpb/7F76/production/_95703623_mediaitem95703620.jpg'
-};
-
-imageHash(config, 16, true, (error, data) => {
-  if (error) throw error;
-  console.log(data);
-  // 0773063f063f36070e070a070f378e7f1f000fff0fff020103f00ffb0f810ff0
-});
-
-//local file
-imageHash('./_95695590_tv039055678.jpg', 16, true, (error, data) => {
-  if (error) throw error;
-  console.log(data);
-  // 0773063f063f36070e070a070f378e7f1f000fff0fff020103f00ffb0f810ff0
-});
-
-//Buffer
-const fBuffer = fs.readFileSync(__dirname + '/example/_95695591_tv039055678.jpeg');
-imageHash({
-  ext: 'image/jpeg',
-  data: fBuffer
-}, 16, true, (error, data) => {
-  if(error) throw error;
-  console.log(data);
-  // 0773063f063f36070e070a070f378e7f1f000fff0fff020103f00ffb0f810ff0
-});
-
-//Buffer, without ext arg
-const fBuffer = fs.readFileSync(__dirname + '/example/_95695591_tv039055678.jpeg');
-imageHash({
-  data: fBuffer
-}, 16, true, (error, data) => {
-  if(error) throw error;
-  console.log(data);
-  // 0773063f063f36070e070a070f378e7f1f000fff0fff020103f00ffb0f810ff0
-});
-```
-
-## API
+Sharp and the historical `jpeg-js` decoder are not byte-equivalent. A generated differential run
+found 98 different BlockHash values in 720 Sharp-vs-historical comparisons, all on JPEG. Therefore
+historical decoding is an explicit policy rather than an alias for normalized decoding:
 
 ```typescript
-// name
-imageHash(location, bits, precise, callback);
+import { fingerprintImage } from 'image-fingerprint/node';
 
-// types
-imageHash(string|object, int, bool, function);
+const migrated = await fingerprintImage('./existing-image.jpg', {
+  algorithm: 'blockhash-v1',
+  bitsPerSide: 16,
+  method: 2,
+  decoderMode: 'image-hash-v7',
+});
+
+console.log(migrated.hash); // compatible with image-hash@7 using 16 bits and precise=true
 ```
 
-## SETTINGS
-Image hash will log out warnings if environment variable `VERBOSE` is set to true.
+`decoderMode` is intentionally a named, versioned value rather than a boolean. It is Node-only and
+valid only with `blockhash-v1`; PDQ always uses normalized decoding. Omit the option for the modern
+Sharp policy, which applies EXIF orientation and converts to sRGB before hashing. Do not mix values
+from the two policies in an equality-based stored-hash index.
 
-
-### Image-Hash Arguments
-
-| Argument | Type | Description | Mandatory | Example |
-| -------- | ---- | ----------- | --------- | ------- |
-| location | `object` or `string` | A configuration object with a remote `url` (see below for details), `Buffer` object (See input types below for more details), or `String` with a valid url or file location | Yes | see above |
-| bits | `int` | The number of bits in a row. The more bits, the more unique the hash. | Yes | 8 |
-| precise  | `bool` | Whether a precision algorithm is used. `true` Precise but slower, non-overlapping blocks. `false` Quick and crude, non-overlapping blocks. Method 2 is recommended as a good tradeoff between speed and good matches on any image size. The quick ones are only advisable when the image width and height are an even multiple of the number of blocks used. | Yes | `true` |
-| callback | `function` | A function with `error` and `data` arguments - see below |
-
-#### Location Object Types
-
-```typescript
-// Url Request Object
-interface UrlRequestObject extends RequestInit {
-  encoding?: string | null,
-  url: string | null,
-};
-
-// Buffer Object
-interface BufferObject {
-  ext?: string, // mime type of buffered file
-  data: Buffer,
-  name?: string // file name for buffered file
-};
-```
-
-### Callback Arguments
-
-| Argument | Type                     | Description                                                                         |
-| -------- | ------------------------ | ----------------------------------------------------------------------------------- |
-| error    | `Error Object` or `null` | If a run time error is detected this will be an `Error Object`, otherwise `null`    |
-| data     | `string` or `null`       | If there is no run time error, this be will be your hashed result, otherwise `null` |
+Migration mappings are direct: old `bits` becomes `bitsPerSide`, `precise: true` becomes method 2,
+and `precise: false` becomes method 1. Pass a former local path directly or pass the encoded
+`Buffer`/`Uint8Array`. Remote fetching and request policy now belong to the application; pass the
+resulting encoded bytes to `fingerprintImage()`.
 
 ## Development
 
@@ -360,8 +303,7 @@ pnpm check
 ```
 
 `pnpm check` runs linting, strict typechecking, offline tests with coverage floors, a build, and
-isolated CommonJS, ESM, and TypeScript checks against the packed tarball. Live remote-input tests
-are intentionally separate and can be run with `pnpm test:network`.
+isolated CommonJS, ESM, and TypeScript checks against the packed tarball.
 
 Install Playwright's matched engines once, then run the opt-in real-browser and module-worker gate:
 
@@ -385,7 +327,7 @@ algorithms is recorded in
 - Full local quality gate: `pnpm check`
 - Published file-set verification: `pnpm pack:check`
 - Packed Chromium, Firefox, WebKit, and module-worker conformance: `pnpm test:browser`
-- Opt-in live network tests: `pnpm test:network`
+- Historical BlockHash differential matrix: `pnpm compat:image-hash-v7`
 
 ## Releasing
 
@@ -401,9 +343,9 @@ provenance, and creates a GitHub release containing the npm tarball.
 attribution. The Block Mean Value implementation ultimately derives from
 [`blockhash-js`](https://github.com/commonsmachinery/blockhash-js) by Commons Machinery.
 
-This is a new package with its own API and release history. Compatibility with legacy
-`image-hash` output is used as a migration invariant, not as a commitment to retain its Node-only
-API.
+This is a new package with its own API and release history. The Node-only `image-hash-v7` decoder
+mode deliberately preserves historical stored-hash compatibility without retaining the old
+callback or remote-request API.
 
 ## License
 

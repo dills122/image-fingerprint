@@ -87,6 +87,97 @@ describe('Node image adapter', () => {
     }));
   });
 
+  it('fingerprints normalized encoded images with blockhash-v1', async () => {
+    const path = 'example/_95695590_tv039055678.jpg';
+    const pixels = await decodeImage(path);
+    const options = {
+      algorithm: 'blockhash-v1',
+      bitsPerSide: 16,
+      method: 2,
+    } as const;
+
+    await expect(fingerprintImage(path, options)).resolves.toEqual(
+      fingerprintPixels(pixels, options),
+    );
+  });
+
+  it.each([
+    {
+      path: 'example/_95695590_tv039055678.jpg',
+      expected: '0773063f063f36070e070a070f378e7f1f000fff0fff020103f00ffb0f810ff0',
+    },
+    {
+      path: 'benchmarks/pdq/fixtures/images/orientation-6-srgb.jpg',
+      expected: '000057f676bc2f6e0df85fd60eb023380ff24fe217c40d94697a7fde56f40000',
+    },
+    {
+      path: 'benchmarks/pdq/fixtures/images/opaque-p3.png',
+      expected: '000057f27ebc2f6e0df85fd60eb021b807f24fe237cc0d14697a7fce57f40000',
+    },
+    {
+      path: 'benchmarks/pdq/fixtures/images/alpha-srgb.webp',
+      expected: '70ead73a31468d51a8c58e3172af562a518e9c70e156aa75eb9d1aa9438e5462',
+    },
+  ])('reproduces the historical hash for $path in image-hash-v7 mode', async ({
+    path,
+    expected,
+  }) => {
+    const options = {
+      algorithm: 'blockhash-v1',
+      bitsPerSide: 16,
+      method: 2,
+      decoderMode: 'image-hash-v7',
+    } as const;
+
+    const result = await fingerprintImage(path, options);
+
+    expect(result.hash).toBe(expected);
+  });
+
+  it('keeps normalized and historical decoder policies observably distinct', async () => {
+    const path = 'benchmarks/pdq/fixtures/images/orientation-6-srgb.jpg';
+    const options = {
+      algorithm: 'blockhash-v1',
+      bitsPerSide: 16,
+      method: 2,
+    } as const;
+
+    const normalized = await fingerprintImage(path, options);
+    const historical = await fingerprintImage(path, {
+      ...options,
+      decoderMode: 'image-hash-v7',
+    });
+
+    expect(normalized.hash).toBe(
+      '000077b635dc6fe63a780f7847e00fb847f617b003d449f435fc6dee377a0000',
+    );
+    expect(historical.hash).toBe(
+      '000057f676bc2f6e0df85fd60eb023380ff24fe217c40d94697a7fde56f40000',
+    );
+  });
+
+  it('rejects image-hash-v7 decoder mode for PDQ', async () => {
+    await expect(fingerprintImage('example/Example.png', {
+      algorithm: 'pdq-v1',
+      decoderMode: 'image-hash-v7',
+    })).rejects.toMatchObject({
+      name: 'ImagePreparationError',
+      code: 'invalid-input',
+    });
+  });
+
+  it('rejects unknown decoder modes instead of falling back to normalization', async () => {
+    await expect(fingerprintImage('example/Example.png', {
+      algorithm: 'blockhash-v1',
+      bitsPerSide: 16,
+      method: 2,
+      decoderMode: 'image-hash-v8',
+    } as unknown as Parameters<typeof fingerprintImage>[1])).rejects.toMatchObject({
+      name: 'ImagePreparationError',
+      code: 'invalid-input',
+    });
+  });
+
   it('applies EXIF orientation before exposing region coordinates', async () => {
     const encoded = await sharp({
       create: {

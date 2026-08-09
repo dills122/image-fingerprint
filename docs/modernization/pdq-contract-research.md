@@ -14,7 +14,8 @@ remain outside this package.
 
 The maintainer has agreed to the following architecture:
 
-- Preserve the callback-based root API and every existing Block Mean Value serialized hash.
+- Preserve every existing Block Mean Value serialized hash through a named Promise-based decoder
+  policy while replacing the callback-based root API.
 - Add PDQ as an opt-in, separately versioned algorithm; never reinterpret a legacy bare hash.
 - Build a synchronous TypeScript pixel core shared by Node.js, browsers, and Web Workers.
 - Keep paths, URLs, encoded-image decoding, MIME detection, and DOM types out of the core.
@@ -101,7 +102,8 @@ type PdqFingerprint = {
 
 The existing in-progress `ImageFingerprint` shape uses `bits` and optional `quality`. Before PDQ is
 added, change that new/unreleased contract to `bitLength` and a discriminated union so PDQ quality
-cannot be absent. The legacy callback API remains unchanged.
+cannot be absent. Historical hashes migrate through an explicit decoder mode rather than a callback
+compatibility surface.
 
 ## Comparison and Match Policy
 
@@ -143,14 +145,14 @@ It must not be silently applied by `compareFingerprints()`.
 
 | Entry | First PDQ scope |
 | --- | --- |
-| `image-fingerprint` | Existing CommonJS callback API retained temporarily as a parity oracle |
+| `image-fingerprint` | Portable pixel types, synchronous fingerprinting, parsing, serialization, and distance |
 | `image-fingerprint/core` | Pixel types, synchronous fingerprinting, validation, parsing, serialization, and distance |
-| `image-fingerprint/node` | Root compatibility exports plus async encoded byte/path adapters |
+| `image-fingerprint/node` | Root exports plus normalized and historical encoded byte/path fingerprint adapters |
 | `image-fingerprint/browser` | Core exports plus `ImageData`, `Blob`, and `File` adapters usable in main thread and workers |
 
-The accepted package ADR preserves historical `lib` subpaths and `package.json` while adding an
-`exports` map. The release gate must still install the packed artifact and exercise every mapped
-legacy and new path under CommonJS, ESM, and TypeScript resolution.
+The accepted package ADR exposes named entrypoints plus `package.json` through an `exports` map.
+The release gate installs the packed artifact, exercises every public path under CommonJS, ESM, and
+TypeScript resolution, and rejects historical internal deep imports.
 
 Browser `ImageData` provides the required tightly packed RGBA order. `Blob` decoding can use
 `createImageBitmap` and canvas extraction, but exact encoded-image equality is not promised because
@@ -179,8 +181,8 @@ implementation planning:
    raw gray/RGB vector protocol that emits hash plus quality.
 2. **Numeric discipline:** determine where TypeScript needs `Math.fround` or `Float32Array` writes
    to reproduce C++ float operation ordering. Exit on exact equality for fixed and seeded vectors.
-3. **Package audit:** pack the candidate and published 7.0.1, then test root, historical `lib`
-   imports, `package.json`, `/core`, `/node`, and `/browser` in isolated consumers.
+3. **Package audit:** pack the candidate and published 7.0.1, then test stored-hash migration plus
+   `package.json`, root, `/core`, `/node`, and `/browser` in isolated consumers.
 4. **Adapter matrix:** choose first-release Node decoders and browser floors; specify EXIF, ICC,
    alpha, animation, maximum dimensions/bytes, abort, redirect, and URL-fetch responsibility.
 5. **Performance budget:** record absolute Node and browser budgets on named hardware before using

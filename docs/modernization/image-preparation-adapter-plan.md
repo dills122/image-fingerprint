@@ -6,7 +6,7 @@ Updated: 2026-08-09
 ## Goal
 
 Provide an ergonomic decode-once/hash-many path for full images and caller-selected MTG regions,
-without changing the legacy callback API or moving encoded-image behavior into the deterministic
+without changing historical hash values or moving encoded-image behavior into the deterministic
 algorithm core.
 
 ## Dependency Boundary
@@ -86,7 +86,7 @@ pnpm test:package
 pnpm check
 ```
 
-Release evidence includes unchanged legacy golden hashes and callback tests, exact raw-pixel PDQ
-fixtures, the browser forbidden-import scan, real-engine/worker adapter results, and the Task 15
-cross-decoder report. See `pdq-adapter-conformance.md` for ICC/profile evidence and the bounded
-Firefox Display P3 exception.
+Release evidence includes unchanged historical golden hashes through the named decoder mode, exact
+raw-pixel PDQ fixtures, the browser forbidden-import scan, real-engine/worker adapter results, and
+the Task 15 cross-decoder report. See `pdq-adapter-conformance.md` for ICC/profile evidence and the
+bounded Firefox Display P3 exception.

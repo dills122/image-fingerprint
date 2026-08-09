@@ -2,12 +2,10 @@ const assert = require('node:assert/strict');
 const path = require('node:path');
 const {
   fingerprintPixels,
-  imageHash,
   parseFingerprint,
   serializeFingerprint,
   compareFingerprints,
 } = require('image-fingerprint');
-const legacyBlockHash = require('image-fingerprint/lib/block-hash').default;
 const {
   fingerprintPixels: fingerprintPixelsFromBrowser,
   parseFingerprint: parseFingerprintFromBrowser,
@@ -22,7 +20,6 @@ const {
 const {
   decodeImage,
   fingerprintImage,
-  imageHash: imageHashFromNode,
 } = require('image-fingerprint/node');
 
 assert.equal(
@@ -31,19 +28,8 @@ assert.equal(
   'Requiring image-fingerprint/node must not eagerly load Sharp',
 );
 
-assert.equal(imageHashFromNode, imageHash);
-assert.equal(typeof legacyBlockHash, 'function');
-
 const fixture = path.join(__dirname, '..', 'example', '_95695590_tv039055678.jpg');
 const expected = '0773063f063f36070e070a070f378e7f1f000fff0fff020103f00ffb0f810ff0';
-
-imageHash(fixture, 16, true, (error, hash) => {
-  if (error) {
-    throw error;
-  }
-
-  assert.equal(hash, expected);
-});
 
 const pixels = {
   width: 2,
@@ -58,6 +44,11 @@ const pixels = {
 const options = {
   algorithm: 'blockhash-v1',
   bitsPerSide: 2,
+  method: 2,
+};
+const encodedBlockHashOptions = {
+  algorithm: 'blockhash-v1',
+  bitsPerSide: 16,
   method: 2,
 };
 
@@ -157,12 +148,27 @@ assert.equal(wrappedPixels.data, imageData.data);
 Promise.all([
   decodeImage(fixture),
   fingerprintImage(fixture, pdqOptions),
-]).then(([decoded, encodedFingerprint]) => {
+  fingerprintImage(fixture, encodedBlockHashOptions),
+  fingerprintImage(fixture, {
+    ...encodedBlockHashOptions,
+    decoderMode: 'image-hash-v7',
+  }),
+]).then(([
+  decoded,
+  encodedFingerprint,
+  normalizedBlockHash,
+  historicalBlockHash,
+]) => {
   assert.equal(decoded.format, 'rgba8');
   assert.deepEqual(
     encodedFingerprint,
     fingerprintPixelsFromCore(decoded, pdqOptions),
   );
+  assert.deepEqual(
+    normalizedBlockHash,
+    fingerprintPixelsFromCore(decoded, encodedBlockHashOptions),
+  );
+  assert.equal(historicalBlockHash.hash, expected);
 }).catch((error) => {
   process.nextTick(() => {
     throw error;

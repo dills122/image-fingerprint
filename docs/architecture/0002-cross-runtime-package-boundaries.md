@@ -17,12 +17,12 @@ boundaries and tests.
 
 ## Decision
 
-- Keep the existing root entrypoint and callback behavior as the Node.js compatibility API.
+- Make the root entrypoint the portable pixel API and use `/node` for encoded-image adapters.
 - Add an explicit `image-fingerprint/node` alias for Node.js input and decoder behavior.
 - Add `image-fingerprint/core` for runtime-neutral pixel algorithms, result types, and matching helpers.
 - Add a browser-safe ESM entrypoint at `image-fingerprint/browser`.
-- Preserve the previously reachable CommonJS `lib` runtime paths when introducing package exports;
-  they remain compatibility paths rather than newly recommended public APIs.
+- Publish only named root, Node, core, browser, and package-metadata entrypoints; internal `lib`
+  files are not public subpaths.
 - Define portable algorithm inputs as explicitly tagged, tightly packed sRGB typed-array pixels
   with width and height; do not expose Node.js or DOM types from the core. The current foundation
   starts with straight-alpha RGBA8, while an approved PDQ profile may add gray8 and RGB8 without
@@ -43,7 +43,8 @@ contract.
 Positive:
 
 - PDQ candidates can be tested against identical raw pixels in Node.js and browsers.
-- Existing Node.js consumers retain their callback API and serialized Block Mean Value hashes.
+- Existing serialized Block Mean Value hashes remain reproducible through the named Node decoder
+  policy and versioned Promise API.
 - Browser bundles do not include filesystem, `Buffer`, or Node-oriented decoder code.
 - Decoder variance is measurable separately from algorithm variance.
 
@@ -57,11 +58,11 @@ Costs:
 
 ## Verification
 
-- Existing Node.js golden hashes and callback tests remain unchanged.
+- Historical golden hashes remain unchanged through `decoderMode: 'image-hash-v7'`.
 - The same synthetic RGBA fixtures produce identical versioned results through the core, Node.js,
   and browser entrypoints.
-- Isolated packed-package smoke tests load CommonJS and ESM root, Node.js, core, browser, historical
-  `lib`, and package-metadata subpaths.
+- Isolated packed-package smoke tests load CommonJS and ESM root, Node.js, core, browser, and
+  package-metadata subpaths, and reject historical internal deep imports.
 - Packed TypeScript consumers compile under `node16`, `nodenext`, and `bundler` resolution.
 - Chromium, Firefox, and WebKit browser smoke tests load the packed ESM browser subpath, hash exact
   gray/RGB/RGBA fixtures on the main thread and in a module worker, and reject unexpected WASM.

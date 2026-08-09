@@ -6,7 +6,7 @@ Updated: 2026-08-09
 ## Overview
 
 Implement an opt-in, reference-conformant `pdq-v1` fingerprint in the existing TypeScript package
-without changing the legacy callback API or serialized Block Mean Value hashes. Work proceeds from
+without changing serialized Block Mean Value hashes. Work proceeds from
 the highest-risk dependency—the pinned C++ oracle and numeric conformance—through the portable
 pixel core, record/comparison utilities, runtime packaging, encoded-image adapters, benchmarks, and
 release evidence.
@@ -16,7 +16,7 @@ The cross-runtime foundation landed on `main` in `2686eac`. Tasks 2–11 are com
 
 ## Approved Architecture
 
-- The root `imageHash()` callback API and every legacy hash remain compatibility-locked.
+- Every historical hash remains compatibility-locked through `decoderMode: 'image-hash-v7'`.
 - `pdq-v1` is a synchronous TypeScript algorithm exposed through `image-fingerprint/core` and re-exported
   by explicit Node and browser entrypoints.
 - Meta ThreatExchange commit `baefb4ed67b6cdc1d4c82dbaef858d50866ac424` is normative.
@@ -57,9 +57,8 @@ package-smoke work so PDQ starts from a known green baseline.
 
 **Acceptance criteria:**
 
-- [x] Legacy golden hashes and callback behavior are unchanged by the foundation change.
-- [x] Root, historical `lib` paths, `package.json`, `/core`, `/node`, and `/browser` load from the
-  packed artifact.
+- [x] Historical golden hashes are unchanged by the foundation change.
+- [x] Root, `package.json`, `/core`, `/node`, and `/browser` load from the packed artifact.
 - [x] The working tree and ownership of any remaining changes are unambiguous before PDQ files are
   edited.
 
@@ -401,8 +400,8 @@ Web Worker using identical raw fixture bytes.
 
 **Acceptance criteria:**
 
-- [x] Packed root, `/node`, `/core`, `/browser`, historical `lib` paths, and `package.json` work in
-  isolated consumers with the documented module formats.
+- [x] Packed root, `/node`, `/core`, `/browser`, and `package.json` work in isolated consumers with
+  the documented module formats; internal deep imports are rejected.
 - [x] Chromium, Firefox, and WebKit produce exact hash and quality equality for the same raw vectors
   on the main thread and in a worker.
 - [x] Browser graphs contain no Node built-ins, Node decoders, native addon, or unexpected WASM.
@@ -428,7 +427,7 @@ Web Worker using identical raw fixture bytes.
 ## Checkpoint E: Core Release Candidate
 
 - [x] Exact PDQ is proven in supported Node and browser engines plus workers.
-- [x] Legacy root and deep-import compatibility remain green.
+- [x] Named root/subpath compatibility remains green and historical internal deep imports are absent.
 - [x] The pure pixel API can independently ship or proceed to adapter work.
 
 ## Phase 5: Add Encoded-Image Adapters Behind a Separate Gate
@@ -458,7 +457,7 @@ new API.
   animation policy, maximum bytes/pixels, and error categories.
 - [x] Decode time and PDQ core time are measurable separately.
 - [x] New URL fetching is either explicitly specified with security limits or deferred; it is not
-  inherited accidentally from `imageHash()`.
+  inherited accidentally from the old input loader.
 
 **Verification:**
 
@@ -481,8 +480,8 @@ new API.
 
 **Status:** Complete and verified on `codex/image-preparation-adapters` on 2026-08-09.
 
-**Description:** Add explicit `/node` encoded-image fingerprinting without changing the legacy
-callback path.
+**Description:** Add explicit `/node` encoded-image fingerprinting with a migration path for
+historical stored hashes.
 
 **Acceptance criteria:**
 
@@ -490,12 +489,13 @@ callback path.
   `PdqFingerprint` produced by the core over its normalized pixels.
 - [x] Limits, unsupported formats/animation, decoding failures, and aborts use stable documented
   error categories.
-- [x] No legacy `imageHash()` input, callback, decoder, error, or hash output changes.
+- [x] Historical hash output is reproduced through the named decoder mode without carrying the old
+  input/callback surface into the new adapter.
 
 **Verification:**
 
 - [x] Run Node adapter tests for every approved source and error category.
-- [x] Run legacy golden and callback tests in the same command.
+- [x] Run historical golden and adapter tests in the same command.
 - [x] `pnpm check`
 
 **Dependencies:** Task 12.
@@ -651,18 +651,29 @@ threshold guidance, verification evidence, and rollback path.
 
 **Acceptance criteria:**
 
-- [ ] README examples cover core raw pixels, full encoded images, caller-supplied crops, parsing,
-  comparison, and explicit policy without changing legacy examples.
-- [ ] Release notes state decoder/runtime support, record persistence guidance, quality semantics,
+- [x] README examples cover core raw pixels, full encoded images, caller-supplied crops, parsing,
+  comparison, and explicit historical decoder selection through the Promise API.
+- [x] Release notes state decoder/runtime support, record persistence guidance, quality semantics,
   known crop/rotation/adversarial limits, and fixture/code attribution.
-- [ ] Packed 7.0.1 and release-candidate compatibility results plus all accepted conformance and
+- [x] Packed 7.0.1 and release-candidate compatibility results plus all accepted conformance and
   benchmark commands are recorded.
+
+**Release-candidate evidence:**
+
+- The published `image-hash@7.0.1` tarball with npm shasum
+  `6d5a77d1cb7aa24c93d7d7729d6787d0023c85e9` matched `decoderMode: 'image-hash-v7'` in all 720
+  generated JPEG/PNG/WebP comparisons across methods 1/2 and 4/8/16 bits per side.
+- The 0.1.0 packed candidate passes CommonJS and ESM runtime consumers plus TypeScript Node16,
+  NodeNext, and Bundler resolution. Its browser ESM graph passes Chromium 151.0.7922.34, Firefox
+  153.0, and WebKit 26.5 on the main thread and in a module worker.
+- Exact commands, external prerequisites, decoder/runtime support, rollback, persistence guidance,
+  limitations, and attribution are recorded in `release-notes-0.1.0.md`.
 
 **Verification:**
 
-- [ ] `pnpm check`
-- [ ] `npm pack --dry-run`
-- [ ] Fresh CommonJS, ESM, browser, and worker examples run against the packed tarball.
+- [x] `pnpm check`
+- [x] `npm pack --dry-run`
+- [x] Fresh CommonJS, ESM, browser, and worker examples run against the packed tarball.
 
 **Dependencies:** Tasks 15–17.
 
@@ -677,11 +688,11 @@ threshold guidance, verification evidence, and rollback path.
 
 ## Checkpoint G: Complete
 
-- [ ] Legacy BMVB hashes and callback behavior are unchanged.
-- [ ] Exact raw-pixel PDQ hash and quality conformance is proven across Node, browsers, and workers.
-- [ ] Encoded-image variance, performance, memory, and matching behavior are published from evidence.
-- [ ] Every fixture and ported source element has provenance and required attribution.
-- [ ] The package is ready for review as an opt-in PDQ release; no default-algorithm change is bundled.
+- [x] Historical BMVB hashes remain reproducible through the named decoder mode.
+- [x] Exact raw-pixel PDQ hash and quality conformance is proven across Node, browsers, and workers.
+- [x] Encoded-image variance, performance, memory, and matching behavior are published from evidence.
+- [x] Every fixture and ported source element has provenance and required attribution.
+- [x] The package is ready for review as an opt-in PDQ release; no default-algorithm change is bundled.
 
 ## Parallelization Opportunities
 
@@ -699,7 +710,7 @@ threshold guidance, verification evidence, and rollback path.
 | --- | --- | --- |
 | JavaScript number semantics flip median-boundary bits | High | Oracle-first stage vectors, float32 discipline, 10,000-vector differential gate |
 | PDQ changes regress the landed cross-runtime contracts | High | Keep `d4f88fa` as the baseline and rerun packed subpath and browser-graph checks at each public-contract checkpoint |
-| `exports` breaks historical consumers | High | Preserve known paths and test packed 7.0.1 versus candidate consumers |
+| `exports` breaks historical consumers | High | Publish an explicit migration path and test stored 7.0.1 hashes against the candidate mode |
 | Browser/Node decoders produce different pixels | Medium | Exactness only at normalized pixels; categorized decoder tolerance reports |
 | Upstream images lack redistribution rights | High | Synthetic oracle vectors and per-fixture provenance; no blind vendoring |
 | TypeScript is too slow on large scans | Medium | Predeclared budgets, workers, profiling, explicit optional WASM decision only if needed |
@@ -720,4 +731,5 @@ Before implementation begins, confirm:
 - [ ] Task order and phase boundaries are acceptable.
 - [ ] Completed Task 1 plus Tasks 2–11 define the first implementation increment.
 - [ ] Adapter work remains separately gated after the exact pixel core.
-- [ ] No task is expected to change the legacy default algorithm or callback API.
+- [x] The final pre-release cleanup removes the callback API while preserving its stored hash values
+  through an explicit Promise-based decoder policy.

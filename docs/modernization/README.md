@@ -10,7 +10,8 @@ The PDQ core and adapter contracts are approved. Tasks 1–17 are implemented an
 cross-runtime core, record/comparison APIs, packed runtime matrix, and Node/browser image adapters
 are complete, and encoded-image decoder tolerance is measured with a documented Firefox Display P3
 exception. TypeScript/WASM performance and the initial MTG exact-printing calibration are retained
-as evidence. Task 18 remains for final release and migration documentation.
+as evidence. Task 18 release, migration, historical compatibility, and packed-runtime evidence is
+complete.
 
 ## Documents
 
@@ -36,6 +37,8 @@ as evidence. Task 18 remains for final release and migration documentation.
   evidence-backed decision to retain the portable TypeScript backend.
 - [PDQ MTG matching results](./pdq-matching-results.md): local-only licensed corpus, threshold
   sweeps, hard cases, and conservative full-image/crop-region usage guidance.
+- [0.1.0 release notes](./release-notes-0.1.0.md): runtime/decoder matrix, historical compatibility
+  mode, persistence and rollback guidance, limits, evidence, and attribution.
 - [Tooling baseline](./tooling-baseline.md): runtime, package-manager, compiler, lint, test, and CI
   foundation established before algorithm implementation.
 

@@ -12,9 +12,6 @@ import {
   PDQ_STARTING_POLICY,
 } from 'image-fingerprint/browser';
 
-const { imageHash: imageHashFromNode } = await import('image-fingerprint/node');
-assert.equal(typeof imageHashFromNode, 'function');
-
 const fingerprint = fingerprintPixels({
   width: 2,
   height: 2,
@@ -123,7 +120,6 @@ const forbiddenBrowserImports = [
   'node:util',
   'node:zlib',
   '@cwasm/webp',
-  'file-type',
   'jpeg-js',
   'pngjs',
   'sharp',

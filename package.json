@@ -27,9 +27,6 @@
       "require": "./lib/core/index.js",
       "default": "./lib/esm/core.mjs"
     },
-    "./lib": "./lib/index.js",
-    "./lib/*.js": "./lib/*.js",
-    "./lib/*": "./lib/*.js",
     "./package.json": "./package.json"
   },
   "engines": {
@@ -40,7 +37,6 @@
     "codex:links": "./scripts/setup-codex-links.sh",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "test:network": "cross-env RUN_NETWORK_TESTS=1 vitest run",
     "pdq:oracle:build": "./scripts/build-pdq-oracle.sh",
     "pdq:wasm:build": "./scripts/build-pdq-wasm-oracle.sh",
     "pdq:oracle:smoke": "node scripts/pdq-oracle-smoke.mjs",
@@ -56,6 +52,7 @@
     "pdq:performance:browser": "pnpm build && node benchmarks/pdq/browser-performance.mjs --run",
     "pdq:matching:prepare": "node benchmarks/pdq/prepare-solring-corpus.mjs",
     "pdq:matching": "pnpm build && node benchmarks/pdq/matching-quality.mjs",
+    "compat:image-hash-v7": "pnpm build && node scripts/image-hash-v7-differential.mjs",
     "test:package": "pnpm build && node scripts/package-smoke.cjs && node scripts/browser-package-smoke.mjs && node scripts/packed-package-smoke.mjs",
     "test:browser": "node scripts/browser-engine-smoke.mjs",
     "test:watch": "vitest",
@@ -97,10 +94,9 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@cwasm/webp": "^0.1.5",
-    "file-type": "^21.3.2",
-    "jpeg-js": "^0.4.0",
-    "pngjs": "^7.0.0",
+    "@cwasm/webp": "0.1.5",
+    "jpeg-js": "0.4.4",
+    "pngjs": "7.0.0",
     "sharp": "0.35.3"
   },
   "devDependencies": {
@@ -108,7 +104,6 @@
     "@types/node": "^24.5.2",
     "@types/pngjs": "^6.0.1",
     "@vitest/coverage-v8": "^4.1.10",
-    "cross-env": "^10.1.0",
     "eslint": "^10.8.0",
     "playwright": "^1.62.1",
     "typescript": "^5.9.2",

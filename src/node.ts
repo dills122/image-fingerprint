@@ -14,4 +14,8 @@ export type {
   PixelRegion,
 } from './core';
 export { decodeImage, fingerprintImage } from './node/decode-image';
-export type { NodeImageSource } from './node/decode-image';
+export type {
+  NodeFingerprintImageOptions,
+  NodeImageDecoderMode,
+  NodeImageSource,
+} from './node/decode-image';

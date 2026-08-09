@@ -16,11 +16,12 @@ semantic or cryptographic hash, and deep cropping is outside its intended robust
 
 ## Proposed Decision
 
-Expand the package around versioned fingerprint results instead of replacing imageHash:
+Expand the package around versioned fingerprint results:
 
 - Name existing behavior blockhash-v1 and preserve its exact serialized output.
 - Introduce PDQ, if it passes the repository conformance and benchmark gates, as pdq-v1.
-- Keep the legacy callback API as a compatibility adapter.
+- Preserve historical encoded-image BlockHash results through a named Node decoder mode without
+  retaining the callback API.
 - Add a schema-versioned typed record whose discriminated result makes PDQ quality mandatory.
 - Keep raw-pixel algorithms independent of paths, URLs, MIME detection, and encoded-image decoders.
 - Require new raw-pixel algorithms to run against the same portable contract in Node.js and modern
@@ -60,7 +61,7 @@ This is a contract direction, not approval of a particular PDQ dependency or imp
 
 ## Compatibility Rules
 
-- Existing imageHash inputs, callback behavior, and golden BMVB outputs remain locked.
+- Historical golden BMVB outputs remain locked under `decoderMode: 'image-hash-v7'`.
 - Persisted fingerprints created by new APIs include an algorithm identifier.
 - Serialization or preprocessing changes require a new algorithm version.
 - `pdq-v1` includes the accepted portable unfused float32 profile and frozen DCT coefficient bits;

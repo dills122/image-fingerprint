@@ -102,3 +102,16 @@ binary.
 A third-party Node/WASM implementation may be used for a comparative spike, but it is not a
 normative reference. It must pass the same raw-pixel and decoded-image conformance suite before a
 dependency decision.
+
+## Shipped Attribution and Decoder Boundary
+
+The production TypeScript port is validated against Meta ThreatExchange commit
+`baefb4ed67b6cdc1d4c82dbaef858d50866ac424`; the same-source C++ and WASM comparators are development
+evidence and are not shipped in the npm tarball. The repository's synthetic PDQ vectors and encoded
+adapter corpus record generation provenance, checksums, and licenses alongside the fixtures.
+
+BlockHash lineage remains attributed to Commons Machinery's `blockhash-js`. Historical encoded
+compatibility uses the same `jpeg-js`, `pngjs`, and `@cwasm/webp` package families used by
+`image-hash@7`; no decoder implementation is copied into this repository. Normalized Node decoding
+uses pinned `sharp@0.35.3`. These decoder choices are preprocessing contracts, not part of Meta's
+PDQ algorithm definition.

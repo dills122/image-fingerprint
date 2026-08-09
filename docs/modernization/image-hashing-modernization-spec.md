@@ -5,8 +5,8 @@ Updated: 2026-08-09
 
 ## 1. Objective
 
-Add a modern, versioned perceptual fingerprint capability while preserving the existing BMVB hash
-and callback API for consumers that store or compare today's output. PDQ is the first candidate
+Add a modern, versioned perceptual fingerprint capability while preserving existing BMVB hash
+values for consumers that store or compare today's output. PDQ is the first candidate
 because it has a compact 256-bit representation, a quality signal, public reference implementations,
 and cross-language fixtures.
 
@@ -64,7 +64,8 @@ distance at most 31 and quality at least 50, but comparison never applies it sil
 - TypeScript package with a shared Node.js and modern-browser algorithm core.
 - pnpm for reproducible development installs.
 - Vitest for unit, integration, fixture, and differential tests.
-- Existing format-specific decoders remain in place for the legacy path during evaluation.
+- Historical `image-hash@7` format-specific decoders remain exactly pinned behind the explicit
+  Node-only `image-hash-v7` BlockHash policy. Normalized encoded-image calls use Sharp 0.35.3.
 - The production target is an auditable TypeScript port. Conformance and performance tests compare
   it with a Meta-derived WASM build and credible existing packages without making them runtime
   dependencies.
@@ -117,6 +118,8 @@ only when the approved implementation needs the boundary.
   do not read files, fetch URLs, or infer MIME types.
 - Decoder normalization owns EXIF orientation, grayscale expansion, and color-layout conversion.
   Each algorithm profile owns the alpha/background rule that affects its fingerprint identity.
+- Encoded-image reproducibility additionally requires a named decoder/normalization policy. The
+  fingerprint record identifies algorithm behavior but does not identify the decoder pipeline.
 - Algorithm/version identifiers are explicit in every new result and persisted example.
 - No floating threshold defaults are hidden in comparison code; defaults are named and overridable.
 - Hash serialization is lowercase, fixed-width, and independently testable.
@@ -129,10 +132,9 @@ only when the approved implementation needs the boundary.
 ### Compatibility
 
 - Freeze all current local fixture hashes before refactoring.
-- Preserve callback timing/error semantics unless a separately approved major-version change says
-  otherwise.
-- Replace live-network-only evidence with checked-in or generated local fixtures; keep remote-input
-  tests isolated and optional.
+- Preserve stored BlockHash values through an explicit migration policy.
+- Replace live-network-only evidence with checked-in or generated local fixtures; remote fetching
+  remains application-owned.
 
 ### PDQ conformance
 
@@ -171,7 +173,7 @@ only when the approved implementation needs the boundary.
 
 ### Ask before changing
 
-- Default algorithm, public API shape, callback behavior, Node support, module format, decoder stack,
+- Default algorithm, public API shape, Node support, module format, decoder stack,
   network-input support, or persisted fingerprint schema.
 - Introducing native code, WASM binaries, model weights, or a third-party PDQ runtime dependency.
 - Vendoring Meta fixtures or source into the published package.
@@ -186,7 +188,7 @@ only when the approved implementation needs the boundary.
 
 ## 9. Success Criteria
 
-- Existing local BMVB golden hashes and public callback behavior remain unchanged.
+- Existing local BMVB golden hashes remain reproducible through the named historical decoder mode.
 - PDQ raw-pixel output matches the pinned Meta reference exactly across the conformance corpus in
   Node.js and supported browsers.
 - Decoder-produced hashes satisfy an agreed tolerance and are deterministic on supported platforms.
@@ -202,7 +204,8 @@ only when the approved implementation needs the boundary.
 
 1. Existing BMVB behavior stays available as `blockhash-v1`; PDQ launches opt-in.
 2. Node.js, modern browsers, and Web Workers share one synchronous raw-pixel core.
-3. Runtime decoding adapters are Promise-based while the current callback function remains intact.
+3. Runtime decoding adapters are Promise-based; historical BlockHash bytes use an explicit Node
+   decoder policy rather than a callback compatibility API.
 4. New persisted values include record schema and algorithm versions rather than an untyped string.
 5. Initial scope includes hashing and mathematical pairwise comparison, not an image database or
    nearest-neighbor index.
@@ -211,16 +214,15 @@ only when the approved implementation needs the boundary.
 8. Meta C++ at commit `baefb4ed67b6cdc1d4c82dbaef858d50866ac424` is the normative
    source; the accepted unfused float32 profile makes its answers portable across native Clang,
    same-source WASM, and TypeScript. TypeScript is the production target and WASM is a comparator.
+9. New Node encoded-image calls default to normalized Sharp decoding. Existing BlockHash stores can
+   select `decoderMode: 'image-hash-v7'` explicitly.
 
 ## 11. Remaining Release Decisions
 
 - Which Chromium, Firefox, and WebKit versions define the initial browser adapter support matrix?
 - Do existing downstream projects need an explicit stored-hash migration/dual-write helper?
-- Must remote URL/request-object inputs remain first-class for new algorithms?
 - What real downstream positive/negative image pairs can be used, with suitable licenses, to
   calibrate thresholds?
-- Which Node decoder formats and animation/orientation/color-profile policies belong in the first
-  encoded-image adapter release?
 - What absolute performance and memory budgets trigger consideration of an optional WASM backend?
 
 ## 12. Approval Record
