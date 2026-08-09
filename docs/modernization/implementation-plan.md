@@ -1,6 +1,6 @@
 # PDQ v1 Implementation Plan
 
-Status: Task 8 committed; Task 9 implemented and reviewed locally
+Status: Tasks 8–9 committed; Task 10 implemented and reviewed locally
 Updated: 2026-08-09
 
 ## Overview
@@ -355,21 +355,23 @@ policy helper.
 
 ### Task 10: Run large differential and numeric-discipline tests
 
+**Status:** Implemented and reviewed locally on `codex/fingerprint-codec` on 2026-08-09.
+
 **Description:** Prove the TypeScript implementation against thousands of seeded C++ vectors and
 use same-source WASM only to investigate discrepancies and establish a performance goalpost.
 
 **Acceptance criteria:**
 
-- [ ] At least 10,000 valid seeded raw inputs have exact hash and quality equality with C++.
-- [ ] Every mismatch is reduced to a committed regression vector before numeric code changes.
-- [ ] The minimum necessary `Math.fround`/`Float32Array` discipline is documented; no runtime WASM
+- [x] At least 10,000 valid seeded raw inputs have exact hash and quality equality with C++.
+- [x] Every mismatch is reduced to a committed regression vector before numeric code changes.
+- [x] The minimum necessary `Math.fround`/`Float32Array` discipline is documented; no runtime WASM
   dependency is introduced.
 
 **Verification:**
 
-- [ ] Run the opt-in differential command with its seed and summary recorded.
-- [ ] Repeat the accepted seed with identical results.
-- [ ] Run `pnpm check` after any numeric adjustment.
+- [x] Run the opt-in differential command with its seed and summary recorded.
+- [x] Repeat the accepted seed with identical results.
+- [x] Run `pnpm check` (no numeric adjustment was necessary).
 
 **Dependencies:** Tasks 2, 7, and 9.
 
@@ -384,9 +386,9 @@ use same-source WASM only to investigate discrepancies and establish a performan
 
 ## Checkpoint D: Public Core
 
-- [ ] Schema, codec, comparison, and policy behavior are reviewed as public contracts.
-- [ ] Fixed and randomized oracle conformance are exact.
-- [ ] `pnpm check` passes without a production WASM dependency.
+- [x] Schema, codec, comparison, and policy behavior are reviewed as public contracts.
+- [x] Fixed and randomized oracle conformance are exact.
+- [x] `pnpm check` passes without a production WASM dependency.
 
 ## Phase 4: Prove Packaging and Real Browser Execution
 

@@ -664,3 +664,33 @@ primary-source verification before entering contract documentation.
   `quality-below-minimum` result from an eligible distance match/non-match.
 - Policy fields are runtime validated as integers: `maxDistance` from 0 through 256 and
   `minQuality` from 0 through 100.
+
+## 2026-08-09 Task 10 Differential Design
+
+- The current native oracle accepts exactly one gray/RGB request per process. Spawning it 10,000
+  times would measure process startup and make the required gate unnecessarily slow. Add an opt-in
+  `--batch` protocol to the development-only wrapper while preserving its existing single-request,
+  diagnostics, metadata, and 64 MiB-per-input contracts.
+- The batch wire format will be length-delimited binary requests and newline-delimited JSON answers.
+  It needs explicit version/magic bytes, format, dimensions, byte length, per-request size checks,
+  truncation rejection, and a clean EOF boundary.
+- A deterministic Node runner will generate seeded `gray8`, `rgb8`, and `rgba8` sources. RGBA is
+  hashed directly by TypeScript and composited over white to RGB for the C++ oracle, preserving the
+  approved normalized-pixel contract.
+- The runner will use one native oracle process, compare exact hash and quality against the built
+  TypeScript core, emit a seed/count/profile/timing/mismatch JSON report, and exit nonzero on any
+  mismatch. It will run twice with the same seed as the acceptance gate.
+- Production source must not import the oracle or WASM. The differential command may build the
+  existing package first and consume `lib/core`; all native artifacts, request streams, and reports
+  remain outside the published package unless a mismatch is intentionally reduced to the committed
+  regression fixture.
+- Node's type-stripping execution cannot import the current extensionless ESM-style TypeScript
+  source graph directly. The differential package command should therefore build first instead of
+  depending on experimental source execution or adding a loader dependency.
+- The accepted version-1 profile produced exact hash and quality equality for all 10,000 vectors
+  twice with seed `0x5eedc0de`. Both runs reproduced source checksum
+  `3e38c867c8f245147dc69b19f918954e1eb2271b22bfbad4130cbcac6a480def` and oracle-input checksum
+  `2c1d2c56498dbbb9ccea121c5cafee99c880f26b8f9e99b79b3b35de862d36f7`.
+- Because mismatch count was zero, Task 10 requires no new regression fixture and no numeric code
+  adjustment. The existing explicit `Math.fround`/`Float32Array` profile is sufficient for this
+  expanded corpus.

@@ -58,6 +58,7 @@ The WASM build is a development comparator, not a package dependency or runtime 
 | Apple Clang 21 arm64 `-ffp-contract=off` versus WASM raw corpus | byte-identical |
 | Apple Clang 21 arm64 `-ffp-contract=off` versus WASM stage corpus | byte-identical |
 | Apple Clang 21 x86_64 `-ffp-contract=off` versus accepted corpora | raw and stage byte-identical |
+| Seeded TypeScript versus Apple Clang 21 arm64 `-ffp-contract=off` differential | 10,000/10,000 exact hash and quality results |
 
 Frozen artifact SHA-256 values:
 
@@ -70,6 +71,36 @@ separate Linux arm64 job rebuilds the pinned native oracle with contraction disa
 byte-identical raw and stage corpora. Real Chromium, Firefox, WebKit, and worker execution remains a
 separate browser-conformance gate before release.
 
+### Large seeded differential
+
+The accepted large profile uses generator version 1, seed `0x5eedc0de`, and 10,000 valid packed raw
+inputs: 3,334 `gray8`, 3,333 `rgb8`, and 3,333 `rgba8`. Dimensions include the 5-pixel minimum,
+64-by-64 fast path, odd dimensions, and 5-by-128/128-by-5 extreme aspect ratios. All other
+dimensions and all source bytes come from the versioned deterministic generator. RGBA inputs are
+passed unchanged to TypeScript and normalized with the frozen white-composite rule before entering
+the RGB-only C++ oracle.
+
+Both accepted runs returned 10,000 exact hash-and-quality matches and zero mismatches. Their stable
+input identities were identical:
+
+- source SHA-256: `3e38c867c8f245147dc69b19f918954e1eb2271b22bfbad4130cbcac6a480def`
+- framed oracle-input SHA-256: `2c1d2c56498dbbb9ccea121c5cafee99c880f26b8f9e99b79b3b35de862d36f7`
+
+The observed local comparison times were 4,089.338 ms and 4,122.152 ms. Timing is informational;
+profile version, seed, count, format counts, both input checksums, pinned oracle metadata, exact
+match count, and mismatch count are the reproducibility contract.
+
+The development-only oracle batch protocol starts with ASCII `PDQB001`, a little-endian uint32
+request count, then length-delimited requests containing a one-byte format (`1` gray or `2` RGB),
+little-endian uint32 width, height, byte length, and packed bytes. It preserves the 64 MiB limit per
+image and rejects invalid magic, counts, formats, dimensions, lengths, truncation, and trailing
+bytes. It exists only to avoid 10,000 process launches and is not part of the npm API or artifact.
+
+If any future run differs, do not adjust floating-point code first. Copy the reported source format,
+dimensions, and base64 bytes into `__tests__/fixtures/pdq/regressions.json`, add the exact C++ hash
+and quality, reproduce the failure in the ordinary offline conformance suite, and only then review
+numeric code. The accepted run had no mismatch, so it adds no synthetic regression vector.
+
 ## Regeneration
 
 Build fixtures only with the repository oracle script, which pins `-ffp-contract=off`:
@@ -80,6 +111,20 @@ pnpm pdq:fixtures:generate -- --oracle /outside-repository/pdq-oracle/pdq-oracle
 pnpm pdq:stages:generate -- --oracle /outside-repository/pdq-oracle/pdq-oracle
 pnpm pdq:dct-matrix:generate
 ```
+
+Run the large differential after building a fresh pinned oracle:
+
+```sh
+pnpm pdq:differential \
+  --oracle /outside-repository/pdq-oracle/pdq-oracle \
+  --count 10000 \
+  --seed 0x5eedc0de
+```
+
+The package command builds the normal distributable core before running the comparator. Use
+`--plan-only` to reproduce generator checksums without a native binary. The command verifies the
+oracle's protocol, repository, and commit metadata before hashing and exits nonzero if any hash or
+quality result differs.
 
 Build and compare the disposable same-source WASM oracle with:
 

@@ -100,6 +100,69 @@ const tooLarge = spawnSync(oracle, ['gray8', '8193', '8193']);
 assert.notEqual(tooLarge.status, 0);
 assert.match(tooLarge.stderr.toString('utf8'), /input exceeds 67108864-byte limit/);
 
+const batchMagic = Buffer.from('PDQB001', 'ascii');
+const batchRequest = (vectors) => {
+  const batchHeader = Buffer.alloc(batchMagic.length + 4);
+  batchMagic.copy(batchHeader);
+  batchHeader.writeUInt32LE(vectors.length, batchMagic.length);
+  const chunks = [batchHeader];
+  for (const vector of vectors) {
+    const requestHeader = Buffer.alloc(13);
+    requestHeader.writeUInt8(vector.format === 'gray8' ? 1 : 2, 0);
+    requestHeader.writeUInt32LE(vector.width, 1);
+    requestHeader.writeUInt32LE(vector.height, 5);
+    requestHeader.writeUInt32LE(vector.bytes.length, 9);
+    chunks.push(requestHeader, vector.bytes);
+  }
+  return Buffer.concat(chunks);
+};
+
+const batchInput = batchRequest([
+  { format: 'gray8', width, height, bytes: gray },
+  { format: 'rgb8', width, height, bytes: rgb },
+]);
+const batch = spawnSync(oracle, ['--batch'], { input: batchInput });
+assert.equal(batch.status, 0, batch.stderr.toString('utf8'));
+assert.deepEqual(
+  batch.stdout.toString('utf8').trim().split('\n').map(JSON.parse),
+  [firstGray, firstRgb],
+);
+
+const truncatedBatch = spawnSync(oracle, ['--batch'], {
+  input: batchInput.subarray(0, batchInput.length - 1),
+});
+assert.notEqual(truncatedBatch.status, 0);
+assert.match(truncatedBatch.stderr.toString('utf8'), /truncated batch input/);
+
+const invalidMagic = Buffer.from(batchInput);
+invalidMagic[0] ^= 0xff;
+const invalidMagicBatch = spawnSync(oracle, ['--batch'], { input: invalidMagic });
+assert.notEqual(invalidMagicBatch.status, 0);
+assert.match(invalidMagicBatch.stderr.toString('utf8'), /invalid batch magic/);
+
+const emptyBatch = batchRequest([]);
+const emptyBatchResult = spawnSync(oracle, ['--batch'], { input: emptyBatch });
+assert.notEqual(emptyBatchResult.status, 0);
+assert.match(emptyBatchResult.stderr.toString('utf8'), /between 1 and 100000/);
+
+const invalidFormat = Buffer.from(batchInput);
+invalidFormat[batchMagic.length + 4] = 3;
+const invalidFormatBatch = spawnSync(oracle, ['--batch'], { input: invalidFormat });
+assert.notEqual(invalidFormatBatch.status, 0);
+assert.match(invalidFormatBatch.stderr.toString('utf8'), /format must be 1 or 2/);
+
+const invalidLength = Buffer.from(batchInput);
+invalidLength.writeUInt32LE(gray.length - 1, batchMagic.length + 4 + 9);
+const invalidLengthBatch = spawnSync(oracle, ['--batch'], { input: invalidLength });
+assert.notEqual(invalidLengthBatch.status, 0);
+assert.match(invalidLengthBatch.stderr.toString('utf8'), /declared 322 input bytes, expected 323/);
+
+const trailingBatch = spawnSync(oracle, ['--batch'], {
+  input: Buffer.concat([batchInput, Buffer.from([0])]),
+});
+assert.notEqual(trailingBatch.status, 0);
+assert.match(trailingBatch.stderr.toString('utf8'), /trailing bytes/);
+
 process.stdout.write(`${JSON.stringify({
   gray8: firstGray,
   rgb8: firstRgb,

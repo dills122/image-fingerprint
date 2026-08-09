@@ -680,3 +680,43 @@ plan is awaiting maintainer review; production implementation remains behind tha
   linear in the fixed fingerprint text; policy cannot silently affect distance; incompatible and
   invalid inputs remain distinguishable; the implementation adds no dependency or runtime I/O and
   stays inside the pure browser-safe core.
+
+## 2026-08-09 — Task 10 Authorization
+
+- Committed reviewed Task 9 as `bb80bc9` (`Add fingerprint comparison policy`) after its cached
+  diff check passed. The maintainer authorized moving directly to Task 10.
+- Task 10 will add only development conformance tooling, an opt-in native-oracle batch seam, seeded
+  differential tests, mismatch reduction guidance, and numeric-discipline evidence. It will not
+  change `pdq-v1`, add runtime WASM, or begin Task 11 browser-engine work.
+- Two exploratory Node 22 type-stripping commands failed as expected for this source layout: first
+  directory resolution could not find `./src/core`, then explicit `index.ts` loading could not
+  resolve extensionless ESM imports. The harness will use the normal built `lib/core` artifact
+  instead of repeating source-loader experiments.
+- Captured the TDD red baseline for the deterministic runner: the focused Vitest suite fails because `scripts/pdq-differential.mjs` does not exist yet.
+- Captured the TDD red baseline for batch mode with the current metadata/diagnostics-capable native oracle: all existing smoke checks reach the new `--batch` assertion, which fails with the pre-batch usage response.
+- GREEN: rebuilt the pinned Apple Clang 21 arm64 oracle with `-ffp-contract=off`; legacy single,
+  metadata, diagnostics, two-request batch, and truncated-batch smoke checks pass.
+- GREEN: all six deterministic runner CLI tests pass, the distributable core builds, and a
+  100-vector end-to-end trial returned exact hash and quality equality.
+- ACCEPTED DIFFERENTIAL: two runs of 10,000 vectors with seed `0x5eedc0de` each returned 10,000
+  exact matches and zero mismatches. Stable source/oracle-input checksums were identical; measured
+  comparison times were 4,089.338 ms and 4,122.152 ms.
+- REVIEW: found and fixed a deterministic-generator collision where numeric seed zero was silently
+  mapped to `0x6d2b79f5`. Zero now remains a distinct (degenerate but valid) xorshift32 stream, and a
+  regression test freezes that distinction. Oracle result parsing also rejects quality outside
+  the public 0–100 contract.
+- REVIEW: executing the initially documented `pnpm pdq:differential -- --plan-only ...` form proved
+  that pnpm 11 forwards the standalone separator to this strict script, which correctly rejected it.
+  The documented package invocation now omits that separator and matches the verified command.
+- POST-REVIEW FINAL GREEN: `pnpm check` passes on Node 22.22.1 and Node 24.19.0 with 144 tests
+  passing, five unchanged network skips, 95% statement / 92.35% branch coverage, strict types,
+  builds, and packed root/core/browser smoke tests. The rebuilt native oracle also passes all single,
+  diagnostic, metadata, batch, and malformed-batch smoke checks.
+- The first package dry-run reached a successful prepack build but failed on the user's pre-existing
+  root-owned npm cache. Repeating it with a fresh isolated `/tmp` cache passed and confirmed the 75
+  published files remain limited to LICENSE, README, `lib/**`, and `package.json`; the native wrapper,
+  differential runner, fixtures, tests, and planning files are excluded.
+- Multi-axis review verdict: approve Task 10 after fixing the zero-seed collision and documented
+  pnpm invocation. The change is development-only, validates all framed and oracle boundaries, adds
+  no dependency or runtime WASM/native path, preserves legacy and public core behavior, and provides
+  reproducible exact equality evidence at the required scale.
