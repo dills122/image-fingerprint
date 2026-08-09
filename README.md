@@ -164,6 +164,13 @@ Both fingerprints must meet its minimum quality before the result is eligible, w
 distance remains unchanged. Product thresholds should be calibrated against representative data.
 `normalizedDistance` is not a probability or semantic-similarity percentage.
 
+Real-camera MTG calibration reinforces that boundary: unrectified full camera frames were not a
+usable standalone PDQ input, and axis-aligned card regions still had substantial positive/negative
+overlap. Use PDQ as a conservative candidate or ranking signal after consistent normalization, and
+do not treat a distance above 31 as proof that two camera captures differ. See the
+[MTG matching report](./docs/modernization/pdq-matching-results.md) for the corpus, measured tradeoffs,
+rights boundary, and exact-printing limitations.
+
 ## Decode once, fingerprint many
 
 Node and browser adapters implement the same runtime-neutral decoder contract from

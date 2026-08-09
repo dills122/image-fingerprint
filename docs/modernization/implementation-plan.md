@@ -619,18 +619,18 @@ redistribution-safe MTG corpus without adding card detection or crop logic to th
 
 **Acceptance criteria:**
 
-- [ ] Corpus labels positives, negatives, full-image pairs, crop-region pairs, transformations, and
+- [x] Corpus labels positives, negatives, full-image pairs, crop-region pairs, transformations, and
   provenance.
-- [ ] Threshold sweeps report precision, recall, false positives, false negatives, and the effect of
+- [x] Threshold sweeps report precision, recall, false positives, false negatives, and the effect of
   minimum quality around the Meta starting policy.
-- [ ] The library documents recommended starting values and limitations; application-specific
+- [x] The library documents recommended starting values and limitations; application-specific
   thresholds remain caller-controlled.
 
 **Verification:**
 
-- [ ] Run the benchmark command and retain raw distances/qualities.
-- [ ] Review hard positives, hard negatives, crop failures, and low-quality cases individually.
-- [ ] Confirm no crop-selection API or application policy entered the core.
+- [x] Run the benchmark command and retain raw distances/qualities.
+- [x] Review hard positives, hard negatives, crop failures, and the empty low-quality population.
+- [x] Confirm no crop-selection API or application policy entered the core.
 
 **Dependencies:** Task 15; can run independently of Task 16 once adapters are stable.
 
