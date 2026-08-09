@@ -10,8 +10,9 @@ This file binds the reusable AI Central JavaScript/TypeScript steering to `image
 - Supported runtime: must be declared in `package.json` and verified in CI before modernization code
   ships; the current dependency graph already requires Node.js 20 or newer
 - Package manager: pnpm with the committed `pnpm-lock.yaml`
-- Module system: preserve current CommonJS compatibility until a separately approved package-export
-  migration defines CJS/ESM behavior
+- Module system: preserve CommonJS compatibility at the root and Node.js entrypoints; publish
+  browser-safe ESM only through the explicit core/browser boundaries approved in
+  `docs/architecture/0002-cross-runtime-package-boundaries.md`
 
 ## Verification Commands
 

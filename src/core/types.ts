@@ -1,0 +1,39 @@
+export type FingerprintAlgorithm = 'blockhash-v1';
+export type FingerprintEncoding = 'hex';
+export type FingerprintSchemaVersion = 1;
+
+/**
+ * Tightly packed, row-major, 8-bit RGBA pixels.
+ *
+ * Values are interpreted as sRGB with straight (unassociated) alpha. Browser
+ * ImageData and Node decoder results are structurally compatible with this
+ * boundary without introducing Node or DOM types into the algorithm core.
+ */
+export interface RgbaImageData {
+  readonly width: number;
+  readonly height: number;
+  readonly data: Uint8Array | Uint8ClampedArray;
+}
+
+export interface BlockHashParameters {
+  /** Number of hash blocks along each image dimension. */
+  readonly bitsPerSide: number;
+  /** Preserve legacy method 1 (quick) or method 2 (precise) behavior. */
+  readonly method: 1 | 2;
+}
+
+export interface BlockHashFingerprint {
+  readonly schemaVersion: FingerprintSchemaVersion;
+  readonly algorithm: 'blockhash-v1';
+  readonly encoding: FingerprintEncoding;
+  readonly hash: string;
+  readonly bitLength: number;
+  readonly parameters: BlockHashParameters;
+}
+
+export interface BlockHashFingerprintOptions extends BlockHashParameters {
+  readonly algorithm: 'blockhash-v1';
+}
+
+export type ImageFingerprint = BlockHashFingerprint;
+export type FingerprintOptions = BlockHashFingerprintOptions;

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>image-hash browser smoke</title>
+  </head>
+  <body data-status="pending">Running browser package smoke…</body>
+  <script type="module">
+    import { fingerprintPixels } from '../lib/esm/browser.mjs';
+
+    const fingerprint = fingerprintPixels({
+      width: 2,
+      height: 2,
+      data: new Uint8ClampedArray([
+        0, 0, 0, 255,
+        255, 255, 255, 255,
+        64, 64, 64, 255,
+        192, 192, 192, 255,
+      ]),
+    }, {
+      algorithm: 'blockhash-v1',
+      bitsPerSide: 2,
+      method: 2,
+    });
+
+    const expected = JSON.stringify({
+      schemaVersion: 1,
+      algorithm: 'blockhash-v1',
+      encoding: 'hex',
+      hash: '5',
+      bitLength: 4,
+      parameters: {
+        bitsPerSide: 2,
+        method: 2,
+      },
+    });
+    const actual = JSON.stringify(fingerprint);
+
+    if (actual !== expected) {
+      document.body.dataset.status = 'failed';
+      document.body.textContent = `Expected ${expected}, received ${actual}`;
+      throw new Error(document.body.textContent);
+    }
+
+    document.body.dataset.status = 'passed';
+    document.body.textContent = actual;
+  </script>
+</html>
