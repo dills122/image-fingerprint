@@ -5,6 +5,7 @@ import {
 } from 'vitest';
 import {
   fingerprintPixels,
+  type Rgba8PixelSource,
   type RgbaImageData,
 } from '../src/core';
 import { fingerprintPixels as fingerprintPixelsInBrowser } from '../src/browser';
@@ -49,6 +50,49 @@ describe('fingerprintPixels', () => {
         method: 2,
       },
     });
+  });
+
+  it('preserves BlockHash output for tagged rgba8 input', () => {
+    const legacyImage: RgbaImageData = {
+      width: 8,
+      height: 8,
+      data: new Uint8ClampedArray(Array.from({ length: 64 }, (_, index) => [
+        index * 3,
+        255 - index * 2,
+        index,
+        index % 3 === 0 ? 0 : 255,
+      ]).flat()),
+    };
+    const taggedImage: Rgba8PixelSource = {
+      format: 'rgba8',
+      ...legacyImage,
+    };
+    const options = {
+      algorithm: 'blockhash-v1',
+      bitsPerSide: 4,
+      method: 2,
+    } as const;
+
+    expect(fingerprintPixels(taggedImage, options)).toEqual(
+      fingerprintPixels(legacyImage, options),
+    );
+  });
+
+  it('preserves legacy RGBA input with unrelated format metadata', () => {
+    const legacyImage = createQuadrantImage();
+    const imageWithMetadata = {
+      ...legacyImage,
+      format: 'canvas-rgba',
+    };
+    const options = {
+      algorithm: 'blockhash-v1',
+      bitsPerSide: 2,
+      method: 2,
+    } as const;
+
+    expect(fingerprintPixels(imageWithMetadata, options)).toEqual(
+      fingerprintPixels(legacyImage, options),
+    );
   });
 
   it('exposes the same portable API from the browser entrypoint', () => {
@@ -119,6 +163,21 @@ describe('fingerprintPixels', () => {
     } as unknown as Parameters<typeof fingerprintPixels>[1])).toThrow(
       'Unsupported fingerprint algorithm: pdq-v1',
     );
+  });
+
+  it('reserves tagged gray8 and rgb8 inputs for PDQ', () => {
+    for (const format of ['gray8', 'rgb8'] as const) {
+      expect(() => fingerprintPixels({
+        format,
+        width: 5,
+        height: 5,
+        data: new Uint8Array(format === 'gray8' ? 25 : 75),
+      } as unknown as Parameters<typeof fingerprintPixels>[0], {
+        algorithm: 'blockhash-v1',
+        bitsPerSide: 2,
+        method: 2,
+      })).toThrow('blockhash-v1 requires RGBA pixels');
+    }
   });
 
   it('rejects unsupported blockhash methods at the runtime boundary', () => {

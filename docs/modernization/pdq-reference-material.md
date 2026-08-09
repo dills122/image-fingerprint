@@ -1,7 +1,7 @@
 # PDQ Reference Material
 
 Status: researched reference baseline
-Updated: 2026-08-07
+Updated: 2026-08-09
 
 ## Reference Position
 
@@ -27,6 +27,11 @@ Meta publishes the ThreatExchange code under its BSD license. The C++ image I/O 
 which Meta explicitly identifies as separately licensed and confined to the I/O layer. A port should
 reference or reuse the algorithm core without importing CImg.
 
+The general code license does not establish unrestricted reuse for every included image. Meta's
+WASM documentation limits its bundled images to open-source testing and requires separate
+authorization for other uses. Permanent package fixtures should therefore be synthetic or have
+individual provenance and redistribution records.
+
 ## Algorithm Contract
 
 Given decoded RGB or grayscale pixels:
@@ -44,6 +49,10 @@ Given decoded RGB or grayscale pixels:
 
 The result is a 256-bit fingerprint plus quality. Matching is Hamming distance, where lower means
 more similar.
+
+Both dimensions must be at least 5. The C++ reference emits an all-zero hash and quality 0 below
+that boundary; this library will reject undersized inputs before hashing so they cannot be mistaken
+for valid fingerprints.
 
 ## Operational Defaults
 

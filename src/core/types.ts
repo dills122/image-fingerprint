@@ -15,6 +15,32 @@ export interface RgbaImageData {
   readonly data: Uint8Array | Uint8ClampedArray;
 }
 
+export interface Gray8PixelSource {
+  readonly format: 'gray8';
+  readonly width: number;
+  readonly height: number;
+  readonly data: Uint8Array;
+}
+
+export interface Rgb8PixelSource {
+  readonly format: 'rgb8';
+  readonly width: number;
+  readonly height: number;
+  readonly data: Uint8Array;
+}
+
+export interface Rgba8PixelSource {
+  readonly format: 'rgba8';
+  readonly width: number;
+  readonly height: number;
+  readonly data: Uint8Array | Uint8ClampedArray;
+}
+
+export type PixelSource = (
+  Gray8PixelSource | Rgb8PixelSource | Rgba8PixelSource
+);
+export type BlockHashPixelSource = RgbaImageData | Rgba8PixelSource;
+
 export interface BlockHashParameters {
   /** Number of hash blocks along each image dimension. */
   readonly bitsPerSide: number;
