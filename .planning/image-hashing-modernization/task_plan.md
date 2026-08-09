@@ -1,6 +1,6 @@
 # Image Hashing Modernization Plan
 
-Status: Tasks 1–6 complete; Tasks 7–11 awaiting authorization
+Status: Tasks 1–6 complete; portability hardening authorized and in progress; Tasks 7–11 awaiting authorization
 Task ID: `image-hashing-modernization`
 Updated: 2026-08-09
 
@@ -79,6 +79,10 @@ block pure-core implementation planning.
 - [x] Task 3: generate and verify the redistribution-safe synthetic conformance corpus.
 - [x] Task 4: generalize and validate the tagged pixel contract.
 - [x] Task 5: implement reference-compatible luminance, Jarosz downsample, and quality stages.
+- [x] Task 6: implement reference-compatible DCT, Torben median, and canonical hash bits.
+- [ ] Repair canonical oracle CI on Linux arm64 and compare both raw and stage corpora.
+- [ ] Freeze the DCT matrix as exact float32 bits and remove runtime transcendental math.
+- [ ] Build a same-source WASM differential and decide the final portable `pdq-v1` arithmetic profile.
 - [ ] Lock legacy contracts and baseline benchmarks.
 - [ ] Implement the selected raw-pixel PDQ core/adapter.
 - [ ] Add decoder adapters and public versioned API.
@@ -90,9 +94,10 @@ block pure-core implementation planning.
 No PDQ production implementation work should begin until the task sequence in
 `docs/modernization/implementation-plan.md` is approved or amended by a maintainer.
 
-Tasks 1–6 are complete. The maintainer authorized Task 4's additive tagged-pixel contract and a
-Linux CI oracle-conformance job, Task 5's first-half PDQ numeric pipeline, and Task 6's
-DCT/median/canonical-bit stages. Tasks 7–11 require the next implementation decision, and
+Tasks 1–6 are complete. The maintainer authorized a portability-hardening checkpoint after the
+first GitHub x64 oracle job exposed architecture-sensitive native answers. That checkpoint repairs
+canonical arm64 CI, freezes numeric constants, and evaluates same-source WASM before Task 7 public
+dispatch. Tasks 7–11 otherwise require the next implementation decision, and
 encoded-image adapters remain separately gated at Task 12. Checkpoint B's two-environment criterion
 is satisfied locally; the first Ubuntu/Clang CI run remains the recurring-evidence confirmation.
 

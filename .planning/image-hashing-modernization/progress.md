@@ -24,8 +24,8 @@
 ## Current Gate
 
 Primary-source research, contract approval, the cross-runtime foundation, and implementation Tasks
-2–6 are complete. Tasks 7–11 await the next maintainer authorization. Checkpoint B's second native
-environment was reproduced locally on Linux; its recurring Ubuntu CI job awaits the first run.
+2–6 are complete. Portability hardening is authorized and in progress before public Task 7 dispatch.
+Tasks 7–11 otherwise await the next maintainer authorization.
 
 ## 2026-08-07 — Tooling Prerequisite
 
@@ -440,3 +440,27 @@ plan is awaiting maintainer review; production implementation remains behind tha
   The rebuilt oracle smoke passes, stage regeneration remains byte-identical at SHA-256
   `5cd906f5b3a836b0beb3081a4a5f55077b5f5ba60f128d09b8edefef5482cc1c`, and `git diff --check`
   reports no whitespace errors.
+
+## 2026-08-09 — Portable Numeric Profile Authorization
+
+- Committed Task 6 as `3490e3c` and pushed draft PR #6. Node 22, Node 24, package integrity,
+  CodeQL, and workflow analysis passed on GitHub.
+- The existing `PDQ oracle conformance (Linux)` job failed on Ubuntu x64 while regenerating the
+  raw corpus. The same job also failed on the preceding `6e3ccbd` revision, so this is not a Task 6
+  regression.
+- Reproduced the failure with an x86_64 native oracle on macOS: raw bytes and qualities remain
+  stable, while multiple DCT-derived hashes differ from the arm64 corpus. The native C++ build is
+  architecture-sensitive and cannot itself define a cross-platform production contract.
+- The maintainer approved the proposed hardening sequence: canonical arm64 oracle CI, stage-corpus
+  comparison, frozen DCT bits, same-source WASM differential, and a final portable numeric-profile
+  decision before public dispatch.
+- Updated the oracle-conformance job to GitHub's `ubuntu-24.04-arm` runner and added a second exact
+  comparison for the internal-stage corpus. The oracle README now distinguishes the canonical
+  arm64 native-reference check from the ordinary x64 Node portability matrix.
+- Local verification passes: Ruby parses the workflow YAML, `actionlint` reports no issues, the
+  arm64 oracle smoke succeeds, and regenerated 16-vector raw plus 3-vector stage corpora are both
+  byte-identical to their committed fixtures.
+- CI-checkpoint review verdict: approve. The change pins the previously implicit architecture,
+  adds no dependency or production path, preserves the independent x64 Node matrix, documents the
+  native-reference boundary, and introduces no security or performance exposure. The real hosted
+  runner remains the final verification for compiler availability and exact fixture agreement.

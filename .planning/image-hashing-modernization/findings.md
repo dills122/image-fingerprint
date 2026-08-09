@@ -447,6 +447,26 @@ Sources: <https://github.com/Raudbjorn/pdq-wasm>,
   already were after Task 5, but are not package-export entrypoints until Task 7 composes the public
   API.
 
+## Portable Numeric Profile
+
+- GitHub run `31322184314` proved the Node 22/24 TypeScript implementation matches the committed
+  arm64-derived corpus on Ubuntu x64; only native C++ corpus regeneration failed. Production
+  portability and native-oracle reproducibility are therefore separate concerns.
+- The previous branch run at `6e3ccbd` failed the same Linux x64 oracle job, proving Task 6 did not
+  introduce the architecture split.
+- An x86_64 Apple-Clang build reproduced broad native hash differences with unchanged raw bytes and
+  quality. Pinning compiler family alone is insufficient; canonical native regeneration must also
+  pin architecture.
+- GitHub's official runner reference lists `ubuntu-24.04-arm` for arm64 Linux runners. It is in
+  public preview, so the CI contract must name the architecture explicitly and retain local/frozen
+  corpus evidence rather than treating the moving image as the algorithm definition.
+- ECMAScript specifies `Math.fround` as IEEE-754 binary32 round-to-nearest, ties-to-even, but
+  `Math.cos` is implementation-approximated. Freezing the 1,024 DCT coefficient bit patterns removes
+  the remaining transcendental cross-engine dependency from the TypeScript core.
+- WebAssembly scalar float operations are specified over IEEE floating-point values; same-source
+  WASM is the relevant portability differential. It must not silently become a runtime backend or
+  redefine `pdq-v1` until its exact answers are compared with the accepted corpus.
+
 ## Cross-Runtime Foundation Baseline
 
 The cross-runtime foundation landed on `main` as `2686eac` and is included in the synchronized
@@ -534,3 +554,9 @@ primary-source verification before entering contract documentation.
 - Profiles: `base`, `javascript-typescript`.
 - Bundles: `core`, `planning`, `workflow`.
 - Reviewed AI Central revision: `0248f5b22ec1b5e53b0c5c3be39d150932e0821d`.
+
+## 2026-08-09 CI Portability Checkpoint
+
+- The CI repair uses GitHub's explicit `ubuntu-24.04-arm` runner label, renames the check so its
+  architecture is visible, and compares both `raw-vectors.json` and `stage-vectors.json`. The
+  ordinary x64 Node jobs remain the cross-platform check for the TypeScript implementation.

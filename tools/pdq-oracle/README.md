@@ -48,9 +48,11 @@ Set `PDQ_ORACLE_CXX` to choose a different compiler. The baseline flags are
 
 Fixture regeneration uses Clang as part of the oracle toolchain contract. The saved corpus was
 byte-identical under Apple clang 21.0.0 on macOS arm64 and Debian Clang 19.1.7 on Linux arm64. A
-Debian GCC 14.2.0 build produced different threshold bits for several synthetic vectors even with
-floating-point contraction disabled and optimization removed. Do not refresh golden answers with
-GCC. CI pins Ubuntu 24.04 and its installed `clang++-18`, then requires a byte-identical corpus.
+Debian GCC 14.2.0 build and an Ubuntu Clang 18.1.3 Linux x64 build produced different threshold bits
+for several synthetic vectors. Do not refresh golden answers with either environment. CI pins the
+GitHub-hosted `ubuntu-24.04-arm` image and its installed `clang++-18`, then requires byte-identical
+raw-pixel and internal-stage corpora. This arm64 native-oracle job validates the frozen reference;
+the ordinary Node.js matrix separately validates the TypeScript implementation on x64 Linux.
 
 ## Oracle Protocol
 

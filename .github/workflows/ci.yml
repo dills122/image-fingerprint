@@ -95,8 +95,8 @@ jobs:
       run: npm pack --dry-run
 
   pdq-oracle-conformance:
-    name: PDQ oracle conformance (Linux)
-    runs-on: ubuntu-24.04
+    name: PDQ oracle conformance (Linux arm64)
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 15
 
     steps:
@@ -118,12 +118,19 @@ jobs:
     - name: Verify the oracle protocol and raw-pixel behavior
       run: node scripts/pdq-oracle-smoke.mjs --oracle "$RUNNER_TEMP/pdq-oracle-build/pdq-oracle"
 
-    - name: Regenerate and compare the synthetic corpus
+    - name: Regenerate and compare the raw-pixel corpus
       run: |
         node scripts/generate-pdq-fixtures.mjs \
           --oracle "$RUNNER_TEMP/pdq-oracle-build/pdq-oracle" \
           --output "$RUNNER_TEMP/raw-vectors.json"
         cmp __tests__/fixtures/pdq/raw-vectors.json "$RUNNER_TEMP/raw-vectors.json"
+
+    - name: Regenerate and compare the internal-stage corpus
+      run: |
+        node scripts/generate-pdq-stage-fixtures.mjs \
+          --oracle "$RUNNER_TEMP/pdq-oracle-build/pdq-oracle" \
+          --output "$RUNNER_TEMP/stage-vectors.json"
+        cmp __tests__/fixtures/pdq/stage-vectors.json "$RUNNER_TEMP/stage-vectors.json"
 
   network-smoke:
     name: Live network smoke
