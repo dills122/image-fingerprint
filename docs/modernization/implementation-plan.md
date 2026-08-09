@@ -1,6 +1,6 @@
 # PDQ v1 Implementation Plan
 
-Status: Tasks 1–15 implemented and verified; Tasks 16–18 remain open
+Status: Tasks 1–16 implemented and verified; Tasks 17–18 remain open
 Updated: 2026-08-09
 
 ## Overview
@@ -590,16 +590,16 @@ and artifact size on named hardware before deciding whether an optional WASM bac
 
 **Acceptance criteria:**
 
-- [ ] Absolute product budgets are recorded before reviewing results at approximately 0.25, 2, and
+- [x] Absolute product budgets are recorded before reviewing results at approximately 0.25, 2, and
   12 megapixels.
-- [ ] TypeScript and WASM use identical normalized pixels; decode and hash timings are separate.
-- [ ] Any WASM escalation is an explicit follow-up decision, never silent runtime selection.
+- [x] TypeScript and WASM use identical normalized pixels; decode and hash timings are separate.
+- [x] Any WASM escalation is an explicit follow-up decision, never silent runtime selection.
 
 **Verification:**
 
-- [ ] Run warm benchmark samples and retain raw timing/memory results.
-- [ ] Report p50, p95, throughput, peak memory, and package/asset size.
-- [ ] Repeat a representative case to confirm result stability.
+- [x] Run warm benchmark samples and retain raw timing/memory results.
+- [x] Report p50, p95, throughput, peak memory, and package/asset size.
+- [x] Repeat a representative case to confirm result stability.
 
 **Dependencies:** Tasks 10, 13, and 14.
 
