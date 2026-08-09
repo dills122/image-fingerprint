@@ -1,4 +1,7 @@
 export {
+  DEFAULT_IMAGE_DECODE_LIMITS,
+  ImagePreparationError,
+  extractPixelRegion,
   fingerprintPixels,
   parseFingerprint,
   serializeFingerprint,
@@ -6,11 +9,19 @@ export {
   evaluatePdqMatch,
   PDQ_STARTING_POLICY,
 } from './core';
+export {
+  decodeImage,
+  fingerprintImage,
+  pixelsFromImageData,
+} from './browser/decode-image';
+export type { BrowserImageSource } from './browser/decode-image';
 export type {
+  AbortSignalLike,
   BlockHashFingerprint,
   BlockHashFingerprintOptions,
   BlockHashPixelSource,
   BlockHashParameters,
+  DecodeImageOptions,
   FingerprintAlgorithm,
   FingerprintEncoding,
   FingerprintComparison,
@@ -18,13 +29,18 @@ export type {
   FingerprintSchemaVersion,
   ComparableFingerprintComparison,
   IncompatibleFingerprintComparison,
+  FingerprintImageOptions,
+  ImageDecodeLimits,
+  ImageDecoder,
   ImageFingerprint,
+  ImagePreparationErrorCode,
   PdqFingerprint,
   PdqFingerprintComparison,
   PdqFingerprintOptions,
   PdqMatchPolicy,
   PdqMatchResult,
   Gray8PixelSource,
+  PixelRegion,
   PixelSource,
   Rgb8PixelSource,
   Rgba8PixelSource,

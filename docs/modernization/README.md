@@ -1,14 +1,14 @@
 # Image Hashing Modernization
 
-This directory holds the evidence and design contract for modernizing `image-hash` without silently
-changing hashes already stored by consumers.
+This directory holds the evidence and design contract for building `image-fingerprint` from the
+legacy `image-hash` baseline without silently changing hashes used for parity during the
+pre-release transition.
 
 ## Status
 
-The PDQ core contract and dependency-ordered implementation plan are approved. Tasks 1–6 are
-complete: the cross-runtime foundation, pinned oracle/corpus, normalized pixel boundary, and the
-internal luminance/Jarosz/quality/DCT/median/hash stages are implemented. Public `pdq-v1` dispatch
-and fingerprint records remain gated in Tasks 7–11.
+The PDQ core and adapter contracts are approved. Tasks 1–14 are implemented and verified: the
+cross-runtime core, record/comparison APIs, packed runtime matrix, and Node/browser image adapters
+are complete. Task 15 retains cross-decoder tolerance and ICC/profile corpus evidence.
 
 ## Documents
 
@@ -26,6 +26,8 @@ and fingerprint records remain gated in Tasks 7–11.
   and acceptance evidence.
 - [Implementation plan](./implementation-plan.md): dependency-ordered tasks, acceptance criteria,
   verification commands, checkpoints, risks, and remaining release decisions.
+- [Image preparation and adapter plan](./image-preparation-adapter-plan.md): approved shared helper,
+  Node/Sharp, browser-native, packaging, and release-gate work kept separate from Tasks 8–11.
 - [Tooling baseline](./tooling-baseline.md): runtime, package-manager, compiler, lint, test, and CI
   foundation established before algorithm implementation.
 

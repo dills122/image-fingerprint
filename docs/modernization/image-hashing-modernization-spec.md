@@ -225,6 +225,6 @@ only when the approved implementation needs the boundary.
 
 ## 12. Approval Record
 
-- Specification owner: image-hash maintainer
+- Specification owner: image-fingerprint maintainer
 - Approved revision/date: 2026-08-09
 - Required amendments: none for pure-core implementation planning

@@ -1,6 +1,6 @@
 # PDQ v1 Implementation Plan
 
-Status: Tasks 8–10 committed; Task 11 implemented and reviewed locally
+Status: Tasks 1–14 implemented and verified; Task 15 decoder-tolerance evidence remains open
 Updated: 2026-08-09
 
 ## Overview
@@ -11,9 +11,8 @@ the highest-risk dependency—the pinned C++ oracle and numeric conformance—th
 pixel core, record/comparison utilities, runtime packaging, encoded-image adapters, benchmarks, and
 release evidence.
 
-The cross-runtime foundation landed on `main` in `2686eac`; this plan is based on `d4f88fa`, which
-also includes the later `file-type` lockfile update. Tasks 2–6 are implemented in the current work;
-Tasks 6–11 remain separately gated.
+The cross-runtime foundation landed on `main` in `2686eac`. Tasks 2–11 are complete through
+`631ac3f`; the image-preparation branch implements Tasks 12–14 additively on that exact base.
 
 ## Approved Architecture
 
@@ -28,8 +27,9 @@ Tasks 6–11 remain separately gated.
   are tested against documented tolerance rather than promised exact equality.
 - Fingerprint schema version 1 uses canonical lowercase hex, `bitLength`, and mandatory PDQ quality.
 - Hamming comparison is separate from caller-selected distance and minimum-quality policy.
-- Crop selection remains outside the library; callers hash a full image and any crop as two normal
-  pixel inputs.
+- Crop detection and selection remain outside the library. Callers may use the strict core region
+  extractor with their own coordinates, then hash the full image and each extracted region as
+  normal pixel inputs.
 
 ## Dependency Graph
 
@@ -253,7 +253,7 @@ discipline and stage-level tests.
 
 ### Task 7: Integrate `pdq-v1` into fingerprint dispatch
 
-**Status:** Complete locally on 2026-08-09 on `codex/pdq-public-api`.
+**Status:** Complete and merged in `b2edec5` on 2026-08-09.
 
 **Description:** Compose the numeric stages into the approved `PdqFingerprint` and expose it through
 the runtime-neutral public API.
@@ -294,7 +294,7 @@ the runtime-neutral public API.
 
 ### Task 8: Implement fingerprint parsing and canonical serialization
 
-**Status:** Implemented and reviewed locally on `codex/fingerprint-codec` on 2026-08-09.
+**Status:** Complete in rebased commit `bfd48d5` on 2026-08-09.
 
 **Description:** Add strict runtime validation and round-trip helpers for schema version 1 records.
 
@@ -323,7 +323,7 @@ the runtime-neutral public API.
 
 ### Task 9: Implement Hamming comparison and opt-in PDQ match policy
 
-**Status:** Implemented and reviewed locally on `codex/fingerprint-codec` on 2026-08-09.
+**Status:** Complete in rebased commit `723d26f` on 2026-08-09.
 
 **Description:** Add mathematical comparison with explicit incompatibility and a separate named
 policy helper.
@@ -355,7 +355,7 @@ policy helper.
 
 ### Task 10: Run large differential and numeric-discipline tests
 
-**Status:** Implemented and reviewed locally on `codex/fingerprint-codec` on 2026-08-09.
+**Status:** Complete in rebased commit `c375daa` on 2026-08-09.
 
 **Description:** Prove the TypeScript implementation against thousands of seeded C++ vectors and
 use same-source WASM only to investigate discrepancies and establish a performance goalpost.
@@ -394,7 +394,7 @@ use same-source WASM only to investigate discrepancies and establish a performan
 
 ### Task 11: Verify packed CJS, ESM, browser, and worker behavior
 
-**Status:** Implemented and reviewed locally on `codex/fingerprint-codec` on 2026-08-09.
+**Status:** Complete at the authoritative rebased tip `631ac3f` on 2026-08-09.
 
 **Description:** Expand package checks from Node-imported browser ESM to real browser engines and a
 Web Worker using identical raw fixture bytes.
@@ -433,7 +433,10 @@ Web Worker using identical raw fixture bytes.
 
 ## Phase 5: Add Encoded-Image Adapters Behind a Separate Gate
 
-Recommended first-release adapter scope, requiring maintainer approval before Task 12:
+The maintainer approved the following first-release adapter scope on 2026-08-09. The isolated
+implementation is tracked in
+[`image-preparation-adapter-plan.md`](./image-preparation-adapter-plan.md); integration and release
+were integrated only after Task 11 package, browser-engine, and worker evidence was complete.
 
 - Node: path and encoded byte inputs for static JPEG, PNG, and WebP; new URL fetching deferred.
 - Browser: `ImageData`, `Blob`, and `File`; no HTML element or URL convenience APIs initially.
@@ -442,29 +445,33 @@ Recommended first-release adapter scope, requiring maintainer approval before Ta
 
 ### Task 12: Select and freeze the Node decoder contract
 
+**Status:** Complete on `codex/image-preparation-adapters` on 2026-08-09; corpus-based decoder
+tolerance remains Task 15.
+
 **Description:** Evaluate the existing decoders against the required static formats, orientation,
 color, animation detection, size limits, portability, and license constraints before changing the
 new API.
 
 **Acceptance criteria:**
 
-- [ ] A decision record names decoder versions, supported formats, EXIF/ICC/alpha behavior,
+- [x] A decision record names decoder versions, supported formats, EXIF/ICC/alpha behavior,
   animation policy, maximum bytes/pixels, and error categories.
-- [ ] Decode time and PDQ core time are measurable separately.
-- [ ] New URL fetching is either explicitly specified with security limits or deferred; it is not
+- [x] Decode time and PDQ core time are measurable separately.
+- [x] New URL fetching is either explicitly specified with security limits or deferred; it is not
   inherited accidentally from `imageHash()`.
 
 **Verification:**
 
-- [ ] Run the decoder spike over the licensed adapter corpus.
-- [ ] Review dependency, package-size, and license evidence.
-- [ ] Maintainer approves the decoder decision before Task 13.
+- [x] Run static JPEG, PNG, and WebP contract tests; retain the licensed differential corpus for
+  Task 15.
+- [x] Review dependency, package-size, browser-graph, and license evidence.
+- [x] Maintainer approves Sharp 0.35.3 and the shared decoder contract before Task 13.
 
 **Dependencies:** Task 11.
 
 **Files likely touched:**
 
-- `docs/architecture/0003-node-image-decoder-contract.md`
+- `docs/architecture/0003-runtime-image-decoder-contract.md`
 - `benchmarks/pdq/decoder-spike.mjs`
 - `benchmarks/pdq/fixtures/PROVENANCE.md`
 
@@ -472,22 +479,24 @@ new API.
 
 ### Task 13: Implement the Promise-based Node image adapter
 
+**Status:** Complete and verified on `codex/image-preparation-adapters` on 2026-08-09.
+
 **Description:** Add explicit `/node` encoded-image fingerprinting without changing the legacy
 callback path.
 
 **Acceptance criteria:**
 
-- [ ] `fingerprintImage()` accepts only approved Node source types and returns the same
+- [x] `fingerprintImage()` accepts only approved Node source types and returns the same
   `PdqFingerprint` produced by the core over its normalized pixels.
-- [ ] Limits, unsupported formats/animation, decoding failures, and aborts use stable documented
+- [x] Limits, unsupported formats/animation, decoding failures, and aborts use stable documented
   error categories.
-- [ ] No legacy `imageHash()` input, callback, decoder, error, or hash output changes.
+- [x] No legacy `imageHash()` input, callback, decoder, error, or hash output changes.
 
 **Verification:**
 
-- [ ] Run Node adapter tests for every approved source and error category.
-- [ ] Run legacy golden and callback tests in the same command.
-- [ ] `pnpm check`
+- [x] Run Node adapter tests for every approved source and error category.
+- [x] Run legacy golden and callback tests in the same command.
+- [x] `pnpm check`
 
 **Dependencies:** Task 12.
 
@@ -503,21 +512,24 @@ callback path.
 
 ### Task 14: Implement the browser main-thread and worker adapter
 
+**Status:** Complete and verified in Chromium, Firefox, and WebKit on
+`codex/image-preparation-adapters` on 2026-08-09.
+
 **Description:** Add `/browser` fingerprinting for approved decoded and encoded browser inputs while
 preserving the same core identity boundary.
 
 **Acceptance criteria:**
 
-- [ ] `ImageData` passes its tagged RGBA bytes directly to the core; `Blob`/`File` decode without
+- [x] `ImageData` passes its tagged RGBA bytes directly to the core; `Blob`/`File` decode without
   pre-resizing and close/release temporary resources.
-- [ ] The approved API works in both the main thread and a worker without top-level DOM access.
-- [ ] Unsupported decode, dimension, animation, and abort cases are explicit and tested.
+- [x] The approved API works in both the main thread and a worker without top-level DOM access.
+- [x] Unsupported decode, dimension, animation, and abort cases are explicit and tested.
 
 **Verification:**
 
-- [ ] Run Chromium, Firefox, and WebKit adapter tests on main thread and worker.
-- [ ] Scan the packed browser graph for forbidden imports and unexpected assets.
-- [ ] `pnpm test:package`
+- [x] Run Chromium, Firefox, and WebKit adapter tests on main thread and worker.
+- [x] Scan the packed browser graph for forbidden imports and unexpected assets.
+- [x] `pnpm test:package`
 
 **Dependencies:** Tasks 11 and 12.
 
@@ -562,9 +574,9 @@ static-image corpus and publish the actual variance.
 
 ## Checkpoint F: Adapter Release Candidate
 
-- [ ] Node and browser adapter contracts are explicitly approved.
+- [x] Node and browser adapter contracts are explicitly approved.
 - [ ] Decoder variance stays within the approved gate or has documented exceptions.
-- [ ] Legacy compatibility and pure-core conformance remain unchanged.
+- [x] Legacy compatibility and pure-core conformance remain unchanged.
 
 ## Phase 6: Calibrate Performance and Matching Behavior
 
@@ -693,11 +705,10 @@ threshold guidance, verification evidence, and rollback path.
 
 ## Decisions Still Needed
 
-These do not block the remaining first increment, Tasks 2–11:
+These do not block the completed Tasks 1–14:
 
-- Approve or amend the recommended first-release encoded-image adapter scope before Task 12.
-- Select the actual browser support floor while Task 11 establishes current-engine evidence.
 - Supply or identify a redistribution-safe MTG calibration corpus before Task 17.
+- Supply or identify a licensed encoded-image tolerance corpus before Task 15.
 - Record absolute performance and responsiveness budgets before Task 16.
 
 ## Plan Approval Gate

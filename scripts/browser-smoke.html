@@ -8,7 +8,11 @@
     Running browser package smoke…
   </body>
   <script type="module">
-    import { fingerprintPixels } from '/node_modules/image-fingerprint/lib/esm/browser.mjs';
+    import {
+      decodeImage,
+      fingerprintImage,
+      fingerprintPixels,
+    } from '/node_modules/image-fingerprint/lib/esm/browser.mjs';
 
     const gray = [
       0, 41, 82, 123, 164,
@@ -31,6 +35,7 @@
       quality: 59,
     };
 
+    const options = { algorithm: 'pdq-v1' };
     const hashSources = () => Object.fromEntries(Object.entries(sources).map(([format, data]) => [
       format,
       fingerprintPixels({
@@ -38,10 +43,37 @@
         width: 5,
         height: 5,
         data: Uint8Array.from(data),
-      }, {
-        algorithm: 'pdq-v1',
-      }),
+      }, options),
     ]));
+
+    const hashAdapters = async () => {
+      const imageData = new ImageData(Uint8ClampedArray.from(sources.rgba8), 5, 5);
+      const imageDataFingerprint = await fingerprintImage(imageData, options);
+      const response = await fetch('/scripts/Example.png');
+      if (!response.ok) throw new Error(`fixture request failed: ${response.status}`);
+      const blob = await response.blob();
+      const file = new File([blob], 'Example.png', { type: 'image/png' });
+      const decoded = await decodeImage(blob);
+      const decodedFingerprint = fingerprintPixels(decoded, options);
+      const [blobFingerprint, fileFingerprint] = await Promise.all([
+        fingerprintImage(blob, options),
+        fingerprintImage(file, options),
+      ]);
+      if (JSON.stringify(blobFingerprint) !== JSON.stringify(decodedFingerprint)) {
+        throw new Error('Blob fingerprint did not match decodeImage plus fingerprintPixels');
+      }
+      if (JSON.stringify(fileFingerprint) !== JSON.stringify(decodedFingerprint)) {
+        throw new Error('File fingerprint did not match decodeImage plus fingerprintPixels');
+      }
+      return {
+        imageData: imageDataFingerprint,
+        blob: blobFingerprint,
+        file: fileFingerprint,
+        decodedPixels: decodedFingerprint,
+        width: decoded.width,
+        height: decoded.height,
+      };
+    };
 
     const assertResults = (results, context) => {
       for (const [format, fingerprint] of Object.entries(results)) {
@@ -60,8 +92,11 @@
     };
 
     try {
-      const mainThread = hashSources();
-      assertResults(mainThread, 'main-thread');
+      const mainThread = {
+        rawPixels: hashSources(),
+        adapters: await hashAdapters(),
+      };
+      assertResults(mainThread.rawPixels, 'main-thread');
       document.body.dataset.mainStatus = 'passed';
 
       const worker = new Worker('/scripts/browser-smoke-worker.mjs', { type: 'module' });
@@ -71,7 +106,7 @@
           if (data.error !== undefined) {
             throw new Error(data.error);
           }
-          assertResults(data.results, 'module-worker');
+          assertResults(data.results.rawPixels, 'module-worker');
           document.body.dataset.workerStatus = 'passed';
           document.body.dataset.status = 'passed';
           document.body.textContent = JSON.stringify({
@@ -83,7 +118,6 @@
           fail(error);
         }
       }, { once: true });
-      worker.postMessage(sources);
     } catch (error) {
       fail(error);
     }

@@ -5,6 +5,22 @@ export {
   evaluatePdqMatch,
   PDQ_STARTING_POLICY,
 } from './fingerprint-comparison';
+export {
+  DEFAULT_IMAGE_DECODE_LIMITS,
+  ImagePreparationError,
+} from './image-decoder';
+export { extractPixelRegion } from './pixel-region';
+export type { PixelRegion } from './pixel-region';
+export type {
+  AbortSignalLike,
+  DecodeImageFunction,
+  DecodeImageOptions,
+  FingerprintImageFunction,
+  FingerprintImageOptions,
+  ImageDecodeLimits,
+  ImageDecoder,
+  ImagePreparationErrorCode,
+} from './image-decoder';
 export type {
   BlockHashFingerprint,
   BlockHashFingerprintOptions,

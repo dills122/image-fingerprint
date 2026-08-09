@@ -1,6 +1,6 @@
 # Image Hashing Modernization Plan
 
-Status: Tasks 8–10 committed; Task 11 implemented and reviewed locally
+Status: Tasks 1–14 implemented and verified; Task 15 decoder-tolerance evidence remains open
 Task ID: `image-hashing-modernization`
 Updated: 2026-08-09
 
@@ -49,12 +49,13 @@ decision mechanism.
   color-space assumptions, orientation boundary, validation, and minimum dimensions.
 - [x] Define fingerprint record versioning, canonical serialization, parsing, comparison, and
   explicit match-policy semantics.
-- [x] Select a compatibility-safe package-entry strategy for `image-hash/core`,
-  `image-hash/node`, and `image-hash/browser` without changing the legacy root contract.
+- [x] Select a compatibility-safe package-entry strategy for `image-fingerprint/core`,
+  `image-fingerprint/node`, and `image-fingerprint/browser` while retaining the legacy root as a
+  pre-release parity oracle.
 - [x] Define exact cross-runtime guarantees and encoded-image decoder tolerance for Node,
   browser main-thread, and worker adapters.
 - [x] Freeze the Meta reference/oracle procedure, licensing notices, and fixture-provenance rules.
-- [ ] Define the first-release Node and browser input/decoder scope, including whether new URL
+- [x] Define the first-release Node and browser input/decoder scope, including whether new URL
   loading is included or deferred.
 
 Exit: research and core contracts are approved. Adapter scope is a P1 release decision and does not
@@ -88,9 +89,12 @@ block pure-core implementation planning.
 - [x] Task 9: implement Hamming comparison and explicit PDQ match policy.
 - [x] Task 10: run a reproducible 10,000-vector differential and freeze numeric-discipline evidence.
 - [x] Task 11: verify packed CJS, ESM, browser-engine, worker, and TypeScript consumer behavior.
+- [x] Task 12: freeze the shared decoder contract and Sharp-backed Node normalization behavior.
+- [x] Task 13: add Promise-based `/node` decoding and `fingerprintImage()`.
+- [x] Task 14: add native `/browser` decoding and verify it in supported engines and workers.
 - [ ] Lock legacy contracts and baseline benchmarks.
 - [ ] Implement the selected raw-pixel PDQ core/adapter.
-- [ ] Add decoder adapters and public versioned API.
+- [x] Add decoder adapters and public versioned API.
 - [ ] Run conformance, metamorphic, performance, and compatibility tests.
 - [ ] Document migration and release policy.
 
@@ -105,18 +109,20 @@ canonical arm64 CI, freezes numeric constants, and evaluates same-source WASM be
 dispatch. That checkpoint is complete with an accepted portable unfused profile and hosted Linux
   arm64 confirmation. The maintainer authorized Task 7 on 2026-08-09, and its reviewed local
   implementation is merged. The maintainer authorized Task 8 on 2026-08-09, and its local
-  implementation was committed as `2da5ae8`. The maintainer authorized Task 9 on 2026-08-09;
-  Task 9 was committed as `bb80bc9`, and Task 10 was committed as `779b67b`. The maintainer
-  authorized Task 11 on 2026-08-09; its local implementation has passed review, real-browser
-  execution, and both supported-runtime gates. Encoded-image adapters remain gated at Task 12.
+  implementation is now at rebased commit `bfd48d5`. The maintainer authorized Task 9 on 2026-08-09;
+  Task 9 is now at `723d26f`, and Task 10 is now at `c375daa`. The maintainer
+  authorized Task 11 on 2026-08-09; its authoritative rebased tip is `631ac3f`. The approved
+  adapter work was
+  rebased onto that exact tip, and Tasks 12–14 now pass packed-package, Node, and real-browser
+  main-thread/worker gates. Task 15 remains the separate decoder-tolerance evidence gate.
 
 ## Current Decisions
 
 - The legacy `imageHash()` callback API and serialized BMVB results remain compatibility-locked.
 - New APIs are opt-in and separate from `imageHash()`.
-- `image-hash/core` is synchronous, stateless, decoder-free TypeScript shared by Node.js,
+- `image-fingerprint/core` is synchronous, stateless, decoder-free TypeScript shared by Node.js,
   browsers, and Web Workers.
-- `image-hash/node` and `image-hash/browser` provide asynchronous environment-specific loading and
+- `image-fingerprint/node` and `image-fingerprint/browser` provide asynchronous environment-specific loading and
   decoding adapters.
 - Exact conformance is defined at the normalized-pixel boundary; separately decoded encoded images
   are evaluated with documented tolerance rather than promised byte-for-byte equality.
