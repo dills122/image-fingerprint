@@ -1,7 +1,7 @@
 {
   "name": "image-fingerprint",
-  "version": "0.1.0",
-  "description": "Create deterministic, cross-platform image fingerprints",
+  "version": "0.1.0-rc.0",
+  "description": "Deterministic, versioned image fingerprints for Node.js and browsers",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "exports": {
@@ -71,13 +71,19 @@
   "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dills122/image-hash.git"
+    "url": "git+https://github.com/dills122/image-fingerprint.git"
   },
   "keywords": [
-    "phash",
+    "image fingerprint",
+    "image matching",
+    "perceptual hashing",
+    "pdq",
+    "blockhash",
     "hash",
     "image hash",
-    "perceptual hash"
+    "perceptual hash",
+    "browser",
+    "node.js"
   ],
   "author": "Dylan Steele",
   "contributors": [
@@ -86,9 +92,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dills122/image-hash/issues"
+    "url": "https://github.com/dills122/image-fingerprint/issues"
   },
-  "homepage": "https://github.com/dills122/image-hash#readme",
+  "homepage": "https://github.com/dills122/image-fingerprint#readme",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"

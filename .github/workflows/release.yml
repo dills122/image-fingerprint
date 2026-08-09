@@ -27,6 +27,15 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Verify the tag points at the current main commit
+        run: |
+          git fetch origin main --depth=1
+          main_sha="$(git rev-parse origin/main)"
+          if [ "$GITHUB_SHA" != "$main_sha" ]; then
+            echo "Release tag must point at the current main commit ($main_sha)"
+            exit 1
+          fi
+
       - name: Setup pnpm
         uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
 
@@ -82,17 +91,22 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 24
-          cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
+          package-manager-cache: false
           registry-url: https://registry.npmjs.org
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Publish package to npmjs
-        run: npm publish --provenance --access public
+      - name: Publish package to npmjs with trusted publishing
+        shell: bash
+        run: |
+          publish_args=(--access public)
+          if [[ "$PACKAGE_VERSION" == *-* ]]; then
+            publish_args+=(--tag next)
+          fi
+          npm publish "${publish_args[@]}"
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          PACKAGE_VERSION: ${{ needs.verify.outputs.package_version }}
 
   github-release:
     name: Create GitHub release
@@ -130,4 +144,5 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
+          prerelease: ${{ contains(needs.verify.outputs.package_version, '-') }}
           files: ${{ needs.verify.outputs.package_name }}-${{ needs.verify.outputs.package_version }}.tgz
