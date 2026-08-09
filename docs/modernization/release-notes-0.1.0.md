@@ -10,7 +10,7 @@ runtime-neutral pixel core, Node and browser image-preparation adapters, fingerp
 mathematical comparison, explicit PDQ policy helpers, caller-owned crop extraction, and exact
 `image-hash@7` migration support.
 
-PDQ is opt-in. No callback call silently changes algorithms, decoder behavior, or serialized hash.
+PDQ is opt-in. `image-fingerprint` does not expose the old callback or remote-request API.
 
 ## Runtime and Decoder Support
 
@@ -22,9 +22,9 @@ PDQ is opt-in. No callback call silently changes algorithms, decoder behavior, o
 - Browser normalized policy: native `createImageBitmap` plus an sRGB canvas.
 - Node historical policy: `decoderMode: 'image-hash-v7'` for BlockHash only, using the historical
   JPEG/PNG/WebP decoder behavior without orientation or ICC normalization. The compatibility stack
-  pins `jpeg-js@0.4.4`, `pngjs@7.0.0`, `@cwasm/webp@0.1.5`, and `file-type@21.3.4`.
-- Remote URLs and request objects remain available through `imageHash()` only. New adapters accept
-  local paths, file URLs, bytes, `Blob`, `File`, or `ImageData` as appropriate to their runtime.
+  pins `jpeg-js@0.4.4`, `pngjs@7.0.0`, and `@cwasm/webp@0.1.5`.
+- New adapters accept local paths, file URLs, bytes, `Blob`, `File`, or `ImageData` as appropriate
+  to their runtime. Applications own remote fetching and request policy.
 
 The captured browser evidence used Chromium 151.0.7922.34, Firefox 153.0, and WebKit 26.5. These are
 measured engine versions, not permanent upper bounds.
@@ -42,15 +42,15 @@ strings in an equality index without recording which policy produced each value.
 
 For an existing `image-hash@7` store:
 
-1. Keep the callback API unchanged, or use Node `fingerprintImage()` with
-   `decoderMode: 'image-hash-v7'` and the same `bitsPerSide`/method.
+1. Use Node `fingerprintImage()` with `decoderMode: 'image-hash-v7'` and the same
+   `bitsPerSide`/method.
 2. Verify a representative sample against stored values before switching reads.
 3. Persist the versioned record and decoder policy for new writes.
 4. If adopting normalized decoding or PDQ, dual-write during calibration; do not overwrite the old
    index until product-specific matching and rollback have been exercised.
 
-Rollback is to continue reading the historical bare-hash index and use `imageHash()` or the named
-compatibility mode. No stored-hash rewrite is required by this release.
+Rollback is to continue reading the historical bare-hash index and use the named compatibility
+mode. No stored-hash rewrite is required by this release.
 
 ## Quality, Comparison, and Policy
 
@@ -79,7 +79,7 @@ candidate or ranking signal after consistent normalization, not the sole exact-p
 
 ## Compatibility Evidence
 
-- Existing committed callback/golden fixtures remain unchanged.
+- Existing committed golden hashes remain unchanged through the Promise compatibility mode.
 - Normalized Sharp versus historical decoding matched 54 of 60 committed fixture/configuration
   comparisons; differences were caused by EXIF orientation and Display-P3 normalization.
 - A Sharp configuration intended to imitate historical behavior still differed on 98 of 720
@@ -90,8 +90,8 @@ candidate or ranking signal after consistent normalization, not the sole exact-p
 - Raw-pixel PDQ matches the pinned Meta C++ reference exactly. Captured Node, browser, performance,
   and MTG matching evidence is linked from `docs/modernization/README.md`.
 
-The final `image-fingerprint@0.1.0` dry-run tarball contains 108 files, is 88.8 kB compressed and
-372.8 kB unpacked, and has npm dry-run shasum `44bd2cb9e1e018d23007517af0e05fb540ca7a12`.
+The final `image-fingerprint@0.1.0` dry-run tarball contains 108 files, is 84.6 kB compressed and
+356.4 kB unpacked, and has npm dry-run shasum `fa1bdb897e564f24bfecf94b5554d1b351be26cc`.
 Packed CommonJS and ESM runtimes, TypeScript Node16/NodeNext/Bundler resolution, and browser
 main-thread/module-worker consumers all passed.
 
@@ -111,13 +111,8 @@ pnpm pdq:matching -- --manifest /absolute/path/to/manifest.json
 Oracle, benchmark, and dataset commands are reproducibility tools with external prerequisites; they
 are not required for an ordinary package install.
 
-To repeat the published-package comparison, extract `image-hash@7.0.1` outside the repository and
-run:
-
-```sh
-node scripts/image-hash-v7-differential.mjs \
-  --oracle /absolute/path/to/image-hash-7.0.1/package/lib/index.js
-```
+The offline differential command compares the generated candidate digest with the frozen SHA-256
+of all 720 results captured from the published `image-hash@7.0.1` tarball.
 
 ## Attribution and Provenance
 

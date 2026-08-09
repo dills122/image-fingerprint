@@ -33,3 +33,12 @@
 - 2026-08-09: Staged diff validation found only Markdown hard-break trailing spaces. A combined
   cleanup patch used the wrong file context on its first attempt; the two documents were then fixed
   separately and no behavior changed.
+- 2026-08-09: User approved removing the callback-era surface after 720/720 published-package
+  compatibility was proven through the new Promise API. Cleanup retains the exact historical
+  decoder mode and BlockHash algorithm but removes callback/URL/deep-import compatibility.
+- 2026-08-09: Final cleanup passed `pnpm check` on Node 22 and 24 (244 tests), packed CJS/ESM and
+  TypeScript Node16/NodeNext/Bundler consumers, the frozen 720-case published-v7 digest, dry-run
+  packing (108 files, 84.6 kB), Chromium/Firefox/WebKit main-thread and worker conformance, and a
+  production audit with no known vulnerabilities.
+- 2026-08-09: Five-axis review found and corrected stale planning/tooling contract language. No
+  remaining correctness, architecture, security, performance, or readability blockers were found.

@@ -8,7 +8,7 @@ This repository publishes a small Node.js/TypeScript library for deterministic i
 
 Optimize for:
 
-- compatibility with hashes and public APIs already used by downstream projects
+- compatibility with stored hashes already used by downstream projects
 - measurable image-matching behavior backed by fixtures and documented thresholds
 - small, explicit changes over broad refactors
 - tests and documentation when behavior, contracts, setup, or commands change
@@ -17,8 +17,10 @@ Optimize for:
 
 Primary areas:
 
-- `src/index.ts`: public input, loading, MIME detection, decoding, and callback orchestration
-- `src/block-hash.ts`: legacy Block Mean Value hash implementation and serialized hash compatibility
+- `src/index.ts`: runtime-neutral public exports
+- `src/node/decode-image.ts`: Node.js source loading and normalized/historical decoder selection
+- `src/node/image-hash-v7-decoder.ts`: exact `image-hash@7.x` decoding behind the named mode
+- `src/block-hash.ts`: Block Mean Value implementation and serialized hash compatibility
 - `__tests__/`: public behavior and golden hash fixtures
 - `docs/modernization/`: specifications, source research, benchmark design, and migration planning
 
@@ -31,12 +33,14 @@ Treat these as interface contracts before implementation details:
 
 - `README.md` for the published API and supported inputs
 - `package.json` for package entrypoints, runtime support, and commands
-- `__tests__/main.test.ts` for legacy serialized hash compatibility
+- `__tests__/node-image-adapter.test.ts` and `scripts/image-hash-v7-differential.mjs` for historical
+  serialized hash compatibility
 - `docs/architecture/0001-versioned-image-fingerprints.md` for algorithm expansion boundaries
 - `docs/modernization/image-hashing-modernization-spec.md` for modernization scope and acceptance
 
-Do not alter existing Block Mean Value hash output, stored-hash interpretation, or callback behavior
-accidentally. Intentional breaking changes require a major-version plan and migration fixtures.
+Do not alter existing Block Mean Value hash output or stored-hash interpretation accidentally.
+Historical values remain available through the explicit `image-hash-v7` decoder mode; the callback,
+remote-request, MIME-extension, and internal deep-import surfaces are not published by this package.
 
 ## Scope Control
 

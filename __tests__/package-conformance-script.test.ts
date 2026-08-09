@@ -25,7 +25,6 @@ describe('packed package conformance scripts', () => {
         './node',
         './core',
         './browser',
-        './lib/block-hash',
         './package.json',
       ],
     });

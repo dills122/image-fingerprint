@@ -11,8 +11,8 @@ fingerprint both the oriented full image and caller-selected regions without cou
 decoder.
 
 Node.js and browsers cannot share a decoder implementation, but they can share input limits, output
-pixels, cancellation, errors, and Promise-based orchestration. The existing `imageHash()` callback
-path and its format-specific decoders remain compatibility-locked.
+pixels, cancellation, errors, and Promise-based orchestration. Historical format-specific decoding
+is retained only as a named BlockHash policy in the new Node flow.
 
 ## Decision
 
@@ -33,8 +33,8 @@ path and its format-specific decoders remain compatibility-locked.
 - Node BlockHash additionally accepts `decoderMode: 'image-hash-v7'`. This named compatibility
   policy uses the historical format-specific decoders without orientation or ICC normalization.
   It is unavailable for PDQ and in browser entrypoints.
-- New remote URL fetching is not included. It remains available only through the legacy callback
-  API until separately specified.
+- Remote URL fetching is not included. Applications own network and request policy and pass encoded
+  bytes to the adapter.
 
 ## Stable Errors
 
@@ -66,8 +66,8 @@ the JavaScript stack.
 The package declares `sideEffects: false`. `/core` and `/browser` have separate ESM graphs that must
 contain no Sharp, Node.js built-ins, or legacy decoder dependencies. `/node` is a separate CommonJS-
 compatible entrypoint, loads Sharp dynamically, and contains the historical decoder dependencies
-needed by `image-hash-v7`. Deterministic compatibility pins `jpeg-js@0.4.4`, `pngjs@7.0.0`,
-`@cwasm/webp@0.1.5`, and callback MIME detection through `file-type@21.3.4`.
+needed by `image-hash-v7`. Deterministic compatibility pins `jpeg-js@0.4.4`, `pngjs@7.0.0`, and
+`@cwasm/webp@0.1.5`.
 
 The accepted integrated build produces a 13.23 kB uncompressed and 3.71 kB gzip browser entry,
 guarded by a 10 KiB gzip package-smoke budget.
@@ -99,8 +99,9 @@ also changes.
 
 ## Compatibility
 
-- The root `imageHash()` API, callback timing, inputs, decoder behavior, errors, and serialized
-  BlockHash output are unchanged; it selects `image-hash-v7` behavior automatically.
+- The old callback, remote-request, MIME-extension, and internal deep-import surfaces are not part
+  of `image-fingerprint`. Historical serialized BlockHash output remains available through the
+  explicit Node policy.
 - `/core` contains no path, URL, Node.js, Sharp, `Blob`, `File`, or `ImageData` type dependency.
 - Browser and Node adapters implement the same generic core interface and run the same behavioral
   contract assertions with runtime-specific fixtures.

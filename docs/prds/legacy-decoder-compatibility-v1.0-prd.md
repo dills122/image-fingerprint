@@ -17,8 +17,8 @@
 - Add a Node-only, named `image-hash-v7` decoder compatibility mode for encoded-image BlockHash.
 - Extend the Promise-based `fingerprintImage()` flow to support `blockhash-v1`.
 - Keep normalized Sharp decoding as the default.
-- Keep `imageHash()` as a callback compatibility adapter that automatically uses historical
-  decoding and serialized output.
+- Remove the callback, remote-request, MIME-extension, and internal deep-import compatibility
+  surfaces from the new package.
 - Route both modes through decoded pixels and the shared BlockHash implementation.
 
 The feature does not make historical decoding available to PDQ, change stored fingerprint record
@@ -31,8 +31,8 @@ schemas, change browser decoding, or claim that different decoders produce ident
 2. A migrating application calls `fingerprintImage()` with `decoderMode: 'image-hash-v7'` and
    receives the exact BlockHash string it previously stored for the same supported encoded input
    and parameters.
-3. An unchanged application continues using `imageHash()` and receives its historical bare string
-   and callback behavior.
+3. A migrating application replaces the callback call with the Promise API and stores the returned
+   versioned record plus decoder provenance.
 
 ### Detailed Requirements
 
@@ -56,11 +56,11 @@ schemas, change browser decoding, or claim that different decoders produce ident
 - Reuse the current encoded-source reader and inspection/limit boundary.
 - Convert historical decoded results to tightly packed RGBA pixels, then invoke the same shared
   BlockHash implementation used by `fingerprintPixels()`.
-- Preserve the legacy callback wrapper as an adapter rather than treating it as a second algorithm.
+- Keep the old source loader and callback orchestration out of the new package.
 
 ### Constraints
 
-- Exact `image-hash@7.0.1` BlockHash output and callback behavior are compatibility-locked.
+- Exact `image-hash@7.0.1` BlockHash output is compatibility-locked through the named decoder mode.
 - The modern default must retain auto-orientation and sRGB normalization.
 - Browser entrypoints must not import Node or historical decoder dependencies.
 - PDQ remains opt-in and normalized; compatibility mode cannot be selected for PDQ.
@@ -71,11 +71,11 @@ schemas, change browser decoding, or claim that different decoders produce ident
 - **JPEG decoder variance:** Sharp differed from the historical decoder in 98 of 720 generated
   comparisons. Mitigation: retain `jpeg-js` in the named compatibility mode.
 - **Dependency weight:** Historical decoder packages remain installed. Mitigation: isolate them
-  behind the Node/root graph and keep browser package graph tests.
+  behind the Node graph and keep browser package graph tests.
 - **Ambiguous persistence:** Algorithm records do not currently encode preprocessing. Mitigation:
   document decoder-mode persistence now and evaluate a separate provenance schema later.
-- **Contract drift:** The callback and Promise APIs could diverge. Mitigation: golden differential
-  tests compare them on JPEG, PNG, WebP, EXIF-orientation, alpha, and wide-gamut fixtures.
+- **Contract drift:** The named mode could stop reproducing published results. Mitigation: committed
+  golden fixtures and the frozen 720-case published-package digest cover JPEG, PNG, and WebP.
 
 ## Acceptance Criteria
 
@@ -84,14 +84,14 @@ schemas, change browser decoding, or claim that different decoders produce ident
 - [x] Normalized `fingerprintImage()` supports versioned `blockhash-v1` results.
 - [x] `decoderMode: 'image-hash-v7'` reproduces historical hashes on committed compatibility
   fixtures and generated codec stress cases.
-- [x] `imageHash()` continues to return the historical bare hash through its callback.
+- [x] The package root and Node entrypoint do not export the old callback API.
 - [x] Compatibility mode is rejected for PDQ and unavailable from browser entrypoints.
 - [x] Existing decoder limits, abort handling, errors, and animation rejection remain intact.
 
 ### Quality Standards
 
 - [x] New behavior is introduced with failing tests before implementation.
-- [x] Legacy golden/callback tests and package graph checks remain green.
+- [x] Historical golden/differential tests and package graph checks remain green.
 - [x] `pnpm check`, `npm pack --dry-run`, packed CommonJS/ESM/TypeScript smoke tests, and real-browser
   conformance pass.
 - [x] Release documentation explains defaults, compatibility selection, persistence, decoder
@@ -99,7 +99,7 @@ schemas, change browser decoding, or claim that different decoders produce ident
 
 ### User Acceptance
 
-- [x] A migration example shows the old callback API and new Promise API producing the same hash.
+- [x] A migration example maps old bits/method/source inputs to the Promise API.
 - [x] A new-application example uses normalized decoding by default.
 - [x] Documentation clearly states that decoder mode is part of encoded-image reproducibility.
 
@@ -117,11 +117,12 @@ schemas, change browser decoding, or claim that different decoders produce ident
 - Extend Node `fingerprintImage()` to BlockHash and the named decoder mode.
 - Preserve normalized decoding as the default and PDQ behavior unchanged.
 
-### Phase 3: Callback Adapter Consolidation
+### Phase 3: Legacy Surface Removal
 
-- Reuse the compatibility decoder and shared pixel hashing path from `imageHash()` without changing
-  source loading, MIME mismatch, callback, or bare-string behavior.
-- Remove obsolete duplicate orchestration only where compatibility tests prove equivalence.
+- Remove callback/source-loading orchestration, request objects, MIME-extension matching,
+  callback-only examples/tests, deep package aliases, and dependencies no longer used by the
+  Promise API.
+- Retain exact historical decoding only behind the named BlockHash decoder mode.
 
 ### Phase 4: Release Documentation and Verification
 
@@ -132,5 +133,5 @@ schemas, change browser decoding, or claim that different decoders produce ident
 
 **Document Version**: 1.0
 **Created**: 2026-08-09
-**Clarification Rounds**: 2
+**Clarification Rounds**: 3
 **Quality Score**: 94/100

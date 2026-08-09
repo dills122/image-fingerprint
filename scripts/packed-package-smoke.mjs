@@ -16,7 +16,6 @@ const PLAN = {
     './node',
     './core',
     './browser',
-    './lib/block-hash',
     './package.json',
   ],
 };
@@ -54,7 +53,6 @@ const root = require('image-fingerprint');
 const nodeEntry = require('image-fingerprint/node');
 const core = require('image-fingerprint/core');
 const browser = require('image-fingerprint/browser');
-const legacyBlockHash = require('image-fingerprint/lib/block-hash').default;
 const metadata = require('image-fingerprint/package.json');
 
 const pixels = ${JSON.stringify(grayValues)};
@@ -65,10 +63,14 @@ const fixture = ${JSON.stringify(join(repositoryRoot, 'example', '_95695590_tv03
 const blockHashOptions = { algorithm: 'blockhash-v1', bitsPerSide: 16, method: 2 };
 const historicalHash = '0773063f063f36070e070a070f378e7f1f000fff0fff020103f00ffb0f810ff0';
 
-assert.equal(nodeEntry.imageHash, root.imageHash);
 assert.equal(typeof nodeEntry.decodeImage, 'function');
 assert.equal(typeof nodeEntry.fingerprintImage, 'function');
-assert.equal(typeof legacyBlockHash, 'function');
+assert.equal('imageHash' in root, false);
+assert.equal('imageHash' in nodeEntry, false);
+assert.throws(
+  () => require('image-fingerprint/lib/block-hash'),
+  (error) => error?.code === 'ERR_PACKAGE_PATH_NOT_EXPORTED',
+);
 assert.equal(metadata.name, 'image-fingerprint');
 assert.equal(typeof core.extractPixelRegion, 'function');
 assert.equal(typeof browser.decodeImage, 'function');
@@ -95,12 +97,10 @@ const esModuleConsumer = `
 import assert from 'node:assert/strict';
 import {
   fingerprintPixels as fingerprintRoot,
-  imageHash,
 } from 'image-fingerprint';
 import {
   decodeImage as decodeImageNode,
   fingerprintImage as fingerprintImageNode,
-  imageHash as imageHashFromNode,
 } from 'image-fingerprint/node';
 import {
   extractPixelRegion,
@@ -112,7 +112,6 @@ import {
   fingerprintPixels as fingerprintBrowser,
   pixelsFromImageData,
 } from 'image-fingerprint/browser';
-import legacyBlockHashModule from 'image-fingerprint/lib/block-hash';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
@@ -125,10 +124,14 @@ const fixture = ${JSON.stringify(join(repositoryRoot, 'example', '_95695590_tv03
 const blockHashOptions = { algorithm: 'blockhash-v1', bitsPerSide: 16, method: 2 };
 const historicalHash = '0773063f063f36070e070a070f378e7f1f000fff0fff020103f00ffb0f810ff0';
 
-assert.equal(imageHashFromNode, imageHash);
 assert.equal(typeof decodeImageNode, 'function');
 assert.equal(typeof fingerprintImageNode, 'function');
-assert.equal(typeof legacyBlockHashModule.default, 'function');
+assert.equal('imageHash' in await import('image-fingerprint'), false);
+assert.equal('imageHash' in await import('image-fingerprint/node'), false);
+await assert.rejects(
+  import('image-fingerprint/lib/block-hash'),
+  (error) => error?.code === 'ERR_PACKAGE_PATH_NOT_EXPORTED',
+);
 assert.equal(metadata.name, 'image-fingerprint');
 assert.equal(typeof extractPixelRegion, 'function');
 assert.equal(typeof decodeImageBrowser, 'function');
@@ -149,7 +152,7 @@ assert.equal(historical.hash, historicalHash);
 `;
 
 const typeScriptConsumer = `
-import { fingerprintPixels as fingerprintRoot, imageHash } from 'image-fingerprint';
+import { fingerprintPixels as fingerprintRoot } from 'image-fingerprint';
 import {
   decodeImage as decodeImageNode,
   fingerprintImage as fingerprintImageNode,
@@ -168,7 +171,6 @@ import {
   fingerprintPixels as fingerprintBrowser,
   pixelsFromImageData,
 } from 'image-fingerprint/browser';
-import legacyBlockHash from 'image-fingerprint/lib/block-hash';
 
 const input = {
   format: 'gray8' as const,
@@ -200,8 +202,6 @@ void decodeImageBrowser;
 void fingerprintImageBrowser;
 void pixelsFromImageData;
 void decoder;
-void imageHash;
-void legacyBlockHash;
 `;
 
 const tsConfig = (module, moduleResolution, file) => JSON.stringify({

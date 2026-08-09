@@ -1,23 +1,10 @@
-import { createRequire } from 'node:module';
-import { resolve } from 'node:path';
+import { createHash } from 'node:crypto';
 import sharp from 'sharp';
 import { fingerprintImage } from '../lib/node.js';
 
-const require = createRequire(import.meta.url);
+const IMAGE_HASH_V7_ORACLE_SHA256 = 'cf4b11b6f9b6e2d0a0afd48aaba5c484043c780083b4c48f23c37da0032512bd';
 
-const parseArguments = (arguments_) => {
-  if (arguments_.length === 0) return { oracle: '../lib/index.js' };
-  if (arguments_.length === 2 && arguments_[0] === '--oracle') {
-    return { oracle: resolve(arguments_[1]) };
-  }
-  throw new Error('Usage: node scripts/image-hash-v7-differential.mjs [--oracle /path/to/lib/index.js]');
-};
-
-const formats = [
-  { name: 'jpeg', mime: 'image/jpeg' },
-  { name: 'png', mime: 'image/png' },
-  { name: 'webp', mime: 'image/webp' },
-];
+const formats = ['jpeg', 'png', 'webp'];
 const configurations = [
   { bitsPerSide: 4, method: 1 },
   { bitsPerSide: 4, method: 2 },
@@ -77,23 +64,8 @@ const encode = async (raw, width, height, format) => {
   }).toBuffer();
 };
 
-const legacyHash = (imageHash, encoded, mime, configuration) => new Promise((resolveHash, reject) => {
-  imageHash({ data: encoded, ext: mime }, configuration.bitsPerSide, configuration.method === 2, (
-    error,
-    hash,
-  ) => {
-    if (error) reject(error);
-    else resolveHash(hash);
-  });
-});
-
-const run = async (oracleModule) => {
-  const loaded = require(oracleModule);
-  if (typeof loaded.imageHash !== 'function') {
-    throw new TypeError(`Oracle module does not export imageHash(): ${oracleModule}`);
-  }
-
-  const mismatches = [];
+const run = async () => {
+  const candidateDigest = createHash('sha256');
   let comparisons = 0;
   for (let seed = 1; seed <= 40; seed += 1) {
     const width = 32 + ((seed * 17) % 97);
@@ -101,54 +73,49 @@ const run = async (oracleModule) => {
     const pattern = ['noise', 'gradient', 'alpha'][seed % 3];
     const raw = createPixels(width, height, seed, pattern);
     for (const format of formats) {
-      const encoded = await encode(raw, width, height, format.name);
+      const encoded = await encode(raw, width, height, format);
       for (const configuration of configurations) {
         comparisons += 1;
-        const legacy = await legacyHash(
-          loaded.imageHash,
-          encoded,
-          format.mime,
-          configuration,
-        );
         const candidate = await fingerprintImage(encoded, {
           algorithm: 'blockhash-v1',
           ...configuration,
           decoderMode: 'image-hash-v7',
         });
-        if (legacy !== candidate.hash) {
-          mismatches.push({
-            seed,
-            pattern,
-            format: format.name,
-            width,
-            height,
-            ...configuration,
-            legacy,
-            candidate: candidate.hash,
-          });
-        }
+        candidateDigest.update(`${JSON.stringify({
+          seed,
+          pattern,
+          format,
+          width,
+          height,
+          ...configuration,
+          hash: candidate.hash,
+        })}\n`);
       }
     }
   }
 
+  const candidateSha256 = candidateDigest.digest('hex');
   return {
-    profileVersion: 1,
-    oracleModule,
+    profileVersion: 2,
+    oracle: 'published-image-hash-7.0.1',
+    oracleNpmShasum: '6d5a77d1cb7aa24c93d7d7729d6787d0023c85e9',
+    expectedSha256: IMAGE_HASH_V7_ORACLE_SHA256,
+    candidateSha256,
     seeds: 40,
-    formats: formats.map(({ name }) => name),
+    formats,
     configurations,
     comparisons,
-    matches: comparisons - mismatches.length,
-    mismatchCount: mismatches.length,
-    mismatchExamples: mismatches.slice(0, 20),
+    matchesOracle: candidateSha256 === IMAGE_HASH_V7_ORACLE_SHA256,
   };
 };
 
 try {
-  const { oracle } = parseArguments(process.argv.slice(2));
-  const report = await run(oracle);
+  if (process.argv.length !== 2) {
+    throw new Error('Usage: node scripts/image-hash-v7-differential.mjs');
+  }
+  const report = await run();
   process.stdout.write(`${JSON.stringify(report)}\n`);
-  if (report.mismatchCount > 0) process.exitCode = 1;
+  if (!report.matchesOracle) process.exitCode = 1;
 } catch (error) {
   process.stderr.write(`image-hash-v7-differential: ${error.message}\n`);
   process.exitCode = 2;

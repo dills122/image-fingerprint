@@ -9,6 +9,7 @@ import {
   type RgbaImageData,
 } from '../src/core';
 import { fingerprintPixels as fingerprintPixelsInBrowser } from '../src/browser';
+import * as rootEntry from '../src';
 
 const createQuadrantImage = (): RgbaImageData => {
   const values = [
@@ -32,6 +33,10 @@ const createQuadrantImage = (): RgbaImageData => {
 };
 
 describe('fingerprintPixels', () => {
+  it('does not expose the image-hash callback API from the new package root', () => {
+    expect(Reflect.has(rootEntry, 'imageHash')).toBe(false);
+  });
+
   it('returns a versioned blockhash fingerprint from portable RGBA pixels', () => {
     const fingerprint = fingerprintPixels(createQuadrantImage(), {
       algorithm: 'blockhash-v1',

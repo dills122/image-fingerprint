@@ -7,7 +7,7 @@ Updated: 2026-08-09
 
 Establish reproducible, supported local and CI tooling before implementing a new fingerprint
 algorithm. This slice may improve types and package verification, but must not change image decoding,
-BMVB output, public callback behavior, or npm release triggers.
+BMVB output, or npm release triggers.
 
 ## Baseline Decisions
 
@@ -20,7 +20,7 @@ BMVB output, public callback behavior, or npm release triggers.
 | Module output | CommonJS root/Node output plus isolated browser ESM | Preserve the restored Node.js contract while keeping browser graphs free of Node.js built-ins |
 | Lint | ESLint flat config plus typescript-eslint | Supported configuration model for current ESLint |
 | Tests | Vitest 4; offline suite by default | Current stable test runner without live-network flakiness |
-| CI | Node 22/24 matrix, explicit lint/types/tests, package integrity, production audit, CodeQL, scheduled network smoke | Verify source, dependency risk, static security, and the artifact consumers actually load |
+| CI | Node 22/24 matrix, explicit lint/types/tests, package integrity, production audit, CodeQL, and browser conformance | Verify source, dependency risk, static security, and the artifact consumers actually load |
 | Publishing | Existing behavior preserved for now | Trigger/auth changes require explicit npm release-policy approval |
 
 The initial offline coverage baseline is 64.67% statements, 60.18% branches, 70% functions, and
@@ -38,15 +38,7 @@ pnpm test:package
 pnpm check
 ~~~
 
-Live remote-input tests are opt-in:
-
-~~~sh
-pnpm test:network
-~~~
-
-CI also runs the live remote-image suite weekly and on manual dispatch. Keeping it out of pull
-request verification prevents third-party availability from making normal changes flaky while still
-detecting decoder or fixture drift.
+Remote fetching is application-owned and therefore is not part of the package test matrix.
 
 ## Package Verification
 
@@ -82,8 +74,7 @@ repository level.
   validated together.
 - Decoder dependency changes, because different decoded pixels can change stored hashes.
 - ESM output at the root Node.js entrypoint; browser ESM remains isolated behind explicit subpaths.
-- Strict coverage thresholds until the offline/network test split is complete and a baseline is
-  recorded.
+- Strict coverage thresholds until the decoder cases are expanded and a baseline is recorded.
 - npm trusted publishing and tag/release automation. npm recommends OIDC trusted publishing, but it
   requires configuration in npm and an explicit decision about version ownership and release
   triggers.

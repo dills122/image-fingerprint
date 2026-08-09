@@ -4,8 +4,8 @@ A versioned image-fingerprinting library with a runtime-neutral pixel core, Node
 image adapters, PDQ matching tools, and exact migration support for hashes created by
 [`image-hash@7`](https://github.com/danm/image-hash).
 
-The legacy Node.js adapter supports JPG, PNG and WebP. New Node and browser adapters prepare static
-JPEG, PNG, and WebP images for the same decoded-pixel fingerprint core.
+Node and browser adapters prepare static JPEG, PNG, and WebP images for the same decoded-pixel
+fingerprint core.
 
 > [!NOTE]
 > Existing `image-hash@7` values remain reproducible through the explicit Node-only
@@ -23,14 +23,13 @@ npm install image-fingerprint
 
 | Import | Runtime | Purpose |
 | --- | --- | --- |
-| `image-fingerprint` | Node.js | Historical callback adapter plus the portable pixel API |
+| `image-fingerprint` | Node.js | Portable pixel fingerprint, codec, comparison, and policy APIs |
 | `image-fingerprint/node` | Node.js | Normalized and historical encoded-image policies, paths, file URLs, bytes, and pixel APIs |
 | `image-fingerprint/core` | Node.js or browser | Runtime-neutral pixels, regions, decoder contracts, and fingerprinting |
 | `image-fingerprint/browser` | Browser or worker | Native `Blob`, `File`, `ImageData`, and pixel APIs |
 
 Browser applications should use `image-fingerprint/browser`. Node applications should use the
-explicit Node entrypoint for encoded images; the root callback API remains available for existing
-`image-hash` integrations.
+explicit Node entrypoint for encoded images.
 
 ## Cross-runtime pixel API
 
@@ -280,7 +279,7 @@ const migrated = await fingerprintImage('./existing-image.jpg', {
   decoderMode: 'image-hash-v7',
 });
 
-console.log(migrated.hash); // compatible with imageHash(path, 16, true, callback)
+console.log(migrated.hash); // compatible with image-hash@7 using 16 bits and precise=true
 ```
 
 `decoderMode` is intentionally a named, versioned value rather than a boolean. It is Node-only and
@@ -288,108 +287,10 @@ valid only with `blockhash-v1`; PDQ always uses normalized decoding. Omit the op
 Sharp policy, which applies EXIF orientation and converts to sRGB before hashing. Do not mix values
 from the two policies in an equality-based stored-hash index.
 
-The callback API below automatically uses `image-hash-v7`. It also retains historical URL,
-request-object, extension/MIME matching, bare-string, and callback behavior. New code should prefer
-the Promise API and versioned records.
-
-## Use
-
-```javascript
-const { imageHash } = require('image-fingerprint');
-
-// remote file simple
-imageHash('https://ichef-1.bbci.co.uk/news/660/cpsprodpb/7F76/production/_95703623_mediaitem95703620.jpg', 16, true, (error, data) => {
-  if (error) throw error;
-  console.log(data);
-  // 0773063f063f36070e070a070f378e7f1f000fff0fff020103f00ffb0f810ff0
-});
-
-// remote file with fetch config object
-const config = {
-  url: 'https://ichef-1.bbci.co.uk/news/660/cpsprodpb/7F76/production/_95703623_mediaitem95703620.jpg'
-};
-
-imageHash(config, 16, true, (error, data) => {
-  if (error) throw error;
-  console.log(data);
-  // 0773063f063f36070e070a070f378e7f1f000fff0fff020103f00ffb0f810ff0
-});
-
-//local file
-imageHash('./_95695590_tv039055678.jpg', 16, true, (error, data) => {
-  if (error) throw error;
-  console.log(data);
-  // 0773063f063f36070e070a070f378e7f1f000fff0fff020103f00ffb0f810ff0
-});
-
-//Buffer
-const fBuffer = fs.readFileSync(__dirname + '/example/_95695591_tv039055678.jpeg');
-imageHash({
-  ext: 'image/jpeg',
-  data: fBuffer
-}, 16, true, (error, data) => {
-  if(error) throw error;
-  console.log(data);
-  // 0773063f063f36070e070a070f378e7f1f000fff0fff020103f00ffb0f810ff0
-});
-
-//Buffer, without ext arg
-const fBuffer = fs.readFileSync(__dirname + '/example/_95695591_tv039055678.jpeg');
-imageHash({
-  data: fBuffer
-}, 16, true, (error, data) => {
-  if(error) throw error;
-  console.log(data);
-  // 0773063f063f36070e070a070f378e7f1f000fff0fff020103f00ffb0f810ff0
-});
-```
-
-## API
-
-```typescript
-// name
-imageHash(location, bits, precise, callback);
-
-// types
-imageHash(string|object, int, bool, function);
-```
-
-## SETTINGS
-Image hash will log out warnings if environment variable `VERBOSE` is set to true.
-
-
-### Image-Hash Arguments
-
-| Argument | Type | Description | Mandatory | Example |
-| -------- | ---- | ----------- | --------- | ------- |
-| location | `object` or `string` | A configuration object with a remote `url` (see below for details), `Buffer` object (See input types below for more details), or `String` with a valid url or file location | Yes | see above |
-| bits | `int` | The number of bits in a row. The more bits, the more unique the hash. | Yes | 8 |
-| precise  | `bool` | Whether a precision algorithm is used. `true` Precise but slower, non-overlapping blocks. `false` Quick and crude, non-overlapping blocks. Method 2 is recommended as a good tradeoff between speed and good matches on any image size. The quick ones are only advisable when the image width and height are an even multiple of the number of blocks used. | Yes | `true` |
-| callback | `function` | A function with `error` and `data` arguments - see below |
-
-#### Location Object Types
-
-```typescript
-// Url Request Object
-interface UrlRequestObject extends RequestInit {
-  encoding?: string | null,
-  url: string | null,
-};
-
-// Buffer Object
-interface BufferObject {
-  ext?: string, // mime type of buffered file
-  data: Buffer,
-  name?: string // file name for buffered file
-};
-```
-
-### Callback Arguments
-
-| Argument | Type                     | Description                                                                         |
-| -------- | ------------------------ | ----------------------------------------------------------------------------------- |
-| error    | `Error Object` or `null` | If a run time error is detected this will be an `Error Object`, otherwise `null`    |
-| data     | `string` or `null`       | If there is no run time error, this be will be your hashed result, otherwise `null` |
+Migration mappings are direct: old `bits` becomes `bitsPerSide`, `precise: true` becomes method 2,
+and `precise: false` becomes method 1. Pass a former local path directly or pass the encoded
+`Buffer`/`Uint8Array`. Remote fetching and request policy now belong to the application; pass the
+resulting encoded bytes to `fingerprintImage()`.
 
 ## Development
 
@@ -402,8 +303,7 @@ pnpm check
 ```
 
 `pnpm check` runs linting, strict typechecking, offline tests with coverage floors, a build, and
-isolated CommonJS, ESM, and TypeScript checks against the packed tarball. Live remote-input tests
-are intentionally separate and can be run with `pnpm test:network`.
+isolated CommonJS, ESM, and TypeScript checks against the packed tarball.
 
 Install Playwright's matched engines once, then run the opt-in real-browser and module-worker gate:
 
@@ -428,7 +328,6 @@ algorithms is recorded in
 - Published file-set verification: `pnpm pack:check`
 - Packed Chromium, Firefox, WebKit, and module-worker conformance: `pnpm test:browser`
 - Historical BlockHash differential matrix: `pnpm compat:image-hash-v7`
-- Opt-in live network tests: `pnpm test:network`
 
 ## Releasing
 
@@ -445,8 +344,8 @@ attribution. The Block Mean Value implementation ultimately derives from
 [`blockhash-js`](https://github.com/commonsmachinery/blockhash-js) by Commons Machinery.
 
 This is a new package with its own API and release history. The Node-only `image-hash-v7` decoder
-mode and callback adapter deliberately preserve historical stored-hash compatibility; normalized
-Promise APIs and versioned records are recommended for new applications.
+mode deliberately preserves historical stored-hash compatibility without retaining the old
+callback or remote-request API.
 
 ## License
 

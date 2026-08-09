@@ -12,7 +12,6 @@ import { fingerprintPixels } from '../src/core';
 import {
   decodeImage,
   fingerprintImage,
-  imageHash,
 } from '../src/node';
 import { ImagePreparationError } from '../src/core';
 
@@ -26,24 +25,6 @@ const createAnimatedWebpHeader = (): Uint8Array => Uint8Array.from([
   4, 0, 0,
   5, 0, 0,
 ]);
-
-const legacyImageHash = (
-  path: string,
-  bitsPerSide: number,
-  method: 1 | 2,
-): Promise<string> => new Promise((resolveHash, rejectHash) => {
-  imageHash(path, bitsPerSide, method === 2, (error, hash) => {
-    if (error) {
-      rejectHash(error);
-      return;
-    }
-    if (hash === undefined) {
-      rejectHash(new Error('Legacy imageHash callback did not return a hash'));
-      return;
-    }
-    resolveHash(hash);
-  });
-});
 
 describe('Node image adapter', () => {
   it.each([
@@ -151,7 +132,6 @@ describe('Node image adapter', () => {
     const result = await fingerprintImage(path, options);
 
     expect(result.hash).toBe(expected);
-    await expect(legacyImageHash(path, 16, 2)).resolves.toBe(result.hash);
   });
 
   it('keeps normalized and historical decoder policies observably distinct', async () => {
