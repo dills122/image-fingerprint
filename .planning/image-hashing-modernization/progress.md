@@ -556,3 +556,56 @@ plan is awaiting maintainer review; production implementation remains behind tha
   `31323883320` passes Linux arm64 oracle conformance for both new unfused corpora, Node 22, Node 24,
   and package integrity. Workflow analysis and CodeQL also pass. The portability checkpoint is
   complete and Tasks 7–11 remain awaiting authorization.
+
+## 2026-08-09 — Task 7 Authorization
+
+- The maintainer merged draft PR #6 and authorized the next bounded increment: Task 7 public
+  `pdq-v1` raw-pixel dispatch. Tasks 8–11 and encoded-image adapters remain out of scope.
+- Fast-forwarded local `main` from `d4f88fa` to merged commit `8e373cc` and created
+  `codex/pdq-public-api` from that clean baseline.
+- Task 7 will be test-driven against the approved fingerprint record, stable shared pixel
+  validation, and every committed gray/RGB/RGBA raw vector before production composition is added.
+- Repository inspection confirms no standalone `vitest.config.ts` exists; Vitest configuration is
+  elsewhere/default-driven. This was a harmless inspection miss and did not change the worktree.
+- RED (Task 7): the focused PDQ/core run executes 18 tests. All 11 existing core tests pass, while
+  all seven new public-dispatch behaviors fail because the dispatcher rejects `pdq-v1` before
+  validation or hashing. This proves the new tests exercise the missing production boundary.
+- Initial GREEN behavior passes all 18 focused tests, including every raw corpus answer. The first
+  typecheck then failed because the overload implementation checked an algorithm copied into a
+  plain `string`, so TypeScript could not narrow the options union for the legacy branch. Extract
+  the already-existing BlockHash body into a typed helper and keep runtime unknown-algorithm
+  rejection in the overload dispatcher.
+- Typed GREEN: the dispatcher now has correlated BlockHash and PDQ overloads plus a small typed
+  legacy helper. Focused conformance/core tests remain 18/18 and TypeScript passes under Node
+  22.22.1.
+- The first README patch used an imprecise code-fence context and was rejected atomically; no
+  documentation content changed. Line-number inspection supplied the exact local context for the
+  narrower patch below.
+- Full coverage is GREEN under Node 22.22.1: 68 passed, five pre-existing network tests skipped,
+  with 94.04% statements and 88.88% branches. ESLint also passes. README now documents the shipped
+  raw-pixel PDQ call, result semantics, input formats, and decoder boundary.
+- Built-package GREEN under Node 22.22.1: TypeScript and Vite builds pass; the exact PDQ vector
+  succeeds through root, core, browser CommonJS, and browser ESM exports; and the browser graph
+  remains free of forbidden Node built-ins. The shared browser/core ESM chunk is 29.12 kB before
+  gzip and 7.79 kB gzip after including the frozen PDQ core.
+- FULL GREEN on Node 22.22.1 and Node 24.19.0: lint, strict typecheck, 68 passing tests plus five
+  unchanged network skips, coverage, build, and package smoke all pass with identical results.
+  Generic union and algorithm-specific overload declarations are present in the built package.
+- Entered the required multi-axis quality review after both supported-runtime gates passed.
+- Review found one required type-safety cleanup: the broad union overload preserved generic calls
+  but also admitted mismatched image/algorithm pairs at compile time. Remove it so direct PDQ calls
+  require tagged pixels, and make the conformance fixture helper construct each discriminated union
+  member explicitly so the test is strict-TypeScript-valid rather than only transpileable.
+- Review cleanup GREEN: focused tests are 18/18, ESLint passes, and an explicit strict TypeScript
+  check of the new conformance test passes. The published declarations now expose only the two
+  correlated call overloads.
+- Package dry-run rebuilds successfully and contains only LICENSE, README, `lib/**`, and
+  `package.json`; no conformance fixture, oracle, generator, planning file, or test script is
+  published. `git diff --check` is clean, and runtime-neutral source has no Node import.
+- Multi-axis review verdict: approve Task 7. The production path only composes the accepted stages,
+  shares the frozen validator/normalizer, exposes correlated typed overloads, adds no dependency or
+  decoder behavior, and keeps the legacy callback and BlockHash results unchanged. Exact corpus,
+  entrypoint, malformed-input, package-boundary, and supported-runtime evidence are sufficient.
+- POST-REVIEW FINAL GREEN: complete `pnpm check` passes on Node 22.22.1 and Node 24.19.0 with 68
+  passing tests, five unchanged network skips, 94.04% statement / 88.88% branch coverage, strict
+  types, builds, and exact root/core/browser package smoke. Task 7 is ready for commit and CI.

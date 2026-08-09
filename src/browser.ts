@@ -9,6 +9,8 @@ export type {
   FingerprintOptions,
   FingerprintSchemaVersion,
   ImageFingerprint,
+  PdqFingerprint,
+  PdqFingerprintOptions,
   Gray8PixelSource,
   PixelSource,
   Rgb8PixelSource,

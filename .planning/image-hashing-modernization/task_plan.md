@@ -1,6 +1,6 @@
 # Image Hashing Modernization Plan
 
-Status: Tasks 1–6 and portability hardening complete and CI-verified; Tasks 7–11 awaiting authorization
+Status: Tasks 1–7 and portability hardening complete locally; Tasks 8–11 awaiting authorization
 Task ID: `image-hashing-modernization`
 Updated: 2026-08-09
 
@@ -83,6 +83,7 @@ block pure-core implementation planning.
 - [x] Repair canonical oracle CI on Linux arm64 and compare both raw and stage corpora.
 - [x] Freeze the DCT matrix as exact float32 bits and remove runtime transcendental math.
 - [x] Build a same-source WASM differential and decide the final portable `pdq-v1` arithmetic profile.
+- [x] Task 7: compose and expose the runtime-neutral `pdq-v1` raw-pixel dispatch.
 - [ ] Lock legacy contracts and baseline benchmarks.
 - [ ] Implement the selected raw-pixel PDQ core/adapter.
 - [ ] Add decoder adapters and public versioned API.
@@ -97,9 +98,10 @@ No PDQ production implementation work should begin until the task sequence in
 Tasks 1–6 are complete. The maintainer authorized a portability-hardening checkpoint after the
 first GitHub x64 oracle job exposed architecture-sensitive native answers. That checkpoint repairs
 canonical arm64 CI, freezes numeric constants, and evaluates same-source WASM before Task 7 public
-dispatch. That checkpoint is complete locally with an accepted portable unfused profile. Tasks 7–11
-otherwise require the next implementation decision, and encoded-image adapters remain separately
-gated at Task 12. The updated profile passed its hosted Linux arm64 confirmation.
+dispatch. That checkpoint is complete with an accepted portable unfused profile and hosted Linux
+  arm64 confirmation. The maintainer authorized Task 7 on 2026-08-09, and its reviewed local
+  implementation is complete; Tasks 8–11 still require a separate implementation decision, and
+  encoded-image adapters remain gated at Task 12.
 
 ## Current Decisions
 

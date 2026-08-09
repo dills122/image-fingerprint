@@ -1,6 +1,6 @@
 # PDQ v1 Implementation Plan
 
-Status: Tasks 1–6 complete; Tasks 7–11 awaiting authorization
+Status: Tasks 1–7 complete; Tasks 8–11 awaiting authorization
 Updated: 2026-08-09
 
 ## Overview
@@ -253,21 +253,23 @@ discipline and stage-level tests.
 
 ### Task 7: Integrate `pdq-v1` into fingerprint dispatch
 
+**Status:** Complete locally on 2026-08-09 on `codex/pdq-public-api`.
+
 **Description:** Compose the numeric stages into the approved `PdqFingerprint` and expose it through
 the runtime-neutral public API.
 
 **Acceptance criteria:**
 
-- [ ] `{ algorithm: 'pdq-v1' }` returns schema version 1, canonical hex, bit length 256, and required
+- [x] `{ algorithm: 'pdq-v1' }` returns schema version 1, canonical hex, bit length 256, and required
   integer quality.
-- [ ] Either dimension below 5 and all malformed buffers fail before hashing with stable categories.
-- [ ] Every fixed gray, RGB, and RGBA vector matches the expected hash and quality exactly.
+- [x] Either dimension below 5 and all malformed buffers fail before hashing with stable categories.
+- [x] Every fixed gray, RGB, and RGBA vector matches the expected hash and quality exactly.
 
 **Verification:**
 
-- [ ] `pnpm test -- __tests__/pdq-conformance.test.ts __tests__/core.test.ts`
-- [ ] `pnpm test:coverage`
-- [ ] `pnpm typecheck`
+- [x] `pnpm test -- __tests__/pdq-conformance.test.ts __tests__/core.test.ts`
+- [x] `pnpm test:coverage`
+- [x] `pnpm typecheck`
 
 **Dependencies:** Tasks 4–6.
 
@@ -283,10 +285,10 @@ the runtime-neutral public API.
 
 ## Checkpoint C: Exact Core
 
-- [ ] All fixed vectors have zero hash and quality mismatch against C++.
-- [ ] BlockHash golden results remain unchanged.
-- [ ] The core is synchronous, stateless, decoder-free, and free of Node/DOM imports.
-- [ ] Review numeric choices before expanding the API surface.
+- [x] All fixed vectors have zero hash and quality mismatch against C++.
+- [x] BlockHash golden results remain unchanged.
+- [x] The core is synchronous, stateless, decoder-free, and free of Node/DOM imports.
+- [x] Review numeric choices before expanding the API surface.
 
 ## Phase 3: Add Durable Records and Explicit Comparison
 

@@ -12,6 +12,32 @@ Updated: 2026-08-09
 - Remote tests depend on live BBC URLs and should not be the only compatibility evidence.
 - `file-type@21` implies a modern Node runtime even though `package.json` does not declare engines.
 
+## Task 7 Dispatch Seam
+
+- The merged public dispatcher is currently BlockHash-only: `FingerprintAlgorithm`,
+  `FingerprintOptions`, and `ImageFingerprint` are single-member aliases, while runtime dispatch
+  rejects every non-`blockhash-v1` identifier before pixel validation.
+- Shared pixel normalization already enforces the approved PDQ minimum dimensions and packed
+  `gray8`/`rgb8`/`rgba8` buffer contracts. Task 7 should reuse `normalizePixelSource` so malformed
+  input categories and deterministic RGBA-over-white behavior stay centralized.
+- Root, core, and browser entrypoints already re-export the same synchronous dispatcher. Adding
+  the PDQ option/result to the core union will expose the runtime-neutral API without adding any
+  Node or DOM dependency or changing the legacy callback-based `imageHash` export.
+- The numeric composition order is already fully specified by the internal modules and frozen
+  stage tests: normalize pixels, convert to float32 luminance, downsample to 64 by 64, compute
+  quality from that shared buffer, apply the 64-to-16 DCT, then median-threshold and serialize the
+  256 coefficients. No new numeric choice belongs in Task 7.
+- The committed raw corpus holds 16 exact source vectors across all three accepted formats and is
+  already excluded from the package artifact. A new conformance test can consume it from Node-only
+  test code while keeping production core imports runtime-neutral.
+- The public type seam is best represented by two correlated `fingerprintPixels` overloads:
+  BlockHash accepts its legacy RGBA boundary and parameters, while PDQ requires a tagged
+  `PixelSource` and only `{ algorithm: 'pdq-v1' }`. The exported union types still support generic
+  storage and dispatch consumers without weakening direct-call inference.
+- Existing package smoke tests already exercise the root, core, browser CommonJS/ESM entrypoints
+  and scan browser bundles for Node built-ins, but only with BlockHash. Reusing the minimum 5 by 5
+  gray oracle vector gives Task 7 a compact exact built-artifact check without publishing fixtures.
+
 ## PDQ Reference Hierarchy
 
 There is no independent normative PDQ standard. The strongest practical reference set is:
