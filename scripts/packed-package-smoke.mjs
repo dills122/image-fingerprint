@@ -63,8 +63,14 @@ const input = { format: 'gray8', width: 5, height: 5, data: Uint8Array.from(pixe
 const options = { algorithm: 'pdq-v1' };
 
 assert.equal(nodeEntry.imageHash, root.imageHash);
+assert.equal(typeof nodeEntry.decodeImage, 'function');
+assert.equal(typeof nodeEntry.fingerprintImage, 'function');
 assert.equal(typeof legacyBlockHash, 'function');
 assert.equal(metadata.name, 'image-fingerprint');
+assert.equal(typeof core.extractPixelRegion, 'function');
+assert.equal(typeof browser.decodeImage, 'function');
+assert.equal(typeof browser.fingerprintImage, 'function');
+assert.equal(typeof browser.pixelsFromImageData, 'function');
 assert.deepEqual(root.fingerprintPixels(input, options), expected);
 assert.deepEqual(core.fingerprintPixels(input, options), expected);
 assert.deepEqual(browser.fingerprintPixels(input, options), expected);
@@ -76,9 +82,21 @@ import {
   fingerprintPixels as fingerprintRoot,
   imageHash,
 } from 'image-fingerprint';
-import { imageHash as imageHashFromNode } from 'image-fingerprint/node';
-import { fingerprintPixels as fingerprintCore } from 'image-fingerprint/core';
-import { fingerprintPixels as fingerprintBrowser } from 'image-fingerprint/browser';
+import {
+  decodeImage as decodeImageNode,
+  fingerprintImage as fingerprintImageNode,
+  imageHash as imageHashFromNode,
+} from 'image-fingerprint/node';
+import {
+  extractPixelRegion,
+  fingerprintPixels as fingerprintCore,
+} from 'image-fingerprint/core';
+import {
+  decodeImage as decodeImageBrowser,
+  fingerprintImage as fingerprintImageBrowser,
+  fingerprintPixels as fingerprintBrowser,
+  pixelsFromImageData,
+} from 'image-fingerprint/browser';
 import legacyBlockHashModule from 'image-fingerprint/lib/block-hash';
 import { createRequire } from 'node:module';
 
@@ -90,8 +108,14 @@ const input = { format: 'gray8', width: 5, height: 5, data: Uint8Array.from(pixe
 const options = { algorithm: 'pdq-v1' };
 
 assert.equal(imageHashFromNode, imageHash);
+assert.equal(typeof decodeImageNode, 'function');
+assert.equal(typeof fingerprintImageNode, 'function');
 assert.equal(typeof legacyBlockHashModule.default, 'function');
 assert.equal(metadata.name, 'image-fingerprint');
+assert.equal(typeof extractPixelRegion, 'function');
+assert.equal(typeof decodeImageBrowser, 'function');
+assert.equal(typeof fingerprintImageBrowser, 'function');
+assert.equal(typeof pixelsFromImageData, 'function');
 assert.deepEqual(fingerprintRoot(input, options), expected);
 assert.deepEqual(fingerprintCore(input, options), expected);
 assert.deepEqual(fingerprintBrowser(input, options), expected);
@@ -99,12 +123,23 @@ assert.deepEqual(fingerprintBrowser(input, options), expected);
 
 const typeScriptConsumer = `
 import { fingerprintPixels as fingerprintRoot, imageHash } from 'image-fingerprint';
-import { fingerprintPixels as fingerprintNode } from 'image-fingerprint/node';
 import {
+  decodeImage as decodeImageNode,
+  fingerprintImage as fingerprintImageNode,
+  fingerprintPixels as fingerprintNode,
+} from 'image-fingerprint/node';
+import {
+  extractPixelRegion,
   fingerprintPixels as fingerprintCore,
   serializeFingerprint,
+  type ImageDecoder,
 } from 'image-fingerprint/core';
-import { fingerprintPixels as fingerprintBrowser } from 'image-fingerprint/browser';
+import {
+  decodeImage as decodeImageBrowser,
+  fingerprintImage as fingerprintImageBrowser,
+  fingerprintPixels as fingerprintBrowser,
+  pixelsFromImageData,
+} from 'image-fingerprint/browser';
 import legacyBlockHash from 'image-fingerprint/lib/block-hash';
 
 const input = {
@@ -120,6 +155,15 @@ fingerprintRoot(input, options);
 fingerprintNode(input, options);
 fingerprintBrowser(input, options);
 serializeFingerprint(fingerprint);
+const decoder: ImageDecoder<string | URL | Uint8Array> = {
+  decodeImage: decodeImageNode,
+  fingerprintImage: fingerprintImageNode,
+};
+extractPixelRegion(input, { x: 0, y: 0, width: 5, height: 5 });
+void decodeImageBrowser;
+void fingerprintImageBrowser;
+void pixelsFromImageData;
+void decoder;
 void imageHash;
 void legacyBlockHash;
 `;

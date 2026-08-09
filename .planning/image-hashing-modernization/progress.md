@@ -769,3 +769,19 @@ plan is awaiting maintainer review; production implementation remains behind tha
 - The first workflow-YAML syntax probe used a keyword supported only by newer Ruby/Psych and failed
   before parsing. Repeating the read with the system Ruby 2.6-compatible call parsed the workflow
   successfully; `git diff --check` is also clean.
+
+## 2026-08-09 — Tasks 12–14 Adapter Integration
+
+- Rebasing `codex/image-preparation-adapters` onto the authoritative Tasks 8–11 tip `631ac3f`
+  produced the five expected overlaps: README, root/browser package smokes, `/browser`, and `/core`.
+  Resolutions preserved the codec, comparison, policy, historical exports, packed consumers, and
+  browser harness while adding shared decoder contracts, strict region extraction, and runtime
+  adapters.
+- The Node 22 full gate passes with 15 test files, 195 passing tests, five unchanged network skips,
+  lint, strict types, coverage, build, legacy smoke tests, packed CommonJS/ESM consumers, and
+  TypeScript `node16`, `nodenext`, and `bundler` consumers.
+- The packed browser matrix now exercises `ImageData`, `Blob`, and `File` through both
+  `decodeImage()` plus `fingerprintPixels()` and `fingerprintImage()`. Chromium 151.0.7922.34,
+  Firefox 153.0, and WebKit 26.5 pass on the main thread and in a module worker with no WASM request.
+- Tasks 12–14 are complete. Task 15 retains licensed cross-decoder tolerance, ICC/profile, and
+  categorized variance evidence; no cross-decoder exactness claim was added.

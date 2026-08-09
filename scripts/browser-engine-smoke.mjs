@@ -3,7 +3,10 @@ import { copyFile, mkdir, readFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { extname, join, normalize, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createPackedConsumer } from './packed-consumer-utils.mjs';
+import {
+  createPackedConsumer,
+  repositoryRoot,
+} from './packed-consumer-utils.mjs';
 
 const PLAN = {
   profileVersion: 1,
@@ -11,6 +14,7 @@ const PLAN = {
   browsers: ['chromium', 'firefox', 'webkit'],
   contexts: ['main-thread', 'module-worker'],
   pixelFormats: ['gray8', 'rgb8', 'rgba8'],
+  adapterSources: ['ImageData', 'Blob', 'File'],
 };
 
 const parseArguments = (arguments_) => {
@@ -92,9 +96,15 @@ const runBrowser = async (name, browserType, url) => {
     assert.equal(await page.locator('body').getAttribute('data-worker-status'), 'passed');
     const result = JSON.parse(await page.locator('body').textContent());
     assert.deepEqual(result.mainThread, result.moduleWorker);
-    assert.deepEqual(Object.keys(result.mainThread), PLAN.pixelFormats);
+    assert.deepEqual(Object.keys(result.mainThread.rawPixels), PLAN.pixelFormats);
+    assert.deepEqual(result.mainThread.adapters.blob, result.mainThread.adapters.file);
+    assert.deepEqual(result.mainThread.adapters.blob, result.mainThread.adapters.decodedPixels);
+    assert.deepEqual(result.mainThread.adapters.imageData, result.mainThread.rawPixels.rgba8);
+    assert.ok(result.mainThread.adapters.width >= 5);
+    assert.ok(result.mainThread.adapters.height >= 5);
     assert.deepEqual(errors, []);
     assert.equal(requests.has('/scripts/browser-smoke-worker.mjs'), true);
+    assert.equal(requests.has('/scripts/Example.png'), true);
     assert.equal(
       [...requests].some((requestPath) => requestPath.endsWith('.wasm')),
       false,
@@ -124,6 +134,10 @@ const run = async () => {
     await copyFile(
       join(sourceDirectory, 'browser-smoke-worker.mjs'),
       join(scriptsDirectory, 'browser-smoke-worker.mjs'),
+    );
+    await copyFile(
+      join(repositoryRoot, 'example', 'Example.png'),
+      join(scriptsDirectory, 'Example.png'),
     );
     server = await startServer(packed.consumerRoot);
 

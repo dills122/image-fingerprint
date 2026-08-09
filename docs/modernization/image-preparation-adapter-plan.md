@@ -1,6 +1,6 @@
 # Image Preparation And Runtime Adapter Plan
 
-Status: implementation in progress on `codex/image-preparation-adapters`
+Status: Tasks 12–14 implemented and verified on `codex/image-preparation-adapters`; Task 15 open
 Updated: 2026-08-09
 
 ## Goal
@@ -11,9 +11,9 @@ algorithm core.
 
 ## Dependency Boundary
 
-This work is based directly on Task 7 commit `3b317827`. It does not implement or amend Tasks 8–10.
-It shares core export/type files with those tasks, so integration must be serialized. Publishing the
-browser adapter still depends on Task 11 real-engine, worker, and packed-resolution evidence.
+This work was designed from Task 7 commit `3b317827`, then rebased onto the authoritative Tasks
+8–11 tip `631ac3f`. The shared exports, packed consumers, and browser harness now preserve Tasks
+8–11 while adding the adapter surface. Task 15 decoder-tolerance evidence remains separate.
 
 ```text
 Task 7 pixel fingerprint dispatch
@@ -57,8 +57,8 @@ Task 11 real-browser/worker proof
 - [x] Decode `Blob` and `File` with native bitmap/canvas APIs and release resources.
 - [x] Avoid top-level `window` or `document` access and prefer `OffscreenCanvas`.
 - [x] Unit-test native orchestration, errors, limits, animation rejection, and composition.
-- [ ] Run the contract in Chromium, Firefox, and WebKit on the main thread and in a worker after
-  Task 11 supplies the browser harness and support floors.
+- [x] Run `ImageData`, `Blob`, and `File` through Chromium 151, Firefox 153, and WebKit 26.5 on the
+  main thread and in a module worker using the packed package.
 
 ### A5. Packaging and documentation
 
@@ -69,10 +69,12 @@ Task 11 real-browser/worker proof
 
 ### A6. Release evidence
 
-- [ ] Run Task 11 real-browser/worker and TypeScript-resolution verification.
+- [x] Run Task 11 real-browser/worker and TypeScript-resolution verification after rebasing onto
+  `631ac3f`.
 - [ ] Run Task 15 encoded decoder-tolerance corpus by format, orientation, alpha, ICC, and runtime.
 - [ ] Record p50/p95 decode time, core time, memory, and browser responsiveness under Task 16.
-- [ ] Merge only after shared Task 8–11 export conflicts are reconciled and all gates pass.
+- [x] Reconcile shared Task 8–11 exports, packed consumers, documentation, and browser harness; run
+  the full Node 22 gate and the real-engine adapter matrix.
 
 ## Verification
 
@@ -84,5 +86,6 @@ pnpm test:package
 pnpm check
 ```
 
-Release evidence must include unchanged legacy golden hashes and callback tests, exact raw-pixel PDQ
-fixtures, the browser forbidden-import scan, and the pending real-engine/worker results.
+Release evidence includes unchanged legacy golden hashes and callback tests, exact raw-pixel PDQ
+fixtures, the browser forbidden-import scan, and real-engine/worker adapter results. Task 15 still
+owns cross-decoder tolerance and ICC/profile corpus evidence.

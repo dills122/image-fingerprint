@@ -165,6 +165,18 @@ describe('browser image adapter', () => {
     expect(createBitmap).not.toHaveBeenCalled();
   });
 
+  it('rejects an already-aborted operation with the shared stable category', async () => {
+    const controller = new AbortController();
+    controller.abort(new Error('cancelled'));
+
+    await expect(decodeImage(createImageData(5, 5), {
+      signal: controller.signal,
+    })).rejects.toMatchObject({
+      code: 'aborted',
+      cause: controller.signal.reason,
+    });
+  });
+
   it('rejects malformed ImageData at the portable boundary', () => {
     expect(() => pixelsFromImageData(createImageData(
       5,

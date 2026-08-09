@@ -41,6 +41,7 @@ describe('packed package conformance scripts', () => {
       browsers: ['chromium', 'firefox', 'webkit'],
       contexts: ['main-thread', 'module-worker'],
       pixelFormats: ['gray8', 'rgb8', 'rgba8'],
+      adapterSources: ['ImageData', 'Blob', 'File'],
     });
   });
 
