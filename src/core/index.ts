@@ -1,4 +1,5 @@
 export { fingerprintPixels } from './fingerprint';
+export { parseFingerprint, serializeFingerprint } from './fingerprint-codec';
 export type {
   BlockHashFingerprint,
   BlockHashFingerprintOptions,

@@ -6,7 +6,11 @@ import { URL } from 'url';
 import webp from '@cwasm/webp';
 import blockhash from './block-hash';
 
-export { fingerprintPixels } from './core';
+export {
+  fingerprintPixels,
+  parseFingerprint,
+  serializeFingerprint,
+} from './core';
 export type {
   BlockHashFingerprint,
   BlockHashFingerprintOptions,

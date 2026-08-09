@@ -107,6 +107,26 @@ describes the image's information content; it is not a similarity score. Hamming
 quality policy, and match thresholds remain explicit later API layers rather than hidden behavior
 inside fingerprint generation. PDQ is a copy-similarity signal, not a cryptographic hash.
 
+### Store and restore fingerprints
+
+Use the codec helpers when persisting a fingerprint or reading one from an untrusted store:
+
+```typescript
+import {
+  parseFingerprint,
+  serializeFingerprint,
+} from 'image-fingerprint/core';
+
+const serialized = serializeFingerprint(fingerprint);
+const restored = parseFingerprint(serialized);
+```
+
+`parseFingerprint` accepts one schema-versioned JSON record and rejects missing, unknown, or
+inconsistent fields. Uppercase hexadecimal input is accepted for interoperability, while parsed
+records and `serializeFingerprint` output always use canonical lowercase hexadecimal. Serialization
+also revalidates its input at runtime. BlockHash records must carry the method and `bitsPerSide`
+that agree with their bit length and hexadecimal hash length.
+
 Encoded-image decoding is deliberately outside this core boundary. Browser `File`, `Blob`, URL,
 orientation, alpha, and color-normalization adapters will be added against the same contract.
 

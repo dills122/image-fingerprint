@@ -1,6 +1,6 @@
 # PDQ v1 Implementation Plan
 
-Status: Tasks 1–7 complete; Tasks 8–11 awaiting authorization
+Status: Task 8 implemented and reviewed locally; Tasks 1–7 complete and merged
 Updated: 2026-08-09
 
 ## Overview
@@ -294,19 +294,21 @@ the runtime-neutral public API.
 
 ### Task 8: Implement fingerprint parsing and canonical serialization
 
+**Status:** Implemented and reviewed locally on `codex/fingerprint-codec` on 2026-08-09.
+
 **Description:** Add strict runtime validation and round-trip helpers for schema version 1 records.
 
 **Acceptance criteria:**
 
-- [ ] PDQ parsing validates schema, algorithm, encoding, 64 hex characters, bit length 256, and
+- [x] PDQ parsing validates schema, algorithm, encoding, 64 hex characters, bit length 256, and
   integer quality 0–100.
-- [ ] Uppercase input may be accepted but always serializes to canonical lowercase.
-- [ ] BlockHash record validation also checks `bitsPerSide`, method, and derived bit length.
+- [x] Uppercase input may be accepted but always serializes to canonical lowercase.
+- [x] BlockHash record validation also checks `bitsPerSide`, method, and derived bit length.
 
 **Verification:**
 
-- [ ] Run valid, malformed, unknown-field, and round-trip record tests.
-- [ ] `pnpm typecheck`
+- [x] Run valid, malformed, unknown-field, and round-trip record tests.
+- [x] `pnpm typecheck`
 
 **Dependencies:** Task 7.
 

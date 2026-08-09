@@ -1,4 +1,8 @@
-export { fingerprintPixels } from './core';
+export {
+  fingerprintPixels,
+  parseFingerprint,
+  serializeFingerprint,
+} from './core';
 export type {
   BlockHashFingerprint,
   BlockHashFingerprintOptions,

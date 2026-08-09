@@ -1,9 +1,20 @@
 const assert = require('node:assert/strict');
 const path = require('node:path');
-const { fingerprintPixels, imageHash } = require('image-fingerprint');
+const {
+  fingerprintPixels,
+  imageHash,
+  parseFingerprint,
+  serializeFingerprint,
+} = require('image-fingerprint');
 const legacyBlockHash = require('image-fingerprint/lib/block-hash').default;
-const { fingerprintPixels: fingerprintPixelsFromBrowser } = require('image-fingerprint/browser');
-const { fingerprintPixels: fingerprintPixelsFromCore } = require('image-fingerprint/core');
+const {
+  fingerprintPixels: fingerprintPixelsFromBrowser,
+  parseFingerprint: parseFingerprintFromBrowser,
+} = require('image-fingerprint/browser');
+const {
+  fingerprintPixels: fingerprintPixelsFromCore,
+  serializeFingerprint: serializeFingerprintFromCore,
+} = require('image-fingerprint/core');
 const { imageHash: imageHashFromNode } = require('image-fingerprint/node');
 
 assert.equal(imageHashFromNode, imageHash);
@@ -95,3 +106,9 @@ const expectedPdq = {
 assert.deepEqual(fingerprintPixels(pdqPixels, pdqOptions), expectedPdq);
 assert.deepEqual(fingerprintPixelsFromCore(pdqPixels, pdqOptions), expectedPdq);
 assert.deepEqual(fingerprintPixelsFromBrowser(pdqPixels, pdqOptions), expectedPdq);
+
+const canonicalPdq = JSON.stringify(expectedPdq);
+assert.equal(serializeFingerprint(expectedPdq), canonicalPdq);
+assert.equal(serializeFingerprintFromCore(expectedPdq), canonicalPdq);
+assert.deepEqual(parseFingerprint(canonicalPdq), expectedPdq);
+assert.deepEqual(parseFingerprintFromBrowser(canonicalPdq), expectedPdq);

@@ -1,7 +1,11 @@
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { fingerprintPixels } from 'image-fingerprint/browser';
+import {
+  fingerprintPixels,
+  parseFingerprint,
+  serializeFingerprint,
+} from 'image-fingerprint/browser';
 
 const { imageHash: imageHashFromNode } = await import('image-fingerprint/node');
 assert.equal(typeof imageHashFromNode, 'function');
@@ -56,6 +60,9 @@ assert.deepEqual(pdqFingerprint, {
   bitLength: 256,
   quality: 59,
 });
+
+const serializedFingerprint = serializeFingerprint(pdqFingerprint);
+assert.deepEqual(parseFingerprint(serializedFingerprint), pdqFingerprint);
 
 const libDirectory = fileURLToPath(new URL('../lib/esm', import.meta.url));
 const files = await readdir(libDirectory, { recursive: true });

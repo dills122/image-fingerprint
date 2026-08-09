@@ -609,3 +609,35 @@ plan is awaiting maintainer review; production implementation remains behind tha
 - POST-REVIEW FINAL GREEN: complete `pnpm check` passes on Node 22.22.1 and Node 24.19.0 with 68
   passing tests, five unchanged network skips, 94.04% statement / 88.88% branch coverage, strict
   types, builds, and exact root/core/browser package smoke. Task 7 is ready for commit and CI.
+
+## 2026-08-09 — Task 8 Authorization
+
+- PR #7 merged as `b2edec5` with Node 22, Node 24, package integrity, Linux arm64 oracle,
+  workflow-analysis, and CodeQL checks green.
+- Fast-forwarded local `main` to `b2edec5` and created `codex/fingerprint-codec` from that clean
+  baseline. The maintainer authorized Task 8; Tasks 9–11 and adapters remain out of scope.
+- Task 8 will be test-driven against the approved schema-1 PDQ and BlockHash record contracts,
+  strict malformed-input rejection, canonical lowercase output, and round-trip behavior.
+- RED: added focused codec tests for canonical PDQ and BlockHash round trips, uppercase
+  normalization, malformed fixed fields, invalid derived BlockHash metadata, unknown fields,
+  invalid JSON, and serialization-time revalidation. The valid cases fail because the codec is not
+  implemented (`3 failed, 25 passed`); malformed cases currently throw for that same missing export
+  and must be rechecked after implementation.
+- The first combined implementation patch did not apply because its progress-file context used
+  wording that differed from the existing authorization entry. `apply_patch` rejected the patch
+  atomically, so no production file or export was partially changed.
+- GREEN: the minimal codec implementation and public re-exports make all 28 focused cases pass.
+  TypeScript and ESLint also pass under Node 22.22.1.
+- FULL GREEN before review: `pnpm check` passes on Node 22.22.1 and Node 24.19.0 with 96 tests
+  passing, five unchanged network tests skipped, 94.15% statement / 89.72% branch coverage, strict
+  typecheck, builds, and packed root/core/browser codec smoke checks.
+- Multi-axis review found one small cleanup: remove an unreachable internal algorithm assertion and
+  explicitly cover PDQ quality endpoints, both valid BlockHash methods, non-string JavaScript
+  input, unsafe derived bit lengths, and canonical field reordering.
+- POST-REVIEW FINAL GREEN: `pnpm check` passes on Node 22.22.1 and Node 24.19.0 with 101 tests
+  passing, five unchanged network tests skipped, 94.64% statement / 90.9% branch coverage, strict
+  typecheck, builds, and packed entrypoint smoke tests. `git diff --check` is clean.
+- Review verdict: approve Task 8. The codec reconstructs exact schema-v1 records, validates all
+  untrusted fields before returning or serializing, adds no dependency, stays synchronous and
+  runtime-neutral, preserves the legacy callback/hash contract, and does not absorb Task 9 matching
+  policy or Task 12 decoding concerns.

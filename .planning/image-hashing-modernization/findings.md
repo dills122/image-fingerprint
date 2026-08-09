@@ -622,3 +622,26 @@ primary-source verification before entering contract documentation.
 - Apple Clang 21 with `-ffp-contract=off` regenerates the accepted raw and stage corpora exactly for
   both arm64 and x86_64 targets. Disabling contraction therefore removes the original x64 split on
   the fixed corpus; production TypeScript additionally removes runtime coefficient generation.
+
+## 2026-08-09 Task 8 Codec Contract
+
+- The approved schema-v1 record is an object/JSON envelope. Task 8 will expose
+  `parseFingerprint(serialized: string): ImageFingerprint` and
+  `serializeFingerprint(fingerprint: ImageFingerprint): string` as the smallest explicit
+  round-trip API.
+- Parsing is strict: JSON must decode to exactly one supported record shape, with no unknown
+  top-level fields and no unknown BlockHash parameter fields. Serialization repeats runtime
+  validation so untyped JavaScript callers cannot emit invalid persisted records.
+- Canonical JSON is produced by reconstructing records in schema order before `JSON.stringify`.
+  Accepted uppercase hexadecimal is normalized to lowercase in both parsed records and serialized
+  output.
+- `pdq-v1` requires schema version 1, `hex`, exactly 64 hexadecimal characters, bit length 256,
+  and integer quality from 0 through 100.
+- `blockhash-v1` requires a positive even safe-integer `bitsPerSide`, method 1 or 2, bit length
+  exactly equal to `bitsPerSide ** 2`, and a hexadecimal hash whose length is `bitLength / 4`.
+  This mirrors the legacy nibble serialization and the existing portable dispatcher contract.
+- Codec exports belong to `/core` and are re-exported from the browser and root/Node surfaces; the
+  implementation remains decoder-free and runtime-neutral.
+- Existing packed-package smoke tests already exercise root, `/core`, browser CommonJS, and browser
+  ESM surfaces. Task 8 extends those same checks with codec round trips so declaration/build/export
+  drift is caught without adding a new harness.
