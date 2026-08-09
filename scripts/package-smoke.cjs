@@ -12,13 +12,24 @@ const {
   fingerprintPixels: fingerprintPixelsFromBrowser,
   parseFingerprint: parseFingerprintFromBrowser,
   PDQ_STARTING_POLICY,
+  pixelsFromImageData,
 } = require('image-fingerprint/browser');
 const {
   fingerprintPixels: fingerprintPixelsFromCore,
   serializeFingerprint: serializeFingerprintFromCore,
   evaluatePdqMatch,
 } = require('image-fingerprint/core');
-const { imageHash: imageHashFromNode } = require('image-fingerprint/node');
+const {
+  decodeImage,
+  fingerprintImage,
+  imageHash: imageHashFromNode,
+} = require('image-fingerprint/node');
+
+assert.equal(
+  Object.keys(require.cache).some((id) => id.includes('/sharp/')),
+  false,
+  'Requiring image-fingerprint/node must not eagerly load Sharp',
+);
 
 assert.equal(imageHashFromNode, imageHash);
 assert.equal(typeof legacyBlockHash, 'function');
@@ -132,4 +143,28 @@ assert.deepEqual(evaluatePdqMatch(expectedPdq, expectedPdq, PDQ_STARTING_POLICY)
     bitLength: 256,
     normalizedDistance: 0,
   },
+});
+
+const imageData = {
+  width: 5,
+  height: 5,
+  data: new Uint8ClampedArray(5 * 5 * 4),
+};
+const wrappedPixels = pixelsFromImageData(imageData);
+assert.equal(wrappedPixels.format, 'rgba8');
+assert.equal(wrappedPixels.data, imageData.data);
+
+Promise.all([
+  decodeImage(fixture),
+  fingerprintImage(fixture, pdqOptions),
+]).then(([decoded, encodedFingerprint]) => {
+  assert.equal(decoded.format, 'rgba8');
+  assert.deepEqual(
+    encodedFingerprint,
+    fingerprintPixelsFromCore(decoded, pdqOptions),
+  );
+}).catch((error) => {
+  process.nextTick(() => {
+    throw error;
+  });
 });

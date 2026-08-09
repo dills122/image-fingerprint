@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
+import { gzipSync } from 'node:zlib';
 import {
   fingerprintPixels,
+  pixelsFromImageData,
   parseFingerprint,
   serializeFingerprint,
   compareFingerprints,
@@ -89,11 +91,26 @@ assert.deepEqual(evaluatePdqMatch(
   },
 });
 
+const imageData = {
+  width: 5,
+  height: 5,
+  data: new Uint8ClampedArray(5 * 5 * 4),
+};
+const wrappedPixels = pixelsFromImageData(imageData);
+assert.equal(wrappedPixels.format, 'rgba8');
+assert.equal(wrappedPixels.data, imageData.data);
+
 const libDirectory = fileURLToPath(new URL('../lib/esm', import.meta.url));
 const files = await readdir(libDirectory, { recursive: true });
 const esmFiles = files.filter((file) => file.endsWith('.mjs'));
 
 assert.ok(esmFiles.length > 0, 'Expected the browser build to contain ESM output');
+
+const browserEntry = await readFile(`${libDirectory}/browser.mjs`);
+assert.ok(
+  gzipSync(browserEntry).byteLength <= 10 * 1024,
+  'Browser adapter entry must remain at most 10 KiB gzip',
+);
 
 const forbiddenBrowserImports = [
   '__vite-browser-external',
@@ -105,6 +122,11 @@ const forbiddenBrowserImports = [
   'node:url',
   'node:util',
   'node:zlib',
+  '@cwasm/webp',
+  'file-type',
+  'jpeg-js',
+  'pngjs',
+  'sharp',
 ];
 
 for (const file of esmFiles) {

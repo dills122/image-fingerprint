@@ -143,10 +143,10 @@ It must not be silently applied by `compareFingerprints()`.
 
 | Entry | First PDQ scope |
 | --- | --- |
-| `image-hash` | Existing CommonJS callback API; no behavior change |
-| `image-hash/core` | Pixel types, synchronous fingerprinting, validation, parsing, serialization, and distance |
-| `image-hash/node` | Root compatibility exports plus async encoded byte/path adapters when approved |
-| `image-hash/browser` | Core exports plus `ImageData` and `Blob` adapters usable in main thread and workers |
+| `image-fingerprint` | Existing CommonJS callback API retained temporarily as a parity oracle |
+| `image-fingerprint/core` | Pixel types, synchronous fingerprinting, validation, parsing, serialization, and distance |
+| `image-fingerprint/node` | Root compatibility exports plus async encoded byte/path adapters |
+| `image-fingerprint/browser` | Core exports plus `ImageData`, `Blob`, and `File` adapters usable in main thread and workers |
 
 The accepted package ADR preserves historical `lib` subpaths and `package.json` while adding an
 `exports` map. The release gate must still install the packed artifact and exercise every mapped

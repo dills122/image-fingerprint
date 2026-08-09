@@ -433,7 +433,10 @@ Web Worker using identical raw fixture bytes.
 
 ## Phase 5: Add Encoded-Image Adapters Behind a Separate Gate
 
-Recommended first-release adapter scope, requiring maintainer approval before Task 12:
+The maintainer approved the following first-release adapter scope on 2026-08-09. The isolated
+implementation is tracked in
+[`image-preparation-adapter-plan.md`](./image-preparation-adapter-plan.md); integration and release
+remain dependent on Task 11 package, browser-engine, and worker evidence.
 
 - Node: path and encoded byte inputs for static JPEG, PNG, and WebP; new URL fetching deferred.
 - Browser: `ImageData`, `Blob`, and `File`; no HTML element or URL convenience APIs initially.

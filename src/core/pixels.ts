@@ -89,7 +89,8 @@ const validateRgbaData = (
   }
 };
 
-const validateTaggedPixelSource = (image: PixelSource): void => {
+/** @internal Shared validation for tagged, tightly packed pixel sources. */
+export const validatePixelSource = (image: PixelSource): void => {
   validateDimensions(image, PDQ_MINIMUM_DIMENSION);
 
   switch (image.format) {
@@ -118,7 +119,7 @@ export const validateBlockHashPixelSource = (
 ): void => {
   const format = (image as { readonly format?: unknown }).format;
   if (format === 'rgba8') {
-    validateTaggedPixelSource(image as Rgba8PixelSource);
+    validatePixelSource(image as Rgba8PixelSource);
     return;
   }
   if (format === 'gray8' || format === 'rgb8') {
@@ -134,7 +135,7 @@ export const validateBlockHashPixelSource = (
 export const normalizePixelSource = (
   image: PixelSource,
 ): NormalizedPixelSource => {
-  validateTaggedPixelSource(image);
+  validatePixelSource(image);
 
   if (image.format === 'gray8' || image.format === 'rgb8') {
     return {

@@ -11,9 +11,9 @@
       "default": "./lib/index.js"
     },
     "./node": {
-      "types": "./lib/index.d.ts",
-      "require": "./lib/index.js",
-      "default": "./lib/index.js"
+      "types": "./lib/node.d.ts",
+      "require": "./lib/node.js",
+      "default": "./lib/node.js"
     },
     "./browser": {
       "types": "./lib/browser.d.ts",
@@ -64,6 +64,7 @@
   "files": [
     "lib"
   ],
+  "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dills122/image-hash.git"
@@ -92,7 +93,8 @@
     "@cwasm/webp": "^0.1.5",
     "file-type": "^21.0.0",
     "jpeg-js": "^0.4.0",
-    "pngjs": "^7.0.0"
+    "pngjs": "^7.0.0",
+    "sharp": "0.35.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

@@ -4,9 +4,8 @@ A compatibility wrapper around
 [block-hash](https://github.com/commonsmachinery/blockhash-js), plus a runtime-neutral pixel API for
 building deterministic image fingerprints in Node.js and browsers.
 
-The legacy Node.js adapter supports JPG, PNG and WebP. The browser and core entrypoints accept
-decoded, tightly packed gray, RGB, or RGBA pixels so fingerprint algorithms remain independent of
-runtime I/O and image decoders.
+The legacy Node.js adapter supports JPG, PNG and WebP. New Node and browser adapters prepare static
+JPEG, PNG, and WebP images for the same decoded-pixel fingerprint core.
 
 > [!NOTE]
 > This package has not been released yet. The legacy Node implementation remains temporarily as a
@@ -25,9 +24,9 @@ npm install image-fingerprint
 | Import | Runtime | Purpose |
 | --- | --- | --- |
 | `image-fingerprint` | Node.js | Existing callback API plus the portable pixel API |
-| `image-fingerprint/node` | Node.js | Explicit Node.js entrypoint for paths, URLs, and buffers |
-| `image-fingerprint/core` | Node.js or browser | Runtime-neutral pixel fingerprinting |
-| `image-fingerprint/browser` | Browser | Browser-safe ESM entrypoint; currently accepts decoded pixels |
+| `image-fingerprint/node` | Node.js | Sharp-backed paths, file URLs, encoded bytes, and pixel APIs |
+| `image-fingerprint/core` | Node.js or browser | Runtime-neutral pixels, regions, decoder contracts, and fingerprinting |
+| `image-fingerprint/browser` | Browser or worker | Native `Blob`, `File`, `ImageData`, and pixel APIs |
 
 The root entrypoint remains Node.js-compatible while the legacy implementation is retained as a
 parity oracle. Browser applications should use `image-fingerprint/browser` and Node applications
@@ -160,8 +159,67 @@ Both fingerprints must meet its minimum quality before the result is eligible, w
 distance remains unchanged. Product thresholds should be calibrated against representative data.
 `normalizedDistance` is not a probability or semantic-similarity percentage.
 
-Encoded-image decoding is deliberately outside this core boundary. Browser `File`, `Blob`, URL,
-orientation, alpha, and color-normalization adapters will be added against the same contract.
+## Decode once, fingerprint many
+
+Node and browser adapters implement the same runtime-neutral decoder contract from
+`image-fingerprint/core`. Both return tightly packed, oriented, sRGB, straight-alpha RGBA8 pixels. The Node
+adapter accepts a path, `file:` URL, or encoded `Uint8Array`; the browser adapter accepts `Blob`,
+`File`, or `ImageData`. Remote URL fetching is not part of the new API.
+
+```typescript
+import {
+  decodeImage,
+  extractPixelRegion,
+  fingerprintPixels,
+  type PixelSource,
+} from 'image-fingerprint/browser';
+
+const pixels = await decodeImage(file, {
+  signal,
+  limits: {
+    maxEncodedBytes: 16 * 1024 * 1024,
+    maxPixels: 24_000_000,
+  },
+});
+
+const fingerprint = (source: PixelSource) => fingerprintPixels(source, {
+  algorithm: 'pdq-v1',
+});
+
+const fingerprints = {
+  full: fingerprint(pixels),
+  artwork: fingerprint(extractPixelRegion(pixels, {
+    x: artwork.x,
+    y: artwork.y,
+    width: artwork.width,
+    height: artwork.height,
+  })),
+};
+```
+
+Regions use integer coordinates in the already-oriented image, must be fully in bounds, and are
+copied into a new tightly packed buffer. The helper does not detect, clamp, pad, or resize crops.
+Each region dimension must be at least 5 pixels.
+
+For a single PDQ fingerprint:
+
+```typescript
+import { fingerprintImage } from 'image-fingerprint/node';
+
+const fingerprint = await fingerprintImage('./scan.jpg', {
+  algorithm: 'pdq-v1',
+  signal,
+});
+```
+
+`fingerprintImage()` is initially PDQ-only. The default limits are 32 MiB encoded and 40 million
+decoded pixels. Static JPEG, PNG, and WebP are supported; animated inputs are rejected explicitly.
+Preparation failures are `ImagePreparationError` values with stable `code` fields documented in
+[ADR 0003](./docs/architecture/0003-runtime-image-decoder-contract.md).
+
+Exact determinism begins at the normalized raw-pixel boundary. A Node decoder and a browser engine
+can produce slightly different pixels from the same encoded file, so encoded-image behavior is
+tolerance-tested separately rather than promised byte-for-byte across runtimes.
 
 ## Use
 

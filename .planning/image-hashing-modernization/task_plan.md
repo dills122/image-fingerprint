@@ -49,8 +49,9 @@ decision mechanism.
   color-space assumptions, orientation boundary, validation, and minimum dimensions.
 - [x] Define fingerprint record versioning, canonical serialization, parsing, comparison, and
   explicit match-policy semantics.
-- [x] Select a compatibility-safe package-entry strategy for `image-hash/core`,
-  `image-hash/node`, and `image-hash/browser` without changing the legacy root contract.
+- [x] Select a compatibility-safe package-entry strategy for `image-fingerprint/core`,
+  `image-fingerprint/node`, and `image-fingerprint/browser` while retaining the legacy root as a
+  pre-release parity oracle.
 - [x] Define exact cross-runtime guarantees and encoded-image decoder tolerance for Node,
   browser main-thread, and worker adapters.
 - [x] Freeze the Meta reference/oracle procedure, licensing notices, and fixture-provenance rules.
@@ -114,9 +115,9 @@ dispatch. That checkpoint is complete with an accepted portable unfused profile 
 
 - The legacy `imageHash()` callback API and serialized BMVB results remain compatibility-locked.
 - New APIs are opt-in and separate from `imageHash()`.
-- `image-hash/core` is synchronous, stateless, decoder-free TypeScript shared by Node.js,
+- `image-fingerprint/core` is synchronous, stateless, decoder-free TypeScript shared by Node.js,
   browsers, and Web Workers.
-- `image-hash/node` and `image-hash/browser` provide asynchronous environment-specific loading and
+- `image-fingerprint/node` and `image-fingerprint/browser` provide asynchronous environment-specific loading and
   decoding adapters.
 - Exact conformance is defined at the normalized-pixel boundary; separately decoded encoded images
   are evaluated with documented tolerance rather than promised byte-for-byte equality.
