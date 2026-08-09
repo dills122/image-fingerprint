@@ -6,10 +6,11 @@ pre-release transition.
 
 ## Status
 
-The PDQ core and adapter contracts are approved. Tasks 1–15 are implemented and verified: the
+The PDQ core and adapter contracts are approved. Tasks 1–17 are implemented and verified: the
 cross-runtime core, record/comparison APIs, packed runtime matrix, and Node/browser image adapters
 are complete, and encoded-image decoder tolerance is measured with a documented Firefox Display P3
-exception. Tasks 16–18 retain performance, product calibration, and final release evidence.
+exception. TypeScript/WASM performance and the initial MTG exact-printing calibration are retained
+as evidence. Task 18 remains for final release and migration documentation.
 
 ## Documents
 
@@ -31,6 +32,10 @@ exception. Tasks 16–18 retain performance, product calibration, and final rele
   Node/Sharp, browser-native, packaging, and release-gate work kept separate from Tasks 8–11.
 - [PDQ adapter conformance](./pdq-adapter-conformance.md): encoded-image corpus, reference boundary,
   cross-decoder distance evidence, and the bounded ICC/color-management exception.
+- [PDQ performance results](./pdq-performance-results.md): Node/browser measurements and the
+  evidence-backed decision to retain the portable TypeScript backend.
+- [PDQ MTG matching results](./pdq-matching-results.md): local-only licensed corpus, threshold
+  sweeps, hard cases, and conservative full-image/crop-region usage guidance.
 - [Tooling baseline](./tooling-baseline.md): runtime, package-manager, compiler, lint, test, and CI
   foundation established before algorithm implementation.
 

@@ -54,6 +54,8 @@
     "pdq:performance:wasm:build": "./scripts/build-pdq-performance-wasm.sh",
     "pdq:performance:node": "pnpm build && node benchmarks/pdq/core-performance.mjs --node",
     "pdq:performance:browser": "pnpm build && node benchmarks/pdq/browser-performance.mjs --run",
+    "pdq:matching:prepare": "node benchmarks/pdq/prepare-solring-corpus.mjs",
+    "pdq:matching": "pnpm build && node benchmarks/pdq/matching-quality.mjs",
     "test:package": "pnpm build && node scripts/package-smoke.cjs && node scripts/browser-package-smoke.mjs && node scripts/packed-package-smoke.mjs",
     "test:browser": "node scripts/browser-engine-smoke.mjs",
     "test:watch": "vitest",
