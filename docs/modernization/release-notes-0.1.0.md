@@ -3,6 +3,10 @@
 Status: release-candidate documentation
 Updated: 2026-08-09
 
+The first registry version is `0.1.0-rc.0`, published manually under the `next` tag solely to create
+the npm package. After npm trusted publishing is configured, `0.1.0-rc.1` validates the OIDC release
+path. The stable target remains `0.1.0`.
+
 ## Summary
 
 `image-fingerprint` 0.1.0 introduces versioned BlockHash and PDQ records, a deterministic
@@ -90,8 +94,9 @@ candidate or ranking signal after consistent normalization, not the sole exact-p
 - Raw-pixel PDQ matches the pinned Meta C++ reference exactly. Captured Node, browser, performance,
   and MTG matching evidence is linked from `docs/modernization/README.md`.
 
-The final `image-fingerprint@0.1.0` dry-run tarball contains 108 files, is 84.6 kB compressed and
-356.4 kB unpacked, and has npm dry-run shasum `fa1bdb897e564f24bfecf94b5554d1b351be26cc`.
+The current `image-fingerprint@0.1.0-rc.0` dry-run tarball contains 108 files, is 84.8 kB compressed
+and 357.0 kB unpacked, and has npm dry-run shasum
+`eb96731b0433427fd9ecaec4b29263ed2b8a9583`.
 Packed CommonJS and ESM runtimes, TypeScript Node16/NodeNext/Bundler resolution, and browser
 main-thread/module-worker consumers all passed.
 
@@ -113,6 +118,18 @@ are not required for an ordinary package install.
 
 The offline differential command compares the generated candidate digest with the frozen SHA-256
 of all 720 results captured from the published `image-hash@7.0.1` tarball.
+
+## Release Checklist
+
+- [ ] Merge `0.1.0-rc.0` after all required CI and CodeQL checks pass.
+- [ ] Publish `0.1.0-rc.0` manually under `next` using the
+  [trusted-publishing bootstrap](./trusted-publishing-bootstrap.md).
+- [ ] Configure npm trusted publishing for `dills122/image-fingerprint` and `release.yml`.
+- [ ] Publish `0.1.0-rc.1` under `next` through GitHub Actions and verify npm provenance.
+- [ ] Set npm publishing access to require 2FA and disallow tokens after OIDC succeeds.
+- [ ] Merge the `0.1.0` version bump after the complete required-check matrix passes.
+- [ ] Confirm the signed `v0.1.0` tag points at the current `main` commit.
+- [ ] Confirm the stable workflow publishes `latest` and creates the GitHub release.
 
 ## Attribution and Provenance
 

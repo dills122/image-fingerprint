@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ master, main, "codex/**" ]
+    branches: [ main, "codex/**" ]
   pull_request:
-    branches: [ master, main ]
+    branches: [ main ]
   schedule:
     - cron: '17 10 * * 2'
   workflow_dispatch:
@@ -85,8 +85,8 @@ jobs:
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
 
-    - name: Audit production dependencies
-      run: pnpm audit --prod --audit-level=high
+    - name: Audit locked dependencies
+      run: pnpm audit --audit-level=high
 
     - name: Verify the built CommonJS package
       run: pnpm test:package

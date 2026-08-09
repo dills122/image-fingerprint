@@ -21,7 +21,7 @@ BMVB output, or npm release triggers.
 | Lint | ESLint flat config plus typescript-eslint | Supported configuration model for current ESLint |
 | Tests | Vitest 4; offline suite by default | Current stable test runner without live-network flakiness |
 | CI | Node 22/24 matrix, explicit lint/types/tests, package integrity, production audit, CodeQL, and browser conformance | Verify source, dependency risk, static security, and the artifact consumers actually load |
-| Publishing | Existing behavior preserved for now | Trigger/auth changes require explicit npm release-policy approval |
+| Publishing | Version tags publish through npm trusted publishing and create GitHub releases | Use short-lived OIDC credentials, automatic provenance, and explicit version ownership |
 
 The initial offline coverage baseline is 64.67% statements, 60.18% branches, 70% functions, and
 64.53% lines. The first regression floors are deliberately lower—60%, 55%, 65%, and 60%
@@ -51,7 +51,8 @@ the source test matrix.
 
 ## Dependency And Security Automation
 
-- Package verification audits production dependencies and fails on high or critical advisories.
+- Package verification audits the complete locked dependency graph and fails on high or critical
+  advisories, including tooling that executes inside CI.
 - CodeQL scans JavaScript, TypeScript, and GitHub Actions workflows on `main`, pull requests, and a
   weekly schedule using the `security-extended` query suite.
 - Dependabot checks pnpm and GitHub Actions weekly. Minor and patch npm updates are grouped by
@@ -75,9 +76,8 @@ repository level.
 - Decoder dependency changes, because different decoded pixels can change stored hashes.
 - ESM output at the root Node.js entrypoint; browser ESM remains isolated behind explicit subpaths.
 - Strict coverage thresholds until the decoder cases are expanded and a baseline is recorded.
-- npm trusted publishing and tag/release automation. npm recommends OIDC trusted publishing, but it
-  requires configuration in npm and an explicit decision about version ownership and release
-  triggers.
+- Validate npm trusted publishing with `0.1.0-rc.1` after the one-time manual `0.1.0-rc.0` package
+  bootstrap, then disallow token publishing.
 
 ## Official References
 

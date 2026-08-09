@@ -331,10 +331,16 @@ algorithms is recorded in
 
 ## Releasing
 
-The repository must have an `NPM_TOKEN` Actions secret with permission to publish
-`image-fingerprint`. Update the version in `package.json`, merge that change, then push a matching
-tag such as `v0.1.0`. The release workflow verifies the tag and package, publishes to npm with
-provenance, and creates a GitHub release containing the npm tarball.
+The permanent release path uses npm trusted publishing from `.github/workflows/release.yml`; no npm
+write token is stored in GitHub. Update the version in `package.json`, merge that change, then push a
+matching tag such as `v0.1.0`. The release workflow verifies the tag and package, publishes through
+OIDC with automatic provenance, and creates a GitHub release containing the npm tarball.
+
+Because npm requires an existing package before its trusted publisher can be configured, follow the
+[one-time trusted-publishing bootstrap](./docs/modernization/trusted-publishing-bootstrap.md) for
+`0.1.0-rc.0`. Complete the
+[0.1.0 release checklist](./docs/modernization/release-notes-0.1.0.md#release-checklist) before
+creating the stable tag.
 
 ## Origins and attribution
 
