@@ -1,6 +1,6 @@
 # AGENTS
 
-AI coding guidance for `image-hash`.
+AI coding guidance for `image-fingerprint`.
 
 ## Purpose
 

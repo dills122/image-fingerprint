@@ -2,7 +2,7 @@
 
 The local PDQ oracle build incorporates source from Meta's ThreatExchange repository at commit
 `baefb4ed67b6cdc1d4c82dbaef858d50866ac424` under the following license. No Meta source or compiled
-binary is included in the `image-hash` npm package.
+binary is included in the `image-fingerprint` npm package.
 
 ## ThreatExchange BSD License
 

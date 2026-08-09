@@ -1,10 +1,10 @@
 const assert = require('node:assert/strict');
 const path = require('node:path');
-const { fingerprintPixels, imageHash } = require('image-hash');
-const legacyBlockHash = require('image-hash/lib/block-hash').default;
-const { fingerprintPixels: fingerprintPixelsFromBrowser } = require('image-hash/browser');
-const { fingerprintPixels: fingerprintPixelsFromCore } = require('image-hash/core');
-const { imageHash: imageHashFromNode } = require('image-hash/node');
+const { fingerprintPixels, imageHash } = require('image-fingerprint');
+const legacyBlockHash = require('image-fingerprint/lib/block-hash').default;
+const { fingerprintPixels: fingerprintPixelsFromBrowser } = require('image-fingerprint/browser');
+const { fingerprintPixels: fingerprintPixelsFromCore } = require('image-fingerprint/core');
+const { imageHash: imageHashFromNode } = require('image-fingerprint/node');
 
 assert.equal(imageHashFromNode, imageHash);
 assert.equal(typeof legacyBlockHash, 'function');

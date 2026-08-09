@@ -13,7 +13,7 @@ export default defineConfig([
     ],
   },
   {
-    name: 'image-hash/typescript',
+    name: 'image-fingerprint/typescript',
     files: [
       'src/**/*.ts',
       '__tests__/**/*.ts',
