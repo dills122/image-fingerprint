@@ -6,20 +6,38 @@ import { validatePixelSource } from '../core/pixels';
 import {
   assertEncodedByteLimit,
   assertPixelLimit,
-  createFingerprintImage,
   raceWithAbort,
   resolveDecodeLimits,
   throwIfAborted,
   translatePreparationError,
 } from '../adapters/contract';
 import { inspectEncodedImage } from '../adapters/inspect-encoded-image';
+import { fingerprintPixels } from '../core/fingerprint';
+import { decodeImageHashV7 } from './image-hash-v7-decoder';
 import type {
   AbortSignalLike,
   DecodeImageFunction,
-  ImageDecoder,
+  DecodeImageOptions,
 } from '../core/image-decoder';
+import type {
+  BlockHashFingerprint,
+  BlockHashFingerprintOptions,
+  ImageFingerprint,
+  PdqFingerprint,
+  PdqFingerprintOptions,
+} from '../core/types';
 
 export type NodeImageSource = string | URL | Uint8Array;
+export type NodeImageDecoderMode = 'normalized' | 'image-hash-v7';
+
+export type NodeFingerprintImageOptions = DecodeImageOptions & (
+  | (PdqFingerprintOptions & {
+    readonly decoderMode?: 'normalized';
+  })
+  | (BlockHashFingerprintOptions & {
+    readonly decoderMode?: NodeImageDecoderMode;
+  })
+);
 
 const UINT8_ARRAY_TAG = '[object Uint8Array]';
 
@@ -96,9 +114,9 @@ const readEncodedSource = async (
   }
 };
 
-const decodeNodeImage: DecodeImageFunction<NodeImageSource> = async (
-  source,
-  options,
+const prepareEncodedSource = async (
+  source: NodeImageSource,
+  options?: DecodeImageOptions,
 ) => {
   const limits = resolveDecodeLimits(options);
   throwIfAborted(options?.signal);
@@ -115,6 +133,14 @@ const decodeNodeImage: DecodeImageFunction<NodeImageSource> = async (
       'Animated images are not supported',
     );
   }
+  return { encoded, limits, metadata };
+};
+
+const decodeNodeImage: DecodeImageFunction<NodeImageSource> = async (
+  source,
+  options,
+) => {
+  const { encoded, limits } = await prepareEncodedSource(source, options);
 
   let sharp: typeof import('sharp');
   try {
@@ -179,9 +205,80 @@ const decodeNodeImage: DecodeImageFunction<NodeImageSource> = async (
   }
 };
 
+const fingerprintNodeImage = async (
+  source: NodeImageSource,
+  options: NodeFingerprintImageOptions,
+): Promise<ImageFingerprint> => {
+  if (
+    options.decoderMode !== undefined
+    && options.decoderMode !== 'normalized'
+    && options.decoderMode !== 'image-hash-v7'
+  ) {
+    throw new ImagePreparationError(
+      'invalid-input',
+      'decoderMode must be normalized or image-hash-v7',
+    );
+  }
+  if (options.decoderMode !== 'image-hash-v7') {
+    const pixels = await decodeNodeImage(source, options);
+    throwIfAborted(options.signal);
+    if (options.algorithm === 'blockhash-v1') {
+      return fingerprintPixels(pixels, {
+        algorithm: options.algorithm,
+        bitsPerSide: options.bitsPerSide,
+        method: options.method,
+      });
+    }
+    return fingerprintPixels(pixels, { algorithm: options.algorithm });
+  }
+  if (options.algorithm !== 'blockhash-v1') {
+    throw new ImagePreparationError(
+      'invalid-input',
+      'image-hash-v7 decoder mode is only supported with blockhash-v1',
+    );
+  }
+
+  const { encoded, metadata } = await prepareEncodedSource(source, options);
+  let pixels;
+  try {
+    pixels = decodeImageHashV7(encoded, metadata.format);
+  } catch (error) {
+    throw translatePreparationError(
+      error,
+      'decode-failed',
+      'The image-hash-v7 compatibility decoder could not decode the image',
+    );
+  }
+  throwIfAborted(options.signal);
+  return fingerprintPixels(pixels, {
+    algorithm: options.algorithm,
+    bitsPerSide: options.bitsPerSide,
+    method: options.method,
+  });
+};
+
 const nodeImageDecoder = {
   decodeImage: decodeNodeImage,
-  fingerprintImage: createFingerprintImage(decodeNodeImage),
-} satisfies ImageDecoder<NodeImageSource>;
+  fingerprintImage: fingerprintNodeImage,
+};
 
-export const { decodeImage, fingerprintImage } = nodeImageDecoder;
+export const { decodeImage } = nodeImageDecoder;
+
+export function fingerprintImage(
+  source: NodeImageSource,
+  options: BlockHashFingerprintOptions & DecodeImageOptions & {
+    readonly decoderMode?: NodeImageDecoderMode;
+  },
+): Promise<BlockHashFingerprint>;
+export function fingerprintImage(
+  source: NodeImageSource,
+  options: PdqFingerprintOptions & DecodeImageOptions & {
+    readonly decoderMode?: 'normalized';
+  },
+): Promise<PdqFingerprint>;
+export function fingerprintImage(
+  source: NodeImageSource,
+  options: NodeFingerprintImageOptions,
+): Promise<ImageFingerprint> {
+  return nodeImageDecoder.fingerprintImage(source, options);
+}

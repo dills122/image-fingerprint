@@ -1,10 +1,9 @@
 import fs from 'fs';
 import { Buffer } from 'buffer';
-import jpeg from 'jpeg-js';
-import { PNG } from 'pngjs';
 import { URL } from 'url';
-import webp from '@cwasm/webp';
 import blockhash from './block-hash';
+import { decodeImageHashV7 } from './node/image-hash-v7-decoder';
+import type { EncodedImageFormat } from './adapters/inspect-encoded-image';
 
 export {
   fingerprintPixels,
@@ -58,44 +57,15 @@ const toError = (error: unknown): Error => (
   error instanceof Error ? error : new Error(String(error))
 );
 
-const processPNG = (
+const processImage = (
   data: Buffer,
+  format: EncodedImageFormat,
   bits: number,
   method: boolean,
   cb: ImageHashCallback,
 ): void => {
   try {
-    const png = PNG.sync.read(data);
-    const res = blockhash(png, bits, method ? 2 : 1);
-    cb(null, res);
-  } catch (error) {
-    cb(toError(error));
-  }
-};
-
-const processJPG = (
-  data: Buffer,
-  bits: number,
-  method: boolean,
-  cb: ImageHashCallback,
-): void => {
-  try {
-    const decoded = jpeg.decode(data);
-    const res = blockhash(decoded, bits, method ? 2 : 1);
-    cb(null, res);
-  } catch (error) {
-    cb(toError(error));
-  }
-};
-
-const processWebp = (
-  data: Buffer,
-  bits: number,
-  method: boolean,
-  cb: ImageHashCallback,
-): void => {
-  try {
-    const decoded = webp.decode(data);
+    const decoded = decodeImageHashV7(data, format);
     const res = blockhash(decoded, bits, method ? 2 : 1);
     cb(null, res);
   } catch (error) {
@@ -183,22 +153,22 @@ export const imageHash = (
           .pop()
           ?.toLowerCase();
         if (ext === 'png' && type.mime === 'image/png') {
-          processPNG(data, bits, method, cb);
+          processImage(data, 'png', bits, method, cb);
         } else if ((ext === 'jpg' || ext === 'jpeg') && type.mime === 'image/jpeg') {
-          processJPG(data, bits, method, cb);
+          processImage(data, 'jpeg', bits, method, cb);
         } else if (ext === 'webp' && type.mime === 'image/webp') {
-          processWebp(data, bits, method, cb);
+          processImage(data, 'webp', bits, method, cb);
         } else {
           cb(new Error(`Unrecognized file extension, mime type or mismatch, ext: ${ext} / mime: ${type.mime}`));
         }
       } else {
         if (process.env.verbose) console.warn('No file extension found, attempting mime typing.');
         if (type.mime === 'image/png') {
-          processPNG(data, bits, method, cb);
+          processImage(data, 'png', bits, method, cb);
         } else if (type.mime === 'image/jpeg') {
-          processJPG(data, bits, method, cb);
+          processImage(data, 'jpeg', bits, method, cb);
         } else if (type.mime === 'image/webp') {
-          processWebp(data, bits, method, cb);
+          processImage(data, 'webp', bits, method, cb);
         } else {
           cb(new Error(`Unrecognized mime type: ${type.mime}`));
         }

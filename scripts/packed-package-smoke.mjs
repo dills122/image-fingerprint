@@ -61,6 +61,9 @@ const pixels = ${JSON.stringify(grayValues)};
 const expected = ${JSON.stringify(expectedFingerprint)};
 const input = { format: 'gray8', width: 5, height: 5, data: Uint8Array.from(pixels) };
 const options = { algorithm: 'pdq-v1' };
+const fixture = ${JSON.stringify(join(repositoryRoot, 'example', '_95695590_tv039055678.jpg'))};
+const blockHashOptions = { algorithm: 'blockhash-v1', bitsPerSide: 16, method: 2 };
+const historicalHash = '0773063f063f36070e070a070f378e7f1f000fff0fff020103f00ffb0f810ff0';
 
 assert.equal(nodeEntry.imageHash, root.imageHash);
 assert.equal(typeof nodeEntry.decodeImage, 'function');
@@ -74,6 +77,18 @@ assert.equal(typeof browser.pixelsFromImageData, 'function');
 assert.deepEqual(root.fingerprintPixels(input, options), expected);
 assert.deepEqual(core.fingerprintPixels(input, options), expected);
 assert.deepEqual(browser.fingerprintPixels(input, options), expected);
+Promise.all([
+  nodeEntry.fingerprintImage(fixture, blockHashOptions),
+  nodeEntry.fingerprintImage(fixture, {
+    ...blockHashOptions,
+    decoderMode: 'image-hash-v7',
+  }),
+]).then(([normalized, historical]) => {
+  assert.equal(normalized.algorithm, 'blockhash-v1');
+  assert.equal(historical.hash, historicalHash);
+}).catch((error) => {
+  process.nextTick(() => { throw error; });
+});
 `;
 
 const esModuleConsumer = `
@@ -106,6 +121,9 @@ const pixels = ${JSON.stringify(grayValues)};
 const expected = ${JSON.stringify(expectedFingerprint)};
 const input = { format: 'gray8', width: 5, height: 5, data: Uint8Array.from(pixels) };
 const options = { algorithm: 'pdq-v1' };
+const fixture = ${JSON.stringify(join(repositoryRoot, 'example', '_95695590_tv039055678.jpg'))};
+const blockHashOptions = { algorithm: 'blockhash-v1', bitsPerSide: 16, method: 2 };
+const historicalHash = '0773063f063f36070e070a070f378e7f1f000fff0fff020103f00ffb0f810ff0';
 
 assert.equal(imageHashFromNode, imageHash);
 assert.equal(typeof decodeImageNode, 'function');
@@ -119,6 +137,15 @@ assert.equal(typeof pixelsFromImageData, 'function');
 assert.deepEqual(fingerprintRoot(input, options), expected);
 assert.deepEqual(fingerprintCore(input, options), expected);
 assert.deepEqual(fingerprintBrowser(input, options), expected);
+const [normalized, historical] = await Promise.all([
+  fingerprintImageNode(fixture, blockHashOptions),
+  fingerprintImageNode(fixture, {
+    ...blockHashOptions,
+    decoderMode: 'image-hash-v7',
+  }),
+]);
+assert.equal(normalized.algorithm, 'blockhash-v1');
+assert.equal(historical.hash, historicalHash);
 `;
 
 const typeScriptConsumer = `
@@ -134,6 +161,7 @@ import {
   serializeFingerprint,
   type ImageDecoder,
 } from 'image-fingerprint/core';
+import type { NodeImageDecoderMode } from 'image-fingerprint/node';
 import {
   decodeImage as decodeImageBrowser,
   fingerprintImage as fingerprintImageBrowser,
@@ -150,11 +178,19 @@ const input = {
 };
 const options = { algorithm: 'pdq-v1' as const };
 const fingerprint = fingerprintCore(input, options);
+const decoderMode: NodeImageDecoderMode = 'image-hash-v7';
+const blockHashOptions = {
+  algorithm: 'blockhash-v1' as const,
+  bitsPerSide: 16,
+  method: 2 as const,
+  decoderMode,
+};
 
 fingerprintRoot(input, options);
 fingerprintNode(input, options);
 fingerprintBrowser(input, options);
 serializeFingerprint(fingerprint);
+fingerprintImageNode(new Uint8Array(), blockHashOptions);
 const decoder: ImageDecoder<string | URL | Uint8Array> = {
   decodeImage: decodeImageNode,
   fingerprintImage: fingerprintImageNode,

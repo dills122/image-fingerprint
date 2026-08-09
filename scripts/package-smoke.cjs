@@ -60,6 +60,11 @@ const options = {
   bitsPerSide: 2,
   method: 2,
 };
+const encodedBlockHashOptions = {
+  algorithm: 'blockhash-v1',
+  bitsPerSide: 16,
+  method: 2,
+};
 
 assert.deepEqual(fingerprintPixels(pixels, options), {
   schemaVersion: 1,
@@ -157,12 +162,27 @@ assert.equal(wrappedPixels.data, imageData.data);
 Promise.all([
   decodeImage(fixture),
   fingerprintImage(fixture, pdqOptions),
-]).then(([decoded, encodedFingerprint]) => {
+  fingerprintImage(fixture, encodedBlockHashOptions),
+  fingerprintImage(fixture, {
+    ...encodedBlockHashOptions,
+    decoderMode: 'image-hash-v7',
+  }),
+]).then(([
+  decoded,
+  encodedFingerprint,
+  normalizedBlockHash,
+  historicalBlockHash,
+]) => {
   assert.equal(decoded.format, 'rgba8');
   assert.deepEqual(
     encodedFingerprint,
     fingerprintPixelsFromCore(decoded, pdqOptions),
   );
+  assert.deepEqual(
+    normalizedBlockHash,
+    fingerprintPixelsFromCore(decoded, encodedBlockHashOptions),
+  );
+  assert.equal(historicalBlockHash.hash, expected);
 }).catch((error) => {
   process.nextTick(() => {
     throw error;

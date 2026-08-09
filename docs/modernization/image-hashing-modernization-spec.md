@@ -64,7 +64,8 @@ distance at most 31 and quality at least 50, but comparison never applies it sil
 - TypeScript package with a shared Node.js and modern-browser algorithm core.
 - pnpm for reproducible development installs.
 - Vitest for unit, integration, fixture, and differential tests.
-- Existing format-specific decoders remain in place for the legacy path during evaluation.
+- Historical `image-hash@7` format-specific decoders remain exactly pinned behind the explicit
+  Node-only `image-hash-v7` BlockHash policy. Normalized encoded-image calls use Sharp 0.35.3.
 - The production target is an auditable TypeScript port. Conformance and performance tests compare
   it with a Meta-derived WASM build and credible existing packages without making them runtime
   dependencies.
@@ -117,6 +118,8 @@ only when the approved implementation needs the boundary.
   do not read files, fetch URLs, or infer MIME types.
 - Decoder normalization owns EXIF orientation, grayscale expansion, and color-layout conversion.
   Each algorithm profile owns the alpha/background rule that affects its fingerprint identity.
+- Encoded-image reproducibility additionally requires a named decoder/normalization policy. The
+  fingerprint record identifies algorithm behavior but does not identify the decoder pipeline.
 - Algorithm/version identifiers are explicit in every new result and persisted example.
 - No floating threshold defaults are hidden in comparison code; defaults are named and overridable.
 - Hash serialization is lowercase, fixed-width, and independently testable.
@@ -211,6 +214,8 @@ only when the approved implementation needs the boundary.
 8. Meta C++ at commit `baefb4ed67b6cdc1d4c82dbaef858d50866ac424` is the normative
    source; the accepted unfused float32 profile makes its answers portable across native Clang,
    same-source WASM, and TypeScript. TypeScript is the production target and WASM is a comparator.
+9. New Node encoded-image calls default to normalized Sharp decoding. Existing BlockHash stores can
+   select `decoderMode: 'image-hash-v7'`; the callback API selects it automatically.
 
 ## 11. Remaining Release Decisions
 
@@ -219,8 +224,6 @@ only when the approved implementation needs the boundary.
 - Must remote URL/request-object inputs remain first-class for new algorithms?
 - What real downstream positive/negative image pairs can be used, with suitable licenses, to
   calibrate thresholds?
-- Which Node decoder formats and animation/orientation/color-profile policies belong in the first
-  encoded-image adapter release?
 - What absolute performance and memory budgets trigger consideration of an optional WASM backend?
 
 ## 12. Approval Record

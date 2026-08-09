@@ -12,16 +12,16 @@ importers:
   .:
     dependencies:
       '@cwasm/webp':
-        specifier: ^0.1.5
+        specifier: 0.1.5
         version: 0.1.5
       file-type:
-        specifier: ^21.3.2
+        specifier: 21.3.4
         version: 21.3.4(supports-color@7.2.0)
       jpeg-js:
-        specifier: ^0.4.0
+        specifier: 0.4.4
         version: 0.4.4
       pngjs:
-        specifier: ^7.0.0
+        specifier: 7.0.0
         version: 7.0.0
       sharp:
         specifier: 0.35.3

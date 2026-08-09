@@ -651,18 +651,29 @@ threshold guidance, verification evidence, and rollback path.
 
 **Acceptance criteria:**
 
-- [ ] README examples cover core raw pixels, full encoded images, caller-supplied crops, parsing,
+- [x] README examples cover core raw pixels, full encoded images, caller-supplied crops, parsing,
   comparison, and explicit policy without changing legacy examples.
-- [ ] Release notes state decoder/runtime support, record persistence guidance, quality semantics,
+- [x] Release notes state decoder/runtime support, record persistence guidance, quality semantics,
   known crop/rotation/adversarial limits, and fixture/code attribution.
-- [ ] Packed 7.0.1 and release-candidate compatibility results plus all accepted conformance and
+- [x] Packed 7.0.1 and release-candidate compatibility results plus all accepted conformance and
   benchmark commands are recorded.
+
+**Release-candidate evidence:**
+
+- The published `image-hash@7.0.1` tarball with npm shasum
+  `6d5a77d1cb7aa24c93d7d7729d6787d0023c85e9` matched `decoderMode: 'image-hash-v7'` in all 720
+  generated JPEG/PNG/WebP comparisons across methods 1/2 and 4/8/16 bits per side.
+- The 0.1.0 packed candidate passes CommonJS and ESM runtime consumers plus TypeScript Node16,
+  NodeNext, and Bundler resolution. Its browser ESM graph passes Chromium 151.0.7922.34, Firefox
+  153.0, and WebKit 26.5 on the main thread and in a module worker.
+- Exact commands, external prerequisites, decoder/runtime support, rollback, persistence guidance,
+  limitations, and attribution are recorded in `release-notes-0.1.0.md`.
 
 **Verification:**
 
-- [ ] `pnpm check`
-- [ ] `npm pack --dry-run`
-- [ ] Fresh CommonJS, ESM, browser, and worker examples run against the packed tarball.
+- [x] `pnpm check`
+- [x] `npm pack --dry-run`
+- [x] Fresh CommonJS, ESM, browser, and worker examples run against the packed tarball.
 
 **Dependencies:** Tasks 15–17.
 
@@ -677,11 +688,11 @@ threshold guidance, verification evidence, and rollback path.
 
 ## Checkpoint G: Complete
 
-- [ ] Legacy BMVB hashes and callback behavior are unchanged.
-- [ ] Exact raw-pixel PDQ hash and quality conformance is proven across Node, browsers, and workers.
-- [ ] Encoded-image variance, performance, memory, and matching behavior are published from evidence.
-- [ ] Every fixture and ported source element has provenance and required attribution.
-- [ ] The package is ready for review as an opt-in PDQ release; no default-algorithm change is bundled.
+- [x] Legacy BMVB hashes and callback behavior are unchanged.
+- [x] Exact raw-pixel PDQ hash and quality conformance is proven across Node, browsers, and workers.
+- [x] Encoded-image variance, performance, memory, and matching behavior are published from evidence.
+- [x] Every fixture and ported source element has provenance and required attribution.
+- [x] The package is ready for review as an opt-in PDQ release; no default-algorithm change is bundled.
 
 ## Parallelization Opportunities
 

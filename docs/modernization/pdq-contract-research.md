@@ -143,9 +143,9 @@ It must not be silently applied by `compareFingerprints()`.
 
 | Entry | First PDQ scope |
 | --- | --- |
-| `image-fingerprint` | Existing CommonJS callback API retained temporarily as a parity oracle |
+| `image-fingerprint` | Existing CommonJS callback API retained as the `image-hash-v7` compatibility adapter |
 | `image-fingerprint/core` | Pixel types, synchronous fingerprinting, validation, parsing, serialization, and distance |
-| `image-fingerprint/node` | Root compatibility exports plus async encoded byte/path adapters |
+| `image-fingerprint/node` | Root compatibility exports plus normalized and historical encoded byte/path fingerprint adapters |
 | `image-fingerprint/browser` | Core exports plus `ImageData`, `Blob`, and `File` adapters usable in main thread and workers |
 
 The accepted package ADR preserves historical `lib` subpaths and `package.json` while adding an

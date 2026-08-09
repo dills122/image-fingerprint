@@ -28,8 +28,11 @@ path and its format-specific decoders remain compatibility-locked.
   packed sRGB RGBA8 with straight alpha. Neither adapter resizes before fingerprinting.
 - The default limits are 32 MiB of encoded input and 40 million decoded pixels. Callers can lower or
   explicitly raise either positive-integer limit.
-- `fingerprintImage()` is initially PDQ-only and must equal `fingerprintPixels(await
-  decodeImage(source), { algorithm: 'pdq-v1' })`.
+- `fingerprintImage()` accepts PDQ or BlockHash. With normalized decoding it must equal
+  `fingerprintPixels(await decodeImage(source), fingerprintOptions)`.
+- Node BlockHash additionally accepts `decoderMode: 'image-hash-v7'`. This named compatibility
+  policy uses the historical format-specific decoders without orientation or ICC normalization.
+  It is unavailable for PDQ and in browser entrypoints.
 - New remote URL fetching is not included. It remains available only through the legacy callback
   API until separately specified.
 
@@ -54,11 +57,17 @@ an underlying browser or native operation can finish after rejection. The synchr
 cannot be interrupted after it starts, so browser applications requiring responsive cancellation
 should run decode-and-hash work in a worker.
 
+The `image-hash-v7` codecs are also synchronous. Compatibility-mode cancellation is checked before
+the read/decode boundary and immediately after decoding, but cannot interrupt a decoder already on
+the JavaScript stack.
+
 ## Package And Size Boundary
 
 The package declares `sideEffects: false`. `/core` and `/browser` have separate ESM graphs that must
 contain no Sharp, Node.js built-ins, or legacy decoder dependencies. `/node` is a separate CommonJS-
-compatible entrypoint and loads Sharp dynamically.
+compatible entrypoint, loads Sharp dynamically, and contains the historical decoder dependencies
+needed by `image-hash-v7`. Deterministic compatibility pins `jpeg-js@0.4.4`, `pngjs@7.0.0`,
+`@cwasm/webp@0.1.5`, and callback MIME detection through `file-type@21.3.4`.
 
 The accepted integrated build produces a 13.23 kB uncompressed and 3.71 kB gzip browser entry,
 guarded by a 10 KiB gzip package-smoke budget.
@@ -73,6 +82,11 @@ Exact fingerprint determinism begins at the returned normalized RGBA bytes. Node
 decoders are separately configured and tolerance-tested; the same encoded file is not promised to
 produce byte-identical pixels across runtimes or browser engines.
 
+Historical BlockHash is the deliberate exception at the encoded-image boundary: the Node-only
+`image-hash-v7` policy freezes the old decoder family and preprocessing behavior so existing stored
+hashes can be reproduced. Decoder mode must be retained as application metadata when encoded bytes
+must regenerate the same fingerprint.
+
 Applications must not require fingerprint string equality across independently decoded runtimes.
 They should either normalize and hash through one controlled, versioned decoder pipeline or use a
 Hamming-distance policy calibrated on representative inputs. The measured cross-decoder evidence,
@@ -86,7 +100,7 @@ also changes.
 ## Compatibility
 
 - The root `imageHash()` API, callback timing, inputs, decoder behavior, errors, and serialized
-  BlockHash output are unchanged.
+  BlockHash output are unchanged; it selects `image-hash-v7` behavior automatically.
 - `/core` contains no path, URL, Node.js, Sharp, `Blob`, `File`, or `ImageData` type dependency.
 - Browser and Node adapters implement the same generic core interface and run the same behavioral
   contract assertions with runtime-specific fixtures.

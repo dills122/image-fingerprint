@@ -56,6 +56,7 @@
     "pdq:performance:browser": "pnpm build && node benchmarks/pdq/browser-performance.mjs --run",
     "pdq:matching:prepare": "node benchmarks/pdq/prepare-solring-corpus.mjs",
     "pdq:matching": "pnpm build && node benchmarks/pdq/matching-quality.mjs",
+    "compat:image-hash-v7": "pnpm build && node scripts/image-hash-v7-differential.mjs",
     "test:package": "pnpm build && node scripts/package-smoke.cjs && node scripts/browser-package-smoke.mjs && node scripts/packed-package-smoke.mjs",
     "test:browser": "node scripts/browser-engine-smoke.mjs",
     "test:watch": "vitest",
@@ -97,10 +98,10 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@cwasm/webp": "^0.1.5",
-    "file-type": "^21.3.2",
-    "jpeg-js": "^0.4.0",
-    "pngjs": "^7.0.0",
+    "@cwasm/webp": "0.1.5",
+    "file-type": "21.3.4",
+    "jpeg-js": "0.4.4",
+    "pngjs": "7.0.0",
     "sharp": "0.35.3"
   },
   "devDependencies": {
