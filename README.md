@@ -106,6 +106,11 @@ describes the image's information content; it is not a similarity score. Hamming
 quality policy, and match thresholds remain explicit later API layers rather than hidden behavior
 inside fingerprint generation. PDQ is a copy-similarity signal, not a cryptographic hash.
 
+The production PDQ backend is portable TypeScript. A pinned same-source WASM comparator remained
+exact but did not meet the predeclared cross-runtime performance rule, so no WASM asset is shipped
+or selected at runtime. See the [performance report](./docs/modernization/pdq-performance-results.md)
+for Node/browser latency, worker responsiveness, memory, artifact size, and limitations.
+
 ### Store and restore fingerprints
 
 Use the codec helpers when persisting a fingerprint or reading one from an untrusted store:

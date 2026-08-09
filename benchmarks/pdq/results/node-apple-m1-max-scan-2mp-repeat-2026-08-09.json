@@ -1,0 +1,436 @@
+{
+  "profileVersion": 1,
+  "mode": "measure",
+  "runtime": "node",
+  "plan": {
+    "profileVersion": 1,
+    "mode": "plan",
+    "algorithm": "pdq-v1",
+    "pattern": "pdq-performance-rgb-v1",
+    "warmupCount": 5,
+    "sampleCount": 30,
+    "percentileMethod": "nearest-rank",
+    "implementations": [
+      "typescript",
+      "same-source-wasm"
+    ],
+    "adapterFixture": {
+      "format": "png",
+      "compressionLevel": 3,
+      "generatedOutsideTiming": true,
+      "maximumEncodedBytes": 33554432
+    },
+    "runtimes": {
+      "node": true,
+      "browsers": [
+        "chromium",
+        "firefox",
+        "webkit"
+      ]
+    },
+    "workloads": [
+      {
+        "id": "region-0.25mp",
+        "width": 500,
+        "height": 500,
+        "pixels": 250000,
+        "budgets": {
+          "coreP95Ms": 20,
+          "adapterTotalP95Ms": 100,
+          "browserMainThreadMaxMs": 50
+        },
+        "rgbSha256": "bc15c26f3d18e556197bab6e239f01bf956b9a145de8a31dc45b3c961076e4a4"
+      },
+      {
+        "id": "scan-2mp",
+        "width": 1600,
+        "height": 1250,
+        "pixels": 2000000,
+        "budgets": {
+          "coreP95Ms": 100,
+          "adapterTotalP95Ms": 400,
+          "browserWorkerHeartbeatP95Ms": 50
+        },
+        "rgbSha256": "997509fe419bda35ddc1733a8c05579f61add6e855c68cf354c5c92381d4b633"
+      },
+      {
+        "id": "high-resolution-12mp",
+        "width": 4000,
+        "height": 3000,
+        "pixels": 12000000,
+        "budgets": {
+          "coreP95Ms": 500,
+          "adapterTotalP95Ms": 2000,
+          "browserWorkerHeartbeatP95Ms": 50,
+          "nodeCoreIncrementalPeakRssMiB": 384,
+          "nodeAdapterIncrementalPeakRssMiB": 512
+        },
+        "rgbSha256": "eefa435db71bf9f7b82be897c58ae49850797efcd9bd1d5bd8ffb027fbcd2254"
+      }
+    ],
+    "wasmBudgets": {
+      "rawBytes": 307200,
+      "gzipBytes": 153600,
+      "warmInitializationP95Ms": 50
+    },
+    "wasmDecision": {
+      "minimumSpeedupAt2And12Mp": 2,
+      "requireExactConformance": true,
+      "advanceWhenTypeScriptMissesBudget": true,
+      "automaticRuntimeSelection": false
+    },
+    "sourceSha256": "e9483b984a88c90ef32d9f50c5f2151d9b9889cdaf1fdc2eee6b2efc54b71fc3"
+  },
+  "environment": {
+    "os": "darwin 25.5.0",
+    "architecture": "arm64",
+    "cpu": "Apple M1 Max",
+    "logicalCpuCount": 10,
+    "totalMemoryMiB": 65536,
+    "node": "v22.22.1",
+    "v8": "12.4.254.21-node.35",
+    "sharp": "0.35.3",
+    "libvips": "8.18.3"
+  },
+  "sameSourceWasm": {
+    "file": "pdq-performance.wasm",
+    "rawBytes": 24094,
+    "gzipBytes": 11643,
+    "artifactBudget": {
+      "maximumRawBytes": 307200,
+      "maximumGzipBytes": 153600,
+      "passed": true
+    },
+    "compileMs": 0.210166,
+    "warmInitialization": {
+      "samplesMs": [
+        0.262417,
+        0.286875,
+        0.269209,
+        0.45175,
+        0.274583,
+        0.338333,
+        0.282916,
+        0.338584,
+        0.279083,
+        0.907625,
+        0.073125,
+        0.218375,
+        0.227417,
+        0.422625,
+        0.339833,
+        0.260583,
+        0.266334,
+        0.328708,
+        0.330584,
+        0.376417,
+        0.352625,
+        0.269333,
+        0.318041,
+        0.788083,
+        0.072333,
+        0.197,
+        0.181,
+        0.37725,
+        0.252375,
+        0.268083
+      ],
+      "summary": {
+        "count": 30,
+        "minMs": 0.072333,
+        "p50Ms": 0.279083,
+        "p95Ms": 0.788083,
+        "maxMs": 0.907625,
+        "meanMs": 0.320383
+      },
+      "budget": {
+        "maximumP95Ms": 50,
+        "passed": true
+      }
+    },
+    "exactConformance": true,
+    "decision": {
+      "advance": null,
+      "reason": "requires-all-workloads"
+    }
+  },
+  "results": [
+    {
+      "id": "scan-2mp",
+      "width": 1600,
+      "height": 1250,
+      "pixels": 2000000,
+      "encodedPngBytes": 6001114,
+      "fingerprint": {
+        "schemaVersion": 1,
+        "algorithm": "pdq-v1",
+        "encoding": "hex",
+        "hash": "40065fd3aa825cfb6b025e002006f451f7f2f7fbeaae6453eaa274936fa6f202",
+        "bitLength": 256,
+        "quality": 100
+      },
+      "memory": {
+        "core": {
+          "mode": "core",
+          "workload": "scan-2mp",
+          "hash": "40065fd3aa825cfb6b025e002006f451f7f2f7fbeaae6453eaa274936fa6f202",
+          "quality": 100,
+          "baselineRssMiB": 52.766,
+          "baselineMaxRssMiB": 52.766,
+          "finalRssMiB": 70.281,
+          "maxRssMiB": 70.281,
+          "incrementalPeakRssMiB": 17.516
+        },
+        "adapter": {
+          "mode": "adapter",
+          "workload": "scan-2mp",
+          "hash": "40065fd3aa825cfb6b025e002006f451f7f2f7fbeaae6453eaa274936fa6f202",
+          "quality": 100,
+          "baselineRssMiB": 57.938,
+          "baselineMaxRssMiB": 57.938,
+          "finalRssMiB": 123.141,
+          "maxRssMiB": 123.141,
+          "incrementalPeakRssMiB": 65.203
+        }
+      },
+      "typescriptCore": {
+        "samplesMs": [
+          52.676958,
+          52.520833,
+          53.176916,
+          52.553583,
+          52.622667,
+          52.604792,
+          52.432208,
+          51.823958,
+          52.01625,
+          51.9995,
+          52.221959,
+          51.903291,
+          52.180458,
+          51.765083,
+          52.191917,
+          51.766541,
+          52.194417,
+          53.280542,
+          52.956083,
+          52.216708,
+          53.222208,
+          52.67075,
+          52.541,
+          52.158083,
+          52.845625,
+          52.372375,
+          52.24125,
+          52.352417,
+          52.81575,
+          52.450291
+        ],
+        "summary": {
+          "count": 30,
+          "minMs": 51.765083,
+          "p50Ms": 52.372375,
+          "p95Ms": 53.222208,
+          "maxMs": 53.280542,
+          "meanMs": 52.425814,
+          "p50MegapixelsPerSecond": 38.188071,
+          "p95MegapixelsPerSecond": 37.578298
+        },
+        "budget": {
+          "maximumP95Ms": 100,
+          "passed": true
+        }
+      },
+      "sameSourceWasmCore": {
+        "samplesMs": [
+          18.268667,
+          18.48325,
+          18.126042,
+          18.054458,
+          19.332959,
+          18.029542,
+          18.138875,
+          18.536541,
+          18.215333,
+          18.995167,
+          18.585125,
+          18.769,
+          18.264083,
+          18.288875,
+          17.844917,
+          18.695875,
+          18.247959,
+          18.520167,
+          18.710875,
+          17.990542,
+          17.98725,
+          17.742041,
+          18.200333,
+          17.972083,
+          19.021583,
+          18.336334,
+          18.645459,
+          18.620333,
+          17.497333,
+          18.80275
+        ],
+        "summary": {
+          "count": 30,
+          "minMs": 17.497333,
+          "p50Ms": 18.268667,
+          "p95Ms": 19.021583,
+          "maxMs": 19.332959,
+          "meanMs": 18.364125,
+          "p50MegapixelsPerSecond": 109.477063,
+          "p95MegapixelsPerSecond": 105.14372
+        },
+        "budget": {
+          "maximumP95Ms": 100,
+          "passed": true
+        },
+        "linearMemoryBytes": 27262976,
+        "exactConformance": true
+      },
+      "adapterDecode": {
+        "samplesMs": [
+          14.561709,
+          14.141458,
+          16.924083,
+          14.274875,
+          14.139834,
+          16.6315,
+          14.129042,
+          14.22325,
+          13.920917,
+          13.902542,
+          14.26225,
+          14.293083,
+          14.242417,
+          14.665833,
+          14.502791,
+          14.483125,
+          13.975625,
+          13.986541,
+          14.200125,
+          14.060583,
+          13.698084,
+          13.744042,
+          13.816792,
+          14.14125,
+          14.215458,
+          14.256959,
+          13.83525,
+          14.071542,
+          13.921625,
+          13.811875
+        ],
+        "summary": {
+          "count": 30,
+          "minMs": 13.698084,
+          "p50Ms": 14.14125,
+          "p95Ms": 16.6315,
+          "maxMs": 16.924083,
+          "meanMs": 14.301149,
+          "p50MegapixelsPerSecond": 141.430213,
+          "p95MegapixelsPerSecond": 120.253735
+        }
+      },
+      "adapterHashDecoded": {
+        "samplesMs": [
+          66.71,
+          66.374958,
+          66.586542,
+          66.234125,
+          66.071958,
+          66.052458,
+          66.652167,
+          66.395209,
+          66.052417,
+          66.065916,
+          66.322041,
+          67.041833,
+          66.224875,
+          65.589292,
+          65.815083,
+          65.32475,
+          65.624209,
+          65.64775,
+          65.668708,
+          65.678458,
+          65.40175,
+          66.339792,
+          67.163917,
+          65.9785,
+          66.213583,
+          66.000958,
+          66.510792,
+          66.289292,
+          66.364,
+          66.188667
+        ],
+        "summary": {
+          "count": 30,
+          "minMs": 65.32475,
+          "p50Ms": 66.188667,
+          "p95Ms": 67.041833,
+          "maxMs": 67.163917,
+          "meanMs": 66.1528,
+          "p50MegapixelsPerSecond": 30.216653,
+          "p95MegapixelsPerSecond": 29.83212
+        },
+        "budget": {
+          "maximumP95Ms": 100,
+          "passed": true
+        }
+      },
+      "adapterTotal": {
+        "samplesMs": [
+          79.518125,
+          81.08275,
+          79.717834,
+          80.385959,
+          80.529209,
+          80.625667,
+          81.65475,
+          80.479625,
+          80.5435,
+          80.866417,
+          81.125875,
+          80.87025,
+          80.466541,
+          80.855083,
+          80.404667,
+          80.775208,
+          79.817333,
+          81.074125,
+          81.225,
+          80.855667,
+          80.515875,
+          80.532125,
+          80.6825,
+          80.717333,
+          80.45,
+          80.397208,
+          80.840292,
+          81.164333,
+          80.750542,
+          80.782042
+        ],
+        "summary": {
+          "count": 30,
+          "minMs": 79.518125,
+          "p50Ms": 80.6825,
+          "p95Ms": 81.225,
+          "maxMs": 81.65475,
+          "meanMs": 80.656861,
+          "p50MegapixelsPerSecond": 24.788523,
+          "p95MegapixelsPerSecond": 24.622961
+        },
+        "budget": {
+          "maximumP95Ms": 400,
+          "passed": true
+        }
+      }
+    }
+  ]
+}
