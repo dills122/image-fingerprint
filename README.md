@@ -5,8 +5,8 @@ A compatibility wrapper around
 building deterministic image fingerprints in Node.js and browsers.
 
 The legacy Node.js adapter supports JPG, PNG and WebP. The browser and core entrypoints accept
-decoded, tightly packed RGBA pixels so fingerprint algorithms remain independent of runtime I/O and
-image decoders.
+decoded, tightly packed gray, RGB, or RGBA pixels so fingerprint algorithms remain independent of
+runtime I/O and image decoders.
 
 ## Install
 
@@ -55,16 +55,39 @@ console.log(fingerprint);
 // }
 ```
 
+PDQ is opt-in through the same synchronous pixel API:
+
+```typescript
+import { fingerprintPixels } from 'image-hash/core';
+
+const fingerprint = fingerprintPixels({
+  format: 'rgba8',
+  width,
+  height,
+  data: rgbaBytes,
+}, {
+  algorithm: 'pdq-v1',
+});
+
+// {
+//   schemaVersion: 1,
+//   algorithm: 'pdq-v1',
+//   encoding: 'hex',
+//   hash: '...', // 64 lowercase hexadecimal characters
+//   bitLength: 256,
+//   quality: 0, // integer from 0 through 100
+// }
+```
+
 Existing BlockHash callers may continue to pass an untagged positive integer `width` and `height`
 with exactly `width * height * 4` row-major RGBA8 values in a `Uint8Array` or
 `Uint8ClampedArray`. They may also add `format: 'rgba8'`; tagged input requires each dimension to be
 at least 5 pixels and produces the identical BlockHash result from the same bytes.
 
-The portable core also defines the tagged `PixelSource` contract for the forthcoming `pdq-v1` API:
-tightly packed `gray8` and `rgb8` use `Uint8Array`, while straight-alpha `rgba8` accepts
-`Uint8Array` or `Uint8ClampedArray`. Tagged dimensions are positive safe integers of at least 5
-pixels and packed lengths must be exact. `gray8` and `rgb8` are not BlockHash inputs; they become
-callable when the separate PDQ dispatcher is implemented.
+For `pdq-v1`, the tagged `PixelSource` contract accepts tightly packed `gray8` and `rgb8` in a
+`Uint8Array`, while straight-alpha `rgba8` accepts `Uint8Array` or `Uint8ClampedArray`. Dimensions
+are positive safe integers of at least 5 pixels and packed lengths must be exact. `gray8` and
+`rgb8` remain invalid BlockHash inputs.
 
 For `blockhash-v1`, `bitsPerSide` must be a positive even integer no larger than either image
 dimension, and `method` must be `1` (quick) or `2` (precise). The returned `bitLength` is
@@ -73,9 +96,13 @@ normalization composites over white with the versioned deterministic rule docume
 [modernization contract](./docs/modernization/pdq-contract-research.md); encoded-image adapters
 remain responsible for producing correctly oriented original-size pixels.
 
+`pdq-v1` returns a 256-bit perceptual hash and required integer quality from 0 through 100. Quality
+describes the image's information content; it is not a similarity score. Hamming comparison,
+quality policy, and match thresholds remain explicit later API layers rather than hidden behavior
+inside fingerprint generation. PDQ is a copy-similarity signal, not a cryptographic hash.
+
 Encoded-image decoding is deliberately outside this core boundary. Browser `File`, `Blob`, URL,
-orientation, alpha, and color-normalization adapters will be added against the same
-contract; this separation also gives the planned `pdq-v1` implementation one portable input.
+orientation, alpha, and color-normalization adapters will be added against the same contract.
 
 ## Use
 

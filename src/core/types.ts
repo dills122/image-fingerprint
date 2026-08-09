@@ -1,4 +1,4 @@
-export type FingerprintAlgorithm = 'blockhash-v1';
+export type FingerprintAlgorithm = 'blockhash-v1' | 'pdq-v1';
 export type FingerprintEncoding = 'hex';
 export type FingerprintSchemaVersion = 1;
 
@@ -61,5 +61,20 @@ export interface BlockHashFingerprintOptions extends BlockHashParameters {
   readonly algorithm: 'blockhash-v1';
 }
 
-export type ImageFingerprint = BlockHashFingerprint;
-export type FingerprintOptions = BlockHashFingerprintOptions;
+export interface PdqFingerprint {
+  readonly schemaVersion: FingerprintSchemaVersion;
+  readonly algorithm: 'pdq-v1';
+  readonly encoding: FingerprintEncoding;
+  readonly hash: string;
+  readonly bitLength: 256;
+  readonly quality: number;
+}
+
+export interface PdqFingerprintOptions {
+  readonly algorithm: 'pdq-v1';
+}
+
+export type ImageFingerprint = BlockHashFingerprint | PdqFingerprint;
+export type FingerprintOptions = (
+  BlockHashFingerprintOptions | PdqFingerprintOptions
+);

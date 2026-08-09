@@ -157,11 +157,11 @@ describe('fingerprintPixels', () => {
 
   it('rejects algorithms that are not registered', () => {
     expect(() => fingerprintPixels(createQuadrantImage(), {
-      algorithm: 'pdq-v1',
+      algorithm: 'future-v1',
       bitsPerSide: 2,
       method: 2,
     } as unknown as Parameters<typeof fingerprintPixels>[1])).toThrow(
-      'Unsupported fingerprint algorithm: pdq-v1',
+      'Unsupported fingerprint algorithm: future-v1',
     );
   });
 

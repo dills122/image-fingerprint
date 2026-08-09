@@ -33,6 +33,30 @@ assert.deepEqual(fingerprint, {
   },
 });
 
+const pdqFingerprint = fingerprintPixels({
+  format: 'gray8',
+  width: 5,
+  height: 5,
+  data: Uint8Array.from([
+    0, 41, 82, 123, 164,
+    13, 54, 95, 136, 177,
+    26, 67, 108, 149, 190,
+    39, 80, 121, 162, 203,
+    52, 93, 134, 175, 216,
+  ]),
+}, {
+  algorithm: 'pdq-v1',
+});
+
+assert.deepEqual(pdqFingerprint, {
+  schemaVersion: 1,
+  algorithm: 'pdq-v1',
+  encoding: 'hex',
+  hash: 'd4b5348d96a593a4695a93b493a4d9263b0ec67196a59b2693a4348d6cdb6ccb',
+  bitLength: 256,
+  quality: 59,
+});
+
 const libDirectory = fileURLToPath(new URL('../lib/esm', import.meta.url));
 const files = await readdir(libDirectory, { recursive: true });
 const esmFiles = files.filter((file) => file.endsWith('.mjs'));

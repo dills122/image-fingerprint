@@ -69,3 +69,29 @@ assert.deepEqual(fingerprintPixelsFromBrowser(pixels, options), {
     method: 2,
   },
 });
+
+const pdqPixels = {
+  format: 'gray8',
+  width: 5,
+  height: 5,
+  data: Uint8Array.from([
+    0, 41, 82, 123, 164,
+    13, 54, 95, 136, 177,
+    26, 67, 108, 149, 190,
+    39, 80, 121, 162, 203,
+    52, 93, 134, 175, 216,
+  ]),
+};
+const pdqOptions = { algorithm: 'pdq-v1' };
+const expectedPdq = {
+  schemaVersion: 1,
+  algorithm: 'pdq-v1',
+  encoding: 'hex',
+  hash: 'd4b5348d96a593a4695a93b493a4d9263b0ec67196a59b2693a4348d6cdb6ccb',
+  bitLength: 256,
+  quality: 59,
+};
+
+assert.deepEqual(fingerprintPixels(pdqPixels, pdqOptions), expectedPdq);
+assert.deepEqual(fingerprintPixelsFromCore(pdqPixels, pdqOptions), expectedPdq);
+assert.deepEqual(fingerprintPixelsFromBrowser(pdqPixels, pdqOptions), expectedPdq);

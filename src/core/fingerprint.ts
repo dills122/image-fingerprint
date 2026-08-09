@@ -1,9 +1,15 @@
 import blockHash from '../block-hash';
+import { fingerprintPdq } from './algorithms/pdq';
 import { validateBlockHashPixelSource } from './pixels';
 import type {
+  BlockHashFingerprint,
+  BlockHashFingerprintOptions,
   BlockHashPixelSource,
   FingerprintOptions,
   ImageFingerprint,
+  PdqFingerprint,
+  PdqFingerprintOptions,
+  PixelSource,
 } from './types';
 
 const validatePositiveInteger = (value: number, name: string): void => {
@@ -12,15 +18,10 @@ const validatePositiveInteger = (value: number, name: string): void => {
   }
 };
 
-export const fingerprintPixels = (
+const fingerprintBlockHash = (
   image: BlockHashPixelSource,
-  options: FingerprintOptions,
-): ImageFingerprint => {
-  const algorithm: string = options.algorithm;
-  if (algorithm !== 'blockhash-v1') {
-    throw new RangeError(`Unsupported fingerprint algorithm: ${algorithm}`);
-  }
-
+  options: BlockHashFingerprintOptions,
+): BlockHashFingerprint => {
   validateBlockHashPixelSource(image);
   validatePositiveInteger(options.bitsPerSide, 'bitsPerSide');
 
@@ -51,3 +52,28 @@ export const fingerprintPixels = (
     },
   };
 };
+
+export function fingerprintPixels(
+  image: BlockHashPixelSource,
+  options: BlockHashFingerprintOptions,
+): BlockHashFingerprint;
+export function fingerprintPixels(
+  image: PixelSource,
+  options: PdqFingerprintOptions,
+): PdqFingerprint;
+export function fingerprintPixels(
+  image: BlockHashPixelSource | PixelSource,
+  options: FingerprintOptions,
+): ImageFingerprint {
+  const algorithm = (options as { readonly algorithm: string }).algorithm;
+  if (algorithm === 'pdq-v1') {
+    return fingerprintPdq(image as PixelSource);
+  }
+  if (algorithm === 'blockhash-v1') {
+    return fingerprintBlockHash(
+      image as BlockHashPixelSource,
+      options as BlockHashFingerprintOptions,
+    );
+  }
+  throw new RangeError(`Unsupported fingerprint algorithm: ${algorithm}`);
+}
