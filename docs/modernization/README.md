@@ -39,6 +39,13 @@ complete.
   sweeps, hard cases, and conservative full-image/crop-region usage guidance.
 - [0.1.0 release notes](./release-notes-0.1.0.md): runtime/decoder matrix, historical compatibility
   mode, persistence and rollback guidance, limits, evidence, and attribution.
+- [Crop-aware fingerprint ADR](../architecture/0004-crop-block-multi-fingerprints.md): proposed but
+  blocked architecture for bounded region-fingerprint collections.
+- [Crop-Block experiment results](./crop-block-v1-results.md): procedural, Met, child-hash,
+  mixed-domain, distinctive-region, and keypoint/geometric-consensus evidence; none passed the
+  public-profile gates.
+- [Crop-Local results](./crop-local-v0-results.md): pinned AKAZE/SIFT oracles, internal pure-TypeScript
+  prototype, locked source-disjoint evidence, exact browser/worker fixture, and retrieval pilot.
 - [Tooling baseline](./tooling-baseline.md): runtime, package-manager, compiler, lint, test, and CI
   foundation established before algorithm implementation.
 

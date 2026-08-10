@@ -1,0 +1,47 @@
+{
+  "profileVersion": 1,
+  "study": "crop-local-v0-exact-output-generation-optimization",
+  "environment": {
+    "node": "v22.22.1",
+    "platform": "darwin",
+    "architecture": "arm64"
+  },
+  "corpus": {
+    "sourceImages": 100,
+    "generatedFingerprints": 400
+  },
+  "before": {
+    "generationMilliseconds": {
+      "p50": 189.7959170000031,
+      "p95": 434.6743329999954,
+      "maximum": 722.416707999997
+    }
+  },
+  "after": {
+    "generationMilliseconds": {
+      "p50": 113.16516600000614,
+      "p95": 273.90379199999734,
+      "maximum": 449.39133300000685
+    }
+  },
+  "improvement": {
+    "p50Fraction": 0.4037534441176584,
+    "p95Fraction": 0.3698620789688495
+  },
+  "exactnessFixture": {
+    "sha256Before": "17eb4f5f737fd5a0da665e87acff843c925001b1509ebf782921754b58bea95e",
+    "sha256After": "17eb4f5f737fd5a0da665e87acff843c925001b1509ebf782921754b58bea95e",
+    "serializedBytes": 22775,
+    "features": 48
+  },
+  "changes": [
+    "Precomputed fixed-point resize axes.",
+    "Replaced the exact 3x3 blur loop with equivalent horizontal and vertical sums.",
+    "Removed per-pixel FAST difference-array allocation.",
+    "Precomputed rotated binary descriptor sample coordinates."
+  ],
+  "limitations": [
+    "Before and after runs were sequential local measurements rather than a randomized interleaved microbenchmark.",
+    "The optimization preserves the retained exactness fixture and aggregate large-study quality results; crop-local remains experimental."
+  ]
+}

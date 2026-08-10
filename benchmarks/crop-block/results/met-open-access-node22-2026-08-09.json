@@ -1,0 +1,2948 @@
+{
+  "profileVersion": 1,
+  "corpus": "met-open-access-crop-block-v1",
+  "sourceManifest": "/private/tmp/image-fingerprint-met-crop-block-20260809/manifest.json",
+  "sourceObjects": [
+    {
+      "objectID": 359362,
+      "title": "Landscape",
+      "objectURL": "https://www.metmuseum.org/art/collection/search/359362",
+      "sha256": "4917609c38aa17d2d6f40b7415a39cdd413aa477b185ec92af437b1615de1eb9",
+      "license": "CC0-1.0"
+    },
+    {
+      "objectID": 65625,
+      "title": "Landscape",
+      "objectURL": "https://www.metmuseum.org/art/collection/search/65625",
+      "sha256": "a3a36044be1493abde79a5a0d7513df761e94bca1088fae22e340552f93b2113",
+      "license": "CC0-1.0"
+    },
+    {
+      "objectID": 437323,
+      "title": "A Brazilian Landscape",
+      "objectURL": "https://www.metmuseum.org/art/collection/search/437323",
+      "sha256": "9a3fa2870cc25a2df4f8292142143c0f7ea0718fb44711c208c40341e5a475eb",
+      "license": "CC0-1.0"
+    },
+    {
+      "objectID": 11774,
+      "title": "Landscape",
+      "objectURL": "https://www.metmuseum.org/art/collection/search/11774",
+      "sha256": "8afd59b61338937ab141765c17d7ee3a3da35e1ca0890ccf5515054d7964720d",
+      "license": "CC0-1.0"
+    },
+    {
+      "objectID": 436455,
+      "title": "Evening: Landscape with an Aqueduct",
+      "objectURL": "https://www.metmuseum.org/art/collection/search/436455",
+      "sha256": "246347582782f36bf689de05fdf3a16ba0eab41757762c4875b03cab0299f5ba",
+      "license": "CC0-1.0"
+    },
+    {
+      "objectID": 250945,
+      "title": "Wall painting: Perseus and Andromeda in landscape, from the imperial villa at Boscotrecase",
+      "objectURL": "https://www.metmuseum.org/art/collection/search/250945",
+      "sha256": "f5498d3911be6bb8a3547e4f558c8278dcb6818b1c0d14b6d72c540b8325d7f1",
+      "license": "CC0-1.0"
+    },
+    {
+      "objectID": 250939,
+      "title": "Wall painting on black ground: landscape, from the imperial villa at Boscotrecase",
+      "objectURL": "https://www.metmuseum.org/art/collection/search/250939",
+      "sha256": "ff914ec3fa6d40c9be1ac1c3d63343024db00faea4fdb8a3958d4fc6cf01e7f7",
+      "license": "CC0-1.0"
+    },
+    {
+      "objectID": 250946,
+      "title": "Wall painting: Polyphemus and Galatea in a landscape, from the imperial villa at Boscotrecase",
+      "objectURL": "https://www.metmuseum.org/art/collection/search/250946",
+      "sha256": "10a6d07699ea95da450e2baca941300e5a42d32d704276a86f4a1f0a093548ce",
+      "license": "CC0-1.0"
+    },
+    {
+      "objectID": 250930,
+      "title": "Wall painting on black ground: Aedicula with small landscape, from the imperial villa at Boscotrecase",
+      "objectURL": "https://www.metmuseum.org/art/collection/search/250930",
+      "sha256": "eb1e2c506e3bfadcac473be5d733b2b09553a7e165294db0335c72b2f7c46868",
+      "license": "CC0-1.0"
+    },
+    {
+      "objectID": 36131,
+      "title": "Landscapes with poems",
+      "objectURL": "https://www.metmuseum.org/art/collection/search/36131",
+      "sha256": "be29f031b446bc59920e8da36addbc7584b1923bf549553caec641917d2130c9",
+      "license": "CC0-1.0"
+    },
+    {
+      "objectID": 334002,
+      "title": "Seated Giant",
+      "objectURL": "https://www.metmuseum.org/art/collection/search/334002",
+      "sha256": "ca1a0da33f6f8f4e36cde7e7a97795a8c02d63c2de70203168decd209cb9736b",
+      "license": "CC0-1.0"
+    },
+    {
+      "objectID": 342003,
+      "title": "Landscape",
+      "objectURL": "https://www.metmuseum.org/art/collection/search/342003",
+      "sha256": "4640810bd3f3b85475fdb92faae0766dbfad0416be6ea1bbb597065f08512fba",
+      "license": "CC0-1.0"
+    },
+    {
+      "objectID": 347917,
+      "title": "Landscape",
+      "objectURL": "https://www.metmuseum.org/art/collection/search/347917",
+      "sha256": "70d0acd5301dab079e56b4765422bb1ac6651e02624ab69841be17a64fb966b8",
+      "license": "CC0-1.0"
+    },
+    {
+      "objectID": 72416,
+      "title": "Landscape",
+      "objectURL": "https://www.metmuseum.org/art/collection/search/72416",
+      "sha256": "87d92371ba4002a99cfcb0ff62b1c580aa0cf3128f6ba31058c2f4bfe491c3b5",
+      "license": "CC0-1.0"
+    },
+    {
+      "objectID": 45650,
+      "title": "Landscape",
+      "objectURL": "https://www.metmuseum.org/art/collection/search/45650",
+      "sha256": "d53b75d26b8899e3f738ce451b55cf8210e0bfb776bd59b4e446c6da7b239fb0",
+      "license": "CC0-1.0"
+    },
+    {
+      "objectID": 11181,
+      "title": "Landscape",
+      "objectURL": "https://www.metmuseum.org/art/collection/search/11181",
+      "sha256": "92b3a6f6222d03bde847c89674b5282b02c750c69fce6e1e2d85e5e9016a752c",
+      "license": "CC0-1.0"
+    },
+    {
+      "objectID": 10181,
+      "title": "Landscape",
+      "objectURL": "https://www.metmuseum.org/art/collection/search/10181",
+      "sha256": "892121a91cd0646c843e1abc2dd895473ff4832ece0dec705b85641e2373c7fc",
+      "license": "CC0-1.0"
+    },
+    {
+      "objectID": 337306,
+      "title": "Landscape",
+      "objectURL": "https://www.metmuseum.org/art/collection/search/337306",
+      "sha256": "1594810f71e40376dcade0ac4168c25f6e730638f8c11d46bd27d238335494a9",
+      "license": "CC0-1.0"
+    },
+    {
+      "objectID": 49134,
+      "title": "Landscape",
+      "objectURL": "https://www.metmuseum.org/art/collection/search/49134",
+      "sha256": "5662fcedaaa884135161cf8c8555c38399e0cb619fe940e60c52394b670f9f30",
+      "license": "CC0-1.0"
+    },
+    {
+      "objectID": 49055,
+      "title": "Landscape",
+      "objectURL": "https://www.metmuseum.org/art/collection/search/49055",
+      "sha256": "1b78cfee6042b84b2d84196bd7090b7309d8cd9a7e95970995fd7206903f8629",
+      "license": "CC0-1.0"
+    }
+  ],
+  "environment": {
+    "node": "v22.22.1",
+    "platform": "darwin",
+    "architecture": "arm64"
+  },
+  "counts": {
+    "sourceImages": 20,
+    "positivePairs": 40,
+    "negativePairs": 380
+  },
+  "selectedGenerationProfile": {
+    "preprocessing": "area-box",
+    "maximumSegments": 16,
+    "fallback": "empty"
+  },
+  "qualityControls": [
+    {
+      "minimumBitBalance": 0,
+      "requirePolarity": false,
+      "minimumQueryCoverage": 0.25,
+      "sweep": [
+        {
+          "threshold": 16,
+          "truePositive": 5,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 35,
+          "precision": 1,
+          "recall": 0.125,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 24,
+          "truePositive": 6,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 34,
+          "precision": 1,
+          "recall": 0.15,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 32,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 48,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 64,
+          "truePositive": 12,
+          "falsePositive": 3,
+          "trueNegative": 377,
+          "falseNegative": 28,
+          "precision": 0.8,
+          "recall": 0.3,
+          "falsePositiveRate": 0.007894736842105263
+        },
+        {
+          "threshold": 80,
+          "truePositive": 18,
+          "falsePositive": 24,
+          "trueNegative": 356,
+          "falseNegative": 22,
+          "precision": 0.42857142857142855,
+          "recall": 0.45,
+          "falsePositiveRate": 0.06315789473684211
+        },
+        {
+          "threshold": 96,
+          "truePositive": 27,
+          "falsePositive": 108,
+          "trueNegative": 272,
+          "falseNegative": 13,
+          "precision": 0.2,
+          "recall": 0.675,
+          "falsePositiveRate": 0.28421052631578947
+        },
+        {
+          "threshold": 112,
+          "truePositive": 34,
+          "falsePositive": 231,
+          "trueNegative": 149,
+          "falseNegative": 6,
+          "precision": 0.12830188679245283,
+          "recall": 0.85,
+          "falsePositiveRate": 0.6078947368421053
+        },
+        {
+          "threshold": 128,
+          "truePositive": 39,
+          "falsePositive": 318,
+          "trueNegative": 62,
+          "falseNegative": 1,
+          "precision": 0.1092436974789916,
+          "recall": 0.975,
+          "falsePositiveRate": 0.8368421052631579
+        }
+      ]
+    },
+    {
+      "minimumBitBalance": 0,
+      "requirePolarity": false,
+      "minimumQueryCoverage": 0.5,
+      "sweep": [
+        {
+          "threshold": 16,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 24,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 32,
+          "truePositive": 1,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 39,
+          "precision": 1,
+          "recall": 0.025,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 48,
+          "truePositive": 3,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 37,
+          "precision": 1,
+          "recall": 0.075,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 64,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 80,
+          "truePositive": 14,
+          "falsePositive": 11,
+          "trueNegative": 369,
+          "falseNegative": 26,
+          "precision": 0.56,
+          "recall": 0.35,
+          "falsePositiveRate": 0.02894736842105263
+        },
+        {
+          "threshold": 96,
+          "truePositive": 19,
+          "falsePositive": 52,
+          "trueNegative": 328,
+          "falseNegative": 21,
+          "precision": 0.2676056338028169,
+          "recall": 0.475,
+          "falsePositiveRate": 0.1368421052631579
+        },
+        {
+          "threshold": 112,
+          "truePositive": 33,
+          "falsePositive": 188,
+          "trueNegative": 192,
+          "falseNegative": 7,
+          "precision": 0.1493212669683258,
+          "recall": 0.825,
+          "falsePositiveRate": 0.49473684210526314
+        },
+        {
+          "threshold": 128,
+          "truePositive": 39,
+          "falsePositive": 295,
+          "trueNegative": 85,
+          "falseNegative": 1,
+          "precision": 0.11676646706586827,
+          "recall": 0.975,
+          "falsePositiveRate": 0.7763157894736842
+        }
+      ]
+    },
+    {
+      "minimumBitBalance": 0,
+      "requirePolarity": true,
+      "minimumQueryCoverage": 0.25,
+      "sweep": [
+        {
+          "threshold": 16,
+          "truePositive": 5,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 35,
+          "precision": 1,
+          "recall": 0.125,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 24,
+          "truePositive": 6,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 34,
+          "precision": 1,
+          "recall": 0.15,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 32,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 48,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 64,
+          "truePositive": 12,
+          "falsePositive": 1,
+          "trueNegative": 379,
+          "falseNegative": 28,
+          "precision": 0.9230769230769231,
+          "recall": 0.3,
+          "falsePositiveRate": 0.002631578947368421
+        },
+        {
+          "threshold": 80,
+          "truePositive": 18,
+          "falsePositive": 17,
+          "trueNegative": 363,
+          "falseNegative": 22,
+          "precision": 0.5142857142857142,
+          "recall": 0.45,
+          "falsePositiveRate": 0.04473684210526316
+        },
+        {
+          "threshold": 96,
+          "truePositive": 25,
+          "falsePositive": 85,
+          "trueNegative": 295,
+          "falseNegative": 15,
+          "precision": 0.22727272727272727,
+          "recall": 0.625,
+          "falsePositiveRate": 0.2236842105263158
+        },
+        {
+          "threshold": 112,
+          "truePositive": 34,
+          "falsePositive": 185,
+          "trueNegative": 195,
+          "falseNegative": 6,
+          "precision": 0.1552511415525114,
+          "recall": 0.85,
+          "falsePositiveRate": 0.4868421052631579
+        },
+        {
+          "threshold": 128,
+          "truePositive": 39,
+          "falsePositive": 275,
+          "trueNegative": 105,
+          "falseNegative": 1,
+          "precision": 0.12420382165605096,
+          "recall": 0.975,
+          "falsePositiveRate": 0.7236842105263158
+        }
+      ]
+    },
+    {
+      "minimumBitBalance": 0,
+      "requirePolarity": true,
+      "minimumQueryCoverage": 0.5,
+      "sweep": [
+        {
+          "threshold": 16,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 24,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 32,
+          "truePositive": 1,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 39,
+          "precision": 1,
+          "recall": 0.025,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 48,
+          "truePositive": 3,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 37,
+          "precision": 1,
+          "recall": 0.075,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 64,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 80,
+          "truePositive": 13,
+          "falsePositive": 5,
+          "trueNegative": 375,
+          "falseNegative": 27,
+          "precision": 0.7222222222222222,
+          "recall": 0.325,
+          "falsePositiveRate": 0.013157894736842105
+        },
+        {
+          "threshold": 96,
+          "truePositive": 19,
+          "falsePositive": 32,
+          "trueNegative": 348,
+          "falseNegative": 21,
+          "precision": 0.37254901960784315,
+          "recall": 0.475,
+          "falsePositiveRate": 0.08421052631578947
+        },
+        {
+          "threshold": 112,
+          "truePositive": 33,
+          "falsePositive": 126,
+          "trueNegative": 254,
+          "falseNegative": 7,
+          "precision": 0.20754716981132076,
+          "recall": 0.825,
+          "falsePositiveRate": 0.33157894736842103
+        },
+        {
+          "threshold": 128,
+          "truePositive": 39,
+          "falsePositive": 235,
+          "trueNegative": 145,
+          "falseNegative": 1,
+          "precision": 0.14233576642335766,
+          "recall": 0.975,
+          "falsePositiveRate": 0.618421052631579
+        }
+      ]
+    },
+    {
+      "minimumBitBalance": 16,
+      "requirePolarity": false,
+      "minimumQueryCoverage": 0.25,
+      "sweep": [
+        {
+          "threshold": 16,
+          "truePositive": 5,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 35,
+          "precision": 1,
+          "recall": 0.125,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 24,
+          "truePositive": 6,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 34,
+          "precision": 1,
+          "recall": 0.15,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 32,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 48,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 64,
+          "truePositive": 12,
+          "falsePositive": 3,
+          "trueNegative": 377,
+          "falseNegative": 28,
+          "precision": 0.8,
+          "recall": 0.3,
+          "falsePositiveRate": 0.007894736842105263
+        },
+        {
+          "threshold": 80,
+          "truePositive": 18,
+          "falsePositive": 24,
+          "trueNegative": 356,
+          "falseNegative": 22,
+          "precision": 0.42857142857142855,
+          "recall": 0.45,
+          "falsePositiveRate": 0.06315789473684211
+        },
+        {
+          "threshold": 96,
+          "truePositive": 27,
+          "falsePositive": 108,
+          "trueNegative": 272,
+          "falseNegative": 13,
+          "precision": 0.2,
+          "recall": 0.675,
+          "falsePositiveRate": 0.28421052631578947
+        },
+        {
+          "threshold": 112,
+          "truePositive": 34,
+          "falsePositive": 231,
+          "trueNegative": 149,
+          "falseNegative": 6,
+          "precision": 0.12830188679245283,
+          "recall": 0.85,
+          "falsePositiveRate": 0.6078947368421053
+        },
+        {
+          "threshold": 128,
+          "truePositive": 39,
+          "falsePositive": 318,
+          "trueNegative": 62,
+          "falseNegative": 1,
+          "precision": 0.1092436974789916,
+          "recall": 0.975,
+          "falsePositiveRate": 0.8368421052631579
+        }
+      ]
+    },
+    {
+      "minimumBitBalance": 16,
+      "requirePolarity": false,
+      "minimumQueryCoverage": 0.5,
+      "sweep": [
+        {
+          "threshold": 16,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 24,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 32,
+          "truePositive": 1,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 39,
+          "precision": 1,
+          "recall": 0.025,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 48,
+          "truePositive": 3,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 37,
+          "precision": 1,
+          "recall": 0.075,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 64,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 80,
+          "truePositive": 14,
+          "falsePositive": 11,
+          "trueNegative": 369,
+          "falseNegative": 26,
+          "precision": 0.56,
+          "recall": 0.35,
+          "falsePositiveRate": 0.02894736842105263
+        },
+        {
+          "threshold": 96,
+          "truePositive": 19,
+          "falsePositive": 52,
+          "trueNegative": 328,
+          "falseNegative": 21,
+          "precision": 0.2676056338028169,
+          "recall": 0.475,
+          "falsePositiveRate": 0.1368421052631579
+        },
+        {
+          "threshold": 112,
+          "truePositive": 33,
+          "falsePositive": 188,
+          "trueNegative": 192,
+          "falseNegative": 7,
+          "precision": 0.1493212669683258,
+          "recall": 0.825,
+          "falsePositiveRate": 0.49473684210526314
+        },
+        {
+          "threshold": 128,
+          "truePositive": 39,
+          "falsePositive": 295,
+          "trueNegative": 85,
+          "falseNegative": 1,
+          "precision": 0.11676646706586827,
+          "recall": 0.975,
+          "falsePositiveRate": 0.7763157894736842
+        }
+      ]
+    },
+    {
+      "minimumBitBalance": 16,
+      "requirePolarity": true,
+      "minimumQueryCoverage": 0.25,
+      "sweep": [
+        {
+          "threshold": 16,
+          "truePositive": 5,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 35,
+          "precision": 1,
+          "recall": 0.125,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 24,
+          "truePositive": 6,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 34,
+          "precision": 1,
+          "recall": 0.15,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 32,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 48,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 64,
+          "truePositive": 12,
+          "falsePositive": 1,
+          "trueNegative": 379,
+          "falseNegative": 28,
+          "precision": 0.9230769230769231,
+          "recall": 0.3,
+          "falsePositiveRate": 0.002631578947368421
+        },
+        {
+          "threshold": 80,
+          "truePositive": 18,
+          "falsePositive": 17,
+          "trueNegative": 363,
+          "falseNegative": 22,
+          "precision": 0.5142857142857142,
+          "recall": 0.45,
+          "falsePositiveRate": 0.04473684210526316
+        },
+        {
+          "threshold": 96,
+          "truePositive": 25,
+          "falsePositive": 85,
+          "trueNegative": 295,
+          "falseNegative": 15,
+          "precision": 0.22727272727272727,
+          "recall": 0.625,
+          "falsePositiveRate": 0.2236842105263158
+        },
+        {
+          "threshold": 112,
+          "truePositive": 34,
+          "falsePositive": 185,
+          "trueNegative": 195,
+          "falseNegative": 6,
+          "precision": 0.1552511415525114,
+          "recall": 0.85,
+          "falsePositiveRate": 0.4868421052631579
+        },
+        {
+          "threshold": 128,
+          "truePositive": 39,
+          "falsePositive": 275,
+          "trueNegative": 105,
+          "falseNegative": 1,
+          "precision": 0.12420382165605096,
+          "recall": 0.975,
+          "falsePositiveRate": 0.7236842105263158
+        }
+      ]
+    },
+    {
+      "minimumBitBalance": 16,
+      "requirePolarity": true,
+      "minimumQueryCoverage": 0.5,
+      "sweep": [
+        {
+          "threshold": 16,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 24,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 32,
+          "truePositive": 1,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 39,
+          "precision": 1,
+          "recall": 0.025,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 48,
+          "truePositive": 3,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 37,
+          "precision": 1,
+          "recall": 0.075,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 64,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 80,
+          "truePositive": 13,
+          "falsePositive": 5,
+          "trueNegative": 375,
+          "falseNegative": 27,
+          "precision": 0.7222222222222222,
+          "recall": 0.325,
+          "falsePositiveRate": 0.013157894736842105
+        },
+        {
+          "threshold": 96,
+          "truePositive": 19,
+          "falsePositive": 32,
+          "trueNegative": 348,
+          "falseNegative": 21,
+          "precision": 0.37254901960784315,
+          "recall": 0.475,
+          "falsePositiveRate": 0.08421052631578947
+        },
+        {
+          "threshold": 112,
+          "truePositive": 33,
+          "falsePositive": 126,
+          "trueNegative": 254,
+          "falseNegative": 7,
+          "precision": 0.20754716981132076,
+          "recall": 0.825,
+          "falsePositiveRate": 0.33157894736842103
+        },
+        {
+          "threshold": 128,
+          "truePositive": 39,
+          "falsePositive": 235,
+          "trueNegative": 145,
+          "falseNegative": 1,
+          "precision": 0.14233576642335766,
+          "recall": 0.975,
+          "falsePositiveRate": 0.618421052631579
+        }
+      ]
+    },
+    {
+      "minimumBitBalance": 32,
+      "requirePolarity": false,
+      "minimumQueryCoverage": 0.25,
+      "sweep": [
+        {
+          "threshold": 16,
+          "truePositive": 5,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 35,
+          "precision": 1,
+          "recall": 0.125,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 24,
+          "truePositive": 6,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 34,
+          "precision": 1,
+          "recall": 0.15,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 32,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 48,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 64,
+          "truePositive": 12,
+          "falsePositive": 3,
+          "trueNegative": 377,
+          "falseNegative": 28,
+          "precision": 0.8,
+          "recall": 0.3,
+          "falsePositiveRate": 0.007894736842105263
+        },
+        {
+          "threshold": 80,
+          "truePositive": 18,
+          "falsePositive": 24,
+          "trueNegative": 356,
+          "falseNegative": 22,
+          "precision": 0.42857142857142855,
+          "recall": 0.45,
+          "falsePositiveRate": 0.06315789473684211
+        },
+        {
+          "threshold": 96,
+          "truePositive": 27,
+          "falsePositive": 108,
+          "trueNegative": 272,
+          "falseNegative": 13,
+          "precision": 0.2,
+          "recall": 0.675,
+          "falsePositiveRate": 0.28421052631578947
+        },
+        {
+          "threshold": 112,
+          "truePositive": 34,
+          "falsePositive": 231,
+          "trueNegative": 149,
+          "falseNegative": 6,
+          "precision": 0.12830188679245283,
+          "recall": 0.85,
+          "falsePositiveRate": 0.6078947368421053
+        },
+        {
+          "threshold": 128,
+          "truePositive": 39,
+          "falsePositive": 318,
+          "trueNegative": 62,
+          "falseNegative": 1,
+          "precision": 0.1092436974789916,
+          "recall": 0.975,
+          "falsePositiveRate": 0.8368421052631579
+        }
+      ]
+    },
+    {
+      "minimumBitBalance": 32,
+      "requirePolarity": false,
+      "minimumQueryCoverage": 0.5,
+      "sweep": [
+        {
+          "threshold": 16,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 24,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 32,
+          "truePositive": 1,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 39,
+          "precision": 1,
+          "recall": 0.025,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 48,
+          "truePositive": 3,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 37,
+          "precision": 1,
+          "recall": 0.075,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 64,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 80,
+          "truePositive": 14,
+          "falsePositive": 11,
+          "trueNegative": 369,
+          "falseNegative": 26,
+          "precision": 0.56,
+          "recall": 0.35,
+          "falsePositiveRate": 0.02894736842105263
+        },
+        {
+          "threshold": 96,
+          "truePositive": 19,
+          "falsePositive": 52,
+          "trueNegative": 328,
+          "falseNegative": 21,
+          "precision": 0.2676056338028169,
+          "recall": 0.475,
+          "falsePositiveRate": 0.1368421052631579
+        },
+        {
+          "threshold": 112,
+          "truePositive": 33,
+          "falsePositive": 188,
+          "trueNegative": 192,
+          "falseNegative": 7,
+          "precision": 0.1493212669683258,
+          "recall": 0.825,
+          "falsePositiveRate": 0.49473684210526314
+        },
+        {
+          "threshold": 128,
+          "truePositive": 39,
+          "falsePositive": 295,
+          "trueNegative": 85,
+          "falseNegative": 1,
+          "precision": 0.11676646706586827,
+          "recall": 0.975,
+          "falsePositiveRate": 0.7763157894736842
+        }
+      ]
+    },
+    {
+      "minimumBitBalance": 32,
+      "requirePolarity": true,
+      "minimumQueryCoverage": 0.25,
+      "sweep": [
+        {
+          "threshold": 16,
+          "truePositive": 5,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 35,
+          "precision": 1,
+          "recall": 0.125,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 24,
+          "truePositive": 6,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 34,
+          "precision": 1,
+          "recall": 0.15,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 32,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 48,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 64,
+          "truePositive": 12,
+          "falsePositive": 1,
+          "trueNegative": 379,
+          "falseNegative": 28,
+          "precision": 0.9230769230769231,
+          "recall": 0.3,
+          "falsePositiveRate": 0.002631578947368421
+        },
+        {
+          "threshold": 80,
+          "truePositive": 18,
+          "falsePositive": 17,
+          "trueNegative": 363,
+          "falseNegative": 22,
+          "precision": 0.5142857142857142,
+          "recall": 0.45,
+          "falsePositiveRate": 0.04473684210526316
+        },
+        {
+          "threshold": 96,
+          "truePositive": 25,
+          "falsePositive": 85,
+          "trueNegative": 295,
+          "falseNegative": 15,
+          "precision": 0.22727272727272727,
+          "recall": 0.625,
+          "falsePositiveRate": 0.2236842105263158
+        },
+        {
+          "threshold": 112,
+          "truePositive": 34,
+          "falsePositive": 185,
+          "trueNegative": 195,
+          "falseNegative": 6,
+          "precision": 0.1552511415525114,
+          "recall": 0.85,
+          "falsePositiveRate": 0.4868421052631579
+        },
+        {
+          "threshold": 128,
+          "truePositive": 39,
+          "falsePositive": 275,
+          "trueNegative": 105,
+          "falseNegative": 1,
+          "precision": 0.12420382165605096,
+          "recall": 0.975,
+          "falsePositiveRate": 0.7236842105263158
+        }
+      ]
+    },
+    {
+      "minimumBitBalance": 32,
+      "requirePolarity": true,
+      "minimumQueryCoverage": 0.5,
+      "sweep": [
+        {
+          "threshold": 16,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 24,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 32,
+          "truePositive": 1,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 39,
+          "precision": 1,
+          "recall": 0.025,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 48,
+          "truePositive": 3,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 37,
+          "precision": 1,
+          "recall": 0.075,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 64,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 80,
+          "truePositive": 13,
+          "falsePositive": 5,
+          "trueNegative": 375,
+          "falseNegative": 27,
+          "precision": 0.7222222222222222,
+          "recall": 0.325,
+          "falsePositiveRate": 0.013157894736842105
+        },
+        {
+          "threshold": 96,
+          "truePositive": 19,
+          "falsePositive": 32,
+          "trueNegative": 348,
+          "falseNegative": 21,
+          "precision": 0.37254901960784315,
+          "recall": 0.475,
+          "falsePositiveRate": 0.08421052631578947
+        },
+        {
+          "threshold": 112,
+          "truePositive": 33,
+          "falsePositive": 126,
+          "trueNegative": 254,
+          "falseNegative": 7,
+          "precision": 0.20754716981132076,
+          "recall": 0.825,
+          "falsePositiveRate": 0.33157894736842103
+        },
+        {
+          "threshold": 128,
+          "truePositive": 39,
+          "falsePositive": 235,
+          "trueNegative": 145,
+          "falseNegative": 1,
+          "precision": 0.14233576642335766,
+          "recall": 0.975,
+          "falsePositiveRate": 0.618421052631579
+        }
+      ]
+    },
+    {
+      "minimumBitBalance": 48,
+      "requirePolarity": false,
+      "minimumQueryCoverage": 0.25,
+      "sweep": [
+        {
+          "threshold": 16,
+          "truePositive": 5,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 35,
+          "precision": 1,
+          "recall": 0.125,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 24,
+          "truePositive": 6,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 34,
+          "precision": 1,
+          "recall": 0.15,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 32,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 48,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 64,
+          "truePositive": 12,
+          "falsePositive": 3,
+          "trueNegative": 377,
+          "falseNegative": 28,
+          "precision": 0.8,
+          "recall": 0.3,
+          "falsePositiveRate": 0.007894736842105263
+        },
+        {
+          "threshold": 80,
+          "truePositive": 18,
+          "falsePositive": 24,
+          "trueNegative": 356,
+          "falseNegative": 22,
+          "precision": 0.42857142857142855,
+          "recall": 0.45,
+          "falsePositiveRate": 0.06315789473684211
+        },
+        {
+          "threshold": 96,
+          "truePositive": 27,
+          "falsePositive": 108,
+          "trueNegative": 272,
+          "falseNegative": 13,
+          "precision": 0.2,
+          "recall": 0.675,
+          "falsePositiveRate": 0.28421052631578947
+        },
+        {
+          "threshold": 112,
+          "truePositive": 34,
+          "falsePositive": 231,
+          "trueNegative": 149,
+          "falseNegative": 6,
+          "precision": 0.12830188679245283,
+          "recall": 0.85,
+          "falsePositiveRate": 0.6078947368421053
+        },
+        {
+          "threshold": 128,
+          "truePositive": 39,
+          "falsePositive": 318,
+          "trueNegative": 62,
+          "falseNegative": 1,
+          "precision": 0.1092436974789916,
+          "recall": 0.975,
+          "falsePositiveRate": 0.8368421052631579
+        }
+      ]
+    },
+    {
+      "minimumBitBalance": 48,
+      "requirePolarity": false,
+      "minimumQueryCoverage": 0.5,
+      "sweep": [
+        {
+          "threshold": 16,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 24,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 32,
+          "truePositive": 1,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 39,
+          "precision": 1,
+          "recall": 0.025,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 48,
+          "truePositive": 3,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 37,
+          "precision": 1,
+          "recall": 0.075,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 64,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 80,
+          "truePositive": 14,
+          "falsePositive": 11,
+          "trueNegative": 369,
+          "falseNegative": 26,
+          "precision": 0.56,
+          "recall": 0.35,
+          "falsePositiveRate": 0.02894736842105263
+        },
+        {
+          "threshold": 96,
+          "truePositive": 19,
+          "falsePositive": 52,
+          "trueNegative": 328,
+          "falseNegative": 21,
+          "precision": 0.2676056338028169,
+          "recall": 0.475,
+          "falsePositiveRate": 0.1368421052631579
+        },
+        {
+          "threshold": 112,
+          "truePositive": 33,
+          "falsePositive": 188,
+          "trueNegative": 192,
+          "falseNegative": 7,
+          "precision": 0.1493212669683258,
+          "recall": 0.825,
+          "falsePositiveRate": 0.49473684210526314
+        },
+        {
+          "threshold": 128,
+          "truePositive": 39,
+          "falsePositive": 295,
+          "trueNegative": 85,
+          "falseNegative": 1,
+          "precision": 0.11676646706586827,
+          "recall": 0.975,
+          "falsePositiveRate": 0.7763157894736842
+        }
+      ]
+    },
+    {
+      "minimumBitBalance": 48,
+      "requirePolarity": true,
+      "minimumQueryCoverage": 0.25,
+      "sweep": [
+        {
+          "threshold": 16,
+          "truePositive": 5,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 35,
+          "precision": 1,
+          "recall": 0.125,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 24,
+          "truePositive": 6,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 34,
+          "precision": 1,
+          "recall": 0.15,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 32,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 48,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 64,
+          "truePositive": 12,
+          "falsePositive": 1,
+          "trueNegative": 379,
+          "falseNegative": 28,
+          "precision": 0.9230769230769231,
+          "recall": 0.3,
+          "falsePositiveRate": 0.002631578947368421
+        },
+        {
+          "threshold": 80,
+          "truePositive": 18,
+          "falsePositive": 17,
+          "trueNegative": 363,
+          "falseNegative": 22,
+          "precision": 0.5142857142857142,
+          "recall": 0.45,
+          "falsePositiveRate": 0.04473684210526316
+        },
+        {
+          "threshold": 96,
+          "truePositive": 25,
+          "falsePositive": 85,
+          "trueNegative": 295,
+          "falseNegative": 15,
+          "precision": 0.22727272727272727,
+          "recall": 0.625,
+          "falsePositiveRate": 0.2236842105263158
+        },
+        {
+          "threshold": 112,
+          "truePositive": 34,
+          "falsePositive": 185,
+          "trueNegative": 195,
+          "falseNegative": 6,
+          "precision": 0.1552511415525114,
+          "recall": 0.85,
+          "falsePositiveRate": 0.4868421052631579
+        },
+        {
+          "threshold": 128,
+          "truePositive": 39,
+          "falsePositive": 275,
+          "trueNegative": 105,
+          "falseNegative": 1,
+          "precision": 0.12420382165605096,
+          "recall": 0.975,
+          "falsePositiveRate": 0.7236842105263158
+        }
+      ]
+    },
+    {
+      "minimumBitBalance": 48,
+      "requirePolarity": true,
+      "minimumQueryCoverage": 0.5,
+      "sweep": [
+        {
+          "threshold": 16,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 24,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 32,
+          "truePositive": 1,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 39,
+          "precision": 1,
+          "recall": 0.025,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 48,
+          "truePositive": 3,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 37,
+          "precision": 1,
+          "recall": 0.075,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 64,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 80,
+          "truePositive": 13,
+          "falsePositive": 5,
+          "trueNegative": 375,
+          "falseNegative": 27,
+          "precision": 0.7222222222222222,
+          "recall": 0.325,
+          "falsePositiveRate": 0.013157894736842105
+        },
+        {
+          "threshold": 96,
+          "truePositive": 19,
+          "falsePositive": 32,
+          "trueNegative": 348,
+          "falseNegative": 21,
+          "precision": 0.37254901960784315,
+          "recall": 0.475,
+          "falsePositiveRate": 0.08421052631578947
+        },
+        {
+          "threshold": 112,
+          "truePositive": 33,
+          "falsePositive": 126,
+          "trueNegative": 254,
+          "falseNegative": 7,
+          "precision": 0.20754716981132076,
+          "recall": 0.825,
+          "falsePositiveRate": 0.33157894736842103
+        },
+        {
+          "threshold": 128,
+          "truePositive": 39,
+          "falsePositive": 235,
+          "trueNegative": 145,
+          "falseNegative": 1,
+          "precision": 0.14233576642335766,
+          "recall": 0.975,
+          "falsePositiveRate": 0.618421052631579
+        }
+      ]
+    },
+    {
+      "minimumBitBalance": 64,
+      "requirePolarity": false,
+      "minimumQueryCoverage": 0.25,
+      "sweep": [
+        {
+          "threshold": 16,
+          "truePositive": 5,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 35,
+          "precision": 1,
+          "recall": 0.125,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 24,
+          "truePositive": 6,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 34,
+          "precision": 1,
+          "recall": 0.15,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 32,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 48,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 64,
+          "truePositive": 12,
+          "falsePositive": 3,
+          "trueNegative": 377,
+          "falseNegative": 28,
+          "precision": 0.8,
+          "recall": 0.3,
+          "falsePositiveRate": 0.007894736842105263
+        },
+        {
+          "threshold": 80,
+          "truePositive": 18,
+          "falsePositive": 24,
+          "trueNegative": 356,
+          "falseNegative": 22,
+          "precision": 0.42857142857142855,
+          "recall": 0.45,
+          "falsePositiveRate": 0.06315789473684211
+        },
+        {
+          "threshold": 96,
+          "truePositive": 27,
+          "falsePositive": 108,
+          "trueNegative": 272,
+          "falseNegative": 13,
+          "precision": 0.2,
+          "recall": 0.675,
+          "falsePositiveRate": 0.28421052631578947
+        },
+        {
+          "threshold": 112,
+          "truePositive": 34,
+          "falsePositive": 231,
+          "trueNegative": 149,
+          "falseNegative": 6,
+          "precision": 0.12830188679245283,
+          "recall": 0.85,
+          "falsePositiveRate": 0.6078947368421053
+        },
+        {
+          "threshold": 128,
+          "truePositive": 39,
+          "falsePositive": 318,
+          "trueNegative": 62,
+          "falseNegative": 1,
+          "precision": 0.1092436974789916,
+          "recall": 0.975,
+          "falsePositiveRate": 0.8368421052631579
+        }
+      ]
+    },
+    {
+      "minimumBitBalance": 64,
+      "requirePolarity": false,
+      "minimumQueryCoverage": 0.5,
+      "sweep": [
+        {
+          "threshold": 16,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 24,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 32,
+          "truePositive": 1,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 39,
+          "precision": 1,
+          "recall": 0.025,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 48,
+          "truePositive": 3,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 37,
+          "precision": 1,
+          "recall": 0.075,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 64,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 80,
+          "truePositive": 14,
+          "falsePositive": 11,
+          "trueNegative": 369,
+          "falseNegative": 26,
+          "precision": 0.56,
+          "recall": 0.35,
+          "falsePositiveRate": 0.02894736842105263
+        },
+        {
+          "threshold": 96,
+          "truePositive": 19,
+          "falsePositive": 52,
+          "trueNegative": 328,
+          "falseNegative": 21,
+          "precision": 0.2676056338028169,
+          "recall": 0.475,
+          "falsePositiveRate": 0.1368421052631579
+        },
+        {
+          "threshold": 112,
+          "truePositive": 33,
+          "falsePositive": 188,
+          "trueNegative": 192,
+          "falseNegative": 7,
+          "precision": 0.1493212669683258,
+          "recall": 0.825,
+          "falsePositiveRate": 0.49473684210526314
+        },
+        {
+          "threshold": 128,
+          "truePositive": 39,
+          "falsePositive": 295,
+          "trueNegative": 85,
+          "falseNegative": 1,
+          "precision": 0.11676646706586827,
+          "recall": 0.975,
+          "falsePositiveRate": 0.7763157894736842
+        }
+      ]
+    },
+    {
+      "minimumBitBalance": 64,
+      "requirePolarity": true,
+      "minimumQueryCoverage": 0.25,
+      "sweep": [
+        {
+          "threshold": 16,
+          "truePositive": 5,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 35,
+          "precision": 1,
+          "recall": 0.125,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 24,
+          "truePositive": 6,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 34,
+          "precision": 1,
+          "recall": 0.15,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 32,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 48,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 64,
+          "truePositive": 12,
+          "falsePositive": 1,
+          "trueNegative": 379,
+          "falseNegative": 28,
+          "precision": 0.9230769230769231,
+          "recall": 0.3,
+          "falsePositiveRate": 0.002631578947368421
+        },
+        {
+          "threshold": 80,
+          "truePositive": 18,
+          "falsePositive": 17,
+          "trueNegative": 363,
+          "falseNegative": 22,
+          "precision": 0.5142857142857142,
+          "recall": 0.45,
+          "falsePositiveRate": 0.04473684210526316
+        },
+        {
+          "threshold": 96,
+          "truePositive": 25,
+          "falsePositive": 85,
+          "trueNegative": 295,
+          "falseNegative": 15,
+          "precision": 0.22727272727272727,
+          "recall": 0.625,
+          "falsePositiveRate": 0.2236842105263158
+        },
+        {
+          "threshold": 112,
+          "truePositive": 34,
+          "falsePositive": 185,
+          "trueNegative": 195,
+          "falseNegative": 6,
+          "precision": 0.1552511415525114,
+          "recall": 0.85,
+          "falsePositiveRate": 0.4868421052631579
+        },
+        {
+          "threshold": 128,
+          "truePositive": 39,
+          "falsePositive": 275,
+          "trueNegative": 105,
+          "falseNegative": 1,
+          "precision": 0.12420382165605096,
+          "recall": 0.975,
+          "falsePositiveRate": 0.7236842105263158
+        }
+      ]
+    },
+    {
+      "minimumBitBalance": 64,
+      "requirePolarity": true,
+      "minimumQueryCoverage": 0.5,
+      "sweep": [
+        {
+          "threshold": 16,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 24,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 32,
+          "truePositive": 1,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 39,
+          "precision": 1,
+          "recall": 0.025,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 48,
+          "truePositive": 3,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 37,
+          "precision": 1,
+          "recall": 0.075,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 64,
+          "truePositive": 7,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 33,
+          "precision": 1,
+          "recall": 0.175,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 80,
+          "truePositive": 13,
+          "falsePositive": 5,
+          "trueNegative": 375,
+          "falseNegative": 27,
+          "precision": 0.7222222222222222,
+          "recall": 0.325,
+          "falsePositiveRate": 0.013157894736842105
+        },
+        {
+          "threshold": 96,
+          "truePositive": 19,
+          "falsePositive": 32,
+          "trueNegative": 348,
+          "falseNegative": 21,
+          "precision": 0.37254901960784315,
+          "recall": 0.475,
+          "falsePositiveRate": 0.08421052631578947
+        },
+        {
+          "threshold": 112,
+          "truePositive": 33,
+          "falsePositive": 126,
+          "trueNegative": 254,
+          "falseNegative": 7,
+          "precision": 0.20754716981132076,
+          "recall": 0.825,
+          "falsePositiveRate": 0.33157894736842103
+        },
+        {
+          "threshold": 128,
+          "truePositive": 39,
+          "falsePositive": 235,
+          "trueNegative": 145,
+          "falseNegative": 1,
+          "precision": 0.14233576642335766,
+          "recall": 0.975,
+          "falsePositiveRate": 0.618421052631579
+        }
+      ]
+    }
+  ],
+  "childHashBakeoff": [
+    {
+      "regionAlgorithm": "blockhash-v1",
+      "generationMilliseconds": {
+        "count": 60,
+        "p50": 15.80108300000029,
+        "p95": 20.79199999999946,
+        "maximum": 23.123458000000028
+      },
+      "outputBytes": {
+        "count": 60,
+        "p50": 721,
+        "p95": 1601,
+        "maximum": 1793
+      },
+      "childQuality": {
+        "count": 0,
+        "p50": null,
+        "p95": null,
+        "maximum": null
+      },
+      "policies": [
+        {
+          "minimumQuality": 0,
+          "requirePolarity": true,
+          "minimumQueryCoverage": 0.25,
+          "sweep": [
+            {
+              "threshold": 16,
+              "truePositive": 5,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 35,
+              "precision": 1,
+              "recall": 0.125,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.05474999999933061,
+                "p95": 0.29812500000116415,
+                "maximum": 0.7071250000008149
+              }
+            },
+            {
+              "threshold": 24,
+              "truePositive": 6,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 34,
+              "precision": 1,
+              "recall": 0.15,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.055209000000104425,
+                "p95": 0.29724999999962165,
+                "maximum": 0.6689170000008744
+              }
+            },
+            {
+              "threshold": 32,
+              "truePositive": 7,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 33,
+              "precision": 1,
+              "recall": 0.175,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.05437499999970896,
+                "p95": 0.30458399999952235,
+                "maximum": 0.603291999999783
+              }
+            },
+            {
+              "threshold": 48,
+              "truePositive": 7,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 33,
+              "precision": 1,
+              "recall": 0.175,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.054707999999664025,
+                "p95": 0.31616699999904085,
+                "maximum": 0.6523340000003373
+              }
+            },
+            {
+              "threshold": 64,
+              "truePositive": 12,
+              "falsePositive": 1,
+              "trueNegative": 379,
+              "falseNegative": 28,
+              "precision": 0.9230769230769231,
+              "recall": 0.3,
+              "falsePositiveRate": 0.002631578947368421,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.05358400000113761,
+                "p95": 0.3146660000002157,
+                "maximum": 0.6478750000005675
+              }
+            },
+            {
+              "threshold": 80,
+              "truePositive": 18,
+              "falsePositive": 17,
+              "trueNegative": 363,
+              "falseNegative": 22,
+              "precision": 0.5142857142857142,
+              "recall": 0.45,
+              "falsePositiveRate": 0.04473684210526316,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.05591700000150013,
+                "p95": 0.3100830000003043,
+                "maximum": 0.6224169999986771
+              }
+            },
+            {
+              "threshold": 96,
+              "truePositive": 25,
+              "falsePositive": 85,
+              "trueNegative": 295,
+              "falseNegative": 15,
+              "precision": 0.22727272727272727,
+              "recall": 0.625,
+              "falsePositiveRate": 0.2236842105263158,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.0551660000000993,
+                "p95": 0.29549999999835563,
+                "maximum": 0.6352499999993597
+              }
+            },
+            {
+              "threshold": 112,
+              "truePositive": 34,
+              "falsePositive": 185,
+              "trueNegative": 195,
+              "falseNegative": 6,
+              "precision": 0.1552511415525114,
+              "recall": 0.85,
+              "falsePositiveRate": 0.4868421052631579,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.05854200000067067,
+                "p95": 0.3101249999999709,
+                "maximum": 0.6422920000004524
+              }
+            },
+            {
+              "threshold": 128,
+              "truePositive": 39,
+              "falsePositive": 275,
+              "trueNegative": 105,
+              "falseNegative": 1,
+              "precision": 0.12420382165605096,
+              "recall": 0.975,
+              "falsePositiveRate": 0.7236842105263158,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.05529200000091805,
+                "p95": 0.32166700000016135,
+                "maximum": 0.6784170000009908
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "regionAlgorithm": "pdq-v1",
+      "generationMilliseconds": {
+        "count": 60,
+        "p50": 19.25258400000166,
+        "p95": 30.42516599999908,
+        "maximum": 33.38604099999975
+      },
+      "outputBytes": {
+        "count": 60,
+        "p50": 757,
+        "p95": 1707,
+        "maximum": 1913
+      },
+      "childQuality": {
+        "count": 199,
+        "p50": 100,
+        "p95": 100,
+        "maximum": 100
+      },
+      "policies": [
+        {
+          "minimumQuality": 0,
+          "requirePolarity": true,
+          "minimumQueryCoverage": 0.25,
+          "sweep": [
+            {
+              "threshold": 16,
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 40,
+              "precision": null,
+              "recall": 0,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.05433400000038091,
+                "p95": 0.29237499999908323,
+                "maximum": 0.7175409999999829
+              }
+            },
+            {
+              "threshold": 24,
+              "truePositive": 1,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 39,
+              "precision": 1,
+              "recall": 0.025,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.05366599999979371,
+                "p95": 0.295125000000553,
+                "maximum": 0.6249160000006668
+              }
+            },
+            {
+              "threshold": 32,
+              "truePositive": 2,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 38,
+              "precision": 1,
+              "recall": 0.05,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.05408300000090094,
+                "p95": 0.30395899999894027,
+                "maximum": 0.6202080000002752
+              }
+            },
+            {
+              "threshold": 48,
+              "truePositive": 3,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 37,
+              "precision": 1,
+              "recall": 0.075,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.054292000000714324,
+                "p95": 0.288790999999037,
+                "maximum": 0.6462919999994483
+              }
+            },
+            {
+              "threshold": 64,
+              "truePositive": 5,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 35,
+              "precision": 1,
+              "recall": 0.125,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.0527910000000702,
+                "p95": 0.28591700000106357,
+                "maximum": 0.602999999999156
+              }
+            },
+            {
+              "threshold": 80,
+              "truePositive": 7,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 33,
+              "precision": 1,
+              "recall": 0.175,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.0537079999994603,
+                "p95": 0.2899170000000595,
+                "maximum": 0.6010000000005675
+              }
+            },
+            {
+              "threshold": 96,
+              "truePositive": 8,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 32,
+              "precision": 1,
+              "recall": 0.2,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.0532920000005106,
+                "p95": 0.28962500000125146,
+                "maximum": 0.6219579999997222
+              }
+            },
+            {
+              "threshold": 112,
+              "truePositive": 15,
+              "falsePositive": 39,
+              "trueNegative": 341,
+              "falseNegative": 25,
+              "precision": 0.2777777777777778,
+              "recall": 0.375,
+              "falsePositiveRate": 0.10263157894736842,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.053374999999505235,
+                "p95": 0.2978750000002037,
+                "maximum": 0.6280829999996058
+              }
+            },
+            {
+              "threshold": 128,
+              "truePositive": 35,
+              "falsePositive": 286,
+              "trueNegative": 94,
+              "falseNegative": 5,
+              "precision": 0.10903426791277258,
+              "recall": 0.875,
+              "falsePositiveRate": 0.7526315789473684,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.0545830000010028,
+                "p95": 0.29341699999895354,
+                "maximum": 0.6514999999999418
+              }
+            }
+          ]
+        },
+        {
+          "minimumQuality": 25,
+          "requirePolarity": true,
+          "minimumQueryCoverage": 0.25,
+          "sweep": [
+            {
+              "threshold": 16,
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 40,
+              "precision": null,
+              "recall": 0,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.05329199999869161,
+                "p95": 0.29816700000083074,
+                "maximum": 0.5960829999985435
+              }
+            },
+            {
+              "threshold": 24,
+              "truePositive": 1,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 39,
+              "precision": 1,
+              "recall": 0.025,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.05325000000084401,
+                "p95": 0.31129199999850243,
+                "maximum": 0.6125410000004194
+              }
+            },
+            {
+              "threshold": 32,
+              "truePositive": 2,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 38,
+              "precision": 1,
+              "recall": 0.05,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.05324999999902502,
+                "p95": 0.28612499999871943,
+                "maximum": 0.6328340000000026
+              }
+            },
+            {
+              "threshold": 48,
+              "truePositive": 3,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 37,
+              "precision": 1,
+              "recall": 0.075,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.05329199999869161,
+                "p95": 0.28729199999906996,
+                "maximum": 0.610791999999492
+              }
+            },
+            {
+              "threshold": 64,
+              "truePositive": 5,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 35,
+              "precision": 1,
+              "recall": 0.125,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.052958000000217,
+                "p95": 0.2922920000000886,
+                "maximum": 0.7434169999996811
+              }
+            },
+            {
+              "threshold": 80,
+              "truePositive": 7,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 33,
+              "precision": 1,
+              "recall": 0.175,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.05291699999906996,
+                "p95": 0.2863340000003518,
+                "maximum": 0.6134999999994761
+              }
+            },
+            {
+              "threshold": 96,
+              "truePositive": 8,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 32,
+              "precision": 1,
+              "recall": 0.2,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.05212500000016007,
+                "p95": 0.3103750000009313,
+                "maximum": 0.6183750000000146
+              }
+            },
+            {
+              "threshold": 112,
+              "truePositive": 15,
+              "falsePositive": 39,
+              "trueNegative": 341,
+              "falseNegative": 25,
+              "precision": 0.2777777777777778,
+              "recall": 0.375,
+              "falsePositiveRate": 0.10263157894736842,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.05308399999921676,
+                "p95": 0.29620799999975134,
+                "maximum": 0.6596659999995609
+              }
+            },
+            {
+              "threshold": 128,
+              "truePositive": 35,
+              "falsePositive": 286,
+              "trueNegative": 94,
+              "falseNegative": 5,
+              "precision": 0.10903426791277258,
+              "recall": 0.875,
+              "falsePositiveRate": 0.7526315789473684,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.053167000000030384,
+                "p95": 0.29291700000067067,
+                "maximum": 0.6187090000003082
+              }
+            }
+          ]
+        },
+        {
+          "minimumQuality": 50,
+          "requirePolarity": true,
+          "minimumQueryCoverage": 0.25,
+          "sweep": [
+            {
+              "threshold": 16,
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 40,
+              "precision": null,
+              "recall": 0,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.054500000000189175,
+                "p95": 0.290791999999783,
+                "maximum": 0.6432920000006561
+              }
+            },
+            {
+              "threshold": 24,
+              "truePositive": 1,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 39,
+              "precision": 1,
+              "recall": 0.025,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.05425000000104774,
+                "p95": 0.29100000000107684,
+                "maximum": 0.6126250000015716
+              }
+            },
+            {
+              "threshold": 32,
+              "truePositive": 2,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 38,
+              "precision": 1,
+              "recall": 0.05,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.05249999999978172,
+                "p95": 0.3123329999998532,
+                "maximum": 0.6262079999996786
+              }
+            },
+            {
+              "threshold": 48,
+              "truePositive": 3,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 37,
+              "precision": 1,
+              "recall": 0.075,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.05304199999955017,
+                "p95": 0.29070800000044983,
+                "maximum": 0.6569579999995767
+              }
+            },
+            {
+              "threshold": 64,
+              "truePositive": 5,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 35,
+              "precision": 1,
+              "recall": 0.125,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.05249999999978172,
+                "p95": 0.28800000000046566,
+                "maximum": 0.5998749999998836
+              }
+            },
+            {
+              "threshold": 80,
+              "truePositive": 7,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 33,
+              "precision": 1,
+              "recall": 0.175,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.05404099999941536,
+                "p95": 0.3013749999990978,
+                "maximum": 0.6147920000003069
+              }
+            },
+            {
+              "threshold": 96,
+              "truePositive": 8,
+              "falsePositive": 0,
+              "trueNegative": 380,
+              "falseNegative": 32,
+              "precision": 1,
+              "recall": 0.2,
+              "falsePositiveRate": 0,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.052416999998968095,
+                "p95": 0.28937499999847205,
+                "maximum": 0.6140830000003916
+              }
+            },
+            {
+              "threshold": 112,
+              "truePositive": 15,
+              "falsePositive": 39,
+              "trueNegative": 341,
+              "falseNegative": 25,
+              "precision": 0.2777777777777778,
+              "recall": 0.375,
+              "falsePositiveRate": 0.10263157894736842,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.053167000000030384,
+                "p95": 0.29054100000030303,
+                "maximum": 0.6077079999995476
+              }
+            },
+            {
+              "threshold": 128,
+              "truePositive": 35,
+              "falsePositive": 286,
+              "trueNegative": 94,
+              "falseNegative": 5,
+              "precision": 0.10903426791277258,
+              "recall": 0.875,
+              "falsePositiveRate": 0.7526315789473684,
+              "comparisonMilliseconds": {
+                "count": 420,
+                "p50": 0.0532920000005106,
+                "p95": 0.295708999999988,
+                "maximum": 0.7298339999997552
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "baselines": [
+    {
+      "algorithm": "blockhash-v1",
+      "sweep": [
+        {
+          "threshold": 16,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 24,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 32,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 48,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 64,
+          "truePositive": 1,
+          "falsePositive": 1,
+          "trueNegative": 379,
+          "falseNegative": 39,
+          "precision": 0.5,
+          "recall": 0.025,
+          "falsePositiveRate": 0.002631578947368421
+        },
+        {
+          "threshold": 80,
+          "truePositive": 7,
+          "falsePositive": 6,
+          "trueNegative": 374,
+          "falseNegative": 33,
+          "precision": 0.5384615384615384,
+          "recall": 0.175,
+          "falsePositiveRate": 0.015789473684210527
+        },
+        {
+          "threshold": 96,
+          "truePositive": 17,
+          "falsePositive": 29,
+          "trueNegative": 351,
+          "falseNegative": 23,
+          "precision": 0.3695652173913043,
+          "recall": 0.425,
+          "falsePositiveRate": 0.07631578947368421
+        },
+        {
+          "threshold": 112,
+          "truePositive": 29,
+          "falsePositive": 93,
+          "trueNegative": 287,
+          "falseNegative": 11,
+          "precision": 0.23770491803278687,
+          "recall": 0.725,
+          "falsePositiveRate": 0.24473684210526317
+        },
+        {
+          "threshold": 128,
+          "truePositive": 37,
+          "falsePositive": 195,
+          "trueNegative": 185,
+          "falseNegative": 3,
+          "precision": 0.15948275862068967,
+          "recall": 0.925,
+          "falsePositiveRate": 0.5131578947368421
+        }
+      ]
+    },
+    {
+      "algorithm": "pdq-v1",
+      "sweep": [
+        {
+          "threshold": 16,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 24,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 32,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 48,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 64,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 80,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 96,
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 380,
+          "falseNegative": 40,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": 0
+        },
+        {
+          "threshold": 112,
+          "truePositive": 2,
+          "falsePositive": 9,
+          "trueNegative": 371,
+          "falseNegative": 38,
+          "precision": 0.18181818181818182,
+          "recall": 0.05,
+          "falsePositiveRate": 0.02368421052631579
+        },
+        {
+          "threshold": 128,
+          "truePositive": 23,
+          "falsePositive": 199,
+          "trueNegative": 181,
+          "falseNegative": 17,
+          "precision": 0.1036036036036036,
+          "recall": 0.575,
+          "falsePositiveRate": 0.5236842105263158
+        }
+      ]
+    }
+  ]
+}
