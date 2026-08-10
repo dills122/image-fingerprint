@@ -129,7 +129,7 @@ const evaluate = (profile, references, queries) => {
 const run = async ({ manifest: manifestPath, output }) => {
   const require = createRequire(import.meta.url);
   const { decodeImage } = require('../../lib/node.js');
-  const { compareCropLocalFingerprints, fingerprintCropLocalExperiment } = require('../../lib/core/algorithms/crop-local/index.js');
+  const { compareCropLocalSourceToCrop, fingerprintCropLocalExperiment } = require('../../lib/core/algorithms/crop-local/index.js');
   const manifestBytes = await readFile(manifestPath);
   const manifest = JSON.parse(manifestBytes.toString('utf8'));
   const root = dirname(manifestPath);
@@ -145,7 +145,7 @@ const run = async ({ manifest: manifestPath, output }) => {
     references.push({ id: entry.id, domain: entry.domain, fingerprint: original });
     for (const mode of ['center', 'asymmetric', 'severe']) {
       const fingerprint = fingerprintCropLocalExperiment(transform(pixels, mode), FINGERPRINT_PROFILE);
-      const evidence = compareCropLocalFingerprints(original, fingerprint);
+      const evidence = compareCropLocalSourceToCrop(original, fingerprint);
       queries.push({
         sourceId: entry.id,
         domain: entry.domain,

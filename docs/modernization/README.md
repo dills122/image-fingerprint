@@ -46,6 +46,8 @@ complete.
   public-profile gates.
 - [Crop-Local results](./crop-local-v0-results.md): pinned AKAZE/SIFT oracles, internal pure-TypeScript
   prototype, locked source-disjoint evidence, exact browser/worker fixture, and retrieval pilot.
+- [Crop-Local experiment contract](../architecture/0005-crop-local-experiment-contract.md): proposed
+  source-to-crop direction, tri-state semantics, template-ambiguity boundary, and runtime limits.
 - [Tooling baseline](./tooling-baseline.md): runtime, package-manager, compiler, lint, test, and CI
   foundation established before algorithm implementation.
 

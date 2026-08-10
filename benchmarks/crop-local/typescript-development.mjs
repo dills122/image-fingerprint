@@ -170,7 +170,7 @@ const run = async ({
   const require = createRequire(import.meta.url);
   const { decodeImage } = require('../../lib/node.js');
   const {
-    compareCropLocalFingerprints,
+    compareCropLocalSourceToCrop,
     fingerprintCropLocalExperiment,
   } = require('../../lib/core/algorithms/crop-local/index.js');
   const manifestInputs = await Promise.all(manifestPaths.map(async (path) => {
@@ -214,7 +214,7 @@ const run = async ({
   const comparisonTimes = [];
   const evidence = pairs.map((pair) => {
     const started = performance.now();
-    const result = compareCropLocalFingerprints(
+    const result = compareCropLocalSourceToCrop(
       fingerprints.get(pair.left),
       fingerprints.get(pair.right),
       {
@@ -294,7 +294,7 @@ const run = async ({
   for (let index = 0; index < pairs.length; index += 1) {
     const pair = pairs[index];
     const started = performance.now();
-    const result = compareCropLocalFingerprints(
+    const result = compareCropLocalSourceToCrop(
       fingerprints.get(pair.left),
       fingerprints.get(pair.right),
       {

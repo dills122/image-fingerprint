@@ -53,3 +53,8 @@ pnpm crop-local:retrieval:develop -- \
 
 The TypeScript code, profiles, persisted shapes, and retrieval index remain internal experiments.
 None are exported from the package root.
+
+Final verification is directional: call `compareCropLocalSourceToCrop(source, crop)` even when a
+crop-query retrieval index found the source candidate. `match` means the aligned pixels are visually
+consistent; it is not proof of item identity for template-only crops. See
+[`docs/architecture/0005-crop-local-experiment-contract.md`](../../docs/architecture/0005-crop-local-experiment-contract.md).
