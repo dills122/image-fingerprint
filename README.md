@@ -1,5 +1,12 @@
 # image-fingerprint
 
+[![npm version](https://img.shields.io/npm/v/image-fingerprint?logo=npm)](https://www.npmjs.com/package/image-fingerprint)
+[![npm downloads](https://img.shields.io/npm/dm/image-fingerprint?logo=npm)](https://www.npmjs.com/package/image-fingerprint)
+[![CI](https://github.com/dills122/image-fingerprint/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/dills122/image-fingerprint/actions/workflows/ci.yml?query=branch%3Amain)
+[![CodeQL](https://github.com/dills122/image-fingerprint/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/dills122/image-fingerprint/actions/workflows/codeql.yml?query=branch%3Amain)
+[![Node.js](https://img.shields.io/node/v/image-fingerprint?logo=node.js)](https://www.npmjs.com/package/image-fingerprint)
+[![License](https://img.shields.io/npm/l/image-fingerprint)](./LICENSE)
+
 A versioned image-fingerprinting library with a runtime-neutral pixel core, Node.js and browser
 image adapters, PDQ matching tools, and exact migration support for hashes created by
 [`image-hash@7`](https://github.com/danm/image-hash).
@@ -173,9 +180,9 @@ rights boundary, and exact-printing limitations.
 ## Decode once, fingerprint many
 
 Node and browser adapters implement the same runtime-neutral decoder contract from
-`image-fingerprint/core`. Both return tightly packed, oriented, sRGB, straight-alpha RGBA8 pixels. The Node
-adapter accepts a path, `file:` URL, or encoded `Uint8Array`; the browser adapter accepts `Blob`,
-`File`, or `ImageData`. Remote URL fetching is not part of the new API.
+`image-fingerprint/core`. Both return tightly packed, oriented, sRGB, straight-alpha RGBA8 pixels.
+The Node adapter accepts a path, `file:` URL, or encoded `Uint8Array`; the browser adapter accepts
+`Blob`, `File`, or `ImageData`. Remote URL fetching is not part of the new API.
 
 ```typescript
 import {
@@ -336,9 +343,8 @@ write token is stored in GitHub. Update the version in `package.json`, merge tha
 matching tag such as `v0.1.0`. The release workflow verifies the tag and package, publishes through
 OIDC with automatic provenance, and creates a GitHub release containing the npm tarball.
 
-Because npm requires an existing package before its trusted publisher can be configured, follow the
-[one-time trusted-publishing bootstrap](./docs/modernization/trusted-publishing-bootstrap.md) for
-`0.1.0-rc.0`. Complete the
+The [trusted-publishing bootstrap](./docs/modernization/trusted-publishing-bootstrap.md) is complete:
+`0.1.0-rc.1` was published through GitHub Actions with npm provenance. Complete the remaining
 [0.1.0 release checklist](./docs/modernization/release-notes-0.1.0.md#release-checklist) before
 creating the stable tag.
 

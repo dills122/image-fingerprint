@@ -4,10 +4,10 @@ All notable changes to `image-fingerprint` are documented here.
 
 ## 0.1.0 - Unreleased
 
-Planned release candidates:
+Release candidates:
 
-- `0.1.0-rc.0` claims the npm package under the `next` tag through a one-time manual publish.
-- `0.1.0-rc.1` validates GitHub Actions trusted publishing before the stable release.
+- `0.1.0-rc.0` claimed the npm package under the `next` tag through a one-time manual publish.
+- `0.1.0-rc.1` validated GitHub Actions trusted publishing and npm provenance.
 
 - Initial public release.
 - Add versioned `blockhash-v1` and `pdq-v1` fingerprints.

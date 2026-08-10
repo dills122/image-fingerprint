@@ -1,6 +1,6 @@
 {
   "name": "image-fingerprint",
-  "version": "0.1.0-rc.1",
+  "version": "0.1.0",
   "description": "Deterministic, versioned image fingerprints for Node.js and browsers",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
