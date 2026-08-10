@@ -1,7 +1,7 @@
 # Crop-Local v0 Oracle Results
 
-Status: oracle and pure-TypeScript experiment go; public profile remains blocked
-Updated: 2026-08-09
+Status: internal experiment remains useful; public profile blocked by independent calibration
+Updated: 2026-08-10
 Baseline: `a93b564e18e4121d28dfe2e5661e83d110ac2bde`
 
 ## Decision
@@ -210,16 +210,63 @@ the 16-bit profile slightly, while aggressive suppression of common 8-bit tokens
 The candidate recall@200 pilot gate passed, but a 50-reference index is much too small to predict
 million-scale selectivity, memory, or latency.
 
+## Independent Calibration
+
+A source-disjoint calibration corpus was built without changing the frozen fingerprint,
+geometry, or verification policy. It contains 500 sources—100 each for photographs, portraits,
+documents, screenshots, and card layouts—and three deterministic crops per source for 1,500
+positive transformations. The 300 Commons sources exclude both development corpora by page ID and
+pixel SHA-256; the 200 generated sources use a new style-3 screenshot/card generator and a separate
+seed range. Source pixels remain local-only.
+
+The calibration evaluated all 124,750 unrelated original pairs plus 19,800 asymmetric
+same-template screenshot and card-layout hard negatives. This produced 144,550 negatives and one
+locked policy evaluation; no thresholds were swept or reselected.
+
+The frozen TypeScript policy produced:
+
+- 605 true positives and 895 false negatives: 40.3% recall;
+- 1,405 reported false positives and 143,145 true negatives: 0.972% observed false-positive rate;
+- 30.1% precision under this deliberately template-heavy negative population;
+- 50.2% geometry recall at a 3.82% negative-consensus rate;
+- 65.7% photograph, 57.0% portrait, 13.0% document, 65.3% screenshot, and 0.7% card-layout recall.
+
+The final false-positive rate exceeded the predeclared 0.5% maximum, and the geometry stage exceeded
+its 3% maximum. The independent gate therefore failed. Card layouts also remained below the 10%
+domain guardrail. This result blocks a public crop-local profile and must not be repaired by tuning
+thresholds on the calibration corpus.
+
+Of the 1,405 reported false positives, 738 were card-layout pairs, 666 were screenshot pairs, and
+one was a photograph pair. A manual label audit found that the photograph pair contains two
+near-duplicate sunset photographs from the same Solamachi viewpoint with almost identical city
+geometry. It is related visual content despite having distinct Commons page IDs. Treating it as
+label noise leaves 1,404 genuine same-template failures and does not change the failed decision.
+The template failures were concentrated in asymmetric-to-asymmetric comparisons (1,351/1,405),
+confirming that retained shared chrome can overwhelm item-specific content.
+
+The independent run measured:
+
+- generation p50/p95: 116.73/416.27 ms across 2,000 fingerprints;
+- locked comparison p50/p95: 1.70/2.52 ms across 146,050 pairs;
+- serialized fingerprint p50/p95: 34,716/39,442 bytes;
+- retained features p50/p95: 128/128.
+
+Retrieval calibration was not run after the quality gate failed. The next algorithmic work must add
+an item-specific signal or an explicit product-level template ambiguity policy; scaling the current
+retrieval index would not correct the verifier's false positives.
+
 Before any public proposal:
 
-1. build a genuinely independent 500-source/1,500-transformation calibration corpus;
-2. measure retrieval on a realistically large reference collection;
-3. further reduce generation time and serialized size under predeclared budgets;
-4. expand exact runtime fixtures beyond one procedural image;
-5. define source/crop ordering, symmetric lookup behavior, a bounded persisted representation, and
-   allocation limits;
-6. obtain maintainer approval for product semantics around insufficient evidence and template-only
-   card crops.
+1. add and independently validate an item-specific signal for template-only crops, or explicitly
+   exclude item identity from the supported product semantics;
+2. record related-source labels so near-duplicate source files are not automatically counted as
+   unrelated negatives;
+3. measure retrieval on a realistically large reference collection only after the quality gate can
+   pass without calibration-set threshold changes;
+4. further reduce generation time and serialized size under predeclared budgets;
+5. expand exact runtime fixtures beyond one procedural image;
+6. define a bounded persisted representation separately from the accepted in-memory validation
+   limits.
 
 Retained evidence:
 
@@ -232,3 +279,4 @@ Retained evidence:
 - [`benchmarks/crop-local/retrieval-development-node22-2026-08-09.json`](../../benchmarks/crop-local/retrieval-development-node22-2026-08-09.json)
 - [`benchmarks/crop-local/browser-exactness-node22-2026-08-09.json`](../../benchmarks/crop-local/browser-exactness-node22-2026-08-09.json)
 - [`benchmarks/crop-local/performance-optimization-node22-2026-08-09.json`](../../benchmarks/crop-local/performance-optimization-node22-2026-08-09.json)
+- [`benchmarks/crop-local/independent-calibration-node22-2026-08-10.json`](../../benchmarks/crop-local/independent-calibration-node22-2026-08-10.json)

@@ -51,6 +51,47 @@ pnpm crop-local:retrieval:develop -- \
   --output benchmarks/crop-local/retrieval-development.json
 ```
 
+Prepare the independent calibration gate outside the repository after both 50-source development
+manifests are available:
+
+```sh
+pnpm crop-local:calibration:prepare -- \
+  --output /outside-repository/crop-local-calibration-v1 \
+  --exclude-evidence benchmarks/crop-local/typescript-development-node22-2026-08-09.json \
+  --exclude-evidence benchmarks/crop-local/typescript-locked-source-disjoint-node22-2026-08-09.json
+```
+
+The builder is fixed at 100 sources in each of five domains (500 total) and records three
+deterministic crops per source (1,500 transformations). It rejects page IDs, generated identities,
+and pixel SHA-256 values found in either development evidence set. The builder also accepts
+`--exclude-manifest` when the original local manifest is still available. Commons selections retain their
+license/provenance metadata; screenshot and card-layout sources use a new deterministic style-3
+generator. Downloads are resumable through a local progress file, and the output path is required
+to remain outside the repository.
+
+Evaluate only the already-locked policy, then measure retrieval without selecting new thresholds:
+
+```sh
+pnpm crop-local:calibration -- \
+  --manifest /outside-repository/crop-local-calibration-v1/manifest.json \
+  --output /outside-repository/crop-local-calibration-v1/quality-summary.json
+pnpm crop-local:calibration:retrieval -- \
+  --manifest /outside-repository/crop-local-calibration-v1/manifest.json \
+  --output /outside-repository/crop-local-calibration-v1/retrieval-summary.json
+```
+
+Retain a provenance-complete report without every repeated false-positive row:
+
+```sh
+pnpm crop-local:calibration:compact -- \
+  --input /outside-repository/crop-local-calibration-v1/quality-summary.json \
+  --output benchmarks/crop-local/independent-calibration-node22-2026-08-10.json
+```
+
+The independent 2026-08-10 run failed the frozen quality gate, so retrieval calibration was not
+run. See [`docs/modernization/crop-local-v0-results.md`](../../docs/modernization/crop-local-v0-results.md)
+for the decision and failure analysis.
+
 The TypeScript code, profiles, persisted shapes, and retrieval index remain internal experiments.
 None are exported from the package root.
 

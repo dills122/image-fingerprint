@@ -64,7 +64,8 @@ responsible for deciding whether visual sameness is sufficient for its product c
 Before a public crop-local proposal:
 
 1. obtain maintainer approval for these source/crop and tri-state semantics;
-2. build the independent 500-source/1,500-transformation calibration corpus;
+2. build the independent 500-source/1,500-transformation calibration corpus with the repository's
+   source-disjoint, local-only corpus builder;
 3. measure retrieval with a realistically large reference collection;
 4. meet predeclared generation-time, serialized-size, and allocation budgets;
 5. expand exact browser and worker fixtures beyond one procedural image;
