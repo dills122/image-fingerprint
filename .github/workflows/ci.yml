@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ main, "codex/**" ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
   schedule:
@@ -14,17 +14,68 @@ permissions:
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  changes:
+    name: Classify changes
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      quality: ${{ steps.paths.outputs.quality }}
+      dependencies: ${{ steps.paths.outputs.dependencies }}
+      package: ${{ steps.paths.outputs.package }}
+      oracle: ${{ steps.paths.outputs.oracle }}
+      browser: ${{ steps.paths.outputs.browser }}
+      site: ${{ steps.paths.outputs.site }}
+
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+        persist-credentials: false
+
+    - name: Classify changed paths
+      id: paths
+      shell: bash
+      env:
+        EVENT_NAME: ${{ github.event_name }}
+        BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      run: |
+        set -euo pipefail
+        if [[ "$EVENT_NAME" != "pull_request" && "$EVENT_NAME" != "push" ]] \
+          || [[ -z "$BASE_SHA" || "$BASE_SHA" =~ ^0+$ ]]; then
+          .github/scripts/classify-ci-paths.sh --all >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+
+        if [[ "$EVENT_NAME" == "pull_request" ]]; then
+          git diff --name-only --diff-filter=ACMRD "$BASE_SHA...$HEAD_SHA" \
+            > "$RUNNER_TEMP/changed-paths.txt"
+        else
+          git diff --name-only --diff-filter=ACMRD "$BASE_SHA" "$HEAD_SHA" \
+            > "$RUNNER_TEMP/changed-paths.txt"
+        fi
+        .github/scripts/classify-ci-paths.sh "$RUNNER_TEMP/changed-paths.txt" \
+          >> "$GITHUB_OUTPUT"
+
   verify:
-    name: Verify (Node.js ${{ matrix.node-version }})
+    name: Verify (${{ matrix.profile }})
+    needs: changes
+    if: needs.changes.outputs.quality == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
-        node-version: [22, 24]
+        include:
+          - node-version: 22
+            profile: Node.js 22 compatibility
+            coverage: false
+          - node-version: 24
+            profile: Node.js 24 quality
+            coverage: true
 
     steps:
     - uses: actions/checkout@v6
@@ -45,16 +96,23 @@ jobs:
       run: pnpm install --frozen-lockfile
 
     - name: Lint
+      if: matrix.coverage
       run: pnpm lint
 
     - name: Typecheck
+      if: matrix.coverage
       run: pnpm typecheck
 
+    - name: Run offline tests
+      if: ${{ !matrix.coverage }}
+      run: pnpm test
+
     - name: Run offline tests with coverage
+      if: matrix.coverage
       run: pnpm test:coverage
 
     - name: Upload coverage report
-      if: matrix.node-version == 24
+      if: matrix.coverage
       uses: actions/upload-artifact@v7
       with:
         name: coverage-node-24
@@ -62,8 +120,10 @@ jobs:
         if-no-files-found: error
         retention-days: 14
 
-  package-integrity:
-    name: Package integrity
+  dependency-audit:
+    name: Dependency audit
+    needs: changes
+    if: needs.changes.outputs.dependencies == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -88,6 +148,31 @@ jobs:
     - name: Audit locked dependencies
       run: pnpm audit --audit-level=high
 
+  package-integrity:
+    name: Package integrity
+    needs: changes
+    if: needs.changes.outputs.package == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        persist-credentials: false
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+
+    - name: Use Node.js 24.x
+      uses: actions/setup-node@v6
+      with:
+        node-version: 24.x
+        cache: 'pnpm'
+        cache-dependency-path: pnpm-lock.yaml
+
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+
     - name: Verify the built CommonJS package
       run: pnpm test:package
 
@@ -96,6 +181,8 @@ jobs:
 
   pdq-oracle-conformance:
     name: PDQ oracle conformance (Linux arm64)
+    needs: changes
+    if: needs.changes.outputs.oracle == 'true'
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 15
 
@@ -110,7 +197,15 @@ jobs:
         node-version: 24.x
         package-manager-cache: false
 
+    - name: Restore the pinned oracle build
+      id: oracle-cache
+      uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      with:
+        path: ${{ runner.temp }}/pdq-oracle-build/pdq-oracle
+        key: pdq-oracle-${{ runner.os }}-${{ runner.arch }}-clang18-${{ hashFiles('scripts/build-pdq-oracle.sh', 'tools/pdq-oracle/main.cpp') }}
+
     - name: Build the pinned C++ oracle
+      if: steps.oracle-cache.outputs.cache-hit != 'true'
       run: ./scripts/build-pdq-oracle.sh --output "$RUNNER_TEMP/pdq-oracle-build"
       env:
         PDQ_ORACLE_CXX: clang++-18
@@ -134,6 +229,8 @@ jobs:
 
   browser-conformance:
     name: Browser and worker conformance
+    needs: changes
+    if: needs.changes.outputs.browser == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -160,3 +257,78 @@ jobs:
 
     - name: Verify packed browser and worker behavior
       run: pnpm test:browser
+
+  site-build:
+    name: Project site build
+    needs: changes
+    if: needs.changes.outputs.site == 'true' && github.event_name != 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        persist-credentials: false
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+
+    - name: Use Node.js 24.x
+      uses: actions/setup-node@v6
+      with:
+        node-version: 24.x
+        cache: 'pnpm'
+        cache-dependency-path: pnpm-lock.yaml
+
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+
+    - name: Build the project site
+      run: pnpm --dir site build
+
+  required:
+    # Public branch-protection contract. Do not rename this job without following
+    # .github/REQUIRED_CHECKS.md's migration procedure.
+    name: Required CI
+    if: always()
+    needs:
+      - changes
+      - verify
+      - dependency-audit
+      - package-integrity
+      - pdq-oracle-conformance
+      - browser-conformance
+      - site-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+    - name: Enforce applicable CI results
+      shell: bash
+      env:
+        CHANGES_RESULT: ${{ needs.changes.result }}
+        VERIFY_RESULT: ${{ needs.verify.result }}
+        DEPENDENCY_AUDIT_RESULT: ${{ needs.dependency-audit.result }}
+        PACKAGE_INTEGRITY_RESULT: ${{ needs.package-integrity.result }}
+        ORACLE_RESULT: ${{ needs.pdq-oracle-conformance.result }}
+        BROWSER_RESULT: ${{ needs.browser-conformance.result }}
+        SITE_RESULT: ${{ needs.site-build.result }}
+      run: |
+        set -euo pipefail
+        if [[ "$CHANGES_RESULT" != "success" ]]; then
+          echo "Change classification did not succeed: $CHANGES_RESULT" >&2
+          exit 1
+        fi
+
+        for result in \
+          "$VERIFY_RESULT" \
+          "$DEPENDENCY_AUDIT_RESULT" \
+          "$PACKAGE_INTEGRITY_RESULT" \
+          "$ORACLE_RESULT" \
+          "$BROWSER_RESULT" \
+          "$SITE_RESULT"; do
+          if [[ "$result" != "success" && "$result" != "skipped" ]]; then
+            echo "An applicable CI job did not succeed: $result" >&2
+            exit 1
+          fi
+        done

@@ -67,7 +67,17 @@ if [ -z "$SOURCE_DIRECTORY" ]; then
   SOURCE_DIRECTORY="$OUTPUT_DIRECTORY/ThreatExchange"
   git init --quiet "$SOURCE_DIRECTORY"
   git -C "$SOURCE_DIRECTORY" remote add origin "$REFERENCE_REPOSITORY"
-  git -C "$SOURCE_DIRECTORY" fetch --quiet --depth 1 origin "$REFERENCE_COMMIT"
+  git -C "$SOURCE_DIRECTORY" sparse-checkout init --cone
+  git -C "$SOURCE_DIRECTORY" sparse-checkout set \
+    pdq/cpp/common \
+    pdq/cpp/downscaling \
+    pdq/cpp/hashing
+  git -C "$SOURCE_DIRECTORY" fetch \
+    --quiet \
+    --depth 1 \
+    --filter=tree:0 \
+    origin \
+    "$REFERENCE_COMMIT"
   git -C "$SOURCE_DIRECTORY" checkout --quiet --detach FETCH_HEAD
 else
   SOURCE_DIRECTORY=$(CDPATH='' cd -P -- "$SOURCE_DIRECTORY" && pwd -P)

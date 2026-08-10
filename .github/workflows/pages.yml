@@ -6,7 +6,6 @@ on:
     paths:
       - ".github/workflows/pages.yml"
       - "site/**"
-      - "package.json"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
   workflow_dispatch:
@@ -52,7 +51,7 @@ jobs:
         env:
           SITE_URL: ${{ vars.SITE_URL || format('https://{0}.github.io/{1}', github.repository_owner, github.event.repository.name) }}
           SITE_BASE: ${{ vars.SITE_BASE || format('/{0}', github.event.repository.name) }}
-        run: pnpm site:build
+        run: pnpm --dir site build
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
