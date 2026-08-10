@@ -1,0 +1,5 @@
+name: Image Fingerprint CodeQL configuration
+
+# Benchmarks are local evaluation tools and are excluded from the published package.
+paths-ignore:
+  - "benchmarks/**"
