@@ -1,0 +1,1832 @@
+{
+  "profileVersion": 1,
+  "study": "crop-local-v0-akaze-locked-source-disjoint",
+  "lockedEvaluation": true,
+  "developmentCorpus": "mixed-domain-crop-local-source-disjoint-v1",
+  "sourceManifest": "/private/tmp/image-fingerprint-crop-local-source-disjoint-20260809/manifest.json",
+  "manifestSha256": "561144d5fd3dc59a213ec2aaeca9786f4ba0351bf89be2e69fb029098ee1533a",
+  "environment": {
+    "python": "3.12.13",
+    "opencv": "4.12.0",
+    "numpy": "2.2.6",
+    "platform": "macOS-26.5.2-arm64-arm-64bit"
+  },
+  "counts": {
+    "sourceImages": 50,
+    "positivePairs": 150,
+    "negativePairs": 3675
+  },
+  "bounds": {
+    "maximumDimension": 768,
+    "maximumFeatures": 384,
+    "gridSide": 6,
+    "maximumFeaturesPerCell": 16
+  },
+  "sourceProvenance": [
+    {
+      "id": "photograph-commons-97402428",
+      "domain": "photograph",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Gustave Courbet - Spring Landscape - 1928.64.1 - Reading Public Museum.jpg",
+      "pageId": 97402428,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Gustave_Courbet_-_Spring_Landscape_-_1928.64.1_-_Reading_Public_Museum.jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Gustave_Courbet_-_Spring_Landscape_-_1928.64.1_-_Reading_Public_Museum.jpg/960px-Gustave_Courbet_-_Spring_Landscape_-_1928.64.1_-_Reading_Public_Museum.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=landscape+photograph+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=150",
+      "width": 900,
+      "height": 644,
+      "byteLength": 222833,
+      "sha256": "72b839dbf252fd28f924e1044423c4d987baade4851520d1f28a14a3d96c1b5f",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "photograph-commons-97386847",
+      "domain": "photograph",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Theodore Gerard - Landscape with Cattle - 1926.89.1 - Reading Public Museum.jpg",
+      "pageId": 97386847,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Theodore_Gerard_-_Landscape_with_Cattle_-_1926.89.1_-_Reading_Public_Museum.jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Theodore_Gerard_-_Landscape_with_Cattle_-_1926.89.1_-_Reading_Public_Museum.jpg/960px-Theodore_Gerard_-_Landscape_with_Cattle_-_1926.89.1_-_Reading_Public_Museum.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=landscape+photograph+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=200",
+      "width": 900,
+      "height": 568,
+      "byteLength": 142820,
+      "sha256": "2b0e4693df2af9772432d2bc996e63b2d994140b68fca36238a47308c042af9d",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "photograph-commons-97598778",
+      "domain": "photograph",
+      "sourceType": "wikimedia-commons",
+      "title": "File:John Heyl Raser - Pastoral Landscape - 1925.158.1 - Reading Public Museum.jpg",
+      "pageId": 97598778,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:John_Heyl_Raser_-_Pastoral_Landscape_-_1925.158.1_-_Reading_Public_Museum.jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/John_Heyl_Raser_-_Pastoral_Landscape_-_1925.158.1_-_Reading_Public_Museum.jpg/960px-John_Heyl_Raser_-_Pastoral_Landscape_-_1925.158.1_-_Reading_Public_Museum.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=landscape+photograph+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=200",
+      "width": 900,
+      "height": 1033,
+      "byteLength": 198464,
+      "sha256": "6a793fa50fd2bd7031288f08f998b97e048663e318064e9223bee8d668392159",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "photograph-commons-118388049",
+      "domain": "photograph",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Fantastic Mountain Landscape - Tobias Verhaecht.jpg",
+      "pageId": 118388049,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Fantastic_Mountain_Landscape_-_Tobias_Verhaecht.jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Fantastic_Mountain_Landscape_-_Tobias_Verhaecht.jpg/960px-Fantastic_Mountain_Landscape_-_Tobias_Verhaecht.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=landscape+photograph+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=200",
+      "width": 900,
+      "height": 542,
+      "byteLength": 159078,
+      "sha256": "c69dbdb030c0db3c137965a6019afb9b00112cb19b82a32d64456ff505f71812",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "photograph-commons-15546711",
+      "domain": "photograph",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Les Tilleuls à Poissy.png",
+      "pageId": 15546711,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Les_Tilleuls_%C3%A0_Poissy.png",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Les_Tilleuls_%C3%A0_Poissy.png/960px-Les_Tilleuls_%C3%A0_Poissy.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=landscape+photograph+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=250",
+      "width": 900,
+      "height": 1128,
+      "byteLength": 2468150,
+      "sha256": "d7372819dbbe2a135177f927662a112e813480771be2b648c7df8cc175b9b244",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "photograph-commons-19142816",
+      "domain": "photograph",
+      "sourceType": "wikimedia-commons",
+      "title": "File:30 Doradus, Tarantula Nebula.jpg",
+      "pageId": 19142816,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:30_Doradus,_Tarantula_Nebula.jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/30_Doradus%2C_Tarantula_Nebula.jpg/960px-30_Doradus%2C_Tarantula_Nebula.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=landscape+photograph+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=250",
+      "width": 900,
+      "height": 720,
+      "byteLength": 310333,
+      "sha256": "33800dba2642e636fd0f41f935bdcd197c6a96590064c14909b7b2ebbd6f0ef0",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "photograph-commons-24622612",
+      "domain": "photograph",
+      "sourceType": "wikimedia-commons",
+      "title": "File:San Juan Valley.jpg",
+      "pageId": 24622612,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:San_Juan_Valley.jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/San_Juan_Valley.jpg/960px-San_Juan_Valley.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=landscape+photograph+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=250",
+      "width": 900,
+      "height": 598,
+      "byteLength": 202865,
+      "sha256": "5d859931b581576652fc2c044500f8893eb65ff929c508d61d4c50334a77b6de",
+      "license": "CC0",
+      "licenseURL": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "attributionRequired": false
+    },
+    {
+      "id": "photograph-commons-37045098",
+      "domain": "photograph",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Landscape of Granada Province, Andalusia, Spain.jpg",
+      "pageId": 37045098,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Landscape_of_Granada_Province,_Andalusia,_Spain.jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Landscape_of_Granada_Province%2C_Andalusia%2C_Spain.jpg/960px-Landscape_of_Granada_Province%2C_Andalusia%2C_Spain.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=landscape+photograph+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=250",
+      "width": 900,
+      "height": 609,
+      "byteLength": 223148,
+      "sha256": "75a8dddf61b6bbc86cf7b196b78e9ff68b7e392c8c832f8ee7299affad172c0e",
+      "license": "CC0",
+      "licenseURL": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "attributionRequired": false
+    },
+    {
+      "id": "photograph-commons-38778875",
+      "domain": "photograph",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Landscape snowy hills Heraklion.jpg",
+      "pageId": 38778875,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Landscape_snowy_hills_Heraklion.jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Landscape_snowy_hills_Heraklion.jpg/960px-Landscape_snowy_hills_Heraklion.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=landscape+photograph+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=250",
+      "width": 900,
+      "height": 599,
+      "byteLength": 198613,
+      "sha256": "e9adf5060aed8cf0f09f6a85fe8d869bfcdefacc5d919d45073098f09caa05ee",
+      "license": "CC0",
+      "licenseURL": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "attributionRequired": false
+    },
+    {
+      "id": "photograph-commons-39769712",
+      "domain": "photograph",
+      "sourceType": "wikimedia-commons",
+      "title": "File:NASA Unveils Celestial Fireworks as Official Hubble 25th Anniversary Image.jpg",
+      "pageId": 39769712,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:NASA_Unveils_Celestial_Fireworks_as_Official_Hubble_25th_Anniversary_Image.jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/NASA_Unveils_Celestial_Fireworks_as_Official_Hubble_25th_Anniversary_Image.jpg/960px-NASA_Unveils_Celestial_Fireworks_as_Official_Hubble_25th_Anniversary_Image.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=landscape+photograph+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=250",
+      "width": 900,
+      "height": 674,
+      "byteLength": 228266,
+      "sha256": "1cf0416716e543bf8466361589d9693a5a64eac31d3283833da45c0b73df5e4f",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "portrait-commons-52734",
+      "domain": "portrait",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Lange-MigrantMother02.jpg",
+      "pageId": 52734,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Lange-MigrantMother02.jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Lange-MigrantMother02.jpg/960px-Lange-MigrantMother02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=historical+portrait+photograph+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=150",
+      "width": 900,
+      "height": 1170,
+      "byteLength": 255383,
+      "sha256": "95b09023d7478eee8d245a3d8fe55bc2a88cf1f8bb680057230feccfca8738c5",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "portrait-commons-1485268",
+      "domain": "portrait",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Pedro II of Brazil - Brady-Handy.jpg",
+      "pageId": 1485268,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Pedro_II_of_Brazil_-_Brady-Handy.jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Pedro_II_of_Brazil_-_Brady-Handy.jpg/960px-Pedro_II_of_Brazil_-_Brady-Handy.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=historical+portrait+photograph+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=150",
+      "width": 900,
+      "height": 1207,
+      "byteLength": 200813,
+      "sha256": "63469a1176da0c3230d3b9c1201c01d405c9d48bf05cf433c0c480933b41cdb7",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "portrait-commons-1779614",
+      "domain": "portrait",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Manzanar portrait Toyo Miyatake 00100u.jpg",
+      "pageId": 1779614,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Manzanar_portrait_Toyo_Miyatake_00100u.jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Manzanar_portrait_Toyo_Miyatake_00100u.jpg/960px-Manzanar_portrait_Toyo_Miyatake_00100u.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=historical+portrait+photograph+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=150",
+      "width": 900,
+      "height": 1159,
+      "byteLength": 206049,
+      "sha256": "c2dde3b60bb43674ec4714e5b1030899c98992b4ed4f06fd37a59784f6e64a12",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "portrait-commons-2245759",
+      "domain": "portrait",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Allie Mae Burroughs print.jpg",
+      "pageId": 2245759,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Allie_Mae_Burroughs_print.jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Allie_Mae_Burroughs_print.jpg/960px-Allie_Mae_Burroughs_print.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=historical+portrait+photograph+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=150",
+      "width": 900,
+      "height": 1170,
+      "byteLength": 384430,
+      "sha256": "8747a30d250bc1d3397418fabd9a879bbb978badf3f829a588792179220c51ed",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "portrait-commons-2654475",
+      "domain": "portrait",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Renée Adorée.jpg",
+      "pageId": 2654475,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Ren%C3%A9e_Ador%C3%A9e.jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Ren%C3%A9e_Ador%C3%A9e.jpg/960px-Ren%C3%A9e_Ador%C3%A9e.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=historical+portrait+photograph+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=150",
+      "width": 900,
+      "height": 1264,
+      "byteLength": 179458,
+      "sha256": "9b7352c293a32907f3ccb61b93accba6302349c2c1f10dc2781d8ebd08d3fb6f",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "portrait-commons-2819412",
+      "domain": "portrait",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Lillian Gish-edit2.jpg",
+      "pageId": 2819412,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Lillian_Gish-edit2.jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Lillian_Gish-edit2.jpg/960px-Lillian_Gish-edit2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=historical+portrait+photograph+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=150",
+      "width": 900,
+      "height": 1162,
+      "byteLength": 190582,
+      "sha256": "bd8cdf1b66c3243d0c4120cd701800291d9e9167b367e663acd8491a7a6aebe7",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "portrait-commons-4604080",
+      "domain": "portrait",
+      "sourceType": "wikimedia-commons",
+      "title": "File:L-Assemblee-Nationale-Gillray.jpeg",
+      "pageId": 4604080,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:L-Assemblee-Nationale-Gillray.jpeg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/L-Assemblee-Nationale-Gillray.jpeg/960px-L-Assemblee-Nationale-Gillray.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=historical+portrait+photograph+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=150",
+      "width": 900,
+      "height": 648,
+      "byteLength": 386919,
+      "sha256": "f869c8ad1e0d315a69a3ba9d076336ee53216b7c2760ba6b1cb7fdc9f5b3def3",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "portrait-commons-5290768",
+      "domain": "portrait",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Louis Armstrong restored.jpg",
+      "pageId": 5290768,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Louis_Armstrong_restored.jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Louis_Armstrong_restored.jpg/960px-Louis_Armstrong_restored.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=historical+portrait+photograph+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=150",
+      "width": 900,
+      "height": 701,
+      "byteLength": 140980,
+      "sha256": "cf5b2c5b03e9b4a39d6e7186ad2caa8380f455a4d172c02b7618cdb279f87fc0",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "portrait-commons-6094200",
+      "domain": "portrait",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Bertha Lutz 1925.jpg",
+      "pageId": 6094200,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Bertha_Lutz_1925.jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Bertha_Lutz_1925.jpg/960px-Bertha_Lutz_1925.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=historical+portrait+photograph+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=150",
+      "width": 900,
+      "height": 1108,
+      "byteLength": 217220,
+      "sha256": "3c9399786bf7c361ae780397b3ad6990bdcb4749c8d9483af6cc86e7a8931a3c",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "portrait-commons-11088916",
+      "domain": "portrait",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Mary Lou Williams (Gottlieb 09231).jpg",
+      "pageId": 11088916,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Mary_Lou_Williams_(Gottlieb_09231).jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Mary_Lou_Williams_%28Gottlieb_09231%29.jpg/960px-Mary_Lou_Williams_%28Gottlieb_09231%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=historical+portrait+photograph+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=150",
+      "width": 900,
+      "height": 1199,
+      "byteLength": 281056,
+      "sha256": "b2b1e2aa2edfe6632a4fef54e3dd37f36e86866c1d2f1ae45062fce5824c6a3c",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "document-commons-116345388",
+      "domain": "document",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Iranian government document about Qazi Mohammad rebellion (2).jpg",
+      "pageId": 116345388,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Iranian_government_document_about_Qazi_Mohammad_rebellion_(2).jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/1/1f/Iranian_government_document_about_Qazi_Mohammad_rebellion_%282%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=scanned+document+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=150",
+      "width": 900,
+      "height": 1117,
+      "byteLength": 81338,
+      "sha256": "b0cbc0319984d75508e750d0a2700baa6a0f2883335285f41140836d229daa09",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "document-commons-116345390",
+      "domain": "document",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Iranian government document about Qazi Mohammad rebellion (4).jpg",
+      "pageId": 116345390,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Iranian_government_document_about_Qazi_Mohammad_rebellion_(4).jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/6/66/Iranian_government_document_about_Qazi_Mohammad_rebellion_%284%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=scanned+document+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=150",
+      "width": 900,
+      "height": 1284,
+      "byteLength": 99785,
+      "sha256": "9023bd0cd9e7aabbcd60b65153c5a493e5edd2622a803cb14719fe6d198e875d",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "document-commons-116345391",
+      "domain": "document",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Iranian government document about Qazi Mohammad rebellion (5).jpg",
+      "pageId": 116345391,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Iranian_government_document_about_Qazi_Mohammad_rebellion_(5).jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/6/6d/Iranian_government_document_about_Qazi_Mohammad_rebellion_%285%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=scanned+document+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=150",
+      "width": 900,
+      "height": 1012,
+      "byteLength": 93791,
+      "sha256": "a378047da604361ee0d81082957c0c11b8e9a9883d83b1d6d712f205145f2e8a",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "document-commons-116345395",
+      "domain": "document",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Iranian government document about Qazi Mohammad rebellion (7).jpg",
+      "pageId": 116345395,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Iranian_government_document_about_Qazi_Mohammad_rebellion_(7).jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/2/20/Iranian_government_document_about_Qazi_Mohammad_rebellion_%287%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=scanned+document+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=150",
+      "width": 900,
+      "height": 948,
+      "byteLength": 86477,
+      "sha256": "6308d60c54dd15c60891213ae861e6dc3cefaa50af94804c501feada2574bd0c",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "document-commons-116345397",
+      "domain": "document",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Iranian government document about Qazi Mohammad rebellion (9).jpg",
+      "pageId": 116345397,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Iranian_government_document_about_Qazi_Mohammad_rebellion_(9).jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/8/83/Iranian_government_document_about_Qazi_Mohammad_rebellion_%289%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=scanned+document+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=150",
+      "width": 900,
+      "height": 1180,
+      "byteLength": 181700,
+      "sha256": "e2a1c775ef2a153e4691de5970e4d866cece11f728668e2aede776b69c0a705b",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "document-commons-116345413",
+      "domain": "document",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Iranian government document about Qazi Mohammad rebellion (10).jpg",
+      "pageId": 116345413,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Iranian_government_document_about_Qazi_Mohammad_rebellion_(10).jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/6/6e/Iranian_government_document_about_Qazi_Mohammad_rebellion_%2810%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=scanned+document+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=150",
+      "width": 900,
+      "height": 1156,
+      "byteLength": 105836,
+      "sha256": "a8ed6925d07a3a3734d636b036180dc39bcdfe4ca4d5e10b27afcc68fda55679",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "document-commons-116345414",
+      "domain": "document",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Iranian government document about Qazi Mohammad rebellion (12).jpg",
+      "pageId": 116345414,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Iranian_government_document_about_Qazi_Mohammad_rebellion_(12).jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/f/fb/Iranian_government_document_about_Qazi_Mohammad_rebellion_%2812%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=scanned+document+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=150",
+      "width": 900,
+      "height": 989,
+      "byteLength": 66957,
+      "sha256": "5888f8da9a8b20fb8b7cc406507f030d90bdf34e289336c9f4ce4519c4f971ff",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "document-commons-116345423",
+      "domain": "document",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Iranian government document about Qazi Mohammad rebellion (14).jpg",
+      "pageId": 116345423,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Iranian_government_document_about_Qazi_Mohammad_rebellion_(14).jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Iranian_government_document_about_Qazi_Mohammad_rebellion_%2814%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=scanned+document+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=150",
+      "width": 900,
+      "height": 1242,
+      "byteLength": 89742,
+      "sha256": "4b2247fbd09078d19c4c222347b64c0a6d9a00585ff9e3af23f1a6d0edc7b2f6",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "document-commons-116345425",
+      "domain": "document",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Iranian government document about Qazi Mohammad rebellion (16).jpg",
+      "pageId": 116345425,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Iranian_government_document_about_Qazi_Mohammad_rebellion_(16).jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/6/6c/Iranian_government_document_about_Qazi_Mohammad_rebellion_%2816%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=scanned+document+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=150",
+      "width": 900,
+      "height": 1431,
+      "byteLength": 208191,
+      "sha256": "17643fc0a869fda1e6b36a72c888a757e8c22e007151efdd0fe5eb4e60df518f",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "document-commons-116345426",
+      "domain": "document",
+      "sourceType": "wikimedia-commons",
+      "title": "File:Iranian government document about Qazi Mohammad rebellion (17).jpg",
+      "pageId": 116345426,
+      "descriptionURL": "https://commons.wikimedia.org/wiki/File:Iranian_government_document_about_Qazi_Mohammad_rebellion_(17).jpg",
+      "imageURL": "https://upload.wikimedia.org/wikipedia/commons/b/b3/Iranian_government_document_about_Qazi_Mohammad_rebellion_%2817%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "apiQueryURL": "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=scanned+document+public+domain&gsrnamespace=6&gsrlimit=50&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlwidth=900&format=json&formatversion=2&gsroffset=150",
+      "width": 900,
+      "height": 1239,
+      "byteLength": 45648,
+      "sha256": "018da7e7d1a679f7f27c3d653bb5d47d81acae26ee3737b12fa752354ebb0770",
+      "license": "Public domain",
+      "licenseURL": null,
+      "attributionRequired": false
+    },
+    {
+      "id": "screenshot-generated-style2-100",
+      "domain": "screenshot",
+      "sourceType": "deterministic-generated",
+      "title": "screenshot deterministic fixture 100",
+      "byteLength": 5294,
+      "sha256": "8498d46c35e027c4a247067dff0bbd1e905555961f39e80923ce81c083e10efe",
+      "license": "CC0-1.0",
+      "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "attributionRequired": false,
+      "generator": "benchmarks/crop-block/prepare-mixed-corpus.mjs",
+      "seed": 100,
+      "style": 2
+    },
+    {
+      "id": "screenshot-generated-style2-101",
+      "domain": "screenshot",
+      "sourceType": "deterministic-generated",
+      "title": "screenshot deterministic fixture 101",
+      "byteLength": 5264,
+      "sha256": "e5d934c6cb3cffc668a35bae7eb8571dd3c9391c9349a0bbe2958bceb2e2f5a5",
+      "license": "CC0-1.0",
+      "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "attributionRequired": false,
+      "generator": "benchmarks/crop-block/prepare-mixed-corpus.mjs",
+      "seed": 101,
+      "style": 2
+    },
+    {
+      "id": "screenshot-generated-style2-102",
+      "domain": "screenshot",
+      "sourceType": "deterministic-generated",
+      "title": "screenshot deterministic fixture 102",
+      "byteLength": 5296,
+      "sha256": "3350565022ed4e28a50853e5f83d1b3d29ae1906a78f2ec667a13224b521ef2e",
+      "license": "CC0-1.0",
+      "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "attributionRequired": false,
+      "generator": "benchmarks/crop-block/prepare-mixed-corpus.mjs",
+      "seed": 102,
+      "style": 2
+    },
+    {
+      "id": "screenshot-generated-style2-103",
+      "domain": "screenshot",
+      "sourceType": "deterministic-generated",
+      "title": "screenshot deterministic fixture 103",
+      "byteLength": 5285,
+      "sha256": "e06203584a7328e363f60f2856fb0c2207c07142b19e95ac0013c8f6ae840b59",
+      "license": "CC0-1.0",
+      "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "attributionRequired": false,
+      "generator": "benchmarks/crop-block/prepare-mixed-corpus.mjs",
+      "seed": 103,
+      "style": 2
+    },
+    {
+      "id": "screenshot-generated-style2-104",
+      "domain": "screenshot",
+      "sourceType": "deterministic-generated",
+      "title": "screenshot deterministic fixture 104",
+      "byteLength": 5294,
+      "sha256": "b2dfba17b46d10fad96ffc5789da9ee742fbe5f565d0b36c7cb60cac8c33fcd8",
+      "license": "CC0-1.0",
+      "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "attributionRequired": false,
+      "generator": "benchmarks/crop-block/prepare-mixed-corpus.mjs",
+      "seed": 104,
+      "style": 2
+    },
+    {
+      "id": "screenshot-generated-style2-105",
+      "domain": "screenshot",
+      "sourceType": "deterministic-generated",
+      "title": "screenshot deterministic fixture 105",
+      "byteLength": 5300,
+      "sha256": "669ea1afb056588653462ea8965caf10323bc5c3e89bc4528681064e967d3f2a",
+      "license": "CC0-1.0",
+      "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "attributionRequired": false,
+      "generator": "benchmarks/crop-block/prepare-mixed-corpus.mjs",
+      "seed": 105,
+      "style": 2
+    },
+    {
+      "id": "screenshot-generated-style2-106",
+      "domain": "screenshot",
+      "sourceType": "deterministic-generated",
+      "title": "screenshot deterministic fixture 106",
+      "byteLength": 5275,
+      "sha256": "dab0d1b9068f5ca9ebc36ad7db0d14e2d6def3034da1f6fc454472061c2fcc8c",
+      "license": "CC0-1.0",
+      "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "attributionRequired": false,
+      "generator": "benchmarks/crop-block/prepare-mixed-corpus.mjs",
+      "seed": 106,
+      "style": 2
+    },
+    {
+      "id": "screenshot-generated-style2-107",
+      "domain": "screenshot",
+      "sourceType": "deterministic-generated",
+      "title": "screenshot deterministic fixture 107",
+      "byteLength": 5297,
+      "sha256": "41cbee59c1151417896de625caaa0e08dcf46a1d16a3b7a7d33186a38979fed1",
+      "license": "CC0-1.0",
+      "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "attributionRequired": false,
+      "generator": "benchmarks/crop-block/prepare-mixed-corpus.mjs",
+      "seed": 107,
+      "style": 2
+    },
+    {
+      "id": "screenshot-generated-style2-108",
+      "domain": "screenshot",
+      "sourceType": "deterministic-generated",
+      "title": "screenshot deterministic fixture 108",
+      "byteLength": 5296,
+      "sha256": "86137d56e23ca219bcc2d06b4f30d5f4461ab898e69a515ccee821881fb91451",
+      "license": "CC0-1.0",
+      "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "attributionRequired": false,
+      "generator": "benchmarks/crop-block/prepare-mixed-corpus.mjs",
+      "seed": 108,
+      "style": 2
+    },
+    {
+      "id": "screenshot-generated-style2-109",
+      "domain": "screenshot",
+      "sourceType": "deterministic-generated",
+      "title": "screenshot deterministic fixture 109",
+      "byteLength": 5294,
+      "sha256": "cdee5b0031dd5a0763370fd590ea3e95d8d01af767a86b7bd83d6ad0d440bb43",
+      "license": "CC0-1.0",
+      "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "attributionRequired": false,
+      "generator": "benchmarks/crop-block/prepare-mixed-corpus.mjs",
+      "seed": 109,
+      "style": 2
+    },
+    {
+      "id": "card-layout-generated-style2-100",
+      "domain": "card-layout",
+      "sourceType": "deterministic-generated",
+      "title": "card-layout deterministic fixture 100",
+      "byteLength": 5262,
+      "sha256": "97481ef27b3cd70a0a6cdb36b445241190a8eae296a7958d4f1ce11b676a54b3",
+      "license": "CC0-1.0",
+      "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "attributionRequired": false,
+      "generator": "benchmarks/crop-block/prepare-mixed-corpus.mjs",
+      "seed": 100,
+      "style": 2
+    },
+    {
+      "id": "card-layout-generated-style2-101",
+      "domain": "card-layout",
+      "sourceType": "deterministic-generated",
+      "title": "card-layout deterministic fixture 101",
+      "byteLength": 5310,
+      "sha256": "b5006ed34bfff04f7d8ab886a8181f71e6076ce9929143061f786e3a38a86e9c",
+      "license": "CC0-1.0",
+      "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "attributionRequired": false,
+      "generator": "benchmarks/crop-block/prepare-mixed-corpus.mjs",
+      "seed": 101,
+      "style": 2
+    },
+    {
+      "id": "card-layout-generated-style2-102",
+      "domain": "card-layout",
+      "sourceType": "deterministic-generated",
+      "title": "card-layout deterministic fixture 102",
+      "byteLength": 5257,
+      "sha256": "ee2fb7664244d4bdbbf4ab3c8fa2c7dd3d98416d2a77022483d2d868efd39a17",
+      "license": "CC0-1.0",
+      "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "attributionRequired": false,
+      "generator": "benchmarks/crop-block/prepare-mixed-corpus.mjs",
+      "seed": 102,
+      "style": 2
+    },
+    {
+      "id": "card-layout-generated-style2-103",
+      "domain": "card-layout",
+      "sourceType": "deterministic-generated",
+      "title": "card-layout deterministic fixture 103",
+      "byteLength": 5303,
+      "sha256": "622a9a7bb3ae2ec64fde548b292110ed85bd5507bfebf710e7d2331ff18e6d4b",
+      "license": "CC0-1.0",
+      "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "attributionRequired": false,
+      "generator": "benchmarks/crop-block/prepare-mixed-corpus.mjs",
+      "seed": 103,
+      "style": 2
+    },
+    {
+      "id": "card-layout-generated-style2-104",
+      "domain": "card-layout",
+      "sourceType": "deterministic-generated",
+      "title": "card-layout deterministic fixture 104",
+      "byteLength": 5263,
+      "sha256": "8f06885c07a9c6e802bac83e5260b80315e388de86d50ae7d50ca201ef97f7cd",
+      "license": "CC0-1.0",
+      "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "attributionRequired": false,
+      "generator": "benchmarks/crop-block/prepare-mixed-corpus.mjs",
+      "seed": 104,
+      "style": 2
+    },
+    {
+      "id": "card-layout-generated-style2-105",
+      "domain": "card-layout",
+      "sourceType": "deterministic-generated",
+      "title": "card-layout deterministic fixture 105",
+      "byteLength": 5301,
+      "sha256": "d4a0729c0179165c1ef486ad84deabf892c3fb00ba4257e64b8b24f30844cefd",
+      "license": "CC0-1.0",
+      "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "attributionRequired": false,
+      "generator": "benchmarks/crop-block/prepare-mixed-corpus.mjs",
+      "seed": 105,
+      "style": 2
+    },
+    {
+      "id": "card-layout-generated-style2-106",
+      "domain": "card-layout",
+      "sourceType": "deterministic-generated",
+      "title": "card-layout deterministic fixture 106",
+      "byteLength": 5259,
+      "sha256": "db9a359ad397a8c8bfd78b2206660a3284a1334af0ef3352d379f466afd76b4e",
+      "license": "CC0-1.0",
+      "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "attributionRequired": false,
+      "generator": "benchmarks/crop-block/prepare-mixed-corpus.mjs",
+      "seed": 106,
+      "style": 2
+    },
+    {
+      "id": "card-layout-generated-style2-107",
+      "domain": "card-layout",
+      "sourceType": "deterministic-generated",
+      "title": "card-layout deterministic fixture 107",
+      "byteLength": 5303,
+      "sha256": "2202647736be3cc6b6a159b4fa9ad342fb364241f835359e76b00d1eb1f6ef5b",
+      "license": "CC0-1.0",
+      "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "attributionRequired": false,
+      "generator": "benchmarks/crop-block/prepare-mixed-corpus.mjs",
+      "seed": 107,
+      "style": 2
+    },
+    {
+      "id": "card-layout-generated-style2-108",
+      "domain": "card-layout",
+      "sourceType": "deterministic-generated",
+      "title": "card-layout deterministic fixture 108",
+      "byteLength": 5260,
+      "sha256": "e161c29496a5aff360875129c2279b856bde03bebb1e1cda9016acf552908453",
+      "license": "CC0-1.0",
+      "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "attributionRequired": false,
+      "generator": "benchmarks/crop-block/prepare-mixed-corpus.mjs",
+      "seed": 108,
+      "style": 2
+    },
+    {
+      "id": "card-layout-generated-style2-109",
+      "domain": "card-layout",
+      "sourceType": "deterministic-generated",
+      "title": "card-layout deterministic fixture 109",
+      "byteLength": 5300,
+      "sha256": "92d1213a9757b0a6879ed85d3313f0fd9d2bdae84bac303b5a707ee291a2a90f",
+      "license": "CC0-1.0",
+      "licenseURL": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "attributionRequired": false,
+      "generator": "benchmarks/crop-block/prepare-mixed-corpus.mjs",
+      "seed": 109,
+      "style": 2
+    }
+  ],
+  "methods": [
+    {
+      "method": "akaze",
+      "lockedProfile": {
+        "candidate": {
+          "maximumDistance": 48,
+          "ratio": 0.7
+        },
+        "geometry": {
+          "residualPermille": 6,
+          "minimumInliers": 4,
+          "minimumInlierRatio": 0.4,
+          "minimumZones": 2
+        },
+        "verification": {
+          "minimumInformativeCoverage": 0.05,
+          "minimumAgreement": 0.95,
+          "maximumContradiction": 0.02,
+          "minimumInformativeZones": 3
+        }
+      },
+      "resources": {
+        "generationMilliseconds": {
+          "count": 200,
+          "p50": 23.83587500662543,
+          "p95": 35.81708400452044,
+          "maximum": 44.63787499116734
+        },
+        "matchingMilliseconds": {
+          "count": 3825,
+          "p50": 0.4436250019352883,
+          "p95": 0.8439160010311753,
+          "maximum": 4.093624986126088
+        },
+        "geometryMilliseconds": {
+          "count": 3825,
+          "p50": 0.00037500285543501377,
+          "p95": 4.827416007174179,
+          "maximum": 18.38304199918639
+        },
+        "verificationMilliseconds": {
+          "count": 1891,
+          "p50": 24.08925000054296,
+          "p95": 85.34466600394808,
+          "maximum": 100.30629200628027
+        },
+        "groundTruthVerificationMilliseconds": {
+          "count": 150,
+          "p50": 23.98929200717248,
+          "p95": 93.79275000537746,
+          "maximum": 108.11070800991729
+        },
+        "featureCount": {
+          "count": 200,
+          "p50": 276,
+          "p95": 384,
+          "maximum": 384
+        }
+      },
+      "candidateGate": {
+        "minimumOverallCoverage": 0.35,
+        "minimumPerDomainCoverage": 0.2,
+        "pass": true,
+        "selectedProfile": {
+          "maximumDistance": 48,
+          "ratio": 0.7,
+          "truePositive": 147,
+          "falsePositive": 513,
+          "trueNegative": 3162,
+          "falseNegative": 3,
+          "precision": 0.22272727272727272,
+          "recall": 0.98,
+          "falsePositiveRate": 0.13959183673469389,
+          "positiveByDomain": {
+            "photograph": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "portrait": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "document": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "screenshot": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "card-layout": {
+              "truePositive": 27,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 3,
+              "precision": 1,
+              "recall": 0.9,
+              "falsePositiveRate": null
+            }
+          },
+          "negativeByDomainPair": {
+            "card-layout::card-layout": {
+              "truePositive": 0,
+              "falsePositive": 93,
+              "trueNegative": 42,
+              "falseNegative": 0,
+              "precision": 0,
+              "recall": null,
+              "falsePositiveRate": 0.6888888888888889
+            },
+            "card-layout::document": {
+              "truePositive": 0,
+              "falsePositive": 22,
+              "trueNegative": 278,
+              "falseNegative": 0,
+              "precision": 0,
+              "recall": null,
+              "falsePositiveRate": 0.07333333333333333
+            },
+            "card-layout::photograph": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "card-layout::portrait": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "card-layout::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 118,
+              "trueNegative": 182,
+              "falseNegative": 0,
+              "precision": 0,
+              "recall": null,
+              "falsePositiveRate": 0.3933333333333333
+            },
+            "document::document": {
+              "truePositive": 0,
+              "falsePositive": 124,
+              "trueNegative": 11,
+              "falseNegative": 0,
+              "precision": 0,
+              "recall": null,
+              "falsePositiveRate": 0.9185185185185185
+            },
+            "document::photograph": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "document::portrait": {
+              "truePositive": 0,
+              "falsePositive": 1,
+              "trueNegative": 299,
+              "falseNegative": 0,
+              "precision": 0,
+              "recall": null,
+              "falsePositiveRate": 0.0033333333333333335
+            },
+            "document::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 1,
+              "trueNegative": 299,
+              "falseNegative": 0,
+              "precision": 0,
+              "recall": null,
+              "falsePositiveRate": 0.0033333333333333335
+            },
+            "photograph::photograph": {
+              "truePositive": 0,
+              "falsePositive": 4,
+              "trueNegative": 131,
+              "falseNegative": 0,
+              "precision": 0,
+              "recall": null,
+              "falsePositiveRate": 0.02962962962962963
+            },
+            "photograph::portrait": {
+              "truePositive": 0,
+              "falsePositive": 7,
+              "trueNegative": 293,
+              "falseNegative": 0,
+              "precision": 0,
+              "recall": null,
+              "falsePositiveRate": 0.023333333333333334
+            },
+            "photograph::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "portrait::portrait": {
+              "truePositive": 0,
+              "falsePositive": 8,
+              "trueNegative": 127,
+              "falseNegative": 0,
+              "precision": 0,
+              "recall": null,
+              "falsePositiveRate": 0.05925925925925926
+            },
+            "portrait::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "screenshot::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 135,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 0,
+              "recall": null,
+              "falsePositiveRate": 1
+            }
+          }
+        },
+        "evaluatedProfiles": 1
+      },
+      "geometryGate": {
+        "minimumPositiveRecall": 0.3,
+        "maximumNegativeRate": 0.03,
+        "pass": true,
+        "selectedProfile": {
+          "residualPermille": 6,
+          "minimumInliers": 4,
+          "minimumInlierRatio": 0.4,
+          "minimumZones": 2,
+          "truePositive": 142,
+          "falsePositive": 107,
+          "trueNegative": 3568,
+          "falseNegative": 8,
+          "precision": 0.570281124497992,
+          "recall": 0.9466666666666667,
+          "falsePositiveRate": 0.0291156462585034,
+          "positiveByDomain": {
+            "photograph": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "portrait": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "document": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "screenshot": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "card-layout": {
+              "truePositive": 22,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 8,
+              "precision": 1,
+              "recall": 0.7333333333333333,
+              "falsePositiveRate": null
+            }
+          },
+          "negativeByDomainPair": {
+            "card-layout::card-layout": {
+              "truePositive": 0,
+              "falsePositive": 47,
+              "trueNegative": 88,
+              "falseNegative": 0,
+              "precision": 0,
+              "recall": null,
+              "falsePositiveRate": 0.34814814814814815
+            },
+            "card-layout::document": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "card-layout::photograph": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "card-layout::portrait": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "card-layout::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "document::document": {
+              "truePositive": 0,
+              "falsePositive": 6,
+              "trueNegative": 129,
+              "falseNegative": 0,
+              "precision": 0,
+              "recall": null,
+              "falsePositiveRate": 0.044444444444444446
+            },
+            "document::photograph": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "document::portrait": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "document::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "photograph::photograph": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 135,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "photograph::portrait": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "photograph::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "portrait::portrait": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 135,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "portrait::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "screenshot::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 54,
+              "trueNegative": 81,
+              "falseNegative": 0,
+              "precision": 0,
+              "recall": null,
+              "falsePositiveRate": 0.4
+            }
+          }
+        },
+        "evaluatedProfiles": 1
+      },
+      "finalDevelopmentDiagnostic": {
+        "maximumFalsePositiveRate": 0.005,
+        "minimumRecall": 0.2,
+        "domainGuardrail": "at least 10% recall in four of five domains",
+        "pass": true,
+        "bestEligibleProfile": {
+          "minimumInformativeCoverage": 0.05,
+          "minimumAgreement": 0.95,
+          "maximumContradiction": 0.02,
+          "minimumInformativeZones": 3,
+          "insufficientEvidencePositive": 1,
+          "insufficientEvidenceNegative": 0,
+          "truePositive": 119,
+          "falsePositive": 0,
+          "trueNegative": 3675,
+          "falseNegative": 31,
+          "precision": 1,
+          "recall": 0.7933333333333333,
+          "falsePositiveRate": 0,
+          "positiveByDomain": {
+            "photograph": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "portrait": {
+              "truePositive": 29,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 1,
+              "precision": 1,
+              "recall": 0.9666666666666667,
+              "falsePositiveRate": null
+            },
+            "document": {
+              "truePositive": 29,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 1,
+              "precision": 1,
+              "recall": 0.9666666666666667,
+              "falsePositiveRate": null
+            },
+            "screenshot": {
+              "truePositive": 23,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 7,
+              "precision": 1,
+              "recall": 0.7666666666666667,
+              "falsePositiveRate": null
+            },
+            "card-layout": {
+              "truePositive": 8,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 22,
+              "precision": 1,
+              "recall": 0.26666666666666666,
+              "falsePositiveRate": null
+            }
+          },
+          "negativeByDomainPair": {
+            "card-layout::card-layout": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 135,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "card-layout::document": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "card-layout::photograph": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "card-layout::portrait": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "card-layout::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "document::document": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 135,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "document::photograph": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "document::portrait": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "document::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "photograph::photograph": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 135,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "photograph::portrait": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "photograph::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "portrait::portrait": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 135,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "portrait::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "screenshot::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 135,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            }
+          }
+        },
+        "evaluatedProfiles": 1
+      },
+      "positiveTransformRecovery": {
+        "topFeatureModel": {
+          "overall": {
+            "truePositive": 149,
+            "falsePositive": 0,
+            "trueNegative": 0,
+            "falseNegative": 1,
+            "precision": 1,
+            "recall": 0.9933333333333333,
+            "falsePositiveRate": null
+          },
+          "positiveByDomain": {
+            "photograph": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "portrait": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "document": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "screenshot": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "card-layout": {
+              "truePositive": 29,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 1,
+              "precision": 1,
+              "recall": 0.9666666666666667,
+              "falsePositiveRate": null
+            }
+          }
+        },
+        "retainedFeatureModels": {
+          "overall": {
+            "truePositive": 149,
+            "falsePositive": 0,
+            "trueNegative": 0,
+            "falseNegative": 1,
+            "precision": 1,
+            "recall": 0.9933333333333333,
+            "falsePositiveRate": null
+          },
+          "positiveByDomain": {
+            "photograph": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "portrait": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "document": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "screenshot": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "card-layout": {
+              "truePositive": 29,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 1,
+              "precision": 1,
+              "recall": 0.9666666666666667,
+              "falsePositiveRate": null
+            }
+          }
+        },
+        "verificationSelectedModel": {
+          "overall": {
+            "truePositive": 149,
+            "falsePositive": 0,
+            "trueNegative": 0,
+            "falseNegative": 1,
+            "precision": 1,
+            "recall": 0.9933333333333333,
+            "falsePositiveRate": null
+          },
+          "positiveByDomain": {
+            "photograph": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "portrait": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "document": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "screenshot": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "card-layout": {
+              "truePositive": 29,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 1,
+              "precision": 1,
+              "recall": 0.9666666666666667,
+              "falsePositiveRate": null
+            }
+          }
+        }
+      },
+      "groundTruthTransformVerifier": {
+        "atSelectedFinalProfile": {
+          "overall": {
+            "truePositive": 147,
+            "falsePositive": 0,
+            "trueNegative": 0,
+            "falseNegative": 3,
+            "precision": 1,
+            "recall": 0.98,
+            "falsePositiveRate": null
+          },
+          "positiveByDomain": {
+            "photograph": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "portrait": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "document": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "screenshot": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "card-layout": {
+              "truePositive": 27,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 3,
+              "precision": 1,
+              "recall": 0.9,
+              "falsePositiveRate": null
+            }
+          }
+        },
+        "scoreByDomain": {
+          "photograph": {
+            "informativeCoverage": {
+              "count": 30,
+              "p50": 0.8823131533344514,
+              "p95": 0.9820175438596491,
+              "maximum": 0.9843949502380288
+            },
+            "agreement": {
+              "count": 30,
+              "p50": 0.9962296034218725,
+              "p95": 0.9993312781281137,
+              "maximum": 0.9999208557321758
+            },
+            "contradiction": {
+              "count": 30,
+              "p50": 0.00016527306783541251,
+              "p95": 0.0004741860888092083,
+              "maximum": 0.0007147003023398855
+            }
+          },
+          "portrait": {
+            "informativeCoverage": {
+              "count": 30,
+              "p50": 0.7649894608009791,
+              "p95": 0.979772347229149,
+              "maximum": 0.9898132746938814
+            },
+            "agreement": {
+              "count": 30,
+              "p50": 0.9972027093956876,
+              "p95": 0.9992855429074138,
+              "maximum": 0.9993038449180679
+            },
+            "contradiction": {
+              "count": 30,
+              "p50": 0.0001269003324788711,
+              "p95": 0.003806729377019628,
+              "maximum": 0.004181042744872532
+            }
+          },
+          "document": {
+            "informativeCoverage": {
+              "count": 30,
+              "p50": 0.20575359308488342,
+              "p95": 0.46513367299884156,
+              "maximum": 0.4769473219952453
+            },
+            "agreement": {
+              "count": 30,
+              "p50": 0.9967269071610595,
+              "p95": 1,
+              "maximum": 1
+            },
+            "contradiction": {
+              "count": 30,
+              "p50": 0.00012679822943563262,
+              "p95": 0.000779653726207119,
+              "maximum": 0.0021313786298280237
+            }
+          },
+          "screenshot": {
+            "informativeCoverage": {
+              "count": 30,
+              "p50": 0.15639423399955552,
+              "p95": 0.16411359858312488,
+              "maximum": 0.16554290241894137
+            },
+            "agreement": {
+              "count": 30,
+              "p50": 0.9575150001863377,
+              "p95": 0.9659401221389207,
+              "maximum": 0.968924986127226
+            },
+            "contradiction": {
+              "count": 30,
+              "p50": 0,
+              "p95": 0.00019005083859932533,
+              "maximum": 0.00019634792852935403
+            }
+          },
+          "card-layout": {
+            "informativeCoverage": {
+              "count": 30,
+              "p50": 0.10461377006248616,
+              "p95": 0.14117919075144508,
+              "maximum": 0.1413364161849711
+            },
+            "agreement": {
+              "count": 30,
+              "p50": 0.9683612414446214,
+              "p95": 0.9832194832194833,
+              "maximum": 0.9869768803043606
+            },
+            "contradiction": {
+              "count": 30,
+              "p50": 0,
+              "p95": 0,
+              "maximum": 0
+            }
+          }
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "This already-inspected corpus is development evidence, not a source-disjoint holdout.",
+    "OpenCV AKAZE and SIFT are research oracles, not proposed package dependencies.",
+    "The final threshold grid is diagnostic and cannot authorize a public profile.",
+    "Corpus-frequency weighting and indexed retrieval are not part of this first oracle gate."
+  ]
+}

@@ -1,0 +1,1021 @@
+{
+  "profileVersion": 1,
+  "study": "crop-local-v0-opencv-oracle-development",
+  "developmentCorpus": "mixed-domain-crop-block-confirmation-v1",
+  "sourceManifest": "/private/tmp/image-fingerprint-mixed-crop-block-20260809/manifest.json",
+  "manifestSha256": "55dbc51b098419376ee4b4a6f5099dadbdac9c15c0a9f0af6b7eb00025bf3505",
+  "environment": {
+    "python": "3.12.13",
+    "opencv": "4.12.0",
+    "numpy": "2.2.6",
+    "platform": "macOS-26.5.2-arm64-arm-64bit"
+  },
+  "counts": {
+    "sourceImages": 50,
+    "positivePairs": 150,
+    "negativePairs": 3675
+  },
+  "bounds": {
+    "maximumDimension": 768,
+    "maximumFeatures": 384,
+    "gridSide": 6,
+    "maximumFeaturesPerCell": 16
+  },
+  "methods": [
+    {
+      "method": "sift",
+      "resources": {
+        "generationMilliseconds": {
+          "count": 200,
+          "p50": 27.441290993010625,
+          "p95": 41.536207994795404,
+          "maximum": 53.81958300131373
+        },
+        "matchingMilliseconds": {
+          "count": 3825,
+          "p50": 0.44841600174549967,
+          "p95": 0.8800409996183589,
+          "maximum": 4.178500006673858
+        },
+        "geometryMilliseconds": {
+          "count": 7650,
+          "p50": 0.000333995558321476,
+          "p95": 5.056499998318031,
+          "maximum": 11.636583003564738
+        },
+        "verificationMilliseconds": {
+          "count": 2191,
+          "p50": 26.44545800285414,
+          "p95": 80.94800000253599,
+          "maximum": 174.2835000040941
+        },
+        "groundTruthVerificationMilliseconds": {
+          "count": 150,
+          "p50": 36.89620899967849,
+          "p95": 87.35375000105705,
+          "maximum": 115.26929200044833
+        },
+        "featureCount": {
+          "count": 200,
+          "p50": 230,
+          "p95": 384,
+          "maximum": 384
+        }
+      },
+      "candidateGate": {
+        "minimumOverallCoverage": 0.35,
+        "minimumPerDomainCoverage": 0.2,
+        "pass": true,
+        "selectedProfile": {
+          "maximumDistance": 150,
+          "ratio": 0.7,
+          "truePositive": 149,
+          "falsePositive": 524,
+          "trueNegative": 3151,
+          "falseNegative": 1,
+          "precision": 0.2213967310549777,
+          "recall": 0.9933333333333333,
+          "falsePositiveRate": 0.14258503401360545,
+          "positiveByDomain": {
+            "photograph": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "portrait": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "document": {
+              "truePositive": 29,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 1,
+              "precision": 1,
+              "recall": 0.9666666666666667,
+              "falsePositiveRate": null
+            },
+            "screenshot": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "card-layout": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            }
+          },
+          "negativeByDomainPair": {
+            "card-layout::card-layout": {
+              "truePositive": 0,
+              "falsePositive": 126,
+              "trueNegative": 9,
+              "falseNegative": 0,
+              "precision": 0,
+              "recall": null,
+              "falsePositiveRate": 0.9333333333333333
+            },
+            "card-layout::document": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "card-layout::photograph": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "card-layout::portrait": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "card-layout::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 258,
+              "trueNegative": 42,
+              "falseNegative": 0,
+              "precision": 0,
+              "recall": null,
+              "falsePositiveRate": 0.86
+            },
+            "document::document": {
+              "truePositive": 0,
+              "falsePositive": 2,
+              "trueNegative": 133,
+              "falseNegative": 0,
+              "precision": 0,
+              "recall": null,
+              "falsePositiveRate": 0.014814814814814815
+            },
+            "document::photograph": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "document::portrait": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "document::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "photograph::photograph": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 135,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "photograph::portrait": {
+              "truePositive": 0,
+              "falsePositive": 2,
+              "trueNegative": 298,
+              "falseNegative": 0,
+              "precision": 0,
+              "recall": null,
+              "falsePositiveRate": 0.006666666666666667
+            },
+            "photograph::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "portrait::portrait": {
+              "truePositive": 0,
+              "falsePositive": 1,
+              "trueNegative": 134,
+              "falseNegative": 0,
+              "precision": 0,
+              "recall": null,
+              "falsePositiveRate": 0.007407407407407408
+            },
+            "portrait::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "screenshot::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 135,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 0,
+              "recall": null,
+              "falsePositiveRate": 1
+            }
+          }
+        },
+        "evaluatedProfiles": 9
+      },
+      "geometryGate": {
+        "minimumPositiveRecall": 0.3,
+        "maximumNegativeRate": 0.03,
+        "pass": false,
+        "selectedProfile": {
+          "residualPermille": 6,
+          "minimumInliers": 4,
+          "minimumInlierRatio": 0.4,
+          "minimumZones": 2,
+          "truePositive": 146,
+          "falsePositive": 148,
+          "trueNegative": 3527,
+          "falseNegative": 4,
+          "precision": 0.4965986394557823,
+          "recall": 0.9733333333333334,
+          "falsePositiveRate": 0.040272108843537414,
+          "positiveByDomain": {
+            "photograph": {
+              "truePositive": 29,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 1,
+              "precision": 1,
+              "recall": 0.9666666666666667,
+              "falsePositiveRate": null
+            },
+            "portrait": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "document": {
+              "truePositive": 29,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 1,
+              "precision": 1,
+              "recall": 0.9666666666666667,
+              "falsePositiveRate": null
+            },
+            "screenshot": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "card-layout": {
+              "truePositive": 28,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 2,
+              "precision": 1,
+              "recall": 0.9333333333333333,
+              "falsePositiveRate": null
+            }
+          },
+          "negativeByDomainPair": {
+            "card-layout::card-layout": {
+              "truePositive": 0,
+              "falsePositive": 48,
+              "trueNegative": 87,
+              "falseNegative": 0,
+              "precision": 0,
+              "recall": null,
+              "falsePositiveRate": 0.35555555555555557
+            },
+            "card-layout::document": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "card-layout::photograph": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "card-layout::portrait": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "card-layout::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 1,
+              "trueNegative": 299,
+              "falseNegative": 0,
+              "precision": 0,
+              "recall": null,
+              "falsePositiveRate": 0.0033333333333333335
+            },
+            "document::document": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 135,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "document::photograph": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "document::portrait": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "document::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "photograph::photograph": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 135,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "photograph::portrait": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "photograph::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "portrait::portrait": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 135,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "portrait::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "screenshot::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 99,
+              "trueNegative": 36,
+              "falseNegative": 0,
+              "precision": 0,
+              "recall": null,
+              "falsePositiveRate": 0.7333333333333333
+            }
+          }
+        },
+        "evaluatedProfiles": 36
+      },
+      "finalDevelopmentDiagnostic": {
+        "maximumFalsePositiveRate": 0.005,
+        "minimumRecall": 0.2,
+        "domainGuardrail": "at least 10% recall in four of five domains",
+        "pass": true,
+        "bestEligibleProfile": {
+          "minimumInformativeCoverage": 0.05,
+          "minimumAgreement": 0.95,
+          "maximumContradiction": 0.02,
+          "minimumInformativeZones": 3,
+          "insufficientEvidencePositive": 0,
+          "insufficientEvidenceNegative": 0,
+          "truePositive": 130,
+          "falsePositive": 1,
+          "trueNegative": 3674,
+          "falseNegative": 20,
+          "precision": 0.9923664122137404,
+          "recall": 0.8666666666666667,
+          "falsePositiveRate": 0.00027210884353741496,
+          "positiveByDomain": {
+            "photograph": {
+              "truePositive": 29,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 1,
+              "precision": 1,
+              "recall": 0.9666666666666667,
+              "falsePositiveRate": null
+            },
+            "portrait": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "document": {
+              "truePositive": 28,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 2,
+              "precision": 1,
+              "recall": 0.9333333333333333,
+              "falsePositiveRate": null
+            },
+            "screenshot": {
+              "truePositive": 29,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 1,
+              "precision": 1,
+              "recall": 0.9666666666666667,
+              "falsePositiveRate": null
+            },
+            "card-layout": {
+              "truePositive": 14,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 16,
+              "precision": 1,
+              "recall": 0.4666666666666667,
+              "falsePositiveRate": null
+            }
+          },
+          "negativeByDomainPair": {
+            "card-layout::card-layout": {
+              "truePositive": 0,
+              "falsePositive": 1,
+              "trueNegative": 134,
+              "falseNegative": 0,
+              "precision": 0,
+              "recall": null,
+              "falsePositiveRate": 0.007407407407407408
+            },
+            "card-layout::document": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "card-layout::photograph": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "card-layout::portrait": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "card-layout::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "document::document": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 135,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "document::photograph": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "document::portrait": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "document::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "photograph::photograph": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 135,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "photograph::portrait": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "photograph::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "portrait::portrait": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 135,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "portrait::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 300,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            },
+            "screenshot::screenshot": {
+              "truePositive": 0,
+              "falsePositive": 0,
+              "trueNegative": 135,
+              "falseNegative": 0,
+              "precision": null,
+              "recall": null,
+              "falsePositiveRate": 0
+            }
+          }
+        },
+        "evaluatedProfiles": 216
+      },
+      "positiveTransformRecovery": {
+        "topFeatureModel": {
+          "overall": {
+            "truePositive": 149,
+            "falsePositive": 0,
+            "trueNegative": 0,
+            "falseNegative": 1,
+            "precision": 1,
+            "recall": 0.9933333333333333,
+            "falsePositiveRate": null
+          },
+          "positiveByDomain": {
+            "photograph": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "portrait": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "document": {
+              "truePositive": 29,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 1,
+              "precision": 1,
+              "recall": 0.9666666666666667,
+              "falsePositiveRate": null
+            },
+            "screenshot": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "card-layout": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            }
+          }
+        },
+        "retainedFeatureModels": {
+          "overall": {
+            "truePositive": 149,
+            "falsePositive": 0,
+            "trueNegative": 0,
+            "falseNegative": 1,
+            "precision": 1,
+            "recall": 0.9933333333333333,
+            "falsePositiveRate": null
+          },
+          "positiveByDomain": {
+            "photograph": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "portrait": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "document": {
+              "truePositive": 29,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 1,
+              "precision": 1,
+              "recall": 0.9666666666666667,
+              "falsePositiveRate": null
+            },
+            "screenshot": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "card-layout": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            }
+          }
+        },
+        "verificationSelectedModel": {
+          "overall": {
+            "truePositive": 149,
+            "falsePositive": 0,
+            "trueNegative": 0,
+            "falseNegative": 1,
+            "precision": 1,
+            "recall": 0.9933333333333333,
+            "falsePositiveRate": null
+          },
+          "positiveByDomain": {
+            "photograph": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "portrait": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "document": {
+              "truePositive": 29,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 1,
+              "precision": 1,
+              "recall": 0.9666666666666667,
+              "falsePositiveRate": null
+            },
+            "screenshot": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "card-layout": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            }
+          }
+        }
+      },
+      "groundTruthTransformVerifier": {
+        "atSelectedFinalProfile": {
+          "overall": {
+            "truePositive": 135,
+            "falsePositive": 0,
+            "trueNegative": 0,
+            "falseNegative": 15,
+            "precision": 1,
+            "recall": 0.9,
+            "falsePositiveRate": null
+          },
+          "positiveByDomain": {
+            "photograph": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "portrait": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "document": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "screenshot": {
+              "truePositive": 30,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 0,
+              "precision": 1,
+              "recall": 1,
+              "falsePositiveRate": null
+            },
+            "card-layout": {
+              "truePositive": 15,
+              "falsePositive": 0,
+              "trueNegative": 0,
+              "falseNegative": 15,
+              "precision": 1,
+              "recall": 0.5,
+              "falsePositiveRate": null
+            }
+          }
+        },
+        "scoreByDomain": {
+          "photograph": {
+            "informativeCoverage": {
+              "count": 30,
+              "p50": 0.76937885906375,
+              "p95": 0.8949180587757367,
+              "maximum": 0.8991772625280479
+            },
+            "agreement": {
+              "count": 30,
+              "p50": 0.9974437627811861,
+              "p95": 0.999186057159136,
+              "maximum": 0.9993515734869346
+            },
+            "contradiction": {
+              "count": 30,
+              "p50": 0.00010792725702876261,
+              "p95": 0.0015304789279181753,
+              "maximum": 0.0024423223189385616
+            }
+          },
+          "portrait": {
+            "informativeCoverage": {
+              "count": 30,
+              "p50": 0.6411398630499754,
+              "p95": 0.9200062641923107,
+              "maximum": 0.9203963795255931
+            },
+            "agreement": {
+              "count": 30,
+              "p50": 0.9970003166332443,
+              "p95": 0.9996137297610489,
+              "maximum": 0.9996997265931611
+            },
+            "contradiction": {
+              "count": 30,
+              "p50": 0.00022189445655437066,
+              "p95": 0.0013997157500323012,
+              "maximum": 0.0020860668871649445
+            }
+          },
+          "document": {
+            "informativeCoverage": {
+              "count": 30,
+              "p50": 0.9877928934010153,
+              "p95": 0.9958207152897669,
+              "maximum": 0.9974272024833822
+            },
+            "agreement": {
+              "count": 30,
+              "p50": 0.9964172474611701,
+              "p95": 0.9991745283018868,
+              "maximum": 0.9993256406413907
+            },
+            "contradiction": {
+              "count": 30,
+              "p50": 0.00017875822618874221,
+              "p95": 0.003404956900413971,
+              "maximum": 0.0050515805413590764
+            }
+          },
+          "screenshot": {
+            "informativeCoverage": {
+              "count": 30,
+              "p50": 0.13539638104511523,
+              "p95": 0.1611015891153008,
+              "maximum": 0.1625933684589179
+            },
+            "agreement": {
+              "count": 30,
+              "p50": 0.9798017861853261,
+              "p95": 0.9823098900238738,
+              "maximum": 0.9831983198319832
+            },
+            "contradiction": {
+              "count": 30,
+              "p50": 0,
+              "p95": 0,
+              "maximum": 0
+            }
+          },
+          "card-layout": {
+            "informativeCoverage": {
+              "count": 30,
+              "p50": 0.12493593534397793,
+              "p95": 0.15591621453012458,
+              "maximum": 0.15608163033820444
+            },
+            "agreement": {
+              "count": 30,
+              "p50": 0.9494268991586392,
+              "p95": 0.9917053749170538,
+              "maximum": 0.9919250645994832
+            },
+            "contradiction": {
+              "count": 30,
+              "p50": 0,
+              "p95": 0,
+              "maximum": 0
+            }
+          }
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "This already-inspected corpus is development evidence, not a source-disjoint holdout.",
+    "OpenCV AKAZE and SIFT are research oracles, not proposed package dependencies.",
+    "The final threshold grid is diagnostic and cannot authorize a public profile.",
+    "Corpus-frequency weighting and indexed retrieval are not part of this first oracle gate."
+  ]
+}

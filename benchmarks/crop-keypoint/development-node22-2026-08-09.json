@@ -1,0 +1,332 @@
+{
+  "profileVersion": 1,
+  "study": "crop-keypoint-fast-brief-v0-development",
+  "developmentCorpus": "mixed-domain-crop-block-confirmation-v1",
+  "sourceManifest": "/private/tmp/image-fingerprint-mixed-crop-block-20260809/manifest.json",
+  "manifestSha256": "55dbc51b098419376ee4b4a6f5099dadbdac9c15c0a9f0af6b7eb00025bf3505",
+  "environment": {
+    "node": "v22.22.1",
+    "platform": "darwin",
+    "architecture": "arm64"
+  },
+  "counts": {
+    "sourceImages": 50,
+    "positivePairs": 150,
+    "negativePairs": 3675,
+    "profiles": 320
+  },
+  "detectorProfile": {
+    "fastThreshold": 20,
+    "contiguousPixels": 9,
+    "maximumKeypoints": 64,
+    "maximumKeypointsPerCell": 6,
+    "cellSize": 32,
+    "minimumDescriptorBitBalance": 32,
+    "maximumDimension": 512
+  },
+  "profileGrid": {
+    "matchProfiles": [
+      {
+        "maximumDescriptorDistance": 32,
+        "ratioPermille": 700,
+        "maximumColorDistance": 24
+      },
+      {
+        "maximumDescriptorDistance": 48,
+        "ratioPermille": 800,
+        "maximumColorDistance": 24
+      },
+      {
+        "maximumDescriptorDistance": 64,
+        "ratioPermille": 900,
+        "maximumColorDistance": 24
+      },
+      {
+        "maximumDescriptorDistance": 32,
+        "ratioPermille": 700,
+        "maximumColorDistance": 48
+      },
+      {
+        "maximumDescriptorDistance": 48,
+        "ratioPermille": 800,
+        "maximumColorDistance": 48
+      },
+      {
+        "maximumDescriptorDistance": 64,
+        "ratioPermille": 900,
+        "maximumColorDistance": 48
+      },
+      {
+        "maximumDescriptorDistance": 48,
+        "ratioPermille": 800,
+        "maximumColorDistance": 96
+      },
+      {
+        "maximumDescriptorDistance": 64,
+        "ratioPermille": 900,
+        "maximumColorDistance": 96
+      }
+    ],
+    "minimumInliers": [
+      3,
+      4,
+      6,
+      8
+    ],
+    "minimumInlierRatios": [
+      0.2,
+      0.4
+    ],
+    "maximumVerificationColorDistances": [
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "maximumResidualPermille": 8
+  },
+  "resources": {
+    "generationMilliseconds": {
+      "count": 200,
+      "p50": 40.0723339999995,
+      "p95": 57.924582999999984,
+      "maximum": 95.717791
+    },
+    "comparisonMilliseconds": {
+      "count": 3825,
+      "p50": 0.03354199999921548,
+      "p95": 0.27754099999947357,
+      "maximum": 2.444041999999172
+    },
+    "keypointCount": {
+      "count": 200,
+      "p50": 64,
+      "p95": 64,
+      "maximum": 64
+    },
+    "outputBytes": {
+      "count": 200,
+      "p50": 17587,
+      "p95": 17653,
+      "maximum": 17701
+    }
+  },
+  "developmentGate": {
+    "maximumFalsePositiveRate": 0.005,
+    "minimumRecall": 0.2,
+    "bestEligibleProfile": {
+      "maximumDescriptorDistance": 64,
+      "ratioPermille": 900,
+      "maximumColorDistance": 24,
+      "maximumResidualPermille": 8,
+      "minimumInliers": 3,
+      "minimumInlierRatio": 0.2,
+      "maximumVerificationColorDistance": 4,
+      "truePositive": 2,
+      "falsePositive": 0,
+      "trueNegative": 3675,
+      "falseNegative": 148,
+      "precision": 1,
+      "recall": 0.013333333333333334,
+      "falsePositiveRate": 0,
+      "positiveByDomain": {
+        "photograph": {
+          "truePositive": 2,
+          "falsePositive": 0,
+          "trueNegative": 0,
+          "falseNegative": 28,
+          "precision": 1,
+          "recall": 0.06666666666666667,
+          "falsePositiveRate": null
+        },
+        "portrait": {
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 0,
+          "falseNegative": 30,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": null
+        },
+        "document": {
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 0,
+          "falseNegative": 30,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": null
+        },
+        "screenshot": {
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 0,
+          "falseNegative": 30,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": null
+        },
+        "card-layout": {
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 0,
+          "falseNegative": 30,
+          "precision": null,
+          "recall": 0,
+          "falsePositiveRate": null
+        }
+      },
+      "negativeByDomainPair": {
+        "card-layout::card-layout": {
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 135,
+          "falseNegative": 0,
+          "precision": null,
+          "recall": null,
+          "falsePositiveRate": 0
+        },
+        "card-layout::document": {
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 300,
+          "falseNegative": 0,
+          "precision": null,
+          "recall": null,
+          "falsePositiveRate": 0
+        },
+        "card-layout::photograph": {
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 300,
+          "falseNegative": 0,
+          "precision": null,
+          "recall": null,
+          "falsePositiveRate": 0
+        },
+        "card-layout::portrait": {
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 300,
+          "falseNegative": 0,
+          "precision": null,
+          "recall": null,
+          "falsePositiveRate": 0
+        },
+        "card-layout::screenshot": {
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 300,
+          "falseNegative": 0,
+          "precision": null,
+          "recall": null,
+          "falsePositiveRate": 0
+        },
+        "document::document": {
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 135,
+          "falseNegative": 0,
+          "precision": null,
+          "recall": null,
+          "falsePositiveRate": 0
+        },
+        "document::photograph": {
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 300,
+          "falseNegative": 0,
+          "precision": null,
+          "recall": null,
+          "falsePositiveRate": 0
+        },
+        "document::portrait": {
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 300,
+          "falseNegative": 0,
+          "precision": null,
+          "recall": null,
+          "falsePositiveRate": 0
+        },
+        "document::screenshot": {
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 300,
+          "falseNegative": 0,
+          "precision": null,
+          "recall": null,
+          "falsePositiveRate": 0
+        },
+        "photograph::photograph": {
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 135,
+          "falseNegative": 0,
+          "precision": null,
+          "recall": null,
+          "falsePositiveRate": 0
+        },
+        "photograph::portrait": {
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 300,
+          "falseNegative": 0,
+          "precision": null,
+          "recall": null,
+          "falsePositiveRate": 0
+        },
+        "photograph::screenshot": {
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 300,
+          "falseNegative": 0,
+          "precision": null,
+          "recall": null,
+          "falsePositiveRate": 0
+        },
+        "portrait::portrait": {
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 135,
+          "falseNegative": 0,
+          "precision": null,
+          "recall": null,
+          "falsePositiveRate": 0
+        },
+        "portrait::screenshot": {
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 300,
+          "falseNegative": 0,
+          "precision": null,
+          "recall": null,
+          "falsePositiveRate": 0
+        },
+        "screenshot::screenshot": {
+          "truePositive": 0,
+          "falsePositive": 0,
+          "trueNegative": 135,
+          "falseNegative": 0,
+          "precision": null,
+          "recall": null,
+          "falsePositiveRate": 0
+        }
+      },
+      "comparisonMilliseconds": {
+        "count": 3825,
+        "p50": 0.03091600000152539,
+        "p95": 0.27979200000118,
+        "maximum": 0.9412080000001879
+      }
+    },
+    "pass": false
+  },
+  "limitations": [
+    "This already-inspected corpus is development evidence, not a holdout.",
+    "The v0 descriptor is not rotation invariant and uses only one processed scale per image.",
+    "The grid fixes detector density and geometric residual while screening match policy.",
+    "The retained report records the selected profile; exhaustive grid rows remain local-only."
+  ]
+}

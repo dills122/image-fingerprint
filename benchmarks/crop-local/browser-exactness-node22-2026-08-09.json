@@ -1,0 +1,34 @@
+{
+  "profileVersion": 1,
+  "browsers": [
+    "chromium",
+    "firefox",
+    "webkit"
+  ],
+  "contexts": [
+    "main-thread",
+    "module-worker"
+  ],
+  "comparisonReference": "node",
+  "fingerprintProfile": "crop-local-multiscale-binary-v0",
+  "node": "v22.22.1",
+  "fingerprintSha256": "17eb4f5f737fd5a0da665e87acff843c925001b1509ebf782921754b58bea95e",
+  "serializedBytes": 22775,
+  "results": [
+    {
+      "name": "chromium",
+      "version": "151.0.7922.34",
+      "exact": true
+    },
+    {
+      "name": "firefox",
+      "version": "153.0",
+      "exact": true
+    },
+    {
+      "name": "webkit",
+      "version": "26.5",
+      "exact": true
+    }
+  ]
+}
