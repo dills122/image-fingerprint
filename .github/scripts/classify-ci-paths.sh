@@ -32,7 +32,7 @@ else
 
   while IFS= read -r changed_path || [ -n "$changed_path" ]; do
     case "$changed_path" in
-      .github/workflows/ci.yml|.github/scripts/classify-ci-paths.sh)
+      .github/workflows/ci.yml|.github/workflows/codeql.yml|.github/REQUIRED_CHECKS.md|.github/scripts/classify-ci-paths.sh)
         enable_all
         ;;
     esac

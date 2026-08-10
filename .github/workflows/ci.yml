@@ -285,3 +285,50 @@ jobs:
 
     - name: Build the project site
       run: pnpm --dir site build
+
+  required:
+    # Public branch-protection contract. Do not rename this job without following
+    # .github/REQUIRED_CHECKS.md's migration procedure.
+    name: Required CI
+    if: always()
+    needs:
+      - changes
+      - verify
+      - dependency-audit
+      - package-integrity
+      - pdq-oracle-conformance
+      - browser-conformance
+      - site-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+    - name: Enforce applicable CI results
+      shell: bash
+      env:
+        CHANGES_RESULT: ${{ needs.changes.result }}
+        VERIFY_RESULT: ${{ needs.verify.result }}
+        DEPENDENCY_AUDIT_RESULT: ${{ needs.dependency-audit.result }}
+        PACKAGE_INTEGRITY_RESULT: ${{ needs.package-integrity.result }}
+        ORACLE_RESULT: ${{ needs.pdq-oracle-conformance.result }}
+        BROWSER_RESULT: ${{ needs.browser-conformance.result }}
+        SITE_RESULT: ${{ needs.site-build.result }}
+      run: |
+        set -euo pipefail
+        if [[ "$CHANGES_RESULT" != "success" ]]; then
+          echo "Change classification did not succeed: $CHANGES_RESULT" >&2
+          exit 1
+        fi
+
+        for result in \
+          "$VERIFY_RESULT" \
+          "$DEPENDENCY_AUDIT_RESULT" \
+          "$PACKAGE_INTEGRITY_RESULT" \
+          "$ORACLE_RESULT" \
+          "$BROWSER_RESULT" \
+          "$SITE_RESULT"; do
+          if [[ "$result" != "success" && "$result" != "skipped" ]]; then
+            echo "An applicable CI job did not succeed: $result" >&2
+            exit 1
+          fi
+        done

@@ -39,3 +39,19 @@ jobs:
 
     - name: Perform CodeQL analysis
       uses: github/codeql-action/analyze@v4
+
+  required:
+    # Public branch-protection contract. Do not rename this job without following
+    # .github/REQUIRED_CHECKS.md's migration procedure.
+    name: Required CodeQL
+    if: always()
+    needs: analyze
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+    - name: Enforce CodeQL result
+      if: needs.analyze.result != 'success'
+      run: |
+        echo "CodeQL analysis did not succeed: ${{ needs.analyze.result }}" >&2
+        exit 1

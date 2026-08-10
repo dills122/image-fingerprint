@@ -1,5 +1,10 @@
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import {
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
@@ -74,5 +79,23 @@ describe('CI path classification', () => {
       browser: 'true',
       site: 'true',
     });
+  });
+});
+
+describe('required check contracts', () => {
+  it('keeps the permanent CI gate name', () => {
+    const workflow = readFileSync('.github/workflows/ci.yml', 'utf8');
+    expect(workflow).toMatch(/\n {2}required:\n(?:.|\n)*? {4}name: Required CI\n/);
+  });
+
+  it('keeps the permanent CodeQL gate name', () => {
+    const workflow = readFileSync('.github/workflows/codeql.yml', 'utf8');
+    expect(workflow).toMatch(/\n {2}required:\n(?:.|\n)*? {4}name: Required CodeQL\n/);
+  });
+
+  it('documents both required contexts as branch-protection contracts', () => {
+    const contract = readFileSync('.github/REQUIRED_CHECKS.md', 'utf8');
+    expect(contract).toContain('`Required CI`');
+    expect(contract).toContain('`Required CodeQL`');
   });
 });
