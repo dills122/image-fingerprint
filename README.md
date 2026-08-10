@@ -11,6 +11,8 @@ A versioned image-fingerprinting library with a runtime-neutral pixel core, Node
 image adapters, PDQ matching tools, and exact migration support for hashes created by
 [`image-hash@7`](https://github.com/danm/image-hash).
 
+[Explore the project site and browser playground](https://dills122.github.io/image-fingerprint/).
+
 Node and browser adapters prepare static JPEG, PNG, and WebP images for the same decoded-pixel
 fingerprint core.
 
