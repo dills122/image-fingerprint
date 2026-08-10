@@ -35,8 +35,10 @@ pnpm pdq:stages:generate -- --oracle "$oracle_dir/pdq-oracle"
 pnpm pdq:dct-matrix:generate
 ```
 
-The build script fetches only the pinned commit, verifies the checkout, refuses any upstream
-modifications, and prints the compiler version and flags. For an already verified offline checkout:
+The build script uses a filtered sparse checkout of the three required `pdq/cpp/` source directories
+at the pinned commit, verifies the checkout, refuses any upstream modifications, and prints the
+compiler version and flags. CI caches only the resulting oracle binary, keyed by the build script
+and wrapper source. For an already verified offline checkout:
 
 ```sh
 ./scripts/build-pdq-oracle.sh \
