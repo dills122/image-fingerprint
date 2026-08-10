@@ -97,7 +97,7 @@
   "bugs": {
     "url": "https://github.com/dills122/image-fingerprint/issues"
   },
-  "homepage": "https://github.com/dills122/image-fingerprint#readme",
+  "homepage": "https://dills122.github.io/image-fingerprint/",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"

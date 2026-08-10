@@ -16,6 +16,10 @@ mathematical comparison, explicit PDQ policy helpers, caller-owned crop extracti
 
 PDQ is opt-in. `image-fingerprint` does not expose the old callback or remote-request API.
 
+The [project site](https://dills122.github.io/image-fingerprint/) includes an interactive browser
+playground for exploring fingerprint behavior. It is documentation and demonstration tooling, not
+part of the npm package payload.
+
 ## Runtime and Decoder Support
 
 - Node.js 22.14 or newer; CI verifies Node 22 and 24.
@@ -101,8 +105,8 @@ shasum `d3fc28ac0a2b08561797a0b4fca44ea34a6484d5`, registry SLSA provenance, and
 `e7a124a26a5715c17d2cefdbd5c219af8e229371`. Packed CommonJS and ESM runtimes, TypeScript
 Node16/NodeNext/Bundler resolution, and browser main-thread/module-worker consumers all passed.
 
-The prepared stable `0.1.0` npm dry-run contains 108 files, is 84.9 kB compressed and 357.8 kB
-unpacked, and has shasum `7f030784969b31e24f350273cd1ced26870b7f7c`. npm selected the public
+The prepared stable `0.1.0` npm dry-run contains 108 files, is 85.0 kB compressed and 358.0 kB
+unpacked, and has shasum `09add482027b69a064ff1692c1fa9826d86622f3`. npm selected the public
 `latest` tag. This stable package has not been published.
 
 ## Verification Commands

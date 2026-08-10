@@ -14,6 +14,7 @@ Release candidates:
 - Add exact `image-hash@7` decoder compatibility through an explicit Node-only mode.
 - Add strict serialization, parsing, comparison, and explicit PDQ policy helpers.
 - Add Node.js and browser encoded-image adapters with bounded decoding.
+- Add a project site with an interactive browser fingerprint playground.
 - Add CommonJS, ESM, TypeScript, browser, worker, ARM64 oracle, package-integrity, and CodeQL gates.
 - Start a new package and version line without the legacy callback, remote-request, or historical
   `lib/*` deep-import surface.
