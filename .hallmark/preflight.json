@@ -1,0 +1,14 @@
+{
+  "date": "2026-08-09",
+  "framework": "Astro 7 static site added alongside the existing TypeScript library",
+  "font_stack": "Space Grotesk display, Inter body, JetBrains Mono code",
+  "palette": "Cobalt cool paper, graphite ink, electric cobalt signal",
+  "motion": "one orchestrated hero entrance plus functional crossfades; reduced-motion static",
+  "spacing": "fluid 4/8-based token scale",
+  "preserve": [
+    "src",
+    "tests",
+    "package scripts",
+    "README"
+  ]
+}
