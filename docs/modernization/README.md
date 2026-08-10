@@ -48,6 +48,8 @@ complete.
   prototype, locked source-disjoint evidence, exact browser/worker fixture, and retrieval pilot.
 - [Crop-Local experiment contract](../architecture/0005-crop-local-experiment-contract.md): proposed
   source-to-crop direction, tri-state semantics, template-ambiguity boundary, and runtime limits.
+- [Crop-Local item-color experiment](../architecture/0006-crop-local-item-color-experiment.md):
+  internal aligned-chroma veto, development evidence, frozen policy, and untouched-holdout gates.
 - [Tooling baseline](./tooling-baseline.md): runtime, package-manager, compiler, lint, test, and CI
   foundation established before algorithm implementation.
 

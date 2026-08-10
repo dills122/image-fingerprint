@@ -8,12 +8,33 @@ const SAFE_IMAGE_PATH = /^images\/[a-z0-9][a-z0-9._-]*\.(?:jpe?g|png)$/u;
 export const CROP_LOCAL_CALIBRATION_PROFILE = Object.freeze({
   schemaVersion: 1,
   corpus: 'crop-local-independent-calibration-v1',
+  policy: 'locked-development-profile',
+  syntheticStyle: 3,
+  minimumExcludedCorpora: 2,
   domains: Object.freeze([...DOMAINS]),
   sourcesPerDomain: SOURCES_PER_DOMAIN,
   totalSources: DOMAINS.length * SOURCES_PER_DOMAIN,
   transformations: Object.freeze(['center', 'asymmetric', 'severe']),
   totalTransformations: DOMAINS.length * SOURCES_PER_DOMAIN * 3,
 });
+
+export const CROP_LOCAL_ITEM_COLOR_HOLDOUT_PROFILE = Object.freeze({
+  schemaVersion: 1,
+  corpus: 'crop-local-item-color-holdout-v1',
+  policy: 'locked-item-color-profile',
+  syntheticStyle: 4,
+  minimumExcludedCorpora: 3,
+  domains: Object.freeze([...DOMAINS]),
+  sourcesPerDomain: SOURCES_PER_DOMAIN,
+  totalSources: DOMAINS.length * SOURCES_PER_DOMAIN,
+  transformations: Object.freeze(['center', 'asymmetric', 'severe']),
+  totalTransformations: DOMAINS.length * SOURCES_PER_DOMAIN * 3,
+});
+
+const CROP_LOCAL_CORPUS_PROFILES = new Map([
+  [CROP_LOCAL_CALIBRATION_PROFILE.corpus, CROP_LOCAL_CALIBRATION_PROFILE],
+  [CROP_LOCAL_ITEM_COLOR_HOLDOUT_PROFILE.corpus, CROP_LOCAL_ITEM_COLOR_HOLDOUT_PROFILE],
+]);
 
 export const summarizeCropLocalMeasurements = (values) => {
   if (!Array.isArray(values)) throw new TypeError('measurement values must be an array');
@@ -96,7 +117,7 @@ export const collectExcludedCropLocalSourceKeys = (manifests) => {
   return keys;
 };
 
-const validateImage = (image, index) => {
+const validateImage = (image, index, profile) => {
   if (!isRecord(image)) throw new TypeError(`calibration image ${index} must be an object`);
   if (typeof image.id !== 'string' || !/^[a-z0-9][a-z0-9-]{2,100}$/u.test(image.id)) {
     throw new Error(`calibration image ${index} id must be canonical kebab-case text`);
@@ -133,16 +154,16 @@ const validateImage = (image, index) => {
       image.sourceType !== 'deterministic-generated'
       || image.generator !== 'benchmarks/crop-local/prepare-calibration-corpus.mjs'
       || !Number.isSafeInteger(image.seed) || image.seed < 0
-      || image.style !== 3
+      || image.style !== profile.syntheticStyle
     ) {
-      throw new Error(`calibration image ${image.id} must use the independent style-3 generator`);
+      throw new Error(`calibration image ${image.id} must use the independent style-${profile.syntheticStyle} generator`);
     }
   }
 };
 
-const validateExclusions = (exclusions) => {
-  if (!Array.isArray(exclusions) || exclusions.length < 2) {
-    throw new Error('calibration requires at least two excluded development manifests');
+const validateExclusions = (exclusions, profile) => {
+  if (!Array.isArray(exclusions) || exclusions.length < profile.minimumExcludedCorpora) {
+    throw new Error(`calibration requires at least ${profile.minimumExcludedCorpora} excluded source manifests`);
   }
   const corpora = new Set();
   for (const exclusion of exclusions) {
@@ -167,8 +188,12 @@ export const buildCropLocalCalibrationManifest = ({
   commonsStartOffset,
   syntheticSeedOffset,
   createdAt,
+  profile = CROP_LOCAL_CALIBRATION_PROFILE,
 }) => {
-  validateExclusions(exclusions);
+  if (CROP_LOCAL_CORPUS_PROFILES.get(profile.corpus) !== profile) {
+    throw new Error('unsupported crop-local corpus profile');
+  }
+  validateExclusions(exclusions, profile);
   if (!Number.isSafeInteger(commonsStartOffset) || commonsStartOffset < 0) {
     throw new RangeError('Commons start offset must be a non-negative safe integer');
   }
@@ -179,22 +204,22 @@ export const buildCropLocalCalibrationManifest = ({
     throw new Error('calibration creation time must be an ISO timestamp');
   }
   const manifest = {
-    schemaVersion: CROP_LOCAL_CALIBRATION_PROFILE.schemaVersion,
-    corpus: CROP_LOCAL_CALIBRATION_PROFILE.corpus,
+    schemaVersion: profile.schemaVersion,
+    corpus: profile.corpus,
     createdAt,
-    policy: 'locked-development-profile',
+    policy: profile.policy,
     selection: {
-      domains: [...CROP_LOCAL_CALIBRATION_PROFILE.domains],
-      sourcesPerDomain: CROP_LOCAL_CALIBRATION_PROFILE.sourcesPerDomain,
-      totalSources: CROP_LOCAL_CALIBRATION_PROFILE.totalSources,
+      domains: [...profile.domains],
+      sourcesPerDomain: profile.sourcesPerDomain,
+      totalSources: profile.totalSources,
       commonsLicenseAllowlist: ['Public domain', 'CC0'],
       commonsRestrictionsRequiredEmpty: true,
       commonsStartOffset,
       syntheticSeedOffset,
-      syntheticStyle: 3,
-      transformations: [...CROP_LOCAL_CALIBRATION_PROFILE.transformations],
-      transformationsPerSource: CROP_LOCAL_CALIBRATION_PROFILE.transformations.length,
-      totalTransformations: CROP_LOCAL_CALIBRATION_PROFILE.totalTransformations,
+      syntheticStyle: profile.syntheticStyle,
+      transformations: [...profile.transformations],
+      transformationsPerSource: profile.transformations.length,
+      totalTransformations: profile.totalTransformations,
       excludedCorpora: exclusions.map(({ corpus, manifestSha256 }) => ({
         corpus,
         manifestSha256,
@@ -207,43 +232,56 @@ export const buildCropLocalCalibrationManifest = ({
       },
       synthetic: {
         generator: 'benchmarks/crop-local/prepare-calibration-corpus.mjs',
-        style: 3,
+        style: profile.syntheticStyle,
         license: 'CC0-1.0',
       },
     },
     redistribution: 'Source pixels and generated transformations remain local-only; retained reports contain metadata and hashes only.',
     images,
   };
-  return validateCropLocalCalibrationManifest(manifest, exclusions.map(({ manifest }) => manifest));
+  return validateCropLocalCalibrationManifest(
+    manifest,
+    exclusions.map(({ manifest: excluded }) => excluded),
+    profile,
+  );
 };
 
-export const validateCropLocalCalibrationManifest = (manifest, excludedManifests = []) => {
+export const validateCropLocalCalibrationManifest = (
+  manifest,
+  excludedManifests = [],
+  expectedProfile,
+) => {
+  const profile = expectedProfile ?? CROP_LOCAL_CORPUS_PROFILES.get(manifest?.corpus);
   if (
-    !isRecord(manifest)
-    || manifest.schemaVersion !== CROP_LOCAL_CALIBRATION_PROFILE.schemaVersion
-    || manifest.corpus !== CROP_LOCAL_CALIBRATION_PROFILE.corpus
-    || manifest.policy !== 'locked-development-profile'
+    profile === undefined
+    || !isRecord(manifest)
+    || manifest.schemaVersion !== profile.schemaVersion
+    || manifest.corpus !== profile.corpus
+    || manifest.policy !== profile.policy
   ) {
-    throw new Error('manifest must use the locked crop-local independent calibration contract');
+    throw new Error('manifest must use a locked crop-local corpus contract');
   }
   if (!isRecord(manifest.selection)) throw new TypeError('calibration selection must be an object');
   const selection = manifest.selection;
   if (
-    JSON.stringify(selection.domains) !== JSON.stringify(CROP_LOCAL_CALIBRATION_PROFILE.domains)
-    || selection.sourcesPerDomain !== CROP_LOCAL_CALIBRATION_PROFILE.sourcesPerDomain
-    || selection.totalSources !== CROP_LOCAL_CALIBRATION_PROFILE.totalSources
-    || JSON.stringify(selection.transformations) !== JSON.stringify(CROP_LOCAL_CALIBRATION_PROFILE.transformations)
-    || selection.transformationsPerSource !== CROP_LOCAL_CALIBRATION_PROFILE.transformations.length
-    || selection.totalTransformations !== CROP_LOCAL_CALIBRATION_PROFILE.totalTransformations
-    || selection.syntheticStyle !== 3
+    JSON.stringify(selection.domains) !== JSON.stringify(profile.domains)
+    || selection.sourcesPerDomain !== profile.sourcesPerDomain
+    || selection.totalSources !== profile.totalSources
+    || JSON.stringify(selection.transformations) !== JSON.stringify(profile.transformations)
+    || selection.transformationsPerSource !== profile.transformations.length
+    || selection.totalTransformations !== profile.totalTransformations
+    || selection.syntheticStyle !== profile.syntheticStyle
   ) {
     throw new Error('calibration selection does not match the frozen 500-source/1,500-transformation profile');
   }
-  if (!Array.isArray(selection.excludedCorpora) || selection.excludedCorpora.length < 2) {
-    throw new Error('calibration selection must retain at least two excluded corpora');
+  if (
+    !Array.isArray(selection.excludedCorpora)
+    || selection.excludedCorpora.length < profile.minimumExcludedCorpora
+  ) {
+    throw new Error(`calibration selection must retain at least ${profile.minimumExcludedCorpora} excluded corpora`);
   }
-  if (!Array.isArray(manifest.images) || manifest.images.length !== CROP_LOCAL_CALIBRATION_PROFILE.totalSources) {
-    throw new Error(`calibration manifest must contain exactly ${CROP_LOCAL_CALIBRATION_PROFILE.totalSources} images`);
+  if (!Array.isArray(manifest.images) || manifest.images.length !== profile.totalSources) {
+    throw new Error(`calibration manifest must contain exactly ${profile.totalSources} images`);
   }
   const ids = new Set();
   const hashes = new Set();
@@ -252,7 +290,7 @@ export const validateCropLocalCalibrationManifest = (manifest, excludedManifests
   const domainCounts = new Map(DOMAINS.map(domain => [domain, 0]));
   const excludedKeys = collectExcludedCropLocalSourceKeys(excludedManifests);
   manifest.images.forEach((image, index) => {
-    validateImage(image, index);
+    validateImage(image, index, profile);
     if (ids.has(image.id)) throw new Error(`duplicate calibration image id: ${image.id}`);
     if (hashes.has(image.sha256)) throw new Error(`duplicate calibration image sha256: ${image.sha256}`);
     ids.add(image.id);

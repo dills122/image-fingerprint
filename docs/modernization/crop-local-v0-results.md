@@ -255,10 +255,71 @@ Retrieval calibration was not run after the quality gate failed. The next algori
 an item-specific signal or an explicit product-level template ambiguity policy; scaling the current
 retrieval index would not correct the verifier's false positives.
 
+## Item-Color Development Candidate
+
+The failed calibration corpus is now inspected development data. A separate internal
+`crop-local-item-color-v0` wrapper preserves the grayscale fingerprint and adds two compact YCbCr
+chroma planes. The aligned color check is veto-only: it can reject an existing local match but
+cannot promote a local non-match or insufficient decision.
+
+A development sweep rechecked all 1,500 positives and all 1,405 baseline false positives. The
+selected policy retained every baseline true positive and reduced false positives from 1,405 to 25:
+
+- 605/1,500 true positives: 40.3% recall, unchanged from the grayscale baseline;
+- 25/144,550 represented false positives: 0.0173% false-positive rate;
+- 96.0% precision under the same template-heavy negative population;
+- eight surviving card-layout pairs and 17 surviving screenshot pairs;
+- unchanged per-domain recall, including only 0.7% for card layouts.
+
+The result passes the development gate but is not a new independent result. The color policy was
+selected after inspecting this corpus and is now frozen for a new source-disjoint holdout. Color
+also cannot distinguish grayscale or similarly colored templates, and it cannot restore candidates
+lost during geometry. In particular, the result is not yet evidence that the profile is useful for
+MTG card crops.
+
+The enriched fingerprint measured 46,185/55,266 bytes at p50/p95. Generation measured
+120.70/423.68 ms and comparison measured 4.10/12.72 ms at p50/p95. The quality improvement therefore
+comes with measurable size and comparison costs that remain above any future public-profile budget.
+
+## Item-Color Independent Holdout
+
+After freezing the item-color policy, a new local-only holdout excluded both earlier development
+corpora and the inspected 500-source calibration corpus by source identity, Commons page ID,
+generated identity, and pixel SHA-256. It contains 300 new Public Domain/CC0 Commons sources plus
+200 generated sources using a different style-4 screenshot/card family and seed range. The same
+1,500 positive and 144,550 negative pairing contract was evaluated once with no threshold sweep.
+
+The frozen profile produced:
+
+- 745 true positives and 755 false negatives: 49.7% recall;
+- five reported false positives and 144,545 true negatives: 0.00346% false-positive rate;
+- 99.3% precision under the template-heavy negative population;
+- 73.7% photograph, 77.7% portrait, 49.7% document, 32.3% screenshot, and 15.0% card-layout recall;
+- zero false positives among 14,850 screenshot and 14,850 card-layout same-domain negatives.
+
+All five domains exceeded the 10% guardrail, and the aggregate 20% recall/0.5% false-positive gates
+passed. The profile therefore clears the independent quality gate without holdout tuning.
+
+Manual review found that the photograph pair is two scans of the same marine artwork and one
+portrait pair is two crops/scans of the same historical skiing photograph. The other three pairings
+come from three distinct portraits digitized with the same large grayscale calibration strip and
+studio-card layout. They remain counted as false positives; removing the two related-source labels
+would only strengthen the result.
+
+Holdout generation measured 119.63/299.45 ms at p50/p95, comparison measured 1.79/5.73 ms, and
+serialized size measured 46,997/55,271 bytes. Quality is no longer the immediate blocker, but a
+public profile remains blocked on size/performance budgets, retrieval validation, broader
+cross-runtime fixtures, persisted-schema design, and maintainer approval. Card-layout recall at 15%
+is materially better than the earlier 0.7%, but still too low to claim robust MTG crop matching.
+
+The enriched fingerprint also matched Node exactly in Chromium 151, Firefox 153, and WebKit 26.5,
+on both the main thread and a module worker. This confirms deterministic portability for the
+existing procedural fixture; it does not replace the remaining requirement for broader exactness
+fixtures.
+
 Before any public proposal:
 
-1. add and independently validate an item-specific signal for template-only crops, or explicitly
-   exclude item identity from the supported product semantics;
+1. decide whether card-layout recall is sufficient for an explicitly bounded product use case;
 2. record related-source labels so near-duplicate source files are not automatically counted as
    unrelated negatives;
 3. measure retrieval on a realistically large reference collection only after the quality gate can
@@ -280,3 +341,6 @@ Retained evidence:
 - [`benchmarks/crop-local/browser-exactness-node22-2026-08-09.json`](../../benchmarks/crop-local/browser-exactness-node22-2026-08-09.json)
 - [`benchmarks/crop-local/performance-optimization-node22-2026-08-09.json`](../../benchmarks/crop-local/performance-optimization-node22-2026-08-09.json)
 - [`benchmarks/crop-local/independent-calibration-node22-2026-08-10.json`](../../benchmarks/crop-local/independent-calibration-node22-2026-08-10.json)
+- [`benchmarks/crop-local/item-color-development-node22-2026-08-10.json`](../../benchmarks/crop-local/item-color-development-node22-2026-08-10.json)
+- [`benchmarks/crop-local/item-color-holdout-node22-2026-08-10.json`](../../benchmarks/crop-local/item-color-holdout-node22-2026-08-10.json)
+- [`benchmarks/crop-local/browser-item-color-exactness-node22-2026-08-10.json`](../../benchmarks/crop-local/browser-item-color-exactness-node22-2026-08-10.json)

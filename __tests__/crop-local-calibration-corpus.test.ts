@@ -7,6 +7,7 @@ import {
   compactCropLocalCalibrationReport,
   createCropLocalCalibrationPairs,
   CROP_LOCAL_CALIBRATION_PROFILE,
+  CROP_LOCAL_ITEM_COLOR_HOLDOUT_PROFILE,
   transformCropLocalCalibration,
   summarizeCropLocalMeasurements,
   validateCropLocalCalibrationManifest,
@@ -45,10 +46,10 @@ const exclusions = () => [
   },
 ];
 
-const images = () => {
+const images = (profile = CROP_LOCAL_CALIBRATION_PROFILE) => {
   let sequence = 1;
-  return CROP_LOCAL_CALIBRATION_PROFILE.domains.flatMap((domain) => (
-    Array.from({ length: CROP_LOCAL_CALIBRATION_PROFILE.sourcesPerDomain }, (_, index) => {
+  return profile.domains.flatMap((domain) => (
+    Array.from({ length: profile.sourcesPerDomain }, (_, index) => {
       const current = sequence;
       sequence += 1;
       const common = {
@@ -80,8 +81,8 @@ const images = () => {
         sourceType: 'deterministic-generated',
         title: `${domain} ${index}`,
         generator,
-        seed: 100_000 + index,
-        style: 3,
+        seed: (profile.syntheticStyle === 4 ? 200_000 : 100_000) + index,
+        style: profile.syntheticStyle,
       };
     })
   ));
@@ -94,6 +95,15 @@ const build = (selectedImages = images()) => buildCropLocalCalibrationManifest({
   syntheticSeedOffset: 100_000,
   createdAt: '2026-08-10T22:00:00.000Z',
 });
+
+const holdoutExclusions = () => [...exclusions(), {
+  corpus: CROP_LOCAL_CALIBRATION_PROFILE.corpus,
+  manifestSha256: 'c'.repeat(64),
+  manifest: {
+    corpus: CROP_LOCAL_CALIBRATION_PROFILE.corpus,
+    images: [{ id: 'calibration-source', sha256: 'd'.repeat(64) }],
+  },
+}];
 
 describe('Crop-Local independent calibration corpus', () => {
   it('freezes 500 source-disjoint sources and 1,500 transformations', () => {
@@ -113,6 +123,32 @@ describe('Crop-Local independent calibration corpus', () => {
     expect(validateCropLocalCalibrationManifest(
       manifest,
       exclusions().map(({ manifest: excluded }) => excluded),
+    )).toBe(manifest);
+  });
+
+  it('uses a distinct style-4 contract for the untouched item-color holdout', () => {
+    const manifest = buildCropLocalCalibrationManifest({
+      images: images(CROP_LOCAL_ITEM_COLOR_HOLDOUT_PROFILE),
+      exclusions: holdoutExclusions(),
+      commonsStartOffset: 6_000,
+      syntheticSeedOffset: 200_000,
+      createdAt: '2026-08-10T23:00:00.000Z',
+      profile: CROP_LOCAL_ITEM_COLOR_HOLDOUT_PROFILE,
+    });
+    expect(manifest).toMatchObject({
+      corpus: 'crop-local-item-color-holdout-v1',
+      policy: 'locked-item-color-profile',
+      selection: {
+        syntheticStyle: 4,
+        excludedCorpora: expect.arrayContaining([
+          expect.objectContaining({ corpus: 'crop-local-independent-calibration-v1' }),
+        ]),
+      },
+    });
+    expect(validateCropLocalCalibrationManifest(
+      manifest,
+      holdoutExclusions().map(({ manifest: excluded }) => excluded),
+      CROP_LOCAL_ITEM_COLOR_HOLDOUT_PROFILE,
     )).toBe(manifest);
   });
 

@@ -221,7 +221,8 @@ const planes = (source: Rgba8PixelSource): Planes => {
   return { luminance };
 };
 
-const resizeBilinearFixed = (
+/** @internal Shared deterministic plane resize for crop-local experiment extensions. */
+export const resizeCropLocalPlane = (
   input: Uint8Array,
   sourceWidth: number,
   sourceHeight: number,
@@ -388,7 +389,7 @@ const verificationSketch = (
   const scale = maximumDimension / Math.max(sourceWidth, sourceHeight);
   const width = Math.max(16, Math.round(sourceWidth * scale));
   const height = Math.max(16, Math.round(sourceHeight * scale));
-  const resized = resizeBilinearFixed(luminance, sourceWidth, sourceHeight, width, height);
+  const resized = resizeCropLocalPlane(luminance, sourceWidth, sourceHeight, width, height);
   return {
     width,
     height,
@@ -422,7 +423,7 @@ export const fingerprintCropLocalExperiment = (
   const sourceHeight = inputMaximum <= maximumDimension
     ? source.height : Math.max(40, Math.round(source.height * maximumDimension / inputMaximum));
   const inputPlanes = planes(source);
-  const baseLuminance = resizeBilinearFixed(
+  const baseLuminance = resizeCropLocalPlane(
     inputPlanes.luminance, source.width, source.height, sourceWidth, sourceHeight,
   );
   const candidates: CropLocalFeature[] = [];
@@ -431,7 +432,7 @@ export const fingerprintCropLocalExperiment = (
     const height = Math.max(40, Math.round(sourceHeight * 1000 / scalePermille));
     if (width < DESCRIPTOR_BORDER * 2 + 8 || height < DESCRIPTOR_BORDER * 2 + 8) return;
     const pixels = blurThreeByThree(
-      resizeBilinearFixed(baseLuminance, sourceWidth, sourceHeight, width, height), width, height,
+      resizeCropLocalPlane(baseLuminance, sourceWidth, sourceHeight, width, height), width, height,
     );
     const scores = new Uint8Array(width * height);
     for (let y = DESCRIPTOR_BORDER; y < height - DESCRIPTOR_BORDER; y += 1) {

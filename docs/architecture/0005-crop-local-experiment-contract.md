@@ -64,8 +64,7 @@ responsible for deciding whether visual sameness is sufficient for its product c
 Before a public crop-local proposal:
 
 1. obtain maintainer approval for these source/crop and tri-state semantics;
-2. build the independent 500-source/1,500-transformation calibration corpus with the repository's
-   source-disjoint, local-only corpus builder;
+2. retain the completed source-disjoint item-color holdout evidence and its frozen-policy audit;
 3. measure retrieval with a realistically large reference collection;
 4. meet predeclared generation-time, serialized-size, and allocation budgets;
 5. expand exact browser and worker fixtures beyond one procedural image;
@@ -74,5 +73,6 @@ Before a public crop-local proposal:
 ## Related Material
 
 - [Crop-Local v0 results](../modernization/crop-local-v0-results.md)
+- [Crop-Local item-color experiment](./0006-crop-local-item-color-experiment.md)
 - [Crop-aware multi-fingerprint ADR](./0004-crop-block-multi-fingerprints.md)
 - [Versioned fingerprint ADR](./0001-versioned-image-fingerprints.md)
