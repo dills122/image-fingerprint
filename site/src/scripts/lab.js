@@ -145,9 +145,7 @@ function drawContained(context, image, width, height) {
 }
 
 function drawSource() {
-  const canvas = document.createElement('canvas');
-  canvas.width = elements.resultCanvas.width;
-  canvas.height = elements.resultCanvas.height;
+  const canvas = elements.sourcePreview;
   const context = canvas.getContext('2d', { willReadFrequently: true });
   drawContained(
     context,
@@ -377,7 +375,6 @@ function loadImage(source, description) {
     const image = new Image();
     image.onload = () => {
       state.image = image;
-      elements.sourcePreview.src = source;
       elements.fileStatus.textContent = `${description} Pixels stay in this browser.`;
       elements.fileInput.removeAttribute('aria-invalid');
       updateLab().then(resolve);
