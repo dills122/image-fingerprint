@@ -52,6 +52,9 @@ jobs:
           printf 'name=%s\n' "$(node -p "require('./package.json').name")" >> "$GITHUB_OUTPUT"
           printf 'version=%s\n' "$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
 
+      - name: Validate curated release notes
+        run: pnpm release:notes:check
+
       - name: Validate tag matches package version
         run: |
           expected="v${{ steps.package.outputs.version }}"
@@ -143,6 +146,6 @@ jobs:
       - name: Publish GitHub release with notes
         uses: softprops/action-gh-release@v2
         with:
-          generate_release_notes: true
+          body_path: docs/releases/${{ needs.verify.outputs.package_version }}.md
           prerelease: ${{ contains(needs.verify.outputs.package_version, '-') }}
           files: ${{ needs.verify.outputs.package_name }}-${{ needs.verify.outputs.package_version }}.tgz

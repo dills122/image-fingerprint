@@ -13,6 +13,8 @@ All notable changes to `image-fingerprint` are documented here.
   limitations.
 - Stabilize required CI and CodeQL checks while reducing unnecessary expensive work.
 
+See [the complete 0.1.1 release notes](./docs/releases/0.1.1.md).
+
 ## 0.1.1-rc.0 - 2026-08-10
 
 - Add bounded crop-aware fingerprint research implementations and reproducible benchmark evidence.

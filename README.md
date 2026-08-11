@@ -406,8 +406,15 @@ The [trusted-publishing bootstrap](./docs/modernization/trusted-publishing-boots
 `0.1.0` was published through GitHub Actions with npm provenance and is the registry's `latest`
 release. `0.1.1-rc.0` was published through the same workflow under the `next` dist-tag.
 
-The [`0.1.1` release notes](./docs/modernization/release-notes-0.1.1.md) record the experimental
-Crop-Local opt-in, compatibility boundary, validation evidence, and release checklist.
+Every release must include curated notes at `docs/releases/<version>.md`; the release workflow
+validates that document and publishes it verbatim instead of generating a commit log. Start from
+the [release-notes template](./docs/releases/TEMPLATE.md), and run `pnpm release:notes:check` before
+creating the version tag.
+
+The [`0.1.1` public release notes](./docs/releases/0.1.1.md) describe the experimental Crop-Local
+opt-in, usage example, compatibility boundary, and validation limits. The separate
+[engineering release record](./docs/modernization/release-notes-0.1.1.md) retains the detailed
+evidence and release checklist.
 
 ## Origins and attribution
 
