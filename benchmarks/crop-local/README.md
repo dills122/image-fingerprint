@@ -122,11 +122,19 @@ pnpm crop-local:item-color:holdout:prepare -- \
 pnpm crop-local:item-color:holdout -- \
   --manifest /outside-repository/crop-local-item-color-holdout-v1/manifest.json \
   --output benchmarks/crop-local/item-color-holdout-node22-2026-08-10.json
+
+pnpm crop-local:item-color:retrieval -- \
+  --manifest /outside-repository/crop-local-item-color-holdout-v1/manifest.json \
+  --output benchmarks/crop-local/item-color-retrieval-holdout-node22-2026-08-10.json
 ```
 
 The 2026-08-10 single frozen-policy run passed the independent quality gate with 49.7% recall and
 five reported false positives among 144,550 negatives. It does not authorize a public profile;
-size, performance, retrieval, cross-runtime, schema, and approval gates remain.
+size, performance, large-scale retrieval, cross-runtime, schema, and approval gates remain. The
+separate frozen retrieval run passed its 500-reference candidate-recall gate at 98.66% recall@50
+for verifier-accepted queries, while showing that the JSON ranker still scores evidence from nearly
+every reference. See
+[`docs/modernization/crop-local-item-color-retrieval-results.md`](../../docs/modernization/crop-local-item-color-retrieval-results.md).
 
 The TypeScript code, profiles, persisted shapes, and retrieval index remain internal experiments.
 None are exported from the package root.

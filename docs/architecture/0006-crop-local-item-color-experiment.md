@@ -64,6 +64,14 @@ One nontrivial RGBA fixture produced byte-for-byte identical enriched fingerprin
 Chromium, Firefox, and WebKit on both main-thread and module-worker paths. Broader exactness fixtures
 remain a separate public-profile gate.
 
+The earlier 16-bit positional descriptor/IDF retrieval profile was then frozen and evaluated on the
+same locked holdout without verifier or retrieval retuning. A top-50 candidate set recovered 735 of
+745 verifier-accepted true sources (98.66%). Rank-ordered verification returned the correct source
+first for 732 queries and an unrelated verified source first for three. The 5.90 MB research JSON
+index queried at 1.42/4.10 ms p50/p95, but each query still had evidence from 499/500 references at
+p50/p95. This passes the limited 500-reference candidate-recall gate while leaving production-scale
+selectivity, storage, and latency unresolved.
+
 ## Compatibility
 
 - `pdq-v1`, `blockhash-v1`, package entrypoints, and schema version 1 records are unchanged.
@@ -76,12 +84,13 @@ remain a separate public-profile gate.
 
 1. Record maintainer approval for the wrapper semantics and decide whether 15% card-layout recall
    is sufficient for any claimed MTG use case.
-2. Address serialized size, generation cost, retrieval scale, and broader browser exactness only
-   after the quality gate passes independently.
+2. Replace the research JSON ranker and prove selective retrieval, storage, and latency on a larger
+   provenance-safe corpus; the 500-reference top-50 gate does not establish production scale.
 3. Design and review a bounded persisted schema separately from the accepted in-memory shape.
 
 ## Related Material
 
 - [Crop-Local v0 results](../modernization/crop-local-v0-results.md)
+- [Crop-Local item-color retrieval results](../modernization/crop-local-item-color-retrieval-results.md)
 - [Crop-Local experiment contract](./0005-crop-local-experiment-contract.md)
 - [Versioned fingerprint ADR](./0001-versioned-image-fingerprints.md)
