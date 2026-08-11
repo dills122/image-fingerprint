@@ -39,6 +39,8 @@ complete.
   sweeps, hard cases, and conservative full-image/crop-region usage guidance.
 - [0.1.0 release notes](./release-notes-0.1.0.md): runtime/decoder matrix, historical compatibility
   mode, persistence and rollback guidance, limits, evidence, and attribution.
+- [0.1.1 release notes](./release-notes-0.1.1.md): experimental Crop-Local opt-in, stable
+  compatibility boundary, evidence, limitations, and release checklist.
 - [Crop-aware fingerprint ADR](../architecture/0004-crop-block-multi-fingerprints.md): proposed but
   blocked architecture for bounded region-fingerprint collections.
 - [Crop-Block experiment results](./crop-block-v1-results.md): procedural, Met, child-hash,
@@ -50,6 +52,8 @@ complete.
   source-to-crop direction, tri-state semantics, template-ambiguity boundary, and runtime limits.
 - [Crop-Local item-color experiment](../architecture/0006-crop-local-item-color-experiment.md):
   internal aligned-chroma veto, development evidence, frozen policy, and untouched-holdout gates.
+- [Crop-Local experimental package surface](../architecture/0008-crop-local-experimental-package-surface.md):
+  accepted opt-in API boundary, exclusions, compatibility policy, and verification requirements.
 - [Crop-Local item-color retrieval results](./crop-local-item-color-retrieval-results.md): frozen
   top-50 descriptor-index evidence, final verified outcomes, resource measurements, and explicit
   500-reference scaling limits.

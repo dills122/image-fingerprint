@@ -2,6 +2,15 @@
 
 All notable changes to `image-fingerprint` are documented here.
 
+## 0.1.1-rc.1 - 2026-08-10
+
+- Add the explicit `image-fingerprint/experimental/crop-local` preview entrypoint.
+- Expose the independently validated item-color generator, directional tri-state comparator, and
+  exact packed transport without changing stable fingerprint schemas or entrypoints.
+- Keep the research retrieval index and failed MTG-specific recall fallback internal.
+- Document experimental compatibility, measured quality, storage, scaling, and product-identity
+  limitations.
+
 ## 0.1.1-rc.0 - 2026-08-10
 
 - Add bounded crop-aware fingerprint research implementations and reproducible benchmark evidence.

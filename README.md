@@ -8,7 +8,8 @@
 [![License](https://img.shields.io/npm/l/image-fingerprint)](./LICENSE)
 
 A versioned image-fingerprinting library with a runtime-neutral pixel core, Node.js and browser
-image adapters, PDQ matching tools, and exact migration support for hashes created by
+image adapters, PDQ matching tools, an opt-in experimental crop matcher, and exact migration
+support for hashes created by
 [`image-hash@7`](https://github.com/danm/image-hash).
 
 [Explore the project site and browser playground](https://dills122.github.io/image-fingerprint/).
@@ -36,6 +37,7 @@ npm install image-fingerprint
 | `image-fingerprint/node` | Node.js | Normalized and historical encoded-image policies, paths, file URLs, bytes, and pixel APIs |
 | `image-fingerprint/core` | Node.js or browser | Runtime-neutral pixels, regions, decoder contracts, and fingerprinting |
 | `image-fingerprint/browser` | Browser or worker | Native `Blob`, `File`, `ImageData`, and pixel APIs |
+| `image-fingerprint/experimental/crop-local` | Node.js or browser | Explicitly unstable crop-aware item matching for decoded RGBA pixels |
 
 Browser applications should use `image-fingerprint/browser`. Node applications should use the
 explicit Node entrypoint for encoded images.
@@ -118,6 +120,61 @@ The production PDQ backend is portable TypeScript. A pinned same-source WASM com
 exact but did not meet the predeclared cross-runtime performance rule, so no WASM asset is shipped
 or selected at runtime. See the [performance report](./docs/modernization/pdq-performance-results.md)
 for Node/browser latency, worker responsiveness, memory, artifact size, and limitations.
+
+### Experimental crop-aware matching
+
+Crop-Local is available only through an explicit experimental package subpath. It answers a
+directional question: whether the second fingerprint is visually consistent with a crop of the
+first source image. This is separate from ordinary full-image PDQ, which remains available through
+the stable `fingerprintPixels(..., { algorithm: 'pdq-v1' })` API.
+
+```typescript
+import { decodeImage } from 'image-fingerprint/node';
+import {
+  compareCropLocalSourceToCrop,
+  fingerprintCropLocalItem,
+} from 'image-fingerprint/experimental/crop-local';
+
+const source = fingerprintCropLocalItem(await decodeImage('./source.jpg'));
+const possibleCrop = fingerprintCropLocalItem(await decodeImage('./crop.jpg'));
+const evidence = compareCropLocalSourceToCrop(source, possibleCrop);
+
+switch (evidence.status) {
+  case 'match':
+    // Enough local geometry, aligned content, and item-color evidence agreed.
+    break;
+  case 'insufficient-evidence':
+    // Keep this distinct from a negative decision or route it for review.
+    break;
+  case 'no-match':
+    break;
+}
+```
+
+Both inputs must be decoded, tightly packed `rgba8` pixels and at least 40 pixels per dimension.
+The ordering is intentional; swapping source and crop changes the question. A `match` is a
+perceptual-copy signal, not proof that two records, products, or template-based items have the same
+identity.
+
+For lower transport overhead, use `fingerprintCropLocalItemPacked()` and
+`comparePackedCropLocalSourceToCrop()`, or explicitly pack and unpack with
+`packCropLocalItemFingerprint()` and `unpackCropLocalItemFingerprint()`. Packed fingerprints
+reconstruct and validate the exact verbose experimental values before comparison.
+
+> [!WARNING]
+> Crop-Local is a pre-stable preview. Its functions, types, fingerprint fields, profile identifiers,
+> defaults, thresholds, and packed representation may change or be removed in any release. It is
+> deliberately excluded from `ImageFingerprint`, `fingerprintPixels()`, the stable package
+> entrypoints, and `parseFingerprint()` / `serializeFingerprint()`. Do not mix experimental profile
+> identifiers or assume durable storage compatibility across package upgrades.
+
+The frozen item-color verifier passed one independent 500-source holdout at 49.7% recall, 99.3%
+precision, and a 0.00346% represented false-positive rate. That corpus is not a universal product
+guarantee. The indexed retrieval prototype and an MTG-specific recall fallback remain internal:
+the index has not been validated at production scale, and the MTG fallback failed its predeclared
+normalized-capture gate. See [ADR 0008](./docs/architecture/0008-crop-local-experimental-package-surface.md)
+for the supported preview boundary and [the retained Crop-Local results](./docs/modernization/crop-local-v0-results.md)
+for full evidence and limitations.
 
 ### Store and restore fingerprints
 
@@ -349,6 +406,9 @@ The [trusted-publishing bootstrap](./docs/modernization/trusted-publishing-boots
 `0.1.0-rc.1` was published through GitHub Actions with npm provenance. Complete the remaining
 [0.1.0 release checklist](./docs/modernization/release-notes-0.1.0.md#release-checklist) before
 creating the stable tag.
+
+The [`0.1.1` release notes](./docs/modernization/release-notes-0.1.1.md) record the experimental
+Crop-Local opt-in, compatibility boundary, validation evidence, and release checklist.
 
 ## Origins and attribution
 

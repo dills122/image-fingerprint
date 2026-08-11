@@ -1,6 +1,6 @@
 # ADR 0006: Crop-Local Item-Color Experiment
 
-Status: proposed; internal quality-confirmed candidate only
+Status: accepted for an explicit experimental package preview; stable profile remains blocked
 Updated: 2026-08-10
 
 ## Context
@@ -29,12 +29,15 @@ grayscale verifier cannot recover information that was never retained.
 - Freeze the development-selected policy at saturation 12, agreement distance 16, contradiction
   distance 48, at least 2% informative coverage across two zones, at least 60% agreement, and at
   most 10% contradiction.
-- Keep the profile, types, comparator, and policy outside every public package entrypoint and
-  persisted schema until a fresh untouched holdout confirms the result.
+- Keep the profile out of every stable package entrypoint and persisted schema. After the untouched
+  holdout passed, expose the quality-confirmed path only through the explicit
+  `image-fingerprint/experimental/crop-local` preview defined by
+  [ADR 0008](./0008-crop-local-experimental-package-surface.md).
 - Keep any representation experiment separate from the frozen in-memory shape. The internal
   `crop-local-item-color-packed-v0` transport experiment uses bounded binary fields and canonical
   base64url, then reconstructs and validates the exact `crop-local-item-color-v0` values before
-  comparison. It is not a public or persisted schema.
+  comparison. The preview may expose it as unstable transport, but it is not a stable persisted
+  schema and has no cross-release compatibility promise.
 
 ## Evidence And Limits
 
@@ -78,7 +81,7 @@ selectivity, storage, and latency unresolved.
 
 ## Compatibility
 
-- `pdq-v1`, `blockhash-v1`, package entrypoints, and schema version 1 records are unchanged.
+- `pdq-v1`, `blockhash-v1`, stable package entrypoints, and schema version 1 records are unchanged.
 - `crop-local-multiscale-binary-v0` remains callable as the exact grayscale experiment used by the
   earlier reports.
 - `crop-local-item-color-v0` has no persisted compatibility promise and must receive a new identifier
@@ -88,18 +91,18 @@ selectivity, storage, and latency unresolved.
 
 ## Remaining Gates
 
-1. Record maintainer approval for the wrapper semantics.
-2. Keep the separate
+1. Keep the separate
    [`crop-local-card-recall-v0-development`](./0007-crop-local-card-recall-development.md) fallback
    internal; its untouched MTG holdout failed, and any revised policy requires another untouched,
    source-disjoint holdout.
-3. Replace the research JSON ranker and prove selective retrieval, storage, and latency on a larger
+2. Replace the research JSON ranker and prove selective retrieval, storage, and latency on a larger
    provenance-safe corpus; the 500-reference top-50 gate does not establish production scale.
-4. Design and review a bounded persisted schema separately from the accepted in-memory shape.
+3. Design and review a bounded persisted schema separately from the accepted in-memory shape.
 
 ## Related Material
 
 - [Crop-Local v0 results](../modernization/crop-local-v0-results.md)
 - [Crop-Local item-color retrieval results](../modernization/crop-local-item-color-retrieval-results.md)
 - [Crop-Local experiment contract](./0005-crop-local-experiment-contract.md)
+- [Crop-Local experimental package surface](./0008-crop-local-experimental-package-surface.md)
 - [Versioned fingerprint ADR](./0001-versioned-image-fingerprints.md)

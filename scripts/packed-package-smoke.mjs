@@ -16,6 +16,7 @@ const PLAN = {
     './node',
     './core',
     './browser',
+    './experimental/crop-local',
     './package.json',
   ],
 };
@@ -53,6 +54,7 @@ const root = require('image-fingerprint');
 const nodeEntry = require('image-fingerprint/node');
 const core = require('image-fingerprint/core');
 const browser = require('image-fingerprint/browser');
+const cropLocal = require('image-fingerprint/experimental/crop-local');
 const metadata = require('image-fingerprint/package.json');
 
 const pixels = ${JSON.stringify(grayValues)};
@@ -76,6 +78,27 @@ assert.equal(typeof core.extractPixelRegion, 'function');
 assert.equal(typeof browser.decodeImage, 'function');
 assert.equal(typeof browser.fingerprintImage, 'function');
 assert.equal(typeof browser.pixelsFromImageData, 'function');
+assert.equal(typeof cropLocal.fingerprintCropLocalItem, 'function');
+assert.equal(typeof cropLocal.compareCropLocalSourceToCrop, 'function');
+assert.equal('fingerprintCropLocalItem' in root, false);
+assert.equal('fingerprintCropLocalItem' in core, false);
+assert.equal('fingerprintCropLocalItem' in browser, false);
+const cropLocalInput = {
+  format: 'rgba8',
+  width: 48,
+  height: 48,
+  data: Uint8Array.from({ length: 48 * 48 * 4 }, (_, index) => (
+    index % 4 === 3 ? 255 : (index * 29) & 255
+  )),
+};
+const experimentalFingerprint = cropLocal.fingerprintCropLocalItem(cropLocalInput);
+assert.equal(experimentalFingerprint.experimentalProfile, 'crop-local-item-color-v0');
+assert.deepEqual(
+  cropLocal.unpackCropLocalItemFingerprint(
+    cropLocal.packCropLocalItemFingerprint(experimentalFingerprint),
+  ),
+  experimentalFingerprint,
+);
 assert.deepEqual(root.fingerprintPixels(input, options), expected);
 assert.deepEqual(core.fingerprintPixels(input, options), expected);
 assert.deepEqual(browser.fingerprintPixels(input, options), expected);
@@ -112,6 +135,11 @@ import {
   fingerprintPixels as fingerprintBrowser,
   pixelsFromImageData,
 } from 'image-fingerprint/browser';
+import {
+  fingerprintCropLocalItem,
+  packCropLocalItemFingerprint,
+  unpackCropLocalItemFingerprint,
+} from 'image-fingerprint/experimental/crop-local';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
@@ -137,6 +165,23 @@ assert.equal(typeof extractPixelRegion, 'function');
 assert.equal(typeof decodeImageBrowser, 'function');
 assert.equal(typeof fingerprintImageBrowser, 'function');
 assert.equal(typeof pixelsFromImageData, 'function');
+assert.equal('fingerprintCropLocalItem' in await import('image-fingerprint'), false);
+assert.equal('fingerprintCropLocalItem' in await import('image-fingerprint/core'), false);
+assert.equal('fingerprintCropLocalItem' in await import('image-fingerprint/browser'), false);
+const cropLocalInput = {
+  format: 'rgba8',
+  width: 48,
+  height: 48,
+  data: Uint8Array.from({ length: 48 * 48 * 4 }, (_, index) => (
+    index % 4 === 3 ? 255 : (index * 29) & 255
+  )),
+};
+const experimentalFingerprint = fingerprintCropLocalItem(cropLocalInput);
+assert.equal(experimentalFingerprint.experimentalProfile, 'crop-local-item-color-v0');
+assert.deepEqual(
+  unpackCropLocalItemFingerprint(packCropLocalItemFingerprint(experimentalFingerprint)),
+  experimentalFingerprint,
+);
 assert.deepEqual(fingerprintRoot(input, options), expected);
 assert.deepEqual(fingerprintCore(input, options), expected);
 assert.deepEqual(fingerprintBrowser(input, options), expected);
@@ -171,6 +216,14 @@ import {
   fingerprintPixels as fingerprintBrowser,
   pixelsFromImageData,
 } from 'image-fingerprint/browser';
+import {
+  compareCropLocalSourceToCrop,
+  fingerprintCropLocalItem,
+  fingerprintCropLocalItemPacked,
+  type CropLocalComparisonEvidence,
+  type CropLocalItemFingerprint,
+  type CropLocalItemPackedFingerprint,
+} from 'image-fingerprint/experimental/crop-local';
 
 const input = {
   format: 'gray8' as const,
@@ -202,6 +255,20 @@ void decodeImageBrowser;
 void fingerprintImageBrowser;
 void pixelsFromImageData;
 void decoder;
+const cropLocalInput = {
+  format: 'rgba8' as const,
+  width: 48,
+  height: 48,
+  data: new Uint8Array(48 * 48 * 4),
+};
+const cropLocalFingerprint: CropLocalItemFingerprint = fingerprintCropLocalItem(cropLocalInput);
+const cropLocalPacked: CropLocalItemPackedFingerprint = fingerprintCropLocalItemPacked(cropLocalInput);
+const cropLocalEvidence: CropLocalComparisonEvidence = compareCropLocalSourceToCrop(
+  cropLocalFingerprint,
+  cropLocalFingerprint,
+);
+void cropLocalPacked;
+void cropLocalEvidence;
 `;
 
 const tsConfig = (module, moduleResolution, file) => JSON.stringify({
