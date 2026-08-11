@@ -53,8 +53,19 @@ decisions. On the procedural performance fixture it reduced serialized p50/p95 s
 49,940/56,284 bytes to 25,365/29,589 bytes. The verbose and packed values matched Node exactly in
 Chromium, Firefox, and WebKit on the existing main-thread and module-worker fixture.
 
-These results support a bounded preview, not a general production claim. The exact-runtime corpus
-contains one procedural image, holdout recall remains 49.7%, and visual agreement cannot prove item
+A post-release packed-tarball gate expanded exactness to four deterministic RGBA fixture classes:
+translucent landscape rings, muted portrait lines, a saturated wide grid, and an alpha-gradient
+square. Node 22, Chromium 151, Firefox 153, and WebKit 26.5 produced exact verbose and packed
+fingerprints and exact comparison statuses/reasons on both the main thread and a module worker.
+Complete verbose and packed evidence also remained exact within each runtime.
+
+One raw floating diagnostic differed by one representable value between Node and Chromium
+(`meanResidual` ended in `...1804` versus `...18046`) while the fingerprint, status, reasons, and
+all thresholds were unchanged. Raw diagnostic floats are therefore not a cross-runtime serialized
+contract; callers must not require their JSON byte equality across engines.
+
+These results support a bounded preview, not a general production claim. The expanded exact-runtime
+set is still procedural, holdout recall remains 49.7%, and visual agreement cannot prove item
 identity when distinct items share pixels or templates.
 
 ## Compatibility And Release Policy
@@ -73,8 +84,9 @@ identity when distinct items share pixels or templates.
 ## Verification
 
 The package gate must prove that CommonJS, ESM, and TypeScript consumers can resolve the explicit
-subpath; the browser build contains no Node-only imports; verbose and packed values round-trip; and
-the stable entrypoints do not expose Crop-Local symbols.
+subpath; the browser build contains no Node-only imports; verbose and packed values round-trip; the
+stable entrypoints do not expose Crop-Local symbols; and the packed browser gate reproduces exact
+fingerprints and decision fields in Chromium, Firefox, WebKit, and module workers.
 
 ## Related Material
 

@@ -62,7 +62,7 @@ else
     esac
 
     case "$changed_path" in
-      src/index.ts|src/block-hash.ts|src/adapters/*|src/browser.ts|src/browser/*|src/core/*|example/Example.png|package.json|pnpm-lock.yaml|pnpm-workspace.yaml|.node-version|tsconfig.json|vite.lib.config.mts|scripts/clean.cjs|scripts/browser-engine-smoke.mjs|scripts/browser-package-smoke.mjs|scripts/browser-smoke.html|scripts/browser-smoke-worker.mjs|scripts/packed-consumer-utils.mjs)
+      src/index.ts|src/block-hash.ts|src/adapters/*|src/browser.ts|src/browser/*|src/core/*|example/Example.png|package.json|pnpm-lock.yaml|pnpm-workspace.yaml|.node-version|tsconfig.json|vite.lib.config.mts|scripts/clean.cjs|scripts/browser-engine-smoke.mjs|scripts/browser-package-smoke.mjs|scripts/browser-smoke-crop-local-fixtures.mjs|scripts/browser-smoke.html|scripts/browser-smoke-worker.mjs|scripts/packed-consumer-utils.mjs)
         browser=true
         ;;
     esac

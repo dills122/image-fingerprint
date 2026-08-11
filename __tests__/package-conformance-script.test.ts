@@ -36,12 +36,22 @@ describe('packed package conformance scripts', () => {
 
     expect(result.status, result.stderr).toBe(0);
     expect(JSON.parse(result.stdout)).toEqual({
-      profileVersion: 1,
+      profileVersion: 2,
       packageSource: 'packed-tarball',
       browsers: ['chromium', 'firefox', 'webkit'],
       contexts: ['main-thread', 'module-worker'],
       pixelFormats: ['gray8', 'rgb8', 'rgba8'],
       adapterSources: ['ImageData', 'Blob', 'File'],
+      experimentalProfiles: [
+        'crop-local-item-color-v0',
+        'crop-local-item-color-packed-v0',
+      ],
+      cropLocalFixtureClasses: [
+        'translucent-rings-landscape',
+        'muted-lines-portrait',
+        'saturated-grid-wide',
+        'alpha-gradient-square',
+      ],
     });
   });
 

@@ -392,7 +392,8 @@ algorithms is recorded in
 - Offline unit/integration suite: `pnpm test`
 - Full local quality gate: `pnpm check`
 - Published file-set verification: `pnpm pack:check`
-- Packed Chromium, Firefox, WebKit, and module-worker conformance: `pnpm test:browser`
+- Packed Chromium, Firefox, WebKit, and module-worker conformance, including experimental
+  Crop-Local verbose/packed exactness: `pnpm test:browser`
 - Historical BlockHash differential matrix: `pnpm compat:image-hash-v7`
 
 ## Releasing

@@ -59,6 +59,17 @@ describe('CI path classification', () => {
     });
   });
 
+  it('runs the browser gate when its Crop-Local fixture module changes', () => {
+    expect(classify(['scripts/browser-smoke-crop-local-fixtures.mjs'])).toEqual({
+      quality: 'true',
+      dependencies: 'false',
+      package: 'false',
+      oracle: 'false',
+      browser: 'true',
+      site: 'false',
+    });
+  });
+
   it('isolates oracle fixture and harness changes', () => {
     expect(classify(['tools/pdq-oracle/main.cpp'])).toEqual({
       quality: 'true',

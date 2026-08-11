@@ -2,6 +2,13 @@
 
 All notable changes to `image-fingerprint` are documented here.
 
+## Unreleased
+
+- Expand the packed-package browser and module-worker gate to cover the experimental Crop-Local
+  verbose and packed profiles across four deterministic RGBA fixture classes.
+- Require exact fingerprints and decision fields across Node, Chromium, Firefox, and WebKit while
+  keeping floating-point diagnostic evidence outside the cross-runtime serialization contract.
+
 ## 0.1.1 - 2026-08-10
 
 - Add the explicit `image-fingerprint/experimental/crop-local` preview entrypoint.

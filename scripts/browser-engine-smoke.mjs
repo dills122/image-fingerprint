@@ -1,20 +1,30 @@
 import assert from 'node:assert/strict';
 import { copyFile, mkdir, readFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
+import { createRequire } from 'node:module';
 import { extname, join, normalize, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   createPackedConsumer,
   repositoryRoot,
 } from './packed-consumer-utils.mjs';
+import {
+  createCropLocalBrowserFixtures,
+  runCropLocalBrowserFixtures,
+} from './browser-smoke-crop-local-fixtures.mjs';
 
 const PLAN = {
-  profileVersion: 1,
+  profileVersion: 2,
   packageSource: 'packed-tarball',
   browsers: ['chromium', 'firefox', 'webkit'],
   contexts: ['main-thread', 'module-worker'],
   pixelFormats: ['gray8', 'rgb8', 'rgba8'],
   adapterSources: ['ImageData', 'Blob', 'File'],
+  experimentalProfiles: [
+    'crop-local-item-color-v0',
+    'crop-local-item-color-packed-v0',
+  ],
+  cropLocalFixtureClasses: createCropLocalBrowserFixtures().map(({ name }) => name),
 };
 
 const parseArguments = (arguments_) => {
@@ -75,7 +85,7 @@ const startServer = async (root) => {
   };
 };
 
-const runBrowser = async (name, browserType, url) => {
+const runBrowser = async (name, browserType, url, expectedCropLocal) => {
   const browser = await browserType.launch({ headless: true });
   try {
     const page = await browser.newPage();
@@ -100,11 +110,18 @@ const runBrowser = async (name, browserType, url) => {
     assert.deepEqual(result.mainThread.adapters.blob, result.mainThread.adapters.file);
     assert.deepEqual(result.mainThread.adapters.blob, result.mainThread.adapters.decodedPixels);
     assert.deepEqual(result.mainThread.adapters.imageData, result.mainThread.rawPixels.rgba8);
+    assert.deepEqual(result.mainThread.cropLocal, expectedCropLocal);
+    assert.deepEqual(result.moduleWorker.cropLocal, expectedCropLocal);
     assert.ok(result.mainThread.adapters.width >= 5);
     assert.ok(result.mainThread.adapters.height >= 5);
     assert.deepEqual(errors, []);
     assert.equal(requests.has('/scripts/browser-smoke-worker.mjs'), true);
+    assert.equal(requests.has('/scripts/browser-smoke-crop-local-fixtures.mjs'), true);
     assert.equal(requests.has('/scripts/Example.png'), true);
+    assert.equal(
+      requests.has('/node_modules/image-fingerprint/lib/esm/experimental/crop-local.mjs'),
+      true,
+    );
     assert.equal(
       [...requests].some((requestPath) => requestPath.endsWith('.wasm')),
       false,
@@ -136,18 +153,26 @@ const run = async () => {
       join(scriptsDirectory, 'browser-smoke-worker.mjs'),
     );
     await copyFile(
+      join(sourceDirectory, 'browser-smoke-crop-local-fixtures.mjs'),
+      join(scriptsDirectory, 'browser-smoke-crop-local-fixtures.mjs'),
+    );
+    await copyFile(
       join(repositoryRoot, 'example', 'Example.png'),
       join(scriptsDirectory, 'Example.png'),
     );
     server = await startServer(packed.consumerRoot);
 
     const playwright = await import('playwright');
+    const packageRequire = createRequire(join(packed.consumerRoot, 'browser-smoke-node.cjs'));
+    const cropLocalApi = packageRequire('image-fingerprint/experimental/crop-local');
+    const expectedCropLocal = runCropLocalBrowserFixtures(cropLocalApi);
     const results = [];
     for (const browserName of PLAN.browsers) {
       results.push(await runBrowser(
         browserName,
         playwright[browserName],
         server.url,
+        expectedCropLocal,
       ));
     }
     return {
