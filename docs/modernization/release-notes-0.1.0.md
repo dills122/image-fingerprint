@@ -1,11 +1,12 @@
 # image-fingerprint 0.1.0 Release Notes
 
-Status: stable release preparation
-Updated: 2026-08-09
+Status: published
+Updated: 2026-08-10
 
 The first registry version, `0.1.0-rc.0`, was published manually under the `next` tag solely to
 create the npm package. GitHub Actions then published `0.1.0-rc.1` through the configured npm trusted
-publisher with SLSA provenance. The stable target remains `0.1.0`.
+publisher with SLSA provenance. Stable `0.1.0` was subsequently published through the same workflow
+and remains the registry's `latest` release.
 
 ## Summary
 
@@ -105,9 +106,9 @@ shasum `d3fc28ac0a2b08561797a0b4fca44ea34a6484d5`, registry SLSA provenance, and
 `e7a124a26a5715c17d2cefdbd5c219af8e229371`. Packed CommonJS and ESM runtimes, TypeScript
 Node16/NodeNext/Bundler resolution, and browser main-thread/module-worker consumers all passed.
 
-The prepared stable `0.1.0` npm dry-run contains 108 files, is 85.0 kB compressed and 358.0 kB
-unpacked, and has shasum `09add482027b69a064ff1692c1fa9826d86622f3`. npm selected the public
-`latest` tag. This stable package has not been published.
+The published stable `0.1.0` package contains 108 files, is 358,005 bytes unpacked, and has shasum
+`09add482027b69a064ff1692c1fa9826d86622f3`. npm assigns it the public `latest` tag, and the registry
+records SLSA provenance for the artifact.
 
 ## Verification Commands
 
@@ -136,9 +137,9 @@ of all 720 results captured from the published `image-hash@7.0.1` tarball.
 - [x] Configure npm trusted publishing for `dills122/image-fingerprint` and `release.yml`.
 - [x] Publish `0.1.0-rc.1` under `next` through GitHub Actions and verify npm provenance.
 - [x] Set npm publishing access to require 2FA and disallow tokens after OIDC succeeds.
-- [ ] Merge the `0.1.0` version bump after the complete required-check matrix passes.
-- [ ] Confirm the signed `v0.1.0` tag points at the current `main` commit.
-- [ ] Confirm the stable workflow publishes `latest` and creates the GitHub release.
+- [x] Merge the `0.1.0` version bump after the complete required-check matrix passes.
+- [x] Confirm the signed `v0.1.0` tag points at the release commit.
+- [x] Confirm the stable workflow publishes `latest` and creates the GitHub release.
 
 ## Attribution and Provenance
 

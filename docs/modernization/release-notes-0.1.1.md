@@ -1,6 +1,6 @@
 # 0.1.1 Release Notes
 
-Status: `0.1.1-rc.1` candidate preparation
+Status: stable release preparation
 Updated: 2026-08-10
 
 ## Summary
@@ -9,6 +9,11 @@ Updated: 2026-08-10
 making the quality-confirmed Crop-Local item-color matcher available for deliberate application
 testing. Crop-Local is isolated at `image-fingerprint/experimental/crop-local`; importing a stable
 entrypoint cannot select or expose it.
+
+`0.1.1-rc.0` was published under the `next` dist-tag with npm provenance. The subsequent
+experimental package-surface change was merged to `main` at `2103800` after CI and CodeQL passed.
+Although that commit used an intermediate `0.1.1-rc.1` manifest, it was not tagged or published;
+stable `0.1.1` incorporates the change directly.
 
 ## Experimental Crop-Local Preview
 
@@ -54,15 +59,24 @@ matches as visual consistency rather than proof that two products or records are
 
 ## Release Checklist
 
-- [ ] Merge `0.1.1-rc.1` only after required CI and CodeQL checks pass.
-- [ ] Confirm `pnpm check` passes on the release commit.
-- [ ] Confirm `pnpm pack:check` includes the experimental CommonJS, ESM, and declaration files.
-- [ ] Confirm packed consumers resolve the subpath under CommonJS, ESM, Node16, NodeNext, and
+- [x] Publish `0.1.1-rc.0` under `next` with npm provenance.
+- [x] Merge the experimental package surface only after required CI and CodeQL checks pass.
+- [x] Confirm the latest pre-release `main` commit includes the explicit experimental entrypoint.
+- [x] Confirm `pnpm check` passes for the stable release change.
+- [x] Confirm `pnpm pack:check` includes the experimental CommonJS, ESM, and declaration files.
+- [x] Confirm packed consumers resolve the subpath under CommonJS, ESM, Node16, NodeNext, and
   bundler TypeScript modes.
-- [ ] Confirm the browser package smoke contains no Node-only imports.
-- [ ] Tag the exact merged commit as `v0.1.1-rc.1` and publish with the `next` dist-tag.
+- [x] Confirm the browser package smoke contains no Node-only imports.
+- [x] Confirm packed Chromium, Firefox, and WebKit consumers pass in the main thread and a module
+  worker.
 - [ ] Run application-level end-to-end trials without treating preview fingerprints as durable.
-- [ ] Promote to `0.1.1` only after release-candidate feedback and required checks are reviewed.
+- [ ] Merge the stable version change after required CI and CodeQL checks pass.
+- [ ] Create a signed `v0.1.1` tag on the exact merged release commit.
+- [ ] Confirm the release workflow publishes `0.1.1` under `latest` with npm provenance and creates
+  the GitHub release.
+
+The prepared `0.1.1` npm dry-run contains 180 files, is 183,594 bytes compressed and 871,712 bytes
+unpacked, and has shasum `c7ae7de76f8c49f977bb3942158c061ab198ba05`.
 
 ## References
 
