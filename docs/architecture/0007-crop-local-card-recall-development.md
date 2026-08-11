@@ -1,6 +1,6 @@
 # ADR 0007: Crop-Local Card-Recall Development Fallback
 
-Status: proposed; internal development-selected experiment only
+Status: untouched MTG quality gate failed; internal experiment only
 Updated: 2026-08-10
 
 ## Context
@@ -77,6 +77,44 @@ pixel SHA-256 values. Predeclare at least:
 Passing that comparison would establish only the bounded card use case. Public schema, retrieval,
 size, runtime, browser-fixture, and maintainer-approval gates would still remain.
 
+## Untouched MTG Holdout Result
+
+The frozen policy was evaluated once on a new 100-print corpus with no threshold sweep. It excludes
+all 91 development printing IDs, names, and encoded hashes and also requires unique oracle and
+illustration IDs within the holdout. Twenty-five sources come from each of four release eras
+(1993–2002, 2003–2012, 2013–2022, and 2023–2026), spanning 80 sets, eight color categories, seven
+layouts, and six treatment styles. Scryfall/Wizards JPEGs remain local-only.
+
+The 300 positives contain a center crop, severe crop, and normalized-capture simulation per source.
+The normalized-capture mode represents post-extraction crop, exposure, white balance, reduced
+resolution, and blur separately from clean crops; it is not a real camera corpus. Three negative
+pairings per different-card pair produce 14,850 hard negatives.
+
+| Holdout result | Frozen item-color v0 | Card fallback |
+| --- | ---: | ---: |
+| Aggregate TP / positives | 133 / 300 | 160 / 300 |
+| Aggregate recall | 44.3% | 53.3% |
+| Center-crop recall | 93% | 95% |
+| Severe-crop recall | 30% | 50% |
+| Normalized-capture recall | 10% | 15% |
+| FP / negatives | 1 / 14,850 | 1 / 14,850 |
+| Additional candidate false positives | — | 0 |
+
+The candidate passed the five-point aggregate recall-gain requirement with a nine-point gain,
+preserved every frozen match, and added no false positives. It failed the predeclared 20%
+normalized-capture floor, reaching only 15%, so the overall gate failed. The policy remains an
+internal experiment and this holdout is now inspected data that cannot be used for threshold
+selection.
+
+The single reported negative is inherited from the frozen profile: `Carapace` (5ED 281) versus
+`Aspect of Wolf` (5ED 278). Manual review confirmed distinct card and illustration identities that
+share the Fifth Edition green frame and Enchant Creature layout. It remains a valid false positive.
+
+Future work should develop stronger capture normalization or an upstream product preprocessing
+contract on separate data, preferably including labeled device captures. Any changed policy then
+requires another untouched, source-disjoint holdout; the failed 100-print corpus must not become
+its validation set.
+
 ## Compatibility
 
 - `crop-local-item-color-v0` is unchanged.
@@ -89,5 +127,6 @@ size, runtime, browser-fixture, and maintainer-approval gates would still remain
 
 - [`card-holdout-diagnostic-node22-2026-08-10.json`](../../benchmarks/crop-local/card-holdout-diagnostic-node22-2026-08-10.json)
 - [`mtg-card-development-node22-2026-08-10.json`](../../benchmarks/crop-local/mtg-card-development-node22-2026-08-10.json)
+- [`mtg-card-holdout-node22-2026-08-10.json`](../../benchmarks/crop-local/mtg-card-holdout-node22-2026-08-10.json)
 - [Crop-Local v0 results](../modernization/crop-local-v0-results.md)
 - [Item-color experiment](./0006-crop-local-item-color-experiment.md)

@@ -1,6 +1,6 @@
 # Crop-Local v0 Oracle Results
 
-Status: item-color quality-confirmed; card-recall development fallback requires untouched validation
+Status: item-color quality-confirmed; card-recall untouched gate failed; internal fallback only
 Updated: 2026-08-10
 Baseline: `a93b564e18e4121d28dfe2e5661e83d110ac2bde`
 
@@ -390,6 +390,27 @@ The implementation remains deep-internal under `crop-local-card-recall-v0-develo
 change `crop-local-item-color-v0`, a public entrypoint, or any persisted schema. See
 [`ADR 0007`](../architecture/0007-crop-local-card-recall-development.md).
 
+### Untouched MTG Holdout Decision
+
+The development-selected card fallback was frozen and evaluated once on 100 new Scryfall printing
+IDs across four release eras. The corpus excludes all development print IDs, names, and encoded
+hashes; within the corpus, card name, oracle ID, illustration ID, printing ID, and encoded SHA-256
+are unique. Pixels remain local-only. Three transformations per source produced 300 positives, and
+three different-card pairings produced 14,850 negatives.
+
+The frozen item-color profile produced 133/300 true positives (44.3% recall) and one false positive.
+The card fallback produced 160/300 true positives (53.3% recall), the same one false positive, zero
+additional false positives, and no lost frozen matches. Center recall was 95%, and severe-crop
+recall improved from 30% to 50%. However, the separately reported normalized-capture simulation
+improved only from 10% to 15%, below its predeclared 20% minimum. The overall untouched gate failed.
+
+Manual review retained the one reported pair as a valid false positive: `Carapace` and `Aspect of
+Wolf` are different Fifth Edition cards and illustrations sharing the green frame and Enchant
+Creature structure. No threshold was changed or re-evaluated on the holdout. The candidate remains
+internal, and the failed corpus is now inspected evidence only. Further work must improve
+capture/product preprocessing on separate development data and use another untouched holdout for
+any revised policy.
+
 Retained evidence:
 
 - [`benchmarks/crop-local/akaze-oracle-development-node22-2026-08-09.json`](../../benchmarks/crop-local/akaze-oracle-development-node22-2026-08-09.json)
@@ -409,3 +430,4 @@ Retained evidence:
 - [`benchmarks/crop-local/browser-item-color-packed-exactness-node22-2026-08-10.json`](../../benchmarks/crop-local/browser-item-color-packed-exactness-node22-2026-08-10.json)
 - [`benchmarks/crop-local/card-holdout-diagnostic-node22-2026-08-10.json`](../../benchmarks/crop-local/card-holdout-diagnostic-node22-2026-08-10.json)
 - [`benchmarks/crop-local/mtg-card-development-node22-2026-08-10.json`](../../benchmarks/crop-local/mtg-card-development-node22-2026-08-10.json)
+- [`benchmarks/crop-local/mtg-card-holdout-node22-2026-08-10.json`](../../benchmarks/crop-local/mtg-card-holdout-node22-2026-08-10.json)
