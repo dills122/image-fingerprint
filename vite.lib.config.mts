@@ -11,6 +11,10 @@ export default defineConfig({
       entry: {
         browser: path.resolve(rootDirectory, 'src/browser.ts'),
         core: path.resolve(rootDirectory, 'src/core/index.ts'),
+        'experimental/crop-local': path.resolve(
+          rootDirectory,
+          'src/experimental/crop-local.ts',
+        ),
       },
       fileName: (_format, entryName) => `${entryName}.mjs`,
       formats: ['es'],

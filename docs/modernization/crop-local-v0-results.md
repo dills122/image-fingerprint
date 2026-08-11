@@ -1,13 +1,16 @@
 # Crop-Local v0 Oracle Results
 
-Status: item-color quality-confirmed; card-recall untouched gate failed; internal fallback only
+Status: item-color available as an explicit experimental preview; stable profile and card fallback blocked
 Updated: 2026-08-10
 Baseline: `a93b564e18e4121d28dfe2e5661e83d110ac2bde`
 
 ## Decision
 
-Continue the internal pure-TypeScript `crop-local-v0` experiment. Do not export an algorithm,
-freeze a persisted schema, or add OpenCV to package dependencies.
+Keep the grayscale `crop-local-v0`, research retrieval index, and card fallback internal. Expose
+only the quality-confirmed item-color generator, verifier, and exact packed transport through
+`image-fingerprint/experimental/crop-local`. Do not add a stable algorithm, freeze a persisted
+schema, or add OpenCV to package dependencies. The preview boundary and compatibility limits are
+recorded in [ADR 0008](../architecture/0008-crop-local-experimental-package-surface.md).
 
 Pinned AKAZE and SIFT research oracles confirm the missing signal in the earlier experiments:
 multiscale local features recover correspondences before scale estimation, and transform-aligned
@@ -308,8 +311,8 @@ would only strengthen the result.
 
 Holdout generation measured 119.63/299.45 ms at p50/p95, comparison measured 1.79/5.73 ms, and
 serialized size measured 46,997/55,271 bytes. Quality is no longer the immediate blocker, but a
-public profile remains blocked on size/performance budgets, retrieval validation, broader
-cross-runtime fixtures, persisted-schema design, and maintainer approval. Card-layout recall at 15%
+stable profile remains blocked on size/performance budgets, retrieval validation, broader
+cross-runtime fixtures, and persisted-schema design. Card-layout recall at 15%
 is materially better than the earlier 0.7%, but still too low to claim robust MTG crop matching.
 
 ## Exact-Output And Compact-Transport Optimization
@@ -322,7 +325,7 @@ On 40 deterministic procedural sources and their crops, the complete verbose fin
 remained `d53c27402fb12135e29e101be115a78e1fd50a05e18c59b69b6d01e960911455`; all 820 comparison
 decisions retained SHA-256 `8af4e8fbb491209e5604719dcf821257d5cfd64f16a5b9964b99c9eed1a275eb`.
 
-A separate internal `crop-local-item-color-packed-v0` transport experiment stores the exact frozen
+A separately identified `crop-local-item-color-packed-v0` transport experiment stores the exact frozen
 values as bounded binary fields in canonical base64url. It decodes and validates back to
 `crop-local-item-color-v0` before comparison and makes no persisted-schema promise. The procedural
 benchmark measured:
@@ -346,7 +349,7 @@ requirement for broader exactness fixtures. Because the frozen values and compar
 unchanged, the holdout's 745 true-positive and five false-positive decisions remain the applicable
 quality evidence rather than a newly tuned or rerun result.
 
-Before any public proposal:
+Before any stable profile proposal:
 
 1. decide whether card-layout recall is sufficient for an explicitly bounded product use case;
 2. record related-source labels so near-duplicate source files are not automatically counted as
@@ -387,7 +390,7 @@ before any success claim. Camera/product captures must be reported separately fr
 clean-scan crops.
 
 The implementation remains deep-internal under `crop-local-card-recall-v0-development`; it does not
-change `crop-local-item-color-v0`, a public entrypoint, or any persisted schema. See
+change `crop-local-item-color-v0`, the experimental package entrypoint, or any persisted schema. See
 [`ADR 0007`](../architecture/0007-crop-local-card-recall-development.md).
 
 ### Untouched MTG Holdout Decision

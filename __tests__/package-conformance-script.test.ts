@@ -25,6 +25,7 @@ describe('packed package conformance scripts', () => {
         './node',
         './core',
         './browser',
+        './experimental/crop-local',
         './package.json',
       ],
     });

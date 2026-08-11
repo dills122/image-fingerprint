@@ -11,6 +11,26 @@ import {
   evaluatePdqMatch,
   PDQ_STARTING_POLICY,
 } from 'image-fingerprint/browser';
+import {
+  fingerprintCropLocalItem,
+  packCropLocalItemFingerprint,
+  unpackCropLocalItemFingerprint,
+} from 'image-fingerprint/experimental/crop-local';
+
+const cropLocalPixels = {
+  format: 'rgba8',
+  width: 48,
+  height: 48,
+  data: Uint8Array.from({ length: 48 * 48 * 4 }, (_, index) => (
+    index % 4 === 3 ? 255 : (index * 29) & 255
+  )),
+};
+const cropLocalFingerprint = fingerprintCropLocalItem(cropLocalPixels);
+assert.equal(cropLocalFingerprint.experimentalProfile, 'crop-local-item-color-v0');
+assert.deepEqual(
+  unpackCropLocalItemFingerprint(packCropLocalItemFingerprint(cropLocalFingerprint)),
+  cropLocalFingerprint,
+);
 
 const fingerprint = fingerprintPixels({
   width: 2,

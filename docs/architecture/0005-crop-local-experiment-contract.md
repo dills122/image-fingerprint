@@ -3,6 +3,11 @@
 Status: proposed; internal experiment only
 Updated: 2026-08-10
 
+The grayscale experiment described here remains internal. The separately validated item-color
+wrapper is available only through the unstable package subpath defined by
+[ADR 0008](./0008-crop-local-experimental-package-surface.md); it is not a stable algorithm or codec
+record.
+
 ## Context
 
 The `crop-local-multiscale-binary-v0` experiment advanced beyond the failed Crop-Block and
@@ -54,14 +59,15 @@ responsible for deciding whether visual sameness is sufficient for its product c
 ## Compatibility
 
 - `pdq-v1`, `blockhash-v1`, public package entrypoints, and schema version 1 records are unchanged.
-- The crop-local types remain reachable only through internal source/build paths used by repository
-  experiments.
+- The grayscale crop-local types remain reachable only through internal source/build paths used by
+  repository experiments. ADR 0008 separately exposes the item-color wrapper as an unstable
+  preview.
 - Validation freezes only the current experiment shape. It does not approve that shape for durable
   storage or establish a migration promise.
 
 ## Remaining Gates
 
-Before a public crop-local proposal:
+Before a stable crop-local proposal:
 
 1. obtain maintainer approval for these source/crop and tri-state semantics;
 2. retain the completed source-disjoint item-color holdout evidence and its frozen-policy audit;
@@ -74,5 +80,6 @@ Before a public crop-local proposal:
 
 - [Crop-Local v0 results](../modernization/crop-local-v0-results.md)
 - [Crop-Local item-color experiment](./0006-crop-local-item-color-experiment.md)
+- [Crop-Local experimental package surface](./0008-crop-local-experimental-package-surface.md)
 - [Crop-aware multi-fingerprint ADR](./0004-crop-block-multi-fingerprints.md)
 - [Versioned fingerprint ADR](./0001-versioned-image-fingerprints.md)
