@@ -3,6 +3,15 @@ import {
   fingerprintImage,
   fingerprintPixels,
 } from '/node_modules/image-fingerprint/lib/esm/browser.mjs';
+import {
+  compareCropLocalSourceToCrop,
+  comparePackedCropLocalSourceToCrop,
+  fingerprintCropLocalItem,
+  packCropLocalItemFingerprint,
+} from '/node_modules/image-fingerprint/lib/esm/experimental/crop-local.mjs';
+import {
+  runCropLocalBrowserFixtures,
+} from '/scripts/browser-smoke-crop-local-fixtures.mjs';
 
 const gray = [
   0, 41, 82, 123, 164,
@@ -40,9 +49,16 @@ try {
     fingerprintImage(blob, options),
     fingerprintImage(file, options),
   ]);
+  const cropLocal = runCropLocalBrowserFixtures({
+    compareCropLocalSourceToCrop,
+    comparePackedCropLocalSourceToCrop,
+    fingerprintCropLocalItem,
+    packCropLocalItemFingerprint,
+  });
   self.postMessage({
     results: {
       rawPixels,
+      cropLocal,
       adapters: {
         imageData: imageDataFingerprint,
         blob: blobFingerprint,

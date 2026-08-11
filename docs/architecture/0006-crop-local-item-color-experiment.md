@@ -95,8 +95,9 @@ selectivity, storage, and latency unresolved.
    [`crop-local-card-recall-v0-development`](./0007-crop-local-card-recall-development.md) fallback
    internal; its untouched MTG holdout failed, and any revised policy requires another untouched,
    source-disjoint holdout.
-2. Replace the research JSON ranker and prove selective retrieval, storage, and latency on a larger
-   provenance-safe corpus; the 500-reference top-50 gate does not establish production scale.
+2. Keep the accepted compact internal posting representation benchmark-only and prove selective
+   retrieval, storage, and latency on a larger provenance-safe corpus; the 500-reference top-50
+   gate and generated 2,000-reference mechanics study do not establish production scale.
 3. Design and review a bounded persisted schema separately from the accepted in-memory shape.
 
 ## Related Material

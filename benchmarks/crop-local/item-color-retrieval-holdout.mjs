@@ -282,7 +282,9 @@ const run = async ({ manifest: manifestPath, output }) => {
       postingEntriesVisited: summarizeCropLocalMeasurements(postingEntriesVisited),
     },
     index: {
-      serializedFormat: 'deterministic-json-v1',
+      serializedFormat: index.document.postingEncoding === undefined
+        ? 'deterministic-json-ordinal-arrays-v1'
+        : `deterministic-json-${index.document.postingEncoding}`,
       serializedBytes: indexBytes,
       bytesPerReference,
       sha256: createHash('sha256').update(serializedIndex).digest('hex'),

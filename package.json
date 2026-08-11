@@ -79,6 +79,7 @@
     "crop-local:item-color:holdout:prepare": "node benchmarks/crop-local/prepare-calibration-corpus.mjs --profile item-color-holdout",
     "crop-local:item-color:holdout": "pnpm build && node benchmarks/crop-local/item-color-holdout.mjs",
     "crop-local:item-color:retrieval": "pnpm build && node benchmarks/crop-local/item-color-retrieval-holdout.mjs",
+    "crop-local:item-color:retrieval:scale": "node --expose-gc benchmarks/crop-local/retrieval-scaling.mjs",
     "crop-local:item-color:performance": "pnpm build && node benchmarks/crop-local/item-color-performance.mjs",
     "crop-local:card:diagnose-holdout": "pnpm build && node benchmarks/crop-local/card-holdout-diagnostic.mjs",
     "crop-local:card:develop": "pnpm build && node benchmarks/crop-local/mtg-card-development.mjs",

@@ -344,10 +344,21 @@ resource measurements or create a performance budget.
 
 The verbose and packed fingerprints matched Node exactly in Chromium 151, Firefox 153, and WebKit
 26.5 on both the main thread and a module worker for the existing procedural fixture. This confirms
-the new encoding is deterministic across those runtimes, but it does not replace the remaining
-requirement for broader exactness fixtures. Because the frozen values and comparison policy are
-unchanged, the holdout's 745 true-positive and five false-positive decisions remain the applicable
-quality evidence rather than a newly tuned or rerun result.
+the new encoding is deterministic across those runtimes.
+
+The later packed-package gate expanded coverage to four deterministic RGBA fixture classes with
+landscape, portrait, wide, and square dimensions; muted and saturated color; and opaque and
+translucent alpha. The published experimental subpath produced exact verbose and packed
+fingerprints and exact statuses/reasons against Node 22 in Chromium 151, Firefox 153, and WebKit
+26.5 on both the main thread and a module worker. Full verbose and packed evidence matched within
+each runtime. A raw `meanResidual` diagnostic differed between Node and Chromium by one
+floating-point representable value without changing any decision, so raw diagnostic JSON is not a
+cross-runtime serialization contract.
+
+This closes the single-fixture decoded-pixel gap, but all four fixtures remain procedural and do not
+establish encoded-image decoder equivalence or real-corpus coverage. Because the frozen values and
+comparison policy are unchanged, the holdout's 745 true-positive and five false-positive decisions
+remain the applicable quality evidence rather than a newly tuned or rerun result.
 
 Before any stable profile proposal:
 
@@ -357,7 +368,8 @@ Before any stable profile proposal:
 3. measure retrieval on a realistically large reference collection only after the quality gate can
    pass without calibration-set threshold changes;
 4. further reduce generation time and serialized size under predeclared budgets;
-5. expand exact runtime fixtures beyond one procedural image;
+5. expand exact runtime evidence beyond procedural pixels without treating decoder-specific
+   floating diagnostics as serialized values;
 6. define a bounded persisted representation separately from the accepted in-memory validation
    limits.
 
