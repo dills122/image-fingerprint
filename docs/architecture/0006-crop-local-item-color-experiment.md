@@ -31,6 +31,10 @@ grayscale verifier cannot recover information that was never retained.
   most 10% contradiction.
 - Keep the profile, types, comparator, and policy outside every public package entrypoint and
   persisted schema until a fresh untouched holdout confirms the result.
+- Keep any representation experiment separate from the frozen in-memory shape. The internal
+  `crop-local-item-color-packed-v0` transport experiment uses bounded binary fields and canonical
+  base64url, then reconstructs and validates the exact `crop-local-item-color-v0` values before
+  comparison. It is not a public or persisted schema.
 
 ## Evidence And Limits
 
@@ -79,6 +83,8 @@ selectivity, storage, and latency unresolved.
   earlier reports.
 - `crop-local-item-color-v0` has no persisted compatibility promise and must receive a new identifier
   if its fingerprint fields or frozen comparison policy change after independent confirmation.
+- `crop-local-item-color-packed-v0` is that separately identified representation experiment; it
+  does not rename or replace the quality-confirmed in-memory profile.
 
 ## Remaining Gates
 

@@ -1,9 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import {
+  compareCropLocalItemPackedSourceToCrop,
   compareCropLocalItemSourceToCrop,
   compareCropLocalSourceToCrop,
   fingerprintCropLocalItemExperiment,
+  packCropLocalItemExperimentFingerprint,
+  resizeCropLocalPlane,
+  unpackCropLocalItemExperimentFingerprint,
 } from '../src/core/algorithms/crop-local';
+import { normalizePixelSource } from '../src/core/pixels';
 import type { Rgba8PixelSource } from '../src/core/types';
 
 const paint = (
@@ -82,6 +87,45 @@ describe('crop-local item-color internal experiment', () => {
     );
   });
 
+  it('preserves the historical full-plane color bytes with translucent RGBA input', () => {
+    const source = sameLuminanceLayout([255, 0, 0]);
+    for (let index = 3; index < source.data.length; index += 4) {
+      source.data[index] = (index * 17) & 255;
+    }
+    const result = fingerprint(source);
+    const normalized = normalizePixelSource(source);
+    if (normalized.format !== 'rgb8') throw new TypeError('expected normalized RGB pixels');
+    const blue = new Uint8Array(source.width * source.height);
+    const red = new Uint8Array(source.width * source.height);
+    for (let input = 0, index = 0; index < blue.length; input += 3, index += 1) {
+      const redChannel = normalized.data[input];
+      const greenChannel = normalized.data[input + 1];
+      const blueChannel = normalized.data[input + 2];
+      blue[index] = Math.max(0, Math.min(255, Math.floor((
+        128_000 - 169 * redChannel - 331 * greenChannel + 500 * blueChannel + 500
+      ) / 1000)));
+      red[index] = Math.max(0, Math.min(255, Math.floor((
+        128_000 + 500 * redChannel - 419 * greenChannel - 81 * blueChannel + 500
+      ) / 1000)));
+    }
+    const expectedBlue = resizeCropLocalPlane(
+      blue,
+      source.width,
+      source.height,
+      result.colorVerification.width,
+      result.colorVerification.height,
+    );
+    const expectedRed = resizeCropLocalPlane(
+      red,
+      source.width,
+      source.height,
+      result.colorVerification.width,
+      result.colorVerification.height,
+    );
+    expect(result.colorVerification.blueDifference).toBe(Buffer.from(expectedBlue).toString('hex'));
+    expect(result.colorVerification.redDifference).toBe(Buffer.from(expectedRed).toString('hex'));
+  });
+
   it('supports a crop of the same colored item', () => {
     const source = sameLuminanceLayout([255, 0, 0]);
     const evidence = compareCropLocalItemSourceToCrop(
@@ -122,5 +166,41 @@ describe('crop-local item-color internal experiment', () => {
       colorAgreementDistance: 100,
       colorContradictionDistance: 50,
     })).toThrow('agreement distance must not exceed');
+  });
+
+  it('round-trips a separately identified compact encoding with exact comparison evidence', () => {
+    const source = fingerprint(sameLuminanceLayout([255, 0, 0]));
+    const candidate = fingerprint(crop(sameLuminanceLayout([255, 0, 0]), 0, 0, 300, 250));
+    const packedSource = packCropLocalItemExperimentFingerprint(source);
+    const packedCandidate = packCropLocalItemExperimentFingerprint(candidate);
+    const transportedSource = JSON.parse(JSON.stringify(packedSource));
+    const transportedCandidate = JSON.parse(JSON.stringify(packedCandidate));
+
+    expect(packedSource.experimentalProfile).toBe('crop-local-item-color-packed-v0');
+    expect(unpackCropLocalItemExperimentFingerprint(transportedSource)).toEqual(source);
+    expect(JSON.stringify(packedSource).length).toBeLessThan(JSON.stringify(source).length * 0.7);
+    expect(compareCropLocalItemPackedSourceToCrop(
+      transportedSource,
+      transportedCandidate,
+      { sparseMaximumContradiction: 0.03 },
+    )).toEqual(compareCropLocalItemSourceToCrop(
+      source,
+      candidate,
+      { sparseMaximumContradiction: 0.03 },
+    ));
+  });
+
+  it('rejects truncated and non-canonical compact payloads', () => {
+    const packed = packCropLocalItemExperimentFingerprint(
+      fingerprint(sameLuminanceLayout([255, 0, 0])),
+    );
+    expect(() => unpackCropLocalItemExperimentFingerprint({
+      ...packed,
+      payload: packed.payload.slice(0, -4),
+    })).toThrow('packed crop-local');
+    expect(() => unpackCropLocalItemExperimentFingerprint({
+      ...packed,
+      payload: `${packed.payload}=`,
+    })).toThrow('canonical base64url');
   });
 });

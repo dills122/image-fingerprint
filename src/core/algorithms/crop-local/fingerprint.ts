@@ -1,4 +1,4 @@
-import { normalizePixelSource, validatePixelSource } from '../../pixels';
+import { validatePixelSource } from '../../pixels';
 import type { Rgba8PixelSource } from '../../types';
 
 export interface CropLocalFeature {
@@ -42,6 +42,8 @@ export interface CropLocalExperimentOptions {
 const PATCH_RADIUS = 15;
 const DESCRIPTOR_BORDER = 22;
 const PYRAMID_SCALES = [1000, 1250, 1563, 1953, 2441, 3052] as const;
+/** @internal Frozen scales reused by exact internal encodings. */
+export const CROP_LOCAL_PYRAMID_SCALES = PYRAMID_SCALES;
 const MAXIMUM_SOURCE_DIMENSION = 2048;
 const MAXIMUM_FEATURES = 1024;
 const MAXIMUM_VERIFICATION_DIMENSION = 256;
@@ -53,6 +55,18 @@ const CIRCLE = [
   [0, 3], [-1, 3], [-2, 2], [-3, 1],
   [-3, 0], [-3, -1], [-2, -2], [-1, -3],
 ] as const;
+const FAST_CIRCLE_X = Int8Array.from([
+  ...CIRCLE.map(([x]) => x),
+  ...CIRCLE.slice(0, 8).map(([x]) => x),
+]);
+const FAST_CIRCLE_Y = Int8Array.from([
+  ...CIRCLE.map(([, y]) => y),
+  ...CIRCLE.slice(0, 8).map(([, y]) => y),
+]);
+const ORIENTATION_EXTENTS = Int8Array.from(
+  { length: PATCH_RADIUS * 2 + 1 },
+  (_, index) => Math.floor(Math.sqrt(PATCH_RADIUS ** 2 - (index - PATCH_RADIUS) ** 2)),
+);
 const ORIENTATIONS = [
   [1024, 0], [946, 392], [724, 724], [392, 946],
   [0, 1024], [-392, 946], [-724, 724], [-946, 392],
@@ -171,8 +185,13 @@ interface BriefPair {
   readonly by: number;
 }
 
-interface Planes {
+export interface CropLocalPlanes {
   readonly luminance: Uint8Array;
+}
+
+export interface CropLocalColorPlanes {
+  readonly blueDifference: Uint8Array;
+  readonly redDifference: Uint8Array;
 }
 
 const validateInteger = (value: number, minimum: number, maximum: number, name: string): void => {
@@ -205,20 +224,68 @@ const ROTATED_BRIEF_PATTERNS: readonly (readonly BriefPair[])[] = ORIENTATIONS.m
   })),
 );
 
-const planes = (source: Rgba8PixelSource): Planes => {
-  const normalized = normalizePixelSource(source);
-  if (normalized.format !== 'rgb8') throw new TypeError('RGBA normalization did not produce rgb8');
+const normalizedChannel = (value: number, alpha: number, whiteContribution: number): number => (
+  Math.floor((value * alpha + whiteContribution + 127) / 255)
+);
+
+const colorDifference = (
+  source: Rgba8PixelSource,
+  pixelIndex: number,
+): readonly [number, number] => {
+  const input = pixelIndex * 4;
+  const alpha = source.data[input + 3];
+  const whiteContribution = 255 * (255 - alpha);
+  const red = normalizedChannel(source.data[input], alpha, whiteContribution);
+  const green = normalizedChannel(source.data[input + 1], alpha, whiteContribution);
+  const blue = normalizedChannel(source.data[input + 2], alpha, whiteContribution);
+  return [
+    Math.max(0, Math.min(255, Math.floor((
+      128_000 - 169 * red - 331 * green + 500 * blue + 500
+    ) / 1000))),
+    Math.max(0, Math.min(255, Math.floor((
+      128_000 + 500 * red - 419 * green - 81 * blue + 500
+    ) / 1000))),
+  ];
+};
+
+/** @internal Extract exact crop-local planes in one RGBA normalization pass. */
+export const createCropLocalPlanes = (
+  source: Rgba8PixelSource,
+): CropLocalPlanes => {
   const count = source.width * source.height;
   const luminance = new Uint8Array(count);
-  for (let input = 0, index = 0; index < count; input += 3, index += 1) {
+  for (let input = 0, index = 0; index < count; input += 4, index += 1) {
+    const alpha = source.data[input + 3];
+    const whiteContribution = 255 * (255 - alpha);
+    const red = normalizedChannel(source.data[input], alpha, whiteContribution);
+    const green = normalizedChannel(source.data[input + 1], alpha, whiteContribution);
+    const blue = normalizedChannel(source.data[input + 2], alpha, whiteContribution);
     luminance[index] = Math.floor((
-      normalized.data[input] * 299
-      + normalized.data[input + 1] * 587
-      + normalized.data[input + 2] * 114
-      + 500
+      red * 299 + green * 587 + blue * 114 + 500
     ) / 1000);
   }
   return { luminance };
+};
+
+const BYTE_HEX = Array.from(
+  { length: 256 },
+  (_, value) => value.toString(16).padStart(2, '0'),
+);
+
+/** @internal Exact lowercase serialization shared by crop-local experiment planes. */
+export const cropLocalBytesToHex = (values: Uint8Array): string => {
+  let output = '';
+  for (const value of values) output += BYTE_HEX[value];
+  return output;
+};
+
+/** @internal Decode already-validated crop-local lowercase hex without changing byte values. */
+export const cropLocalHexToBytes = (value: string): Uint8Array => {
+  const output = new Uint8Array(value.length / 2);
+  for (let index = 0; index < output.length; index += 1) {
+    output[index] = Number.parseInt(value.slice(index * 2, index * 2 + 2), 16);
+  }
+  return output;
 };
 
 /** @internal Shared deterministic plane resize for crop-local experiment extensions. */
@@ -265,6 +332,55 @@ export const resizeCropLocalPlane = (
   return output;
 };
 
+/** @internal Resize exact item-color bytes without materializing full-resolution chroma planes. */
+export const resizeCropLocalColorPlanes = (
+  source: Rgba8PixelSource,
+  targetWidth: number,
+  targetHeight: number,
+): CropLocalColorPlanes => {
+  const fixedOne = 65_536;
+  const axis = (targetIndex: number, sourceLength: number, targetLength: number) => {
+    const denominator = 2 * targetLength;
+    const numerator = (2 * targetIndex + 1) * sourceLength - targetLength;
+    if (numerator <= 0) return [0, 0, 0] as const;
+    if (numerator >= (sourceLength - 1) * denominator) {
+      return [sourceLength - 1, sourceLength - 1, 0] as const;
+    }
+    const lower = Math.floor(numerator / denominator);
+    const remainder = numerator - lower * denominator;
+    return [lower, lower + 1, Math.floor((remainder * fixedOne + targetLength) / denominator)] as const;
+  };
+  const xAxis = Array.from({ length: targetWidth }, (_, x) => axis(x, source.width, targetWidth));
+  const yAxis = Array.from({ length: targetHeight }, (_, y) => axis(y, source.height, targetHeight));
+  const blueDifference = new Uint8Array(targetWidth * targetHeight);
+  const redDifference = new Uint8Array(targetWidth * targetHeight);
+  for (let y = 0; y < targetHeight; y += 1) {
+    const [y0, y1, fy] = yAxis[y];
+    for (let x = 0; x < targetWidth; x += 1) {
+      const [x0, x1, fx] = xAxis[x];
+      const topLeft = colorDifference(source, y0 * source.width + x0);
+      const topRight = colorDifference(source, y0 * source.width + x1);
+      const bottomLeft = colorDifference(source, y1 * source.width + x0);
+      const bottomRight = colorDifference(source, y1 * source.width + x1);
+      for (const [plane, channel] of [
+        [blueDifference, 0],
+        [redDifference, 1],
+      ] as const) {
+        const top = Math.floor((
+          topLeft[channel] * (fixedOne - fx) + topRight[channel] * fx + fixedOne / 2
+        ) / fixedOne);
+        const bottom = Math.floor((
+          bottomLeft[channel] * (fixedOne - fx) + bottomRight[channel] * fx + fixedOne / 2
+        ) / fixedOne);
+        plane[y * targetWidth + x] = Math.floor((
+          top * (fixedOne - fy) + bottom * fy + fixedOne / 2
+        ) / fixedOne);
+      }
+    }
+  }
+  return { blueDifference, redDifference };
+};
+
 const blurThreeByThree = (input: Uint8Array, width: number, height: number): Uint8Array => {
   const horizontal = new Uint16Array(input.length);
   const output = new Uint8Array(input.length);
@@ -303,7 +419,8 @@ const fastScore = (
   let darkMinimum = 255;
   let score = 0;
   for (let index = 0; index < 24; index += 1) {
-    const [offsetX, offsetY] = CIRCLE[index % 16];
+    const offsetX = FAST_CIRCLE_X[index];
+    const offsetY = FAST_CIRCLE_Y[index];
     const difference = pixels[(y + offsetY) * width + x + offsetX] - center;
     if (difference > threshold) {
       brightRun += 1;
@@ -329,7 +446,7 @@ const orientationBin = (pixels: Uint8Array, width: number, x: number, y: number)
   let momentX = 0;
   let momentY = 0;
   for (let offsetY = -PATCH_RADIUS; offsetY <= PATCH_RADIUS; offsetY += 1) {
-    const extent = Math.floor(Math.sqrt(PATCH_RADIUS ** 2 - offsetY ** 2));
+    const extent = ORIENTATION_EXTENTS[offsetY + PATCH_RADIUS];
     for (let offsetX = -extent; offsetX <= extent; offsetX += 1) {
       const value = pixels[(y + offsetY) * width + x + offsetX];
       momentX += offsetX * value;
@@ -374,12 +491,6 @@ const bitBalance = (value: string): number => {
   return Math.min(ones, 256 - ones);
 };
 
-const bytesToHex = (values: Uint8Array): string => {
-  let output = '';
-  for (const value of values) output += value.toString(16).padStart(2, '0');
-  return output;
-};
-
 const verificationSketch = (
   luminance: Uint8Array,
   sourceWidth: number,
@@ -393,19 +504,22 @@ const verificationSketch = (
   return {
     width,
     height,
-    luminance: bytesToHex(resized),
+    luminance: cropLocalBytesToHex(resized),
   };
 };
 
-/** @internal Deterministic multiscale binary-feature crop experiment. */
-export const fingerprintCropLocalExperiment = (
+/** @internal Build the exact crop-local fingerprint from an already-normalized luminance plane. */
+export const fingerprintCropLocalExperimentFromLuminance = (
   source: Rgba8PixelSource,
+  luminance: Uint8Array,
   options: CropLocalExperimentOptions = {},
 ): CropLocalExperimentFingerprint => {
-  validatePixelSource(source);
   if (source.format !== 'rgba8') throw new RangeError('crop-local experiment requires rgba8 pixels');
   if (source.width < 40 || source.height < 40) {
     throw new RangeError('crop-local experiment requires dimensions of at least 40 pixels');
+  }
+  if (luminance.length !== source.width * source.height) {
+    throw new RangeError('crop-local luminance plane does not match source dimensions');
   }
   const maximumDimension = options.maximumDimension ?? 768;
   const maximumFeatures = options.maximumFeatures ?? 192;
@@ -422,9 +536,8 @@ export const fingerprintCropLocalExperiment = (
     ? source.width : Math.max(40, Math.round(source.width * maximumDimension / inputMaximum));
   const sourceHeight = inputMaximum <= maximumDimension
     ? source.height : Math.max(40, Math.round(source.height * maximumDimension / inputMaximum));
-  const inputPlanes = planes(source);
   const baseLuminance = resizeCropLocalPlane(
-    inputPlanes.luminance, source.width, source.height, sourceWidth, sourceHeight,
+    luminance, source.width, source.height, sourceWidth, sourceHeight,
   );
   const candidates: CropLocalFeature[] = [];
   PYRAMID_SCALES.forEach((scalePermille, pyramidLevel) => {
@@ -512,4 +625,21 @@ export const fingerprintCropLocalExperiment = (
       baseLuminance, sourceWidth, sourceHeight, verificationMaximumDimension,
     ),
   };
+};
+
+/** @internal Deterministic multiscale binary-feature crop experiment. */
+export const fingerprintCropLocalExperiment = (
+  source: Rgba8PixelSource,
+  options: CropLocalExperimentOptions = {},
+): CropLocalExperimentFingerprint => {
+  validatePixelSource(source);
+  if (source.format !== 'rgba8') throw new RangeError('crop-local experiment requires rgba8 pixels');
+  if (source.width < 40 || source.height < 40) {
+    throw new RangeError('crop-local experiment requires dimensions of at least 40 pixels');
+  }
+  return fingerprintCropLocalExperimentFromLuminance(
+    source,
+    createCropLocalPlanes(source).luminance,
+    options,
+  );
 };

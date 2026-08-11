@@ -136,6 +136,19 @@ for verifier-accepted queries, while showing that the JSON ranker still scores e
 every reference. See
 [`docs/modernization/crop-local-item-color-retrieval-results.md`](../../docs/modernization/crop-local-item-color-retrieval-results.md).
 
+Measure exact-output implementation changes and the separately identified compact transport
+experiment on deterministic procedural fixtures without reopening or tuning the holdout:
+
+```sh
+pnpm crop-local:item-color:performance -- \
+  --output benchmarks/crop-local/item-color-performance.json
+```
+
+The script records hashes for the complete verbose fingerprints and all comparison decisions. When
+benchmarking a candidate against a retained baseline, pass `--baseline FILE`; the report then keeps
+both environments and measurements. The 40-source procedural corpus is a reproducible performance
+fixture, not quality or holdout evidence.
+
 The TypeScript code, profiles, persisted shapes, and retrieval index remain internal experiments.
 None are exported from the package root.
 

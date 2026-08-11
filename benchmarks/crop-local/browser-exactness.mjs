@@ -13,7 +13,11 @@ const PLAN = {
   browsers: ['chromium', 'firefox', 'webkit'],
   contexts: ['main-thread', 'module-worker'],
   comparisonReference: 'node',
-  fingerprintProfiles: ['crop-local-multiscale-binary-v0', 'crop-local-item-color-v0'],
+  fingerprintProfiles: [
+    'crop-local-multiscale-binary-v0',
+    'crop-local-item-color-v0',
+    'crop-local-item-color-packed-v0',
+  ],
 };
 
 const createNodeFixture = () => {
@@ -87,6 +91,7 @@ const run = async () => {
     const {
       fingerprintCropLocalExperiment,
       fingerprintCropLocalItemExperiment,
+      packCropLocalItemExperimentFingerprint,
     } = require('../../lib/core/algorithms/crop-local/index.js');
     const fixture = createNodeFixture();
     const options = {
@@ -95,9 +100,11 @@ const run = async () => {
       verificationMaximumDimension: 96,
       colorVerificationMaximumDimension: 64,
     };
+    const itemColor = fingerprintCropLocalItemExperiment(fixture, options);
     const expected = {
       local: fingerprintCropLocalExperiment(fixture, options),
-      itemColor: fingerprintCropLocalItemExperiment(fixture, options),
+      itemColor,
+      itemColorPacked: packCropLocalItemExperimentFingerprint(itemColor),
     };
     const results = [];
     for (const [name, browserType] of Object.entries({ chromium, firefox, webkit })) {

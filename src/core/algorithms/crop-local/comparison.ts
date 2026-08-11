@@ -87,6 +87,7 @@ export interface CropLocalComparisonEvidence {
 
 const POPCOUNT = Uint8Array.of(0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4);
 const WORD_CACHE = new WeakMap<CropLocalFeature, Uint32Array>();
+const REPETITION_CACHE = new WeakMap<readonly CropLocalFeature[], Uint16Array>();
 
 interface DecodedSketch {
   readonly luminance: Uint8Array;
@@ -122,6 +123,8 @@ const distance = (left: CropLocalFeature, right: CropLocalFeature): number => {
 };
 
 const repetitionCounts = (features: readonly CropLocalFeature[]): Uint16Array => {
+  const cached = REPETITION_CACHE.get(features);
+  if (cached !== undefined) return cached;
   const output = new Uint16Array(features.length);
   output.fill(1);
   for (let left = 0; left < features.length; left += 1) {
@@ -132,6 +135,7 @@ const repetitionCounts = (features: readonly CropLocalFeature[]): Uint16Array =>
       }
     }
   }
+  REPETITION_CACHE.set(features, output);
   return output;
 };
 

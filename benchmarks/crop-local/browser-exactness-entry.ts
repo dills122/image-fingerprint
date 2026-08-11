@@ -1,6 +1,7 @@
 import {
   fingerprintCropLocalExperiment,
   fingerprintCropLocalItemExperiment,
+  packCropLocalItemExperimentFingerprint,
 } from '../../src/core/algorithms/crop-local';
 import type { Rgba8PixelSource } from '../../src/core/types';
 
@@ -30,8 +31,10 @@ export const runCropLocalExactnessFixture = (): unknown => {
     verificationMaximumDimension: 96,
     colorVerificationMaximumDimension: 64,
   } as const;
+  const itemColor = fingerprintCropLocalItemExperiment(fixture, options);
   return {
     local: fingerprintCropLocalExperiment(fixture, options),
-    itemColor: fingerprintCropLocalItemExperiment(fixture, options),
+    itemColor,
+    itemColorPacked: packCropLocalItemExperimentFingerprint(itemColor),
   };
 };
