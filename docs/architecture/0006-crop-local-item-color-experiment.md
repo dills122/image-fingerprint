@@ -88,11 +88,14 @@ selectivity, storage, and latency unresolved.
 
 ## Remaining Gates
 
-1. Record maintainer approval for the wrapper semantics and decide whether 15% card-layout recall
-   is sufficient for any claimed MTG use case.
-2. Replace the research JSON ranker and prove selective retrieval, storage, and latency on a larger
+1. Record maintainer approval for the wrapper semantics.
+2. Keep the separate
+   [`crop-local-card-recall-v0-development`](./0007-crop-local-card-recall-development.md) fallback
+   internal; its untouched MTG holdout failed, and any revised policy requires another untouched,
+   source-disjoint holdout.
+3. Replace the research JSON ranker and prove selective retrieval, storage, and latency on a larger
    provenance-safe corpus; the 500-reference top-50 gate does not establish production scale.
-3. Design and review a bounded persisted schema separately from the accepted in-memory shape.
+4. Design and review a bounded persisted schema separately from the accepted in-memory shape.
 
 ## Related Material
 

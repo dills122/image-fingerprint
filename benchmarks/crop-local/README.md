@@ -149,6 +149,53 @@ benchmarking a candidate against a retained baseline, pass `--baseline FILE`; th
 both environments and measurements. The 40-source procedural corpus is a reproducible performance
 fixture, not quality or holdout evidence.
 
+Reproduce the recorded holdout's card slice for post-hoc stage diagnosis without materializing its
+Commons sources. The command regenerates the 100 style-4 CC0 card fixtures, verifies every checksum,
+reproduces the 45/300 frozen result, and evaluates all 14,850 card-layout negatives. The holdout is
+already inspected and is invalid for policy selection or a new validation claim:
+
+```sh
+pnpm crop-local:card:diagnose-holdout -- \
+  --holdout-report benchmarks/crop-local/item-color-holdout-node22-2026-08-10.json \
+  --output benchmarks/crop-local/card-holdout-diagnostic-node22-2026-08-10.json
+```
+
+Develop the separate MTG card-recall fallback against a local `MTG-Card-Analyzer` regression
+manifest. The benchmark selects every enabled uniquely identified Scryfall printing, records
+metadata and encoded hashes, and leaves all Scryfall/Wizards pixels in the external checkout:
+
+```sh
+pnpm crop-local:card:develop -- \
+  --manifest /outside-repository/MTG-Card-Analyzer/test/regression/fixtures/manifest.json \
+  --output benchmarks/crop-local/mtg-card-development-node22-2026-08-10.json
+```
+
+The 91-source development run selected an additive three-zone geometry fallback with stronger
+aligned verification. It improved recall from 200/273 to 223/273 with the same one reported match
+among 12,285 negatives. This is inspected development evidence; freeze the candidate and use a
+further untouched, source-disjoint, MTG-relevant corpus before any success claim. See
+[`ADR 0007`](../../docs/architecture/0007-crop-local-card-recall-development.md).
+
+Prepare the frozen 100-print MTG holdout outside the repository. The builder samples fixed Scryfall
+pages across four eras, coverage-ranks candidates, excludes the development report, and refuses
+duplicate card, oracle, illustration, name, or encoded-pixel identities:
+
+```sh
+pnpm crop-local:card:holdout:prepare -- \
+  --output /outside-repository/crop-local-card-recall-mtg-holdout-v1 \
+  --exclude-development-report benchmarks/crop-local/mtg-card-development-node22-2026-08-10.json
+
+pnpm crop-local:card:holdout -- \
+  --manifest /outside-repository/crop-local-card-recall-mtg-holdout-v1/manifest.json \
+  --development-report benchmarks/crop-local/mtg-card-development-node22-2026-08-10.json \
+  --output benchmarks/crop-local/mtg-card-holdout-node22-2026-08-10.json
+```
+
+The one frozen evaluation gained nine recall points (44.3% to 53.3%) and added no false positives,
+but failed the full gate because normalized-capture recall was 15% against a predeclared 20% floor.
+The corpus is now inspected and must not be used to select a revised policy. Scryfall/Wizards pixels
+remain local-only; the report retains identity, rights notice, provenance, and encoded hashes.
+
 The TypeScript code, profiles, persisted shapes, and retrieval index remain internal experiments.
 None are exported from the package root.
 

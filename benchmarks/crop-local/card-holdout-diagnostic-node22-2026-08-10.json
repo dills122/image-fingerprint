@@ -1,0 +1,1574 @@
+{
+  "profileVersion": 1,
+  "study": "crop-local-item-color-v0-card-holdout-post-hoc-diagnostic",
+  "selectionUse": "diagnosis-only-not-policy-selection",
+  "sourceReport": "item-color-holdout-node22-2026-08-10.json",
+  "sourceReportSha256": "6f79189e466577222b534e4606a63513e1b14193a3109466c081414b62de1aba",
+  "environment": {
+    "node": "v22.22.1",
+    "platform": "darwin",
+    "architecture": "arm64"
+  },
+  "corpus": {
+    "name": "crop-local-item-color-holdout-v1",
+    "sources": 100,
+    "positivePairs": 300,
+    "generatedStyle": 4,
+    "seedRange": [
+      200000,
+      200099
+    ],
+    "pixelPolicy": "regenerated from the retained CC0 generator; pixels are not committed",
+    "checksumsVerified": 100
+  },
+  "fingerprintProfile": {
+    "maximumDimension": 768,
+    "maximumFeatures": 128,
+    "maximumFeaturesPerCell": 12,
+    "fastThreshold": 20,
+    "verificationMaximumDimension": 96,
+    "colorVerificationMaximumDimension": 64
+  },
+  "lockedLocalProfile": {
+    "maximumDescriptorDistance": 48,
+    "ratioPermille": 700,
+    "maximumResidualPermille": 6,
+    "minimumInliers": 4,
+    "minimumInlierRatio": 0.5,
+    "minimumSpatialZones": 4,
+    "minimumInformativeCoverage": 0.02,
+    "denseInformationCutoff": 0.4,
+    "denseMinimumAgreement": 0.65,
+    "denseMaximumContradiction": 0.2,
+    "sparseMinimumAgreement": 0.8,
+    "sparseMaximumContradiction": 0,
+    "minimumInformativeZones": 3
+  },
+  "lockedItemColorProfile": {
+    "minimumColorSaturation": 12,
+    "colorAgreementDistance": 16,
+    "colorContradictionDistance": 48,
+    "minimumColorInformativeCoverage": 0.02,
+    "minimumColorAgreement": 0.6,
+    "maximumColorContradiction": 0.1,
+    "minimumColorZones": 2
+  },
+  "aggregate": {
+    "pairs": 300,
+    "matches": 45,
+    "candidateStage": 288,
+    "geometryStage": 45,
+    "grayscaleVerificationStage": 45,
+    "colorSupporting": 45,
+    "colorInconclusive": 255,
+    "localOutcome": {
+      "multiscale-geometry-and-content-agree": 45,
+      "no-consistent-crop-transform": 243,
+      "too-few-candidate-matches": 12
+    },
+    "finalFailureReason": {
+      "local-evidence-did-not-match": 255
+    },
+    "sourceFeatures": {
+      "count": 300,
+      "p50": 128,
+      "p95": 128,
+      "maximum": 128
+    },
+    "cropFeatures": {
+      "count": 300,
+      "p50": 128,
+      "p95": 128,
+      "maximum": 128
+    },
+    "candidateMatches": {
+      "count": 300,
+      "p50": 12,
+      "p95": 30,
+      "maximum": 37
+    },
+    "geometricInliers": {
+      "count": 300,
+      "p50": 6,
+      "p95": 14,
+      "maximum": 17
+    }
+  },
+  "byTransformation": {
+    "center": {
+      "pairs": 100,
+      "matches": 24,
+      "candidateStage": 100,
+      "geometryStage": 24,
+      "grayscaleVerificationStage": 24,
+      "colorSupporting": 24,
+      "colorInconclusive": 76,
+      "localOutcome": {
+        "multiscale-geometry-and-content-agree": 24,
+        "no-consistent-crop-transform": 76
+      },
+      "finalFailureReason": {
+        "local-evidence-did-not-match": 76
+      },
+      "sourceFeatures": {
+        "count": 100,
+        "p50": 128,
+        "p95": 128,
+        "maximum": 128
+      },
+      "cropFeatures": {
+        "count": 100,
+        "p50": 128,
+        "p95": 128,
+        "maximum": 128
+      },
+      "candidateMatches": {
+        "count": 100,
+        "p50": 12,
+        "p95": 18,
+        "maximum": 23
+      },
+      "geometricInliers": {
+        "count": 100,
+        "p50": 6,
+        "p95": 10,
+        "maximum": 11
+      }
+    },
+    "asymmetric": {
+      "pairs": 100,
+      "matches": 16,
+      "candidateStage": 100,
+      "geometryStage": 16,
+      "grayscaleVerificationStage": 16,
+      "colorSupporting": 16,
+      "colorInconclusive": 84,
+      "localOutcome": {
+        "multiscale-geometry-and-content-agree": 16,
+        "no-consistent-crop-transform": 84
+      },
+      "finalFailureReason": {
+        "local-evidence-did-not-match": 84
+      },
+      "sourceFeatures": {
+        "count": 100,
+        "p50": 128,
+        "p95": 128,
+        "maximum": 128
+      },
+      "cropFeatures": {
+        "count": 100,
+        "p50": 128,
+        "p95": 128,
+        "maximum": 128
+      },
+      "candidateMatches": {
+        "count": 100,
+        "p50": 25,
+        "p95": 32,
+        "maximum": 37
+      },
+      "geometricInliers": {
+        "count": 100,
+        "p50": 10,
+        "p95": 15,
+        "maximum": 17
+      }
+    },
+    "severe": {
+      "pairs": 100,
+      "matches": 5,
+      "candidateStage": 88,
+      "geometryStage": 5,
+      "grayscaleVerificationStage": 5,
+      "colorSupporting": 5,
+      "colorInconclusive": 95,
+      "localOutcome": {
+        "multiscale-geometry-and-content-agree": 5,
+        "no-consistent-crop-transform": 83,
+        "too-few-candidate-matches": 12
+      },
+      "finalFailureReason": {
+        "local-evidence-did-not-match": 95
+      },
+      "sourceFeatures": {
+        "count": 100,
+        "p50": 128,
+        "p95": 128,
+        "maximum": 128
+      },
+      "cropFeatures": {
+        "count": 100,
+        "p50": 99,
+        "p95": 128,
+        "maximum": 128
+      },
+      "candidateMatches": {
+        "count": 100,
+        "p50": 7,
+        "p95": 10,
+        "maximum": 12
+      },
+      "geometricInliers": {
+        "count": 100,
+        "p50": 2,
+        "p95": 6,
+        "maximum": 10
+      }
+    }
+  },
+  "selectedCardProfilePostHoc": {
+    "positiveMatches": 132,
+    "positivePairs": 300,
+    "positiveRecall": 0.44,
+    "fallbackPositivePromotions": 87,
+    "frozenNegativeMatches": 0,
+    "cardNegativeMatches": 0,
+    "negativePairs": 14850,
+    "additionalNegativeMatches": 0,
+    "negativeFalsePositiveRate": 0,
+    "representativeAdditionalNegativeMatches": [],
+    "interpretation": "Post-hoc stress evidence only; the profile was selected on separate MTG development data, but this holdout was already inspected and cannot validate it."
+  },
+  "representativeFailures": [
+    {
+      "id": "card-layout-generated-style4-200000",
+      "transformation": "center",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 128,
+      "candidateMatches": 6,
+      "geometricInliers": 4,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.7028642080728901,
+          "translationX": 83.46526281585926,
+          "translationY": 113.84969552287606
+        },
+        "inliers": 4,
+        "inlierRatio": 0.6666666666666666,
+        "weightedSupport": 2.9571067811865475,
+        "queryZones": 2,
+        "candidateZones": 3,
+        "meanResidual": 0.45501123427739243
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "no-match",
+      "cardFallbackPromoted": false
+    },
+    {
+      "id": "card-layout-generated-style4-200000",
+      "transformation": "asymmetric",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 128,
+      "candidateMatches": 18,
+      "geometricInliers": 7,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.8165281075067236,
+          "translationX": -0.09838534672745425,
+          "translationY": 47.819104269157265
+        },
+        "inliers": 7,
+        "inlierRatio": 0.3888888888888889,
+        "weightedSupport": 7,
+        "queryZones": 2,
+        "candidateZones": 2,
+        "meanResidual": 0.7544443554235502
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "no-match",
+      "cardFallbackPromoted": false
+    },
+    {
+      "id": "card-layout-generated-style4-200000",
+      "transformation": "severe",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 70,
+      "candidateMatches": 5,
+      "geometricInliers": 0,
+      "bestRetainedModel": null,
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "no-match",
+      "cardFallbackPromoted": false
+    },
+    {
+      "id": "card-layout-generated-style4-200001",
+      "transformation": "center",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 128,
+      "candidateMatches": 8,
+      "geometricInliers": 5,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.6979089315024276,
+          "translationX": 84.61802607140365,
+          "translationY": 115.09846498084227
+        },
+        "inliers": 5,
+        "inlierRatio": 0.625,
+        "weightedSupport": 4.1547005383792515,
+        "queryZones": 3,
+        "candidateZones": 4,
+        "meanResidual": 1.5278508794959675
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "match",
+      "cardFallbackPromoted": true
+    },
+    {
+      "id": "card-layout-generated-style4-200001",
+      "transformation": "severe",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 97,
+      "candidateMatches": 7,
+      "geometricInliers": 4,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.6894239179000405,
+          "translationX": 280.966405673977,
+          "translationY": 65.60240875943089
+        },
+        "inliers": 4,
+        "inlierRatio": 0.5714285714285714,
+        "weightedSupport": 3.2071067811865475,
+        "queryZones": 2,
+        "candidateZones": 3,
+        "meanResidual": 1.396676005953655
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "no-match",
+      "cardFallbackPromoted": false
+    },
+    {
+      "id": "card-layout-generated-style4-200002",
+      "transformation": "center",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 128,
+      "candidateMatches": 12,
+      "geometricInliers": 6,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.7009462481441201,
+          "translationX": 83.71415897835294,
+          "translationY": 114.59720854956765
+        },
+        "inliers": 6,
+        "inlierRatio": 0.5,
+        "weightedSupport": 4.853553390593274,
+        "queryZones": 3,
+        "candidateZones": 4,
+        "meanResidual": 0.8717431588676514
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "match",
+      "cardFallbackPromoted": true
+    },
+    {
+      "id": "card-layout-generated-style4-200002",
+      "transformation": "asymmetric",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 128,
+      "candidateMatches": 30,
+      "geometricInliers": 14,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.81957848953829,
+          "translationX": -0.0740097519545202,
+          "translationY": 46.19111948223713
+        },
+        "inliers": 14,
+        "inlierRatio": 0.4666666666666667,
+        "weightedSupport": 13.414213562373096,
+        "queryZones": 5,
+        "candidateZones": 5,
+        "meanResidual": 1.1910250304388807
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "match",
+      "cardFallbackPromoted": true
+    },
+    {
+      "id": "card-layout-generated-style4-200002",
+      "transformation": "severe",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 97,
+      "candidateMatches": 11,
+      "geometricInliers": 3,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.703584127435642,
+          "translationX": 276.8487744749443,
+          "translationY": 57.86696060304371
+        },
+        "inliers": 3,
+        "inlierRatio": 0.2727272727272727,
+        "weightedSupport": 3,
+        "queryZones": 2,
+        "candidateZones": 2,
+        "meanResidual": 1.0474153588595523
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "no-match",
+      "cardFallbackPromoted": false
+    },
+    {
+      "id": "card-layout-generated-style4-200003",
+      "transformation": "center",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 128,
+      "candidateMatches": 6,
+      "geometricInliers": 2,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.17647058823529413,
+          "translationX": 230.6764705882353,
+          "translationY": 373.20588235294116
+        },
+        "inliers": 2,
+        "inlierRatio": 0.3333333333333333,
+        "weightedSupport": 2,
+        "queryZones": 2,
+        "candidateZones": 2,
+        "meanResidual": 0.857492925712554
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "no-match",
+      "cardFallbackPromoted": false
+    },
+    {
+      "id": "card-layout-generated-style4-200003",
+      "transformation": "asymmetric",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 128,
+      "candidateMatches": 27,
+      "geometricInliers": 13,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.8199945237301302,
+          "translationX": -0.3141641595980218,
+          "translationY": 46.003239760125155
+        },
+        "inliers": 13,
+        "inlierRatio": 0.48148148148148145,
+        "weightedSupport": 12.447213595499958,
+        "queryZones": 6,
+        "candidateZones": 6,
+        "meanResidual": 0.8220457139334916
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "match",
+      "cardFallbackPromoted": true
+    },
+    {
+      "id": "card-layout-generated-style4-200003",
+      "transformation": "severe",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 90,
+      "candidateMatches": 9,
+      "geometricInliers": 3,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.6925012161868845,
+          "translationX": 280.70195766038046,
+          "translationY": 63.91839565907884
+        },
+        "inliers": 3,
+        "inlierRatio": 0.3333333333333333,
+        "weightedSupport": 2.447213595499958,
+        "queryZones": 2,
+        "candidateZones": 2,
+        "meanResidual": 0.9323186155104555
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "no-match",
+      "cardFallbackPromoted": false
+    },
+    {
+      "id": "card-layout-generated-style4-200004",
+      "transformation": "center",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 127,
+      "candidateMatches": 10,
+      "geometricInliers": 5,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.7017455785301162,
+          "translationX": 83.39643144760646,
+          "translationY": 114.55564201520713
+        },
+        "inliers": 5,
+        "inlierRatio": 0.5,
+        "weightedSupport": 5,
+        "queryZones": 2,
+        "candidateZones": 3,
+        "meanResidual": 0.7846662989516633
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "no-match",
+      "cardFallbackPromoted": false
+    },
+    {
+      "id": "card-layout-generated-style4-200004",
+      "transformation": "asymmetric",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 128,
+      "candidateMatches": 24,
+      "geometricInliers": 8,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.8194479085372232,
+          "translationX": -0.6740250701981694,
+          "translationY": 46.342011891448294
+        },
+        "inliers": 8,
+        "inlierRatio": 0.3333333333333333,
+        "weightedSupport": 8,
+        "queryZones": 4,
+        "candidateZones": 4,
+        "meanResidual": 1.0385978108315053
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "match",
+      "cardFallbackPromoted": true
+    },
+    {
+      "id": "card-layout-generated-style4-200004",
+      "transformation": "severe",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 87,
+      "candidateMatches": 9,
+      "geometricInliers": 2,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.7092200680775492,
+          "translationX": 275.7765428444576,
+          "translationY": 54.202012727541785
+        },
+        "inliers": 2,
+        "inlierRatio": 0.2222222222222222,
+        "weightedSupport": 2,
+        "queryZones": 2,
+        "candidateZones": 2,
+        "meanResidual": 0.3073877005685951
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "no-match",
+      "cardFallbackPromoted": false
+    },
+    {
+      "id": "card-layout-generated-style4-200005",
+      "transformation": "center",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 128,
+      "candidateMatches": 11,
+      "geometricInliers": 6,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.6993671735579556,
+          "translationX": 84.12725634565848,
+          "translationY": 115.95297548132675
+        },
+        "inliers": 6,
+        "inlierRatio": 0.5454545454545454,
+        "weightedSupport": 4.523334547203385,
+        "queryZones": 3,
+        "candidateZones": 3,
+        "meanResidual": 1.110458595953914
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "match",
+      "cardFallbackPromoted": true
+    },
+    {
+      "id": "card-layout-generated-style4-200005",
+      "transformation": "severe",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 93,
+      "candidateMatches": 6,
+      "geometricInliers": 2,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.5,
+          "translationX": 207.5,
+          "translationY": -228
+        },
+        "inliers": 2,
+        "inlierRatio": 0.3333333333333333,
+        "weightedSupport": 2,
+        "queryZones": 1,
+        "candidateZones": 1,
+        "meanResidual": 0
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "no-match",
+      "cardFallbackPromoted": false
+    },
+    {
+      "id": "card-layout-generated-style4-200006",
+      "transformation": "center",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 128,
+      "candidateMatches": 15,
+      "geometricInliers": 3,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.7147488564195942,
+          "translationX": 80.53266420926408,
+          "translationY": 105.80277123950793
+        },
+        "inliers": 3,
+        "inlierRatio": 0.2,
+        "weightedSupport": 3,
+        "queryZones": 2,
+        "candidateZones": 2,
+        "meanResidual": 1.6345241759085631
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "no-match",
+      "cardFallbackPromoted": false
+    },
+    {
+      "id": "card-layout-generated-style4-200006",
+      "transformation": "asymmetric",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 128,
+      "candidateMatches": 23,
+      "geometricInliers": 11,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.8189786483430441,
+          "translationX": -0.06710905044843685,
+          "translationY": 46.70116359213608
+        },
+        "inliers": 11,
+        "inlierRatio": 0.4782608695652174,
+        "weightedSupport": 9.497657766731784,
+        "queryZones": 5,
+        "candidateZones": 6,
+        "meanResidual": 1.3544088754956685
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "match",
+      "cardFallbackPromoted": true
+    },
+    {
+      "id": "card-layout-generated-style4-200006",
+      "transformation": "severe",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 90,
+      "candidateMatches": 5,
+      "geometricInliers": 3,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.7022912853104822,
+          "translationX": 277.4365483554473,
+          "translationY": 57.440166195424354
+        },
+        "inliers": 3,
+        "inlierRatio": 0.6,
+        "weightedSupport": 1.9743680230989717,
+        "queryZones": 2,
+        "candidateZones": 2,
+        "meanResidual": 0.7596661616435494
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "no-match",
+      "cardFallbackPromoted": false
+    },
+    {
+      "id": "card-layout-generated-style4-200007",
+      "transformation": "center",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 128,
+      "candidateMatches": 10,
+      "geometricInliers": 6,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.7012450317624294,
+          "translationX": 84.28323081755158,
+          "translationY": 114.5056144229855
+        },
+        "inliers": 6,
+        "inlierRatio": 0.6,
+        "weightedSupport": 5.182574185835056,
+        "queryZones": 2,
+        "candidateZones": 3,
+        "meanResidual": 0.4779831699009837
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "no-match",
+      "cardFallbackPromoted": false
+    },
+    {
+      "id": "card-layout-generated-style4-200007",
+      "transformation": "asymmetric",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 128,
+      "candidateMatches": 22,
+      "geometricInliers": 9,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.8194582346404725,
+          "translationX": -0.19896321419641083,
+          "translationY": 46.54943150519284
+        },
+        "inliers": 9,
+        "inlierRatio": 0.4090909090909091,
+        "weightedSupport": 8.707106781186548,
+        "queryZones": 3,
+        "candidateZones": 2,
+        "meanResidual": 0.9007006164871976
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "no-match",
+      "cardFallbackPromoted": false
+    },
+    {
+      "id": "card-layout-generated-style4-200007",
+      "transformation": "severe",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 112,
+      "candidateMatches": 7,
+      "geometricInliers": 4,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.6833960455238034,
+          "translationX": 281.5879319014204,
+          "translationY": 68.6408009280537
+        },
+        "inliers": 4,
+        "inlierRatio": 0.5714285714285714,
+        "weightedSupport": 3.7071067811865475,
+        "queryZones": 2,
+        "candidateZones": 3,
+        "meanResidual": 0.668908356373947
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "no-match",
+      "cardFallbackPromoted": false
+    },
+    {
+      "id": "card-layout-generated-style4-200008",
+      "transformation": "asymmetric",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 128,
+      "candidateMatches": 28,
+      "geometricInliers": 13,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.8219296449942474,
+          "translationX": -0.6174863780871647,
+          "translationY": 44.44032554095861
+        },
+        "inliers": 13,
+        "inlierRatio": 0.4642857142857143,
+        "weightedSupport": 12.408248290463863,
+        "queryZones": 6,
+        "candidateZones": 6,
+        "meanResidual": 1.5923084880272058
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "no-match",
+      "cardFallbackPromoted": false
+    },
+    {
+      "id": "card-layout-generated-style4-200008",
+      "transformation": "severe",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 117,
+      "candidateMatches": 4,
+      "geometricInliers": 2,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.7999999999999999,
+          "translationX": 91.8498447189993,
+          "translationY": 109.28328157299973
+        },
+        "inliers": 2,
+        "inlierRatio": 0.5,
+        "weightedSupport": 0.9472135954999579,
+        "queryZones": 1,
+        "candidateZones": 1,
+        "meanResidual": 0.9486832980505228
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "no-match",
+      "cardFallbackPromoted": false
+    },
+    {
+      "id": "card-layout-generated-style4-200009",
+      "transformation": "center",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 128,
+      "candidateMatches": 10,
+      "geometricInliers": 4,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.702538594112503,
+          "translationX": 81.90935324908662,
+          "translationY": 111.73055912517322
+        },
+        "inliers": 4,
+        "inlierRatio": 0.4,
+        "weightedSupport": 3.7071067811865475,
+        "queryZones": 3,
+        "candidateZones": 3,
+        "meanResidual": 1.2569299787129737
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "match",
+      "cardFallbackPromoted": true
+    },
+    {
+      "id": "card-layout-generated-style4-200009",
+      "transformation": "asymmetric",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 128,
+      "candidateMatches": 25,
+      "geometricInliers": 12,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.8202636077197583,
+          "translationX": -0.06966665877956757,
+          "translationY": 45.834698881171335
+        },
+        "inliers": 12,
+        "inlierRatio": 0.48,
+        "weightedSupport": 9.65877782212491,
+        "queryZones": 6,
+        "candidateZones": 7,
+        "meanResidual": 1.0114308444324354
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "match",
+      "cardFallbackPromoted": true
+    },
+    {
+      "id": "card-layout-generated-style4-200009",
+      "transformation": "severe",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 128,
+      "candidateMatches": 8,
+      "geometricInliers": 4,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.6873306787652173,
+          "translationX": 281.0713766353126,
+          "translationY": 66.82405047930092
+        },
+        "inliers": 4,
+        "inlierRatio": 0.5,
+        "weightedSupport": 3.284457050376173,
+        "queryZones": 2,
+        "candidateZones": 3,
+        "meanResidual": 0.6500525214102097
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "no-match",
+      "cardFallbackPromoted": false
+    },
+    {
+      "id": "card-layout-generated-style4-200010",
+      "transformation": "center",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 128,
+      "candidateMatches": 8,
+      "geometricInliers": 5,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.7055622245335967,
+          "translationX": 82.90386785010506,
+          "translationY": 111.02079064404364
+        },
+        "inliers": 5,
+        "inlierRatio": 0.625,
+        "weightedSupport": 3.9653056709337084,
+        "queryZones": 3,
+        "candidateZones": 3,
+        "meanResidual": 1.645750031096475
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "no-match",
+      "cardFallbackPromoted": false
+    },
+    {
+      "id": "card-layout-generated-style4-200010",
+      "transformation": "asymmetric",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 128,
+      "candidateMatches": 19,
+      "geometricInliers": 8,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.8209465540435543,
+          "translationX": -0.3286395761093672,
+          "translationY": 45.548272378349395
+        },
+        "inliers": 8,
+        "inlierRatio": 0.42105263157894735,
+        "weightedSupport": 8,
+        "queryZones": 3,
+        "candidateZones": 5,
+        "meanResidual": 0.8605121755894487
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "match",
+      "cardFallbackPromoted": true
+    },
+    {
+      "id": "card-layout-generated-style4-200010",
+      "transformation": "severe",
+      "status": "no-match",
+      "localStatus": "no-match",
+      "itemSignal": "inconclusive",
+      "reason": "local-evidence-did-not-match",
+      "localReason": "no-consistent-crop-transform",
+      "sourceFeatures": 128,
+      "cropFeatures": 121,
+      "candidateMatches": 7,
+      "geometricInliers": 3,
+      "bestRetainedModel": {
+        "transform": {
+          "scale": 0.6856803831646707,
+          "translationX": 281.40401653462834,
+          "translationY": 67.74965224915479
+        },
+        "inliers": 3,
+        "inlierRatio": 0.42857142857142855,
+        "weightedSupport": 2.1543203766865053,
+        "queryZones": 2,
+        "candidateZones": 2,
+        "meanResidual": 0.4361641871514288
+      },
+      "transform": null,
+      "grayscaleVerification": {
+        "verifiedSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "informativeZones": 0
+      },
+      "colorVerification": {
+        "verifiedSamples": 0,
+        "informativeSamples": 0,
+        "informativeCoverage": 0,
+        "agreementScore": 0,
+        "contradictionScore": 0,
+        "meanDistance": 0,
+        "informativeZones": 0
+      },
+      "cardStatus": "no-match",
+      "cardFallbackPromoted": false
+    }
+  ],
+  "conclusion": "The recorded card-layout holdout is used only to localize failures. It is invalid for selecting a replacement profile."
+}
