@@ -1,0 +1,126 @@
+{
+  "study": "crop-local-item-color-v0-exact-output-and-packed-v0-performance",
+  "baselineCommit": "9bfd550",
+  "baseline": {
+    "environment": {
+      "node": "v22.22.1",
+      "platform": "darwin",
+      "architecture": "arm64"
+    },
+    "fixtureProfile": {
+      "identities": 40,
+      "variantsPerIdentity": 2
+    },
+    "fingerprintProfile": {
+      "maximumDimension": 384,
+      "maximumFeatures": 128,
+      "maximumFeaturesPerCell": 12,
+      "fastThreshold": 20,
+      "verificationMaximumDimension": 96,
+      "colorVerificationMaximumDimension": 64
+    },
+    "resources": {
+      "generationMilliseconds": {
+        "count": 80,
+        "p50": 80.20491700000002,
+        "p95": 127.34529200000043,
+        "maximum": 162.6773330000001
+      },
+      "comparisonMilliseconds": {
+        "count": 820,
+        "p50": 1.9226670000007289,
+        "p95": 2.531500000000051,
+        "maximum": 28.134250000000065
+      },
+      "outputBytes": {
+        "count": 80,
+        "p50": 49940,
+        "p95": 56284,
+        "maximum": 56554
+      }
+    },
+    "exactness": {
+      "fingerprintSha256": "d53c27402fb12135e29e101be115a78e1fd50a05e18c59b69b6d01e960911455",
+      "decisionSha256": "8af4e8fbb491209e5604719dcf821257d5cfd64f16a5b9964b99c9eed1a275eb",
+      "decisions": 820
+    }
+  },
+  "optimized": {
+    "environment": {
+      "node": "v22.22.1",
+      "platform": "darwin",
+      "architecture": "arm64"
+    },
+    "fixtureProfile": {
+      "identities": 40,
+      "variantsPerIdentity": 2
+    },
+    "fingerprintProfile": {
+      "maximumDimension": 384,
+      "maximumFeatures": 128,
+      "maximumFeaturesPerCell": 12,
+      "fastThreshold": 20,
+      "verificationMaximumDimension": 96,
+      "colorVerificationMaximumDimension": 64
+    },
+    "resources": {
+      "generationMilliseconds": {
+        "count": 80,
+        "p50": 74.8774169999997,
+        "p95": 122.0512920000001,
+        "maximum": 168.42112499999985
+      },
+      "comparisonMilliseconds": {
+        "count": 820,
+        "p50": 1.4746660000000702,
+        "p95": 1.9437079999997877,
+        "maximum": 27.779749999999694
+      },
+      "outputBytes": {
+        "count": 80,
+        "p50": 49940,
+        "p95": 56284,
+        "maximum": 56554
+      },
+      "packingMilliseconds": {
+        "count": 80,
+        "p50": 0.8445000000001528,
+        "p95": 1.599708000000021,
+        "maximum": 2.798334000000011
+      },
+      "packedGenerationMilliseconds": {
+        "count": 80,
+        "p50": 75.6646669999991,
+        "p95": 123.03329200000007,
+        "maximum": 169.31270799999947
+      },
+      "unpackingMilliseconds": {
+        "count": 80,
+        "p50": 1.0229579999995622,
+        "p95": 1.5469160000002375,
+        "maximum": 2.2159160000001066
+      },
+      "packedComparisonMilliseconds": {
+        "count": 820,
+        "p50": 1.5611250000001746,
+        "p95": 2.0075829999987036,
+        "maximum": 15.699207999999999
+      },
+      "packedOutputBytes": {
+        "count": 80,
+        "p50": 25365,
+        "p95": 29589,
+        "maximum": 29717
+      }
+    },
+    "exactness": {
+      "fingerprintSha256": "d53c27402fb12135e29e101be115a78e1fd50a05e18c59b69b6d01e960911455",
+      "unpackedFingerprintSha256": "d53c27402fb12135e29e101be115a78e1fd50a05e18c59b69b6d01e960911455",
+      "decisionSha256": "8af4e8fbb491209e5604719dcf821257d5cfd64f16a5b9964b99c9eed1a275eb",
+      "packedDecisionSha256": "8af4e8fbb491209e5604719dcf821257d5cfd64f16a5b9964b99c9eed1a275eb",
+      "fingerprintsExact": true,
+      "decisionsExact": true,
+      "decisions": 820
+    }
+  }
+}

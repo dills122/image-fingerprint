@@ -8,11 +8,13 @@ import type {
   CropLocalTransform,
 } from './comparison';
 import {
+  unpackCropLocalItemExperimentFingerprint,
   validateCropLocalItemExperimentFingerprint,
 } from './item-fingerprint';
 import type {
   CropLocalItemColorSketch,
   CropLocalItemExperimentFingerprint,
+  CropLocalItemPackedExperimentFingerprint,
 } from './item-fingerprint';
 
 export interface CropLocalItemComparisonOptions extends CropLocalComparisonOptions {
@@ -293,3 +295,14 @@ export const compareCropLocalItemSourceToCrop = (
     reasons: ['local-geometry-content-and-item-color-agree'],
   };
 };
+
+/** @internal Compare compact transport experiments through their exact cached v0 values. */
+export const compareCropLocalItemPackedSourceToCrop = (
+  source: CropLocalItemPackedExperimentFingerprint,
+  crop: CropLocalItemPackedExperimentFingerprint,
+  options: CropLocalItemComparisonOptions = {},
+): CropLocalItemComparisonEvidence => compareCropLocalItemSourceToCrop(
+  unpackCropLocalItemExperimentFingerprint(source),
+  unpackCropLocalItemExperimentFingerprint(crop),
+  options,
+);

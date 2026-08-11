@@ -312,10 +312,39 @@ public profile remains blocked on size/performance budgets, retrieval validation
 cross-runtime fixtures, persisted-schema design, and maintainer approval. Card-layout recall at 15%
 is materially better than the earlier 0.7%, but still too low to claim robust MTG crop matching.
 
-The enriched fingerprint also matched Node exactly in Chromium 151, Firefox 153, and WebKit 26.5,
-on both the main thread and a module worker. This confirms deterministic portability for the
-existing procedural fixture; it does not replace the remaining requirement for broader exactness
-fixtures.
+## Exact-Output And Compact-Transport Optimization
+
+The frozen profile and policy were not changed or rerun against holdout pixels. Exact-output work
+instead removed a second full RGBA normalization/chroma allocation, resized the chroma values
+directly with the same fixed-point operations, precomputed invariant FAST/orientation values, and
+cached descriptor repetition counts using the comparator's existing immutable-value cache model.
+On 40 deterministic procedural sources and their crops, the complete verbose fingerprint SHA-256
+remained `d53c27402fb12135e29e101be115a78e1fd50a05e18c59b69b6d01e960911455`; all 820 comparison
+decisions retained SHA-256 `8af4e8fbb491209e5604719dcf821257d5cfd64f16a5b9964b99c9eed1a275eb`.
+
+A separate internal `crop-local-item-color-packed-v0` transport experiment stores the exact frozen
+values as bounded binary fields in canonical base64url. It decodes and validates back to
+`crop-local-item-color-v0` before comparison and makes no persisted-schema promise. The procedural
+benchmark measured:
+
+| Metric (p50/p95) | Commit `9bfd550` | Exact/packed candidate | Change |
+| --- | ---: | ---: | ---: |
+| Verbose generation | 80.20/127.35 ms | 74.88/122.05 ms | 6.6%/4.2% lower |
+| Packed generation, including encode | 80.20/127.35 ms | 75.66/123.03 ms | 5.7%/3.4% lower |
+| Comparison | 1.92/2.53 ms | 1.56/2.01 ms packed | 18.8%/20.7% lower |
+| Serialized bytes | 49,940/56,284 | 25,365/29,589 packed | 49.2%/47.4% lower |
+
+Packing and one-time unpacking measured 0.84/1.60 ms and 1.02/1.55 ms respectively. Exact unpacked
+fingerprints and packed comparison decisions reproduced both hashes above. These measurements show
+the implementation effect on a reproducible fixture; they do not replace the retained holdout
+resource measurements or create a performance budget.
+
+The verbose and packed fingerprints matched Node exactly in Chromium 151, Firefox 153, and WebKit
+26.5 on both the main thread and a module worker for the existing procedural fixture. This confirms
+the new encoding is deterministic across those runtimes, but it does not replace the remaining
+requirement for broader exactness fixtures. Because the frozen values and comparison policy are
+unchanged, the holdout's 745 true-positive and five false-positive decisions remain the applicable
+quality evidence rather than a newly tuned or rerun result.
 
 Before any public proposal:
 
@@ -344,3 +373,5 @@ Retained evidence:
 - [`benchmarks/crop-local/item-color-development-node22-2026-08-10.json`](../../benchmarks/crop-local/item-color-development-node22-2026-08-10.json)
 - [`benchmarks/crop-local/item-color-holdout-node22-2026-08-10.json`](../../benchmarks/crop-local/item-color-holdout-node22-2026-08-10.json)
 - [`benchmarks/crop-local/browser-item-color-exactness-node22-2026-08-10.json`](../../benchmarks/crop-local/browser-item-color-exactness-node22-2026-08-10.json)
+- [`benchmarks/crop-local/item-color-performance-node22-2026-08-10.json`](../../benchmarks/crop-local/item-color-performance-node22-2026-08-10.json)
+- [`benchmarks/crop-local/browser-item-color-packed-exactness-node22-2026-08-10.json`](../../benchmarks/crop-local/browser-item-color-packed-exactness-node22-2026-08-10.json)
