@@ -1,4 +1,5 @@
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
@@ -12,6 +13,7 @@ import {
   summarizeCropLocalMeasurements,
   validateCropLocalCalibrationManifest,
 } from '../benchmarks/crop-local/calibration-corpus.mjs';
+import { createCropLocalSyntheticFixture } from '../benchmarks/crop-local/synthetic-fixtures.mjs';
 
 const generator = 'benchmarks/crop-local/prepare-calibration-corpus.mjs';
 
@@ -150,6 +152,21 @@ describe('Crop-Local independent calibration corpus', () => {
       holdoutExclusions().map(({ manifest: excluded }) => excluded),
       CROP_LOCAL_ITEM_COLOR_HOLDOUT_PROFILE,
     )).toBe(manifest);
+  });
+
+  it('reproduces the retained style-3 and style-4 card fixture checksums', () => {
+    const digest = (style: number, seed: number) => createHash('sha256')
+      .update(createCropLocalSyntheticFixture('card-layout', seed, style))
+      .digest('hex');
+    expect(digest(3, 100_000)).toBe(
+      '02851d25101a4046804369d71a235fd29a3efc5ae81b556026332042ab0664d3',
+    );
+    expect(digest(4, 200_000)).toBe(
+      '0efe4b183f0b4d5a3810fe47ac467e1e497dd7587a853900587c0b9bb11f1f9a',
+    );
+    expect(() => createCropLocalSyntheticFixture('document', 1, 4)).toThrow(
+      'unsupported crop-local synthetic domain',
+    );
   });
 
   it('collects page, pixel, and generated identities from development manifests', () => {

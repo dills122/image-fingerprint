@@ -149,6 +149,33 @@ benchmarking a candidate against a retained baseline, pass `--baseline FILE`; th
 both environments and measurements. The 40-source procedural corpus is a reproducible performance
 fixture, not quality or holdout evidence.
 
+Reproduce the recorded holdout's card slice for post-hoc stage diagnosis without materializing its
+Commons sources. The command regenerates the 100 style-4 CC0 card fixtures, verifies every checksum,
+reproduces the 45/300 frozen result, and evaluates all 14,850 card-layout negatives. The holdout is
+already inspected and is invalid for policy selection or a new validation claim:
+
+```sh
+pnpm crop-local:card:diagnose-holdout -- \
+  --holdout-report benchmarks/crop-local/item-color-holdout-node22-2026-08-10.json \
+  --output benchmarks/crop-local/card-holdout-diagnostic-node22-2026-08-10.json
+```
+
+Develop the separate MTG card-recall fallback against a local `MTG-Card-Analyzer` regression
+manifest. The benchmark selects every enabled uniquely identified Scryfall printing, records
+metadata and encoded hashes, and leaves all Scryfall/Wizards pixels in the external checkout:
+
+```sh
+pnpm crop-local:card:develop -- \
+  --manifest /outside-repository/MTG-Card-Analyzer/test/regression/fixtures/manifest.json \
+  --output benchmarks/crop-local/mtg-card-development-node22-2026-08-10.json
+```
+
+The 91-source development run selected an additive three-zone geometry fallback with stronger
+aligned verification. It improved recall from 200/273 to 223/273 with the same one reported match
+among 12,285 negatives. This is inspected development evidence; freeze the candidate and use a
+further untouched, source-disjoint, MTG-relevant corpus before any success claim. See
+[`ADR 0007`](../../docs/architecture/0007-crop-local-card-recall-development.md).
+
 The TypeScript code, profiles, persisted shapes, and retrieval index remain internal experiments.
 None are exported from the package root.
 

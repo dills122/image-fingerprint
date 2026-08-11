@@ -1,6 +1,6 @@
 # Crop-Local v0 Oracle Results
 
-Status: internal experiment remains useful; public profile blocked by independent calibration
+Status: item-color quality-confirmed; card-recall development fallback requires untouched validation
 Updated: 2026-08-10
 Baseline: `a93b564e18e4121d28dfe2e5661e83d110ac2bde`
 
@@ -358,6 +358,38 @@ Before any public proposal:
 6. define a bounded persisted representation separately from the accepted in-memory validation
    limits.
 
+## Card-Recall Diagnosis And Development Fallback
+
+The already-recorded item-color holdout was used only for post-hoc stage diagnosis. Its 100 CC0
+style-4 card sources were regenerated from retained seeds, all encoded SHA-256 values were checked,
+and the frozen 45/300 result reproduced exactly. Of 255 misses, 243 had descriptor candidates but no
+accepted geometry; only 12 lacked the minimum four candidates. All 45 accepted geometries passed
+both grayscale and color verification. Candidate formation is a secondary severe-crop limitation,
+but geometry is the dominant failure stage.
+
+A separate local-only development study used 91 uniquely identified Scryfall MTG print fixtures
+from `MTG-Card-Analyzer`; no Scryfall or Wizards pixels were copied into this repository. It
+evaluated 273 deterministic crop positives and 12,285 different-print hard negatives. The frozen
+item-color profile produced 200 true positives and one false positive. Expanding to 192 features
+added only seven true positives and one false positive, so feature density was rejected.
+
+An additive card fallback instead preserves every frozen match, then retries only a frozen miss with
+three-zone geometry and stronger grayscale/color verification. The selected development policy
+produced 223/273 true positives (81.7% recall) and the same one false positive as the frozen profile.
+It added 23 positives, including 22 severe crops; severe-crop recall rose from 28.6% to 52.7%.
+Comparison p50/p95 increased from 1.76/1.97 ms to 3.47/3.83 ms.
+
+After selection, post-hoc stress on the inspected style-4 card holdout produced 132/300 positives
+(44.0%) and zero matches among 14,850 card-layout negatives, versus frozen results of 45/300 and
+zero. This does not validate the new policy. A further untouched, source-disjoint MTG holdout must
+show at least a five-point recall gain and zero additional false positives under predeclared gates
+before any success claim. Camera/product captures must be reported separately from deterministic
+clean-scan crops.
+
+The implementation remains deep-internal under `crop-local-card-recall-v0-development`; it does not
+change `crop-local-item-color-v0`, a public entrypoint, or any persisted schema. See
+[`ADR 0007`](../architecture/0007-crop-local-card-recall-development.md).
+
 Retained evidence:
 
 - [`benchmarks/crop-local/akaze-oracle-development-node22-2026-08-09.json`](../../benchmarks/crop-local/akaze-oracle-development-node22-2026-08-09.json)
@@ -375,3 +407,5 @@ Retained evidence:
 - [`benchmarks/crop-local/browser-item-color-exactness-node22-2026-08-10.json`](../../benchmarks/crop-local/browser-item-color-exactness-node22-2026-08-10.json)
 - [`benchmarks/crop-local/item-color-performance-node22-2026-08-10.json`](../../benchmarks/crop-local/item-color-performance-node22-2026-08-10.json)
 - [`benchmarks/crop-local/browser-item-color-packed-exactness-node22-2026-08-10.json`](../../benchmarks/crop-local/browser-item-color-packed-exactness-node22-2026-08-10.json)
+- [`benchmarks/crop-local/card-holdout-diagnostic-node22-2026-08-10.json`](../../benchmarks/crop-local/card-holdout-diagnostic-node22-2026-08-10.json)
+- [`benchmarks/crop-local/mtg-card-development-node22-2026-08-10.json`](../../benchmarks/crop-local/mtg-card-development-node22-2026-08-10.json)

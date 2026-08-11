@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import {
+  compareCropLocalCardRecallExperiment,
   compareCropLocalItemPackedSourceToCrop,
   compareCropLocalItemSourceToCrop,
   compareCropLocalSourceToCrop,
+  CROP_LOCAL_CARD_RECALL_V0_DEVELOPMENT_POLICY,
   fingerprintCropLocalItemExperiment,
   packCropLocalItemExperimentFingerprint,
   resizeCropLocalPlane,
@@ -148,6 +150,30 @@ describe('crop-local item-color internal experiment', () => {
     expect(item.status, JSON.stringify(item)).toBe('no-match');
     expect(item.itemSignal).toBe('contradicting');
     expect(['item-color-disagrees', 'item-color-contradictions']).toContain(item.reasons[0]);
+  });
+
+  it('keeps the development card fallback additive and stricter than the frozen verifier', () => {
+    const red = fingerprint(sameLuminanceLayout([255, 0, 0]));
+    const green = fingerprint(sameLuminanceLayout([0, 130, 0]));
+    const identical = compareCropLocalCardRecallExperiment(red, red);
+    expect(identical).toMatchObject({
+      experimental: true,
+      experimentalProfile: 'crop-local-card-recall-v0-development',
+      status: 'match',
+      fallbackPromoted: false,
+      fallback: null,
+      reasons: ['frozen-item-color-match'],
+    });
+    const different = compareCropLocalCardRecallExperiment(red, green);
+    expect(different.status, JSON.stringify(different)).toBe('no-match');
+    expect(different.primary.status).toBe('no-match');
+    expect(different.fallback?.status).toBe('no-match');
+    expect(CROP_LOCAL_CARD_RECALL_V0_DEVELOPMENT_POLICY.fallback).toMatchObject({
+      minimumSpatialZones: 3,
+      denseMinimumAgreement: 0.72,
+      minimumColorAgreement: 0.7,
+      maximumColorContradiction: 0.05,
+    });
   });
 
   it('validates bounded color planes and comparison policy', () => {
