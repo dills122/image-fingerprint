@@ -80,6 +80,17 @@ describe('CI path classification', () => {
       site: 'true',
     });
   });
+
+  it('runs quality checks for curated release notes', () => {
+    expect(classify(['docs/releases/0.2.0.md'])).toEqual({
+      quality: 'true',
+      dependencies: 'false',
+      package: 'false',
+      oracle: 'false',
+      browser: 'false',
+      site: 'false',
+    });
+  });
 });
 
 describe('required check contracts', () => {
@@ -97,5 +108,14 @@ describe('required check contracts', () => {
     const contract = readFileSync('.github/REQUIRED_CHECKS.md', 'utf8');
     expect(contract).toContain('`Required CI`');
     expect(contract).toContain('`Required CodeQL`');
+  });
+
+  it('publishes curated notes instead of a generated commit log', () => {
+    const workflow = readFileSync('.github/workflows/release.yml', 'utf8');
+    expect(workflow).toContain(
+      'body_path: docs/releases/${{ needs.verify.outputs.package_version }}.md',
+    );
+    expect(workflow).toContain('run: pnpm release:notes:check');
+    expect(workflow).not.toContain('generate_release_notes: true');
   });
 });

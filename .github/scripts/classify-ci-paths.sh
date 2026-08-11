@@ -32,13 +32,13 @@ else
 
   while IFS= read -r changed_path || [ -n "$changed_path" ]; do
     case "$changed_path" in
-      .github/workflows/ci.yml|.github/workflows/codeql.yml|.github/REQUIRED_CHECKS.md|.github/scripts/classify-ci-paths.sh)
+      .github/workflows/ci.yml|.github/workflows/codeql.yml|.github/workflows/release.yml|.github/REQUIRED_CHECKS.md|.github/scripts/classify-ci-paths.sh)
         enable_all
         ;;
     esac
 
     case "$changed_path" in
-      src/*|__tests__/*|benchmarks/*|scripts/*|tools/*|package.json|pnpm-lock.yaml|pnpm-workspace.yaml|.node-version|eslint.config.mjs|tsconfig.json|vite.lib.config.mts|vitest.config.mts)
+      src/*|__tests__/*|benchmarks/*|docs/releases/*|scripts/*|tools/*|package.json|pnpm-lock.yaml|pnpm-workspace.yaml|.node-version|eslint.config.mjs|tsconfig.json|vite.lib.config.mts|vitest.config.mts)
         quality=true
         ;;
     esac

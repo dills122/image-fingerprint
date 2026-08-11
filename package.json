@@ -94,6 +94,7 @@
     "lint:fix": "pnpm lint --fix",
     "check": "pnpm lint && pnpm typecheck && pnpm test:coverage && pnpm test:package",
     "pack:check": "pnpm build && node scripts/verify-pack.cjs",
+    "release:notes:check": "node scripts/validate-release-notes.mjs",
     "prepack": "pnpm build",
     "site:dev": "pnpm --dir site dev",
     "site:build": "pnpm --dir site build",
