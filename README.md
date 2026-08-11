@@ -403,9 +403,8 @@ matching tag such as `v0.1.0`. The release workflow verifies the tag and package
 OIDC with automatic provenance, and creates a GitHub release containing the npm tarball.
 
 The [trusted-publishing bootstrap](./docs/modernization/trusted-publishing-bootstrap.md) is complete:
-`0.1.0-rc.1` was published through GitHub Actions with npm provenance. Complete the remaining
-[0.1.0 release checklist](./docs/modernization/release-notes-0.1.0.md#release-checklist) before
-creating the stable tag.
+`0.1.0` was published through GitHub Actions with npm provenance and is the registry's `latest`
+release. `0.1.1-rc.0` was published through the same workflow under the `next` dist-tag.
 
 The [`0.1.1` release notes](./docs/modernization/release-notes-0.1.1.md) record the experimental
 Crop-Local opt-in, compatibility boundary, validation evidence, and release checklist.
