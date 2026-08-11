@@ -1,6 +1,7 @@
 # Crop-Local Item-Color Retrieval Results
 
-Status: internal 500-reference retrieval gate passed; production scale remains unproven
+Status: internal 500-reference retrieval gate passed; mechanics measured through 2,000 generated
+references; production scale remains unproven
 
 ## Decision
 
@@ -73,6 +74,35 @@ evidence from 499 references at p50 and 500 at p95, and traversed 17,322 posting
 The top-50 cap bounds expensive verifier work but does not prevent the scoring stage from touching
 nearly the entire 500-reference corpus.
 
+## Generated Mechanical Scaling
+
+A deterministic generated-descriptor study measured the unchanged index at 500, 1,000, and 2,000
+references. It deliberately combines broad, sub-threshold posting lists with distinctive evidence
+and contains no source pixels. It is reproducible mechanics evidence only: its 100% synthetic
+source recall is an integrity assertion, not retrieval-quality evidence.
+
+| References | JSON size | Build heap growth | Load heap growth | Query p50 / p95 | Evidence coverage p50 | Postings visited p50 |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 500 | 8.36 MB | 101.5 MB | 79.8 MB | 1.21 / 2.16 ms | 100% | 16,843 |
+| 1,000 | 14.71 MB | 157.0 MB | 136.1 MB | 1.86 / 3.69 ms | 100% | 32,627 |
+| 2,000 | 25.59 MB | 168.8 MB | 182.5 MB | 3.18 / 6.71 ms | 100% | 64,240 |
+
+The 2,000-reference run traversed about 32.1 posting entries per reference at p50 and accumulated
+evidence for every reference. This confirms the existing concern with a measured larger input:
+the top-50 output does not make candidate formation selective, and both posting traversal and
+scored-reference work grow approximately linearly for this corpus.
+
+An exact bounded top-50 heap was also compared with the retained full sort. It preserved the
+candidate-ranking SHA-256 and index statistics at every scale, but changed p50 query time by +7.1%,
++2.5%, and +36.3% at 500, 1,000, and 2,000 references, respectively. It was rejected. Posting
+accumulation dominates at these sizes, and heap maintenance does not solve the underlying
+selectivity problem.
+
+The retained evidence is
+[`item-color-retrieval-scaling-full-sort-baseline-node22-2026-08-10.json`](../../benchmarks/crop-local/item-color-retrieval-scaling-full-sort-baseline-node22-2026-08-10.json)
+and
+[`item-color-retrieval-top-k-candidate-node22-2026-08-10.json`](../../benchmarks/crop-local/item-color-retrieval-top-k-candidate-node22-2026-08-10.json).
+
 ## What 500 References Establish
 
 The holdout establishes reproducibility, source-disjoint candidate recall at the measured size,
@@ -81,9 +111,10 @@ one corpus composition. It also exposes real failure modes: ten accepted true so
 the top 50, synthetic UI/card domains underperform the aggregate, and false verified candidates
 can outrank the true source.
 
-It cannot establish ranking recall, posting-list growth, resident memory, rebuild strategy,
-incremental updates, sharding, concurrency, or latency at 10,000 to 1,000,000 references. No larger
-provenance-safe corpus was available, so no query-latency extrapolation is reported.
+It cannot establish ranking recall, rebuild strategy, incremental updates, sharding, concurrency,
+or latency at 10,000 to 1,000,000 references. The generated scaling study now measures posting-list
+growth and process memory through 2,000 references, but no larger provenance-safe quality corpus
+was available, so no quality or query-latency extrapolation is reported.
 
 For storage planning only, linear arithmetic at the observed 11,800.5 bytes/reference gives about
 118 MB at 10,000 references, 1.18 GB at 100,000, and 11.8 GB at 1,000,000. These are not benchmark
@@ -98,8 +129,9 @@ Before considering a public or production retrieval contract:
 
 1. Replace the research JSON representation with a compact measured posting encoding and record
    resident-memory as well as serialized-size budgets.
-2. Demonstrate sublinear candidate scoring on a larger provenance-safe, source-disjoint corpus;
-   report recall and latency by domain without retuning the verifier.
+2. Replace all-reference evidence accumulation with genuinely selective candidate formation, then
+   demonstrate sublinear scoring on a larger provenance-safe, source-disjoint corpus and report
+   recall and latency by domain without retuning the verifier.
 3. Define update, deletion, versioning, and rebuild semantics separately from the fingerprint and
    directional comparison contracts.
 4. Decide how callers handle multiple verified matches rather than treating the first match as

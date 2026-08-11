@@ -8,6 +8,10 @@ All notable changes to `image-fingerprint` are documented here.
   verbose and packed profiles across four deterministic RGBA fixture classes.
 - Require exact fingerprints and decision fields across Node, Chromium, Firefox, and WebKit while
   keeping floating-point diagnostic evidence outside the cross-runtime serialization contract.
+- Add a deterministic 500-to-2,000-reference retrieval scaling harness with index size, memory,
+  selectivity, latency, and exact round-trip ranking evidence.
+- Retain the full-sort research ranker after an exact bounded top-50 heap increased measured query
+  latency, and report evidence coverage independently from the returned candidate limit.
 
 ## 0.1.1 - 2026-08-10
 

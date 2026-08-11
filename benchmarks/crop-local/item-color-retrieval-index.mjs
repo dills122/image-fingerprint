@@ -193,7 +193,7 @@ export const queryCropLocalItemColorRetrievalIndex = (
       id: index.document.referenceIds[ordinal],
       ...evidence,
     })),
-    candidatesWithEvidence: ranked.length,
+    candidatesWithEvidence: scores.size,
     queryTokens: tokens.length,
     indexedQueryTokens,
     postingEntriesVisited,

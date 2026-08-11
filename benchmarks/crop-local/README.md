@@ -136,6 +136,24 @@ for verifier-accepted queries, while showing that the JSON ranker still scores e
 every reference. See
 [`docs/modernization/crop-local-item-color-retrieval-results.md`](../../docs/modernization/crop-local-item-color-retrieval-results.md).
 
+Measure the unchanged research index mechanics at deterministic 500, 1,000, and 2,000-reference
+scales without reopening quality thresholds or using licensed pixels:
+
+```sh
+pnpm crop-local:item-color:retrieval:scale -- \
+  --output benchmarks/crop-local/item-color-retrieval-scaling-full-sort-baseline-node22-2026-08-10.json
+```
+
+The generated descriptor corpus intentionally combines broad sub-threshold posting lists with
+distinctive evidence. It measures build/load memory, JSON size, query work, candidate coverage, and
+round-trip ranking exactness. It is a mechanical scaling study, not recall or product-quality
+evidence.
+
+The retained full-sort report establishes the current baseline. The companion
+`item-color-retrieval-top-k-candidate-node22-2026-08-10.json` report records an exact bounded-heap
+candidate that preserved rankings and index statistics but was rejected because it increased query
+latency at the measured scales. The research index therefore still uses the simpler full sort.
+
 Measure exact-output implementation changes and the separately identified compact transport
 experiment on deterministic procedural fixtures without reopening or tuning the holdout:
 

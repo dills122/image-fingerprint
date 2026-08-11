@@ -1,3 +1,4 @@
+import { spawnSync } from 'node:child_process';
 import { describe, expect, it } from 'vitest';
 import {
   buildCropLocalItemColorRetrievalIndex,
@@ -23,6 +24,38 @@ const references = () => [
 ];
 
 describe('crop-local item-color retrieval index', () => {
+  it('predeclares the generated mechanical scaling study', () => {
+    const result = spawnSync(
+      process.execPath,
+      ['benchmarks/crop-local/retrieval-scaling.mjs', '--plan-only'],
+      { encoding: 'utf8' },
+    );
+    expect(result.status, result.stderr).toBe(0);
+    expect(JSON.parse(result.stdout)).toEqual({
+      profileVersion: 1,
+      study: 'crop-local-item-color-retrieval-mechanical-scaling-v1',
+      referenceCounts: [500, 1_000, 2_000],
+      queriesPerScale: 40,
+      featuresPerReference: 96,
+      queryFeatures: 72,
+      broadFeaturesPerReference: 32,
+      broadTokenValuesPerPosition: 512,
+      descriptorTokenBits: 16,
+      candidateLimit: 50,
+      corpus: 'deterministic-generated-descriptor-mechanics-only',
+      assertions: [
+        'loaded-ranking-exact',
+        'true-source-recall-at-1',
+        'candidate-limit-bounded',
+      ],
+      optimizationAcceptance: [
+        'candidate-ranking-sha256-unchanged-at-every-scale',
+        'index-statistics-unchanged-at-every-scale',
+        '2000-reference-query-p50-lower-than-full-sort-baseline',
+      ],
+    });
+  });
+
   it('builds a deterministic serialized index and drops high-frequency tokens', () => {
     const forward = buildCropLocalItemColorRetrievalIndex(references());
     const reverse = buildCropLocalItemColorRetrievalIndex(references().reverse());
@@ -59,9 +92,10 @@ describe('crop-local item-color retrieval index', () => {
     const tied = queryCropLocalItemColorRetrievalIndex(
       loaded,
       fingerprint('b'.repeat(64), 'a'.repeat(64)),
-      2,
+      1,
     );
-    expect(tied.candidates.map(({ id }) => id)).toEqual(['alpha', 'bravo']);
+    expect(tied.candidates.map(({ id }) => id)).toEqual(['alpha']);
+    expect(tied.candidatesWithEvidence).toBe(2);
   });
 
   it('rejects duplicate references, malformed descriptors, invalid limits, and corrupt indexes', () => {
