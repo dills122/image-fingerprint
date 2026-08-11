@@ -2,12 +2,14 @@
 
 All notable changes to `image-fingerprint` are documented here.
 
-## 0.1.0 - Unreleased
+## 0.1.1-rc.0 - 2026-08-10
 
-Release candidates:
+- Add bounded crop-aware fingerprint research implementations and reproducible benchmark evidence.
+- Document why the current crop-aware candidates remain outside the supported public profile.
+- Stabilize the required CI and CodeQL check contracts while selectively running expensive jobs.
+- Speed up the PDQ oracle path used by continuous integration.
 
-- `0.1.0-rc.0` claimed the npm package under the `next` tag through a one-time manual publish.
-- `0.1.0-rc.1` validated GitHub Actions trusted publishing and npm provenance.
+## 0.1.0 - 2026-08-10
 
 - Initial public release.
 - Add versioned `blockhash-v1` and `pdq-v1` fingerprints.
