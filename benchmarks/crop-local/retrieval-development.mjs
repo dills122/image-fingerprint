@@ -2,6 +2,11 @@ import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { dirname, join, resolve } from 'node:path';
+import {
+  CROP_LOCAL_CALIBRATION_PROFILE,
+  transformCropLocalCalibration,
+  validateCropLocalCalibrationManifest,
+} from './calibration-corpus.mjs';
 
 const FINGERPRINT_PROFILE = {
   maximumDimension: 768,
@@ -26,6 +31,7 @@ const parseArguments = (arguments_) => {
   let manifest;
   let output;
   for (let index = 0; index < arguments_.length; index += 1) {
+    if (arguments_[index] === '--') continue;
     if (arguments_[index] === '--manifest') manifest = resolve(arguments_[index += 1]);
     else if (arguments_[index] === '--output') output = resolve(arguments_[index += 1]);
     else throw new Error('Usage: retrieval-development.mjs --manifest FILE --output FILE');
@@ -34,31 +40,6 @@ const parseArguments = (arguments_) => {
     throw new Error('Usage: retrieval-development.mjs --manifest FILE --output FILE');
   }
   return { manifest, output };
-};
-
-const crop = (source, x, y, width, height) => {
-  const data = new Uint8Array(width * height * 4);
-  for (let row = 0; row < height; row += 1) {
-    const start = ((y + row) * source.width + x) * 4;
-    data.set(source.data.subarray(start, start + width * 4), row * width * 4);
-  }
-  return { format: 'rgba8', width, height, data };
-};
-
-const transform = (source, mode) => {
-  if (mode === 'center') {
-    const width = Math.max(40, Math.floor(source.width * 0.7));
-    const height = Math.max(40, Math.floor(source.height * 0.7));
-    return crop(source, Math.floor((source.width - width) / 2), Math.floor((source.height - height) / 2), width, height);
-  }
-  if (mode === 'asymmetric') {
-    const width = Math.max(40, Math.floor(source.width * 0.62));
-    const height = Math.max(40, Math.floor(source.height * 0.82));
-    return crop(source, 0, Math.floor((source.height - height) / 3), width, height);
-  }
-  const width = Math.max(40, Math.floor(source.width * 0.5));
-  const height = Math.max(40, Math.floor(source.height * 0.65));
-  return crop(source, source.width - width, Math.floor((source.height - height) / 4), width, height);
 };
 
 const descriptorTokens = (fingerprint, substringBits, deduplicate) => {
@@ -129,9 +110,12 @@ const evaluate = (profile, references, queries) => {
 const run = async ({ manifest: manifestPath, output }) => {
   const require = createRequire(import.meta.url);
   const { decodeImage } = require('../../lib/node.js');
-  const { compareCropLocalFingerprints, fingerprintCropLocalExperiment } = require('../../lib/core/algorithms/crop-local/index.js');
+  const { compareCropLocalSourceToCrop, fingerprintCropLocalExperiment } = require('../../lib/core/algorithms/crop-local/index.js');
   const manifestBytes = await readFile(manifestPath);
   const manifest = JSON.parse(manifestBytes.toString('utf8'));
+  if (manifest.corpus === CROP_LOCAL_CALIBRATION_PROFILE.corpus) {
+    validateCropLocalCalibrationManifest(manifest);
+  }
   const root = dirname(manifestPath);
   const references = [];
   const queries = [];
@@ -144,8 +128,11 @@ const run = async ({ manifest: manifestPath, output }) => {
     const original = fingerprintCropLocalExperiment(pixels, FINGERPRINT_PROFILE);
     references.push({ id: entry.id, domain: entry.domain, fingerprint: original });
     for (const mode of ['center', 'asymmetric', 'severe']) {
-      const fingerprint = fingerprintCropLocalExperiment(transform(pixels, mode), FINGERPRINT_PROFILE);
-      const evidence = compareCropLocalFingerprints(original, fingerprint);
+      const fingerprint = fingerprintCropLocalExperiment(
+        transformCropLocalCalibration(pixels, mode),
+        FINGERPRINT_PROFILE,
+      );
+      const evidence = compareCropLocalSourceToCrop(original, fingerprint);
       queries.push({
         sourceId: entry.id,
         domain: entry.domain,

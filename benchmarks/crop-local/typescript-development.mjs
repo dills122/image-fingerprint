@@ -3,6 +3,13 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { dirname, join, resolve } from 'node:path';
 import { performance } from 'node:perf_hooks';
+import {
+  createCropLocalCalibrationPairs,
+  CROP_LOCAL_CALIBRATION_PROFILE,
+  summarizeCropLocalMeasurements,
+  transformCropLocalCalibration,
+  validateCropLocalCalibrationManifest,
+} from './calibration-corpus.mjs';
 
 const FINGERPRINT_PROFILE = {
   maximumDimension: 768,
@@ -46,32 +53,27 @@ const parseArguments = (arguments_) => {
   let lockedDevelopmentProfile = false;
   let expandedNegatives = false;
   let summaryOnly = false;
+  let calibration = false;
   for (let index = 0; index < arguments_.length; index += 1) {
+    if (arguments_[index] === '--') continue;
     if (arguments_[index] === '--manifest') manifests.push(resolve(arguments_[index += 1]));
     else if (arguments_[index] === '--output') output = resolve(arguments_[index += 1]);
     else if (arguments_[index] === '--locked-development-profile') lockedDevelopmentProfile = true;
     else if (arguments_[index] === '--expanded-negatives') expandedNegatives = true;
     else if (arguments_[index] === '--summary-only') summaryOnly = true;
-    else throw new Error('Usage: typescript-development.mjs --manifest FILE [--manifest FILE] --output FILE [--locked-development-profile] [--expanded-negatives] [--summary-only]');
+    else if (arguments_[index] === '--calibration') calibration = true;
+    else throw new Error('Usage: typescript-development.mjs --manifest FILE [--manifest FILE] --output FILE [--locked-development-profile] [--expanded-negatives] [--summary-only] [--calibration]');
   }
-  if (manifests.length === 0 || output === undefined) {
-    throw new Error('Usage: typescript-development.mjs --manifest FILE [--manifest FILE] --output FILE [--locked-development-profile] [--expanded-negatives] [--summary-only]');
+  if (
+    manifests.length === 0 || output === undefined
+    || (calibration && (!lockedDevelopmentProfile || !summaryOnly || expandedNegatives))
+  ) {
+    throw new Error('Calibration requires one locked, summary-only, non-expanded evaluation');
   }
-  return { manifests, output, lockedDevelopmentProfile, expandedNegatives, summaryOnly };
+  return { manifests, output, lockedDevelopmentProfile, expandedNegatives, summaryOnly, calibration };
 };
 
-const percentile = (values, fraction) => {
-  if (values.length === 0) return null;
-  const ordered = [...values].sort((left, right) => left - right);
-  return ordered[Math.max(0, Math.ceil(ordered.length * fraction) - 1)];
-};
-
-const summary = (values) => ({
-  count: values.length,
-  p50: percentile(values, 0.5),
-  p95: percentile(values, 0.95),
-  maximum: values.length === 0 ? null : Math.max(...values),
-});
+const summary = summarizeCropLocalMeasurements;
 
 const metrics = (decisions) => {
   const counts = { truePositive: 0, falsePositive: 0, trueNegative: 0, falseNegative: 0 };
@@ -90,32 +92,8 @@ const metrics = (decisions) => {
   };
 };
 
-const crop = (source, x, y, width, height) => {
-  const data = new Uint8Array(width * height * 4);
-  for (let row = 0; row < height; row += 1) {
-    const start = ((y + row) * source.width + x) * 4;
-    data.set(source.data.subarray(start, start + width * 4), row * width * 4);
-  }
-  return { format: 'rgba8', width, height, data };
-};
-
-const transform = (source, mode) => {
-  if (mode === 'center') {
-    const width = Math.max(40, Math.floor(source.width * 0.7));
-    const height = Math.max(40, Math.floor(source.height * 0.7));
-    return crop(source, Math.floor((source.width - width) / 2), Math.floor((source.height - height) / 2), width, height);
-  }
-  if (mode === 'asymmetric') {
-    const width = Math.max(40, Math.floor(source.width * 0.62));
-    const height = Math.max(40, Math.floor(source.height * 0.82));
-    return crop(source, 0, Math.floor((source.height - height) / 3), width, height);
-  }
-  const width = Math.max(40, Math.floor(source.width * 0.5));
-  const height = Math.max(40, Math.floor(source.height * 0.65));
-  return crop(source, source.width - width, Math.floor((source.height - height) / 4), width, height);
-};
-
-const createPairs = (sources, expandedNegatives) => {
+const createPairs = (sources, expandedNegatives, calibration) => {
+  if (calibration) return createCropLocalCalibrationPairs(sources);
   const pairs = [];
   for (const source of sources) {
     for (const mode of ['center', 'asymmetric', 'severe']) {
@@ -125,8 +103,9 @@ const createPairs = (sources, expandedNegatives) => {
   for (let left = 0; left < sources.length; left += 1) {
     for (let right = left + 1; right < sources.length; right += 1) {
       const variants = [
-        ['original', 'original'], ['center', 'center'], ['original', 'center'],
+        ['original', 'original'],
       ];
+      variants.push(['center', 'center'], ['original', 'center']);
       if (expandedNegatives) variants.push(
         ['original', 'asymmetric'], ['asymmetric', 'asymmetric'],
       );
@@ -166,21 +145,30 @@ const run = async ({
   lockedDevelopmentProfile,
   expandedNegatives,
   summaryOnly,
+  calibration,
 }) => {
   const require = createRequire(import.meta.url);
   const { decodeImage } = require('../../lib/node.js');
   const {
-    compareCropLocalFingerprints,
+    compareCropLocalSourceToCrop,
     fingerprintCropLocalExperiment,
   } = require('../../lib/core/algorithms/crop-local/index.js');
   const manifestInputs = await Promise.all(manifestPaths.map(async (path) => {
     const bytes = await readFile(path);
-    return { path, bytes, root: dirname(path), manifest: JSON.parse(bytes.toString('utf8')) };
+    const manifest = JSON.parse(bytes.toString('utf8'));
+    if (manifest.corpus === CROP_LOCAL_CALIBRATION_PROFILE.corpus) {
+      validateCropLocalCalibrationManifest(manifest);
+    }
+    return { path, bytes, root: dirname(path), manifest };
   }));
   const domains = manifestInputs[0].manifest.selection.domains;
   if (manifestInputs.some(({ manifest }) => (
     JSON.stringify(manifest.selection.domains) !== JSON.stringify(domains)
   ))) throw new Error('All manifests must use the same ordered domains');
+  if (calibration && (
+    manifestInputs.length !== 1
+    || manifestInputs[0].manifest.corpus !== CROP_LOCAL_CALIBRATION_PROFILE.corpus
+  )) throw new Error('Calibration mode requires the independent calibration manifest');
   const sources = [];
   const fingerprints = new Map();
   const generationTimes = [];
@@ -197,9 +185,9 @@ const run = async ({
       sources.push({ id: entry.id, domain: entry.domain });
       for (const [variant, pixels] of [
         ['original', original],
-        ['center', transform(original, 'center')],
-        ['asymmetric', transform(original, 'asymmetric')],
-        ['severe', transform(original, 'severe')],
+        ['center', transformCropLocalCalibration(original, 'center')],
+        ['asymmetric', transformCropLocalCalibration(original, 'asymmetric')],
+        ['severe', transformCropLocalCalibration(original, 'severe')],
       ]) {
         const started = performance.now();
         const fingerprint = fingerprintCropLocalExperiment(pixels, FINGERPRINT_PROFILE);
@@ -210,14 +198,21 @@ const run = async ({
       }
     }
   }
-  const pairs = createPairs(sources, expandedNegatives);
+  const pairs = createPairs(sources, expandedNegatives, calibration);
   const comparisonTimes = [];
+  const lockedComparisonTimes = [];
   const evidence = pairs.map((pair) => {
     const started = performance.now();
-    const result = compareCropLocalFingerprints(
+    const result = compareCropLocalSourceToCrop(
       fingerprints.get(pair.left),
       fingerprints.get(pair.right),
-      {
+      calibration ? {
+        ...COMPARISON_PROFILE,
+        minimumInliers: LOCKED_GEOMETRY_PROFILE.minimumInliers,
+        minimumInlierRatio: LOCKED_GEOMETRY_PROFILE.minimumInlierRatio,
+        minimumSpatialZones: LOCKED_GEOMETRY_PROFILE.minimumZones,
+        ...LOCKED_VERIFICATION_PROFILE,
+      } : {
         ...COMPARISON_PROFILE,
         minimumInliers: 2,
         minimumInlierRatio: 0,
@@ -231,12 +226,13 @@ const run = async ({
         minimumInformativeZones: 1,
       },
     );
-    comparisonTimes.push(performance.now() - started);
+    (calibration ? lockedComparisonTimes : comparisonTimes).push(performance.now() - started);
     return {
       ...pair,
       candidateMatches: result.candidateMatches,
       geometricInliers: result.geometricInliers,
       retainedModels: result.retainedModels,
+      geometryMatches: calibration ? result.transform !== null : false,
       ...result.verification,
     };
   });
@@ -290,11 +286,10 @@ const run = async ({
   if (selectedGeometry === undefined) throw new Error('Locked geometry profile was not evaluated');
   const geometryPass = selectedGeometry.recall >= 0.3
     && selectedGeometry.falsePositiveRate <= 0.03;
-  const lockedComparisonTimes = [];
-  for (let index = 0; index < pairs.length; index += 1) {
+  for (let index = 0; !calibration && index < pairs.length; index += 1) {
     const pair = pairs[index];
     const started = performance.now();
-    const result = compareCropLocalFingerprints(
+    const result = compareCropLocalSourceToCrop(
       fingerprints.get(pair.left),
       fingerprints.get(pair.right),
       {
@@ -415,8 +410,10 @@ const run = async ({
   const pass = candidatePass && geometryPass && finalPolicyPass;
   const report = {
     profileVersion: 1,
-    study: lockedDevelopmentProfile
-      ? 'crop-local-multiscale-binary-v0-typescript-locked-source-disjoint'
+    study: calibration
+      ? 'crop-local-multiscale-binary-v0-typescript-independent-calibration'
+      : lockedDevelopmentProfile
+        ? 'crop-local-multiscale-binary-v0-typescript-locked-source-disjoint'
       : 'crop-local-multiscale-binary-v0-typescript-development',
     policyMode: lockedDevelopmentProfile ? 'locked-development-profile' : 'development-selection',
     developmentCorpus: manifestInputs.length === 1
@@ -475,10 +472,14 @@ const run = async ({
         ? 'The geometry and verification policies were frozen before this source-disjoint run.'
         : 'This corpus has already been inspected and is development evidence only.',
       lockedDevelopmentProfile
-        ? 'This 3,675-negative confirmation is too small for final statistical calibration.'
+        ? (calibration
+          ? 'Calibration negatives include every unrelated original pair plus same-template screenshot and card hard negatives.'
+          : 'This 3,675-negative confirmation is too small for final statistical calibration.')
         : 'The compact verifier grid is selected here and requires a later locked fresh holdout.',
       'The internal profile is not exported or assigned public compatibility meaning.',
-      expandedNegatives
+      calibration
+        ? 'Calibration uses one locked policy pass and does not select or sweep thresholds.'
+        : expandedNegatives
         ? 'Expanded negatives reuse five variant pairings per unrelated source pair and are correlated.'
         : 'Negative sampling uses three variant pairings per unrelated source pair.',
     ],

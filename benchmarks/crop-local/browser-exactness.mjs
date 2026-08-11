@@ -13,7 +13,7 @@ const PLAN = {
   browsers: ['chromium', 'firefox', 'webkit'],
   contexts: ['main-thread', 'module-worker'],
   comparisonReference: 'node',
-  fingerprintProfile: 'crop-local-multiscale-binary-v0',
+  fingerprintProfiles: ['crop-local-multiscale-binary-v0', 'crop-local-item-color-v0'],
 };
 
 const createNodeFixture = () => {
@@ -84,12 +84,21 @@ const run = async () => {
     if (address === null || typeof address === 'string') throw new Error('server address unavailable');
 
     const require = createRequire(import.meta.url);
-    const { fingerprintCropLocalExperiment } = require('../../lib/core/algorithms/crop-local/index.js');
-    const expected = fingerprintCropLocalExperiment(createNodeFixture(), {
+    const {
+      fingerprintCropLocalExperiment,
+      fingerprintCropLocalItemExperiment,
+    } = require('../../lib/core/algorithms/crop-local/index.js');
+    const fixture = createNodeFixture();
+    const options = {
       maximumDimension: 256,
       maximumFeatures: 128,
       verificationMaximumDimension: 96,
-    });
+      colorVerificationMaximumDimension: 64,
+    };
+    const expected = {
+      local: fingerprintCropLocalExperiment(fixture, options),
+      itemColor: fingerprintCropLocalItemExperiment(fixture, options),
+    };
     const results = [];
     for (const [name, browserType] of Object.entries({ chromium, firefox, webkit })) {
       const browser = await browserType.launch({ headless: true });
@@ -109,7 +118,7 @@ const run = async () => {
     return {
       ...PLAN,
       node: process.version,
-      fingerprintSha256: createHash('sha256').update(serialized).digest('hex'),
+      combinedFingerprintSha256: createHash('sha256').update(serialized).digest('hex'),
       serializedBytes: Buffer.byteLength(serialized),
       results,
     };
@@ -122,10 +131,15 @@ const run = async () => {
 try {
   if (process.argv.length === 3 && process.argv[2] === '--plan-only') {
     process.stdout.write(`${JSON.stringify(PLAN)}\n`);
+  } else if (process.argv.length === 4 && process.argv[2] === '--output') {
+    const output = resolve(process.argv[3]);
+    const result = await run();
+    await writeFile(output, `${JSON.stringify(result, null, 2)}\n`);
+    process.stdout.write(`${JSON.stringify({ output, ...result })}\n`);
   } else if (process.argv.length === 2) {
     process.stdout.write(`${JSON.stringify(await run(), null, 2)}\n`);
   } else {
-    throw new Error('Usage: node benchmarks/crop-local/browser-exactness.mjs [--plan-only]');
+    throw new Error('Usage: node benchmarks/crop-local/browser-exactness.mjs [--plan-only|--output FILE]');
   }
 } catch (error) {
   process.stderr.write(`crop-local browser exactness: ${error.message}\n`);

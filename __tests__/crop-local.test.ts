@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  compareCropLocalFingerprints,
+  compareCropLocalSourceToCrop,
   fingerprintCropLocalExperiment,
 } from '../src/core/algorithms/crop-local';
 import type { Rgba8PixelSource } from '../src/core/types';
@@ -85,7 +85,9 @@ describe('crop-local internal experiment', () => {
   it('finds a scale-and-translation consensus for an independently normalized crop', () => {
     const source = layout(2);
     const cropped = crop(source, 72, 34, 260, 220);
-    const evidence = compareCropLocalFingerprints(fingerprint(source), fingerprint(cropped), {
+    const sourceFingerprint = fingerprint(source);
+    const cropFingerprint = fingerprint(cropped);
+    const evidence = compareCropLocalSourceToCrop(sourceFingerprint, cropFingerprint, {
       minimumInformativeCoverage: 0,
       denseInformationCutoff: 0,
       denseMinimumAgreement: 0,
@@ -97,11 +99,67 @@ describe('crop-local internal experiment', () => {
     expect(evidence.geometricInliers).toBeGreaterThanOrEqual(4);
     expect(evidence.transform?.scale).toBeGreaterThan(0.6);
     expect(evidence.transform?.scale).toBeLessThan(1.1);
+    expect(evidence.direction).toBe('source-to-crop');
+    expect(evidence.sourceFeatures).toBe(sourceFingerprint.features.length);
+    expect(evidence.cropFeatures).toBe(cropFingerprint.features.length);
   });
 
   it('rejects a different item built from the same layout', () => {
-    const evidence = compareCropLocalFingerprints(fingerprint(layout(3)), fingerprint(layout(300)));
-    expect(evidence.status, JSON.stringify(evidence)).not.toBe('match');
+    const evidence = compareCropLocalSourceToCrop(
+      fingerprint(layout(3)),
+      fingerprint(layout(300)),
+    );
+    expect(evidence.status, JSON.stringify(evidence)).toBe('no-match');
+  });
+
+  it('keeps inadequate distinctive overlap separate from a negative decision', () => {
+    const source = layout(2);
+    const cropped = crop(source, 72, 34, 260, 220);
+    const evidence = compareCropLocalSourceToCrop(fingerprint(source), fingerprint(cropped), {
+      minimumInformativeCoverage: 1,
+      denseInformationCutoff: 0,
+      denseMinimumAgreement: 0,
+      denseMaximumContradiction: 1,
+      sparseMinimumAgreement: 0,
+      sparseMaximumContradiction: 1,
+    });
+    expect(evidence.status, JSON.stringify(evidence)).toBe('insufficient-evidence');
+    expect(evidence.reasons).toEqual(['insufficient-distinctive-overlap']);
+  });
+
+  it('rejects malformed or over-budget experiment fingerprints before comparison', () => {
+    const valid = fingerprint(layout(4));
+    const wrongProfile = {
+      ...valid,
+      experimentalProfile: 'crop-local-unknown',
+    } as unknown as typeof valid;
+    expect(() => compareCropLocalSourceToCrop(wrongProfile, valid)).toThrow(
+      'unsupported crop-local experimental profile',
+    );
+
+    const overBudget = { ...valid, maximumFeatures: 16 };
+    expect(() => compareCropLocalSourceToCrop(overBudget, valid)).toThrow(
+      'crop-local feature count exceeds maximum features',
+    );
+
+    const invalidDescriptor = {
+      ...valid,
+      features: [{ ...valid.features[0], descriptor: '0'.repeat(63) }],
+    };
+    expect(() => compareCropLocalSourceToCrop(invalidDescriptor, valid)).toThrow(
+      'descriptor must be 256-bit lowercase hex',
+    );
+
+    const invalidSketch = {
+      ...valid,
+      verification: {
+        ...valid.verification,
+        luminance: valid.verification.luminance.slice(2),
+      },
+    };
+    expect(() => compareCropLocalSourceToCrop(invalidSketch, valid)).toThrow(
+      'verification luminance must be bounded lowercase hex',
+    );
   });
 
   it('validates profile bounds and treats flat content as non-matching', () => {
@@ -112,7 +170,7 @@ describe('crop-local internal experiment', () => {
     expect(() => fingerprintCropLocalExperiment(layout(1), { maximumFeatures: 0 })).toThrow(
       'maximum features',
     );
-    expect(() => compareCropLocalFingerprints(fingerprint(layout(1)), fingerprint(layout(2)), {
+    expect(() => compareCropLocalSourceToCrop(fingerprint(layout(1)), fingerprint(layout(2)), {
       sparseMinimumAgreement: 2,
     })).toThrow('sparse minimum agreement');
   });

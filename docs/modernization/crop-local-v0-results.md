@@ -1,7 +1,7 @@
 # Crop-Local v0 Oracle Results
 
-Status: oracle and pure-TypeScript experiment go; public profile remains blocked
-Updated: 2026-08-09
+Status: internal experiment remains useful; public profile blocked by independent calibration
+Updated: 2026-08-10
 Baseline: `a93b564e18e4121d28dfe2e5661e83d110ac2bde`
 
 ## Decision
@@ -210,16 +210,124 @@ the 16-bit profile slightly, while aggressive suppression of common 8-bit tokens
 The candidate recall@200 pilot gate passed, but a 50-reference index is much too small to predict
 million-scale selectivity, memory, or latency.
 
+## Independent Calibration
+
+A source-disjoint calibration corpus was built without changing the frozen fingerprint,
+geometry, or verification policy. It contains 500 sources—100 each for photographs, portraits,
+documents, screenshots, and card layouts—and three deterministic crops per source for 1,500
+positive transformations. The 300 Commons sources exclude both development corpora by page ID and
+pixel SHA-256; the 200 generated sources use a new style-3 screenshot/card generator and a separate
+seed range. Source pixels remain local-only.
+
+The calibration evaluated all 124,750 unrelated original pairs plus 19,800 asymmetric
+same-template screenshot and card-layout hard negatives. This produced 144,550 negatives and one
+locked policy evaluation; no thresholds were swept or reselected.
+
+The frozen TypeScript policy produced:
+
+- 605 true positives and 895 false negatives: 40.3% recall;
+- 1,405 reported false positives and 143,145 true negatives: 0.972% observed false-positive rate;
+- 30.1% precision under this deliberately template-heavy negative population;
+- 50.2% geometry recall at a 3.82% negative-consensus rate;
+- 65.7% photograph, 57.0% portrait, 13.0% document, 65.3% screenshot, and 0.7% card-layout recall.
+
+The final false-positive rate exceeded the predeclared 0.5% maximum, and the geometry stage exceeded
+its 3% maximum. The independent gate therefore failed. Card layouts also remained below the 10%
+domain guardrail. This result blocks a public crop-local profile and must not be repaired by tuning
+thresholds on the calibration corpus.
+
+Of the 1,405 reported false positives, 738 were card-layout pairs, 666 were screenshot pairs, and
+one was a photograph pair. A manual label audit found that the photograph pair contains two
+near-duplicate sunset photographs from the same Solamachi viewpoint with almost identical city
+geometry. It is related visual content despite having distinct Commons page IDs. Treating it as
+label noise leaves 1,404 genuine same-template failures and does not change the failed decision.
+The template failures were concentrated in asymmetric-to-asymmetric comparisons (1,351/1,405),
+confirming that retained shared chrome can overwhelm item-specific content.
+
+The independent run measured:
+
+- generation p50/p95: 116.73/416.27 ms across 2,000 fingerprints;
+- locked comparison p50/p95: 1.70/2.52 ms across 146,050 pairs;
+- serialized fingerprint p50/p95: 34,716/39,442 bytes;
+- retained features p50/p95: 128/128.
+
+Retrieval calibration was not run after the quality gate failed. The next algorithmic work must add
+an item-specific signal or an explicit product-level template ambiguity policy; scaling the current
+retrieval index would not correct the verifier's false positives.
+
+## Item-Color Development Candidate
+
+The failed calibration corpus is now inspected development data. A separate internal
+`crop-local-item-color-v0` wrapper preserves the grayscale fingerprint and adds two compact YCbCr
+chroma planes. The aligned color check is veto-only: it can reject an existing local match but
+cannot promote a local non-match or insufficient decision.
+
+A development sweep rechecked all 1,500 positives and all 1,405 baseline false positives. The
+selected policy retained every baseline true positive and reduced false positives from 1,405 to 25:
+
+- 605/1,500 true positives: 40.3% recall, unchanged from the grayscale baseline;
+- 25/144,550 represented false positives: 0.0173% false-positive rate;
+- 96.0% precision under the same template-heavy negative population;
+- eight surviving card-layout pairs and 17 surviving screenshot pairs;
+- unchanged per-domain recall, including only 0.7% for card layouts.
+
+The result passes the development gate but is not a new independent result. The color policy was
+selected after inspecting this corpus and is now frozen for a new source-disjoint holdout. Color
+also cannot distinguish grayscale or similarly colored templates, and it cannot restore candidates
+lost during geometry. In particular, the result is not yet evidence that the profile is useful for
+MTG card crops.
+
+The enriched fingerprint measured 46,185/55,266 bytes at p50/p95. Generation measured
+120.70/423.68 ms and comparison measured 4.10/12.72 ms at p50/p95. The quality improvement therefore
+comes with measurable size and comparison costs that remain above any future public-profile budget.
+
+## Item-Color Independent Holdout
+
+After freezing the item-color policy, a new local-only holdout excluded both earlier development
+corpora and the inspected 500-source calibration corpus by source identity, Commons page ID,
+generated identity, and pixel SHA-256. It contains 300 new Public Domain/CC0 Commons sources plus
+200 generated sources using a different style-4 screenshot/card family and seed range. The same
+1,500 positive and 144,550 negative pairing contract was evaluated once with no threshold sweep.
+
+The frozen profile produced:
+
+- 745 true positives and 755 false negatives: 49.7% recall;
+- five reported false positives and 144,545 true negatives: 0.00346% false-positive rate;
+- 99.3% precision under the template-heavy negative population;
+- 73.7% photograph, 77.7% portrait, 49.7% document, 32.3% screenshot, and 15.0% card-layout recall;
+- zero false positives among 14,850 screenshot and 14,850 card-layout same-domain negatives.
+
+All five domains exceeded the 10% guardrail, and the aggregate 20% recall/0.5% false-positive gates
+passed. The profile therefore clears the independent quality gate without holdout tuning.
+
+Manual review found that the photograph pair is two scans of the same marine artwork and one
+portrait pair is two crops/scans of the same historical skiing photograph. The other three pairings
+come from three distinct portraits digitized with the same large grayscale calibration strip and
+studio-card layout. They remain counted as false positives; removing the two related-source labels
+would only strengthen the result.
+
+Holdout generation measured 119.63/299.45 ms at p50/p95, comparison measured 1.79/5.73 ms, and
+serialized size measured 46,997/55,271 bytes. Quality is no longer the immediate blocker, but a
+public profile remains blocked on size/performance budgets, retrieval validation, broader
+cross-runtime fixtures, persisted-schema design, and maintainer approval. Card-layout recall at 15%
+is materially better than the earlier 0.7%, but still too low to claim robust MTG crop matching.
+
+The enriched fingerprint also matched Node exactly in Chromium 151, Firefox 153, and WebKit 26.5,
+on both the main thread and a module worker. This confirms deterministic portability for the
+existing procedural fixture; it does not replace the remaining requirement for broader exactness
+fixtures.
+
 Before any public proposal:
 
-1. build a genuinely independent 500-source/1,500-transformation calibration corpus;
-2. measure retrieval on a realistically large reference collection;
-3. further reduce generation time and serialized size under predeclared budgets;
-4. expand exact runtime fixtures beyond one procedural image;
-5. define source/crop ordering, symmetric lookup behavior, a bounded persisted representation, and
-   allocation limits;
-6. obtain maintainer approval for product semantics around insufficient evidence and template-only
-   card crops.
+1. decide whether card-layout recall is sufficient for an explicitly bounded product use case;
+2. record related-source labels so near-duplicate source files are not automatically counted as
+   unrelated negatives;
+3. measure retrieval on a realistically large reference collection only after the quality gate can
+   pass without calibration-set threshold changes;
+4. further reduce generation time and serialized size under predeclared budgets;
+5. expand exact runtime fixtures beyond one procedural image;
+6. define a bounded persisted representation separately from the accepted in-memory validation
+   limits.
 
 Retained evidence:
 
@@ -232,3 +340,7 @@ Retained evidence:
 - [`benchmarks/crop-local/retrieval-development-node22-2026-08-09.json`](../../benchmarks/crop-local/retrieval-development-node22-2026-08-09.json)
 - [`benchmarks/crop-local/browser-exactness-node22-2026-08-09.json`](../../benchmarks/crop-local/browser-exactness-node22-2026-08-09.json)
 - [`benchmarks/crop-local/performance-optimization-node22-2026-08-09.json`](../../benchmarks/crop-local/performance-optimization-node22-2026-08-09.json)
+- [`benchmarks/crop-local/independent-calibration-node22-2026-08-10.json`](../../benchmarks/crop-local/independent-calibration-node22-2026-08-10.json)
+- [`benchmarks/crop-local/item-color-development-node22-2026-08-10.json`](../../benchmarks/crop-local/item-color-development-node22-2026-08-10.json)
+- [`benchmarks/crop-local/item-color-holdout-node22-2026-08-10.json`](../../benchmarks/crop-local/item-color-holdout-node22-2026-08-10.json)
+- [`benchmarks/crop-local/browser-item-color-exactness-node22-2026-08-10.json`](../../benchmarks/crop-local/browser-item-color-exactness-node22-2026-08-10.json)

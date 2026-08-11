@@ -1,4 +1,7 @@
-import { fingerprintCropLocalExperiment } from '../../src/core/algorithms/crop-local';
+import {
+  fingerprintCropLocalExperiment,
+  fingerprintCropLocalItemExperiment,
+} from '../../src/core/algorithms/crop-local';
 import type { Rgba8PixelSource } from '../../src/core/types';
 
 const createFixture = (): Rgba8PixelSource => {
@@ -19,11 +22,16 @@ const createFixture = (): Rgba8PixelSource => {
   return { format: 'rgba8', width, height, data };
 };
 
-export const runCropLocalExactnessFixture = (): unknown => fingerprintCropLocalExperiment(
-  createFixture(),
-  {
+export const runCropLocalExactnessFixture = (): unknown => {
+  const fixture = createFixture();
+  const options = {
     maximumDimension: 256,
     maximumFeatures: 128,
     verificationMaximumDimension: 96,
-  },
-);
+    colorVerificationMaximumDimension: 64,
+  } as const;
+  return {
+    local: fingerprintCropLocalExperiment(fixture, options),
+    itemColor: fingerprintCropLocalItemExperiment(fixture, options),
+  };
+};

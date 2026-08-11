@@ -3,6 +3,7 @@ import type {
   CropLocalFeature,
   CropLocalVerificationSketch,
 } from './fingerprint';
+import { validateCropLocalExperimentFingerprint } from './fingerprint';
 
 export interface CropLocalComparisonOptions {
   readonly maximumDescriptorDistance?: number;
@@ -52,10 +53,28 @@ export interface CropLocalVerificationEvidence {
   readonly informativeZones: number;
 }
 
+export type CropLocalComparisonStatus = 'match' | 'no-match' | 'insufficient-evidence';
+
+export type CropLocalComparisonReason = (
+  | 'too-few-candidate-matches'
+  | 'no-consistent-crop-transform'
+  | 'insufficient-distinctive-overlap'
+  | 'aligned-content-disagrees'
+  | 'strong-aligned-contradictions'
+  | 'sparse-aligned-content-disagrees'
+  | 'sparse-aligned-contradictions'
+  | 'multiscale-geometry-and-content-agree'
+);
+
 export interface CropLocalComparisonEvidence {
-  readonly status: 'match' | 'no-match' | 'insufficient-evidence';
-  readonly queryFeatures: number;
-  readonly candidateFeatures: number;
+  /**
+   * `match` means the crop is visually consistent with part of the source. It is not proof that
+   * two template-based images represent the same item.
+   */
+  readonly status: CropLocalComparisonStatus;
+  readonly direction: 'source-to-crop';
+  readonly sourceFeatures: number;
+  readonly cropFeatures: number;
   readonly candidateMatches: number;
   readonly geometricInliers: number;
   readonly weightedInlierScore: number;
@@ -63,7 +82,7 @@ export interface CropLocalComparisonEvidence {
   readonly transform: CropLocalTransform | null;
   readonly retainedModels: readonly CropLocalModelEvidence[];
   readonly verification: CropLocalVerificationEvidence;
-  readonly reasons: readonly string[];
+  readonly reasons: readonly CropLocalComparisonReason[];
 }
 
 const POPCOUNT = Uint8Array.of(0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4);
@@ -520,12 +539,16 @@ const validateRatio = (value: number, name: string): void => {
   }
 };
 
-/** @internal Bounded matching, conservative geometry, and aligned verification. */
-export const compareCropLocalFingerprints = (
-  query: CropLocalExperimentFingerprint,
-  candidate: CropLocalExperimentFingerprint,
+/** @internal Directional source-to-crop matching with bounded inputs and tri-state evidence. */
+export const compareCropLocalSourceToCrop = (
+  source: CropLocalExperimentFingerprint,
+  crop: CropLocalExperimentFingerprint,
   options: CropLocalComparisonOptions = {},
 ): CropLocalComparisonEvidence => {
+  validateCropLocalExperimentFingerprint(source);
+  validateCropLocalExperimentFingerprint(crop);
+  const query = source;
+  const candidate = crop;
   const maximumDescriptorDistance = options.maximumDescriptorDistance ?? 48;
   const ratioPermille = options.ratioPermille ?? 700;
   const minimumInliers = options.minimumInliers ?? 4;
@@ -584,7 +607,7 @@ export const compareCropLocalFingerprints = (
     informativeZones: 0,
   };
   const verification = selected?.verification ?? emptyVerification;
-  const reasons: string[] = [];
+  const reasons: CropLocalComparisonReason[] = [];
   let status: CropLocalComparisonEvidence['status'] = 'no-match';
   if (tentative.length < minimumInliers) reasons.push('too-few-candidate-matches');
   else if (plausible.length === 0) reasons.push('no-consistent-crop-transform');
@@ -620,8 +643,9 @@ export const compareCropLocalFingerprints = (
   }
   return {
     status,
-    queryFeatures: query.features.length,
-    candidateFeatures: candidate.features.length,
+    direction: 'source-to-crop',
+    sourceFeatures: query.features.length,
+    cropFeatures: candidate.features.length,
     candidateMatches: tentative.length,
     geometricInliers: selected?.model.inliers ?? retainedModels[0]?.inliers ?? 0,
     weightedInlierScore: selected?.model.weightedSupport ?? retainedModels[0]?.weightedSupport ?? 0,
@@ -633,3 +657,6 @@ export const compareCropLocalFingerprints = (
     reasons,
   };
 };
+
+/** @internal Compatibility alias retained while benchmark callers migrate to explicit roles. */
+export const compareCropLocalFingerprints = compareCropLocalSourceToCrop;
