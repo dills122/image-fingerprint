@@ -393,3 +393,144 @@ export const queryCropLocalItemColorRetrievalIndex = (
     postingEntriesVisited,
   };
 };
+
+const candidateIsBetter = (left, right, referenceIds) => (
+  left.score > right.score
+  || (left.score === right.score && referenceIds[left.ordinal].localeCompare(referenceIds[right.ordinal]) < 0)
+);
+
+const worstCandidateIndex = (candidates, referenceIds) => {
+  let worstIndex = 0;
+  for (let index = 1; index < candidates.length; index += 1) {
+    if (candidateIsBetter(candidates[worstIndex], candidates[index], referenceIds)) {
+      worstIndex = index;
+    }
+  }
+  return worstIndex;
+};
+
+export const queryCropLocalItemColorRetrievalIndexExactWand = (
+  index,
+  fingerprint,
+  limit = CROP_LOCAL_ITEM_COLOR_CANDIDATE_LIMIT,
+) => {
+  if (
+    !isRecord(index)
+    || !HYDRATED_INDEXES.has(index)
+    || !(index.postingLookup instanceof Int32Array)
+    || !(index.postingOffsets instanceof Uint32Array)
+    || !(index.postingOrdinals instanceof Uint32Array)
+  ) throw new TypeError('retrieval index must be hydrated');
+  if (!Number.isSafeInteger(limit) || limit < 1 || limit > index.document.referenceIds.length) {
+    throw new RangeError('retrieval candidate limit must be within the reference count');
+  }
+
+  const tokenIds = descriptorTokenIds(fingerprint);
+  let postingEntriesAvailable = 0;
+  const iterators = [];
+  for (const tokenId of tokenIds) {
+    const postingIndex = index.postingLookup[tokenId];
+    if (postingIndex === -1) continue;
+    const start = index.postingOffsets[postingIndex];
+    const end = index.postingOffsets[postingIndex + 1];
+    const postingLength = end - start;
+    postingEntriesAvailable += postingLength;
+    iterators.push({
+      cursor: start,
+      end,
+      order: iterators.length,
+      weight: Math.log((index.document.referenceIds.length + 1) / (postingLength + 1)) + 1,
+    });
+  }
+
+  let candidatesScored = 0;
+  let postingEntriesInspected = 0;
+  let postingEntriesSkipped = 0;
+  const topCandidates = [];
+  let threshold = Number.NEGATIVE_INFINITY;
+  while (true) {
+    const active = iterators.filter(iterator => iterator.cursor < iterator.end);
+    if (active.length === 0) break;
+    active.sort((left, right) => (
+      index.postingOrdinals[left.cursor] - index.postingOrdinals[right.cursor]
+      || left.order - right.order
+    ));
+
+    let upperBound = 0;
+    let pivotIndex = -1;
+    for (let activeIndex = 0; activeIndex < active.length; activeIndex += 1) {
+      upperBound += active[activeIndex].weight;
+      if (topCandidates.length < limit || upperBound >= threshold) {
+        pivotIndex = activeIndex;
+        break;
+      }
+    }
+    if (pivotIndex === -1) break;
+
+    const firstOrdinal = index.postingOrdinals[active[0].cursor];
+    const pivotOrdinal = index.postingOrdinals[active[pivotIndex].cursor];
+    if (firstOrdinal === pivotOrdinal) {
+      let score = 0;
+      let matchedTokens = 0;
+      for (const iterator of iterators) {
+        if (
+          iterator.cursor < iterator.end
+          && index.postingOrdinals[iterator.cursor] === pivotOrdinal
+        ) {
+          score += iterator.weight;
+          matchedTokens += 1;
+          iterator.cursor += 1;
+          postingEntriesInspected += 1;
+        }
+      }
+      candidatesScored += 1;
+      const candidate = { ordinal: pivotOrdinal, score, matchedTokens };
+      if (topCandidates.length < limit) topCandidates.push(candidate);
+      else {
+        const worstIndex = worstCandidateIndex(topCandidates, index.document.referenceIds);
+        if (candidateIsBetter(candidate, topCandidates[worstIndex], index.document.referenceIds)) {
+          topCandidates[worstIndex] = candidate;
+        }
+      }
+      if (topCandidates.length === limit) {
+        threshold = topCandidates[worstCandidateIndex(
+          topCandidates,
+          index.document.referenceIds,
+        )].score;
+      }
+      continue;
+    }
+
+    for (let activeIndex = 0; activeIndex < pivotIndex; activeIndex += 1) {
+      const iterator = active[activeIndex];
+      const originalCursor = iterator.cursor;
+      let low = iterator.cursor;
+      let high = iterator.end;
+      while (low < high) {
+        const middle = low + Math.floor((high - low) / 2);
+        postingEntriesInspected += 1;
+        if (index.postingOrdinals[middle] < pivotOrdinal) low = middle + 1;
+        else high = middle;
+      }
+      iterator.cursor = low;
+      postingEntriesSkipped += low - originalCursor;
+    }
+  }
+
+  topCandidates.sort((left, right) => (
+    right.score - left.score
+    || index.document.referenceIds[left.ordinal].localeCompare(index.document.referenceIds[right.ordinal])
+  ));
+  return {
+    candidates: topCandidates.map(({ ordinal, ...evidence }) => ({
+      id: index.document.referenceIds[ordinal],
+      ...evidence,
+    })),
+    candidatesScored,
+    queryTokens: tokenIds.length,
+    indexedQueryTokens: iterators.length,
+    postingEntriesAvailable,
+    postingEntriesInspected,
+    postingEntriesSkipped,
+  };
+};

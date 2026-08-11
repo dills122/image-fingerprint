@@ -160,6 +160,19 @@ columns for token IDs, posting lengths, and source ordinals, carried as base64 i
 JSON and hydrated into fixed typed arrays. It retains schema-v1 loading and exact ranking behavior.
 This improves storage and load memory; it does not make candidate formation selective.
 
+Reproduce the rejected exact dynamic-pruning candidate against that compact baseline:
+
+```sh
+pnpm crop-local:item-color:retrieval:scale -- \
+  --query-strategy exact-wand \
+  --baseline benchmarks/crop-local/item-color-retrieval-compact-postings-node22-2026-08-10.json \
+  --output benchmarks/crop-local/item-color-retrieval-exact-wand-candidate-node22-2026-08-10.json
+```
+
+The exact WAND path is benchmark-only. It preserved rankings and reduced fully scored references,
+but failed the predeclared posting-inspection and latency gates, so the research index still uses
+compact full-sort querying.
+
 Measure exact-output implementation changes and the separately identified compact transport
 experiment on deterministic procedural fixtures without reopening or tuning the holdout:
 

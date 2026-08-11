@@ -139,6 +139,25 @@ index changed from 5.90 MB to 1.87 MB (-68.3%), and retrieval query p50 measured
 1.42 ms. This reuses inspected data and makes no new quality claim; it verifies that the storage
 change did not alter the frozen result.
 
+## Rejected Exact Dynamic Pruning
+
+An exact document-at-a-time WAND candidate attempted to avoid scoring references whose maximum
+possible remaining IDF score could not enter the top 50. Its acceptance gate required unchanged
+ranking hashes, no more than 25% of references fully scored at 2,000 references, no more than 50%
+of available posting entries inspected, and p50 latency within 10% of compact full sort.
+
+Ranking hashes remained exact and the candidate fully scored only 237 of 2,000 references at p50
+(11.85%). It nevertheless inspected 418,765 posting entries through repeated cursor comparisons
+against 64,240 entries available to the query (6.53×), and query p50 changed from 3.09 ms to
+235.05 ms (about 75× slower). The candidate failed both the posting-inspection and latency gates
+and was rejected. Compact full sort remains the retained query path.
+
+The rejected report is
+[`item-color-retrieval-exact-wand-candidate-node22-2026-08-10.json`](../../benchmarks/crop-local/item-color-retrieval-exact-wand-candidate-node22-2026-08-10.json).
+This result narrows the next design: an approximate rare-evidence candidate policy may be worth
+developing, but it changes candidate rankings and therefore requires a new untouched,
+source-disjoint holdout after the policy is frozen.
+
 ## What 500 References Establish
 
 The holdout establishes reproducibility, source-disjoint candidate recall at the measured size,
@@ -166,7 +185,8 @@ Before considering a public or production retrieval contract:
    serialized-size, managed-memory, and load-time budgets at a larger scale.
 2. Replace all-reference evidence accumulation with genuinely selective candidate formation, then
    demonstrate sublinear scoring on a larger provenance-safe, source-disjoint corpus and report
-   recall and latency by domain without retuning the verifier.
+   recall and latency by domain without retuning the verifier. Any approximate policy must be
+   frozen on development evidence and evaluated on a new untouched holdout.
 3. Define update, deletion, versioning, and rebuild semantics separately from the fingerprint and
    directional comparison contracts.
 4. Decide how callers handle multiple verified matches rather than treating the first match as

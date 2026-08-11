@@ -1,0 +1,535 @@
+{
+  "profileVersion": 1,
+  "study": "crop-local-item-color-retrieval-exact-wand-v1",
+  "baseline": "benchmarks/crop-local/item-color-retrieval-compact-postings-node22-2026-08-10.json",
+  "accepted": false,
+  "decision": "reject-acceptance-gate-failed",
+  "acceptance": {
+    "largestScaleCandidatesScoredWithinBudget": true,
+    "largestScalePostingEntriesInspectedWithinBudget": false,
+    "largestScaleQueryP50WithinBudget": false
+  },
+  "comparisons": [
+    {
+      "referenceCount": 500,
+      "rankingExact": true,
+      "indexStatisticsExact": true,
+      "serializedBytesChange": 0,
+      "loadHeapGrowthChange": -0.42284740246682895,
+      "loadManagedMemoryGrowthChange": -0.8697598958995073,
+      "queryP50Change": 47.9008687264666,
+      "queryP95Change": 32.72885699582048
+    },
+    {
+      "referenceCount": 1000,
+      "rankingExact": true,
+      "indexStatisticsExact": true,
+      "serializedBytesChange": 0,
+      "loadHeapGrowthChange": -0.36364518569689797,
+      "loadManagedMemoryGrowthChange": -0.8257709611663755,
+      "queryP50Change": 59.31084666025501,
+      "queryP95Change": 47.34070050147215
+    },
+    {
+      "referenceCount": 2000,
+      "rankingExact": true,
+      "indexStatisticsExact": true,
+      "serializedBytesChange": 0,
+      "loadHeapGrowthChange": -0.007192207910427406,
+      "loadManagedMemoryGrowthChange": -0.6964664110338102,
+      "queryP50Change": 74.96266252914741,
+      "queryP95Change": 79.5201403171122,
+      "candidatesScoredP50Fraction": 0.1185,
+      "postingEntriesInspectedP50Fraction": 6.5276307596513075
+    }
+  ],
+  "baselineReport": {
+    "profileVersion": 1,
+    "study": "crop-local-item-color-retrieval-mechanical-scaling-v1",
+    "referenceCounts": [
+      500,
+      1000,
+      2000
+    ],
+    "queriesPerScale": 40,
+    "featuresPerReference": 96,
+    "queryFeatures": 72,
+    "broadFeaturesPerReference": 32,
+    "broadTokenValuesPerPosition": 512,
+    "descriptorTokenBits": 16,
+    "candidateLimit": 50,
+    "corpus": "deterministic-generated-descriptor-mechanics-only",
+    "assertions": [
+      "loaded-ranking-exact",
+      "true-source-recall-at-1",
+      "candidate-limit-bounded"
+    ],
+    "optimizationAcceptance": [
+      "candidate-ranking-sha256-unchanged-at-every-scale",
+      "index-statistics-unchanged-at-every-scale",
+      "serialized-bytes-lower-at-every-scale",
+      "2000-reference-load-managed-memory-growth-lower-than-baseline",
+      "2000-reference-query-p50-no-more-than-10-percent-higher-than-baseline"
+    ],
+    "environment": {
+      "node": "v22.21.1",
+      "platform": "darwin",
+      "architecture": "arm64",
+      "exposedGarbageCollector": true
+    },
+    "scales": [
+      {
+        "referenceCount": 500,
+        "queries": 40,
+        "index": {
+          "serializedFormat": "deterministic-json-delta-varint-base64-columns-v1",
+          "serializedBytes": 2561082,
+          "bytesPerReference": 5122.164,
+          "sha256": "c2cee34fd86c2d70db3798f10e68e91ed28394c05596ed426f54c02d7d3e653a",
+          "indexedTokens": 409844,
+          "postingEntries": 760005,
+          "droppedHighFrequencyTokens": 0
+        },
+        "resources": {
+          "buildMilliseconds": 718.0448749999999,
+          "serializationMilliseconds": 30.11666600000001,
+          "loadMilliseconds": 23.273374999999987,
+          "buildHeapGrowthBytes": -29928312,
+          "buildArrayBufferGrowthBytes": 8873704,
+          "buildResidentSetGrowthBytes": 164003840,
+          "loadHeapGrowthBytes": 2585992,
+          "loadArrayBufferGrowthBytes": 8873704,
+          "loadResidentSetGrowthBytes": 2637824,
+          "queryMilliseconds": {
+            "count": 40,
+            "p50": 0.9724579999999605,
+            "p95": 1.7332920000000058,
+            "maximum": 1.7672079999999823
+          }
+        },
+        "selectivity": {
+          "candidatesWithEvidence": {
+            "count": 40,
+            "p50": 500,
+            "p95": 500,
+            "maximum": 500
+          },
+          "candidatesWithEvidenceFraction": {
+            "count": 40,
+            "p50": 1,
+            "p95": 1,
+            "maximum": 1
+          },
+          "postingEntriesVisited": {
+            "count": 40,
+            "p50": 16843,
+            "p95": 17090,
+            "maximum": 17130
+          },
+          "postingEntriesVisitedPerReference": {
+            "count": 40,
+            "p50": 33.686,
+            "p95": 34.18,
+            "maximum": 34.26
+          }
+        },
+        "exactness": {
+          "loadedRankingExact": true,
+          "candidateRankingSha256": "e96c64bf24e676da6061232f4b6a954a0caa63d27810c634bb623bbb4bee28cf",
+          "trueSourceRecallAt1": 1,
+          "candidateLimitBounded": true
+        }
+      },
+      {
+        "referenceCount": 1000,
+        "queries": 40,
+        "index": {
+          "serializedFormat": "deterministic-json-delta-varint-base64-columns-v1",
+          "serializedBytes": 4839171,
+          "bytesPerReference": 4839.171,
+          "sha256": "d2c5e3d047a8f105c8fbcf4ca53667feaa7e3df3b99860773c4c02d2976d0653",
+          "indexedTokens": 656621,
+          "postingEntries": 1520019,
+          "droppedHighFrequencyTokens": 0
+        },
+        "resources": {
+          "buildMilliseconds": 1328.6775409999998,
+          "serializationMilliseconds": 45.09962499999983,
+          "loadMilliseconds": 37.20933300000024,
+          "buildHeapGrowthBytes": -60433080,
+          "buildArrayBufferGrowthBytes": 12900868,
+          "buildResidentSetGrowthBytes": 146374656,
+          "loadHeapGrowthBytes": 4863840,
+          "loadArrayBufferGrowthBytes": 12900868,
+          "loadResidentSetGrowthBytes": 4849664,
+          "queryMilliseconds": {
+            "count": 40,
+            "p50": 1.689875000000029,
+            "p95": 2.6484169999998812,
+            "maximum": 2.8300420000000486
+          }
+        },
+        "selectivity": {
+          "candidatesWithEvidence": {
+            "count": 40,
+            "p50": 1000,
+            "p95": 1000,
+            "maximum": 1000
+          },
+          "candidatesWithEvidenceFraction": {
+            "count": 40,
+            "p50": 1,
+            "p95": 1,
+            "maximum": 1
+          },
+          "postingEntriesVisited": {
+            "count": 40,
+            "p50": 32627,
+            "p95": 33303,
+            "maximum": 33343
+          },
+          "postingEntriesVisitedPerReference": {
+            "count": 40,
+            "p50": 32.627,
+            "p95": 33.303,
+            "maximum": 33.343
+          }
+        },
+        "exactness": {
+          "loadedRankingExact": true,
+          "candidateRankingSha256": "58dd469f69ff02a18edfadb93bd273a9b99f7f799298a69ddcc68539c2dd3b0f",
+          "trueSourceRecallAt1": 1,
+          "candidateLimitBounded": true
+        }
+      },
+      {
+        "referenceCount": 2000,
+        "queries": 40,
+        "index": {
+          "serializedFormat": "deterministic-json-delta-varint-base64-columns-v1",
+          "serializedBytes": 8734535,
+          "bytesPerReference": 4367.2675,
+          "sha256": "cc187690eb15898115646e27e3d5cf6570be42d5990b09d97a2f06b5cc5c7803",
+          "indexedTokens": 900830,
+          "postingEntries": 3039841,
+          "droppedHighFrequencyTokens": 0
+        },
+        "resources": {
+          "buildMilliseconds": 2280.545541,
+          "serializationMilliseconds": 79.26683400000002,
+          "loadMilliseconds": 67.00404100000014,
+          "buildHeapGrowthBytes": -125293880,
+          "buildArrayBufferGrowthBytes": 19956992,
+          "buildResidentSetGrowthBytes": 192610304,
+          "loadHeapGrowthBytes": 8788400,
+          "loadArrayBufferGrowthBytes": 19956992,
+          "loadResidentSetGrowthBytes": 8732672,
+          "queryMilliseconds": {
+            "count": 40,
+            "p50": 3.0942910000003394,
+            "p95": 3.5265830000007554,
+            "maximum": 5.345832999999402
+          }
+        },
+        "selectivity": {
+          "candidatesWithEvidence": {
+            "count": 40,
+            "p50": 2000,
+            "p95": 2000,
+            "maximum": 2000
+          },
+          "candidatesWithEvidenceFraction": {
+            "count": 40,
+            "p50": 1,
+            "p95": 1,
+            "maximum": 1
+          },
+          "postingEntriesVisited": {
+            "count": 40,
+            "p50": 64240,
+            "p95": 65447,
+            "maximum": 65701
+          },
+          "postingEntriesVisitedPerReference": {
+            "count": 40,
+            "p50": 32.12,
+            "p95": 32.7235,
+            "maximum": 32.8505
+          }
+        },
+        "exactness": {
+          "loadedRankingExact": true,
+          "candidateRankingSha256": "68f817ccc6bde7f3072207ed87a91c2c1086192ab79be48fb8224fee08bc5612",
+          "trueSourceRecallAt1": 1,
+          "candidateLimitBounded": true
+        }
+      }
+    ]
+  },
+  "optimizedReport": {
+    "profileVersion": 1,
+    "study": "crop-local-item-color-retrieval-mechanical-scaling-v1",
+    "referenceCounts": [
+      500,
+      1000,
+      2000
+    ],
+    "queriesPerScale": 40,
+    "featuresPerReference": 96,
+    "queryFeatures": 72,
+    "broadFeaturesPerReference": 32,
+    "broadTokenValuesPerPosition": 512,
+    "descriptorTokenBits": 16,
+    "candidateLimit": 50,
+    "corpus": "deterministic-generated-descriptor-mechanics-only",
+    "assertions": [
+      "loaded-ranking-exact",
+      "true-source-recall-at-1",
+      "candidate-limit-bounded"
+    ],
+    "optimizationAcceptance": [
+      "candidate-ranking-sha256-unchanged-at-every-scale",
+      "index-statistics-unchanged-at-every-scale",
+      "serialized-bytes-lower-at-every-scale",
+      "2000-reference-load-managed-memory-growth-lower-than-baseline",
+      "2000-reference-query-p50-no-more-than-10-percent-higher-than-baseline"
+    ],
+    "selectiveAcceptance": [
+      "candidate-ranking-sha256-unchanged-at-every-scale",
+      "2000-reference-candidates-scored-p50-at-most-25-percent",
+      "2000-reference-posting-entries-inspected-p50-at-most-50-percent",
+      "2000-reference-query-p50-no-more-than-10-percent-higher-than-compact-full-sort"
+    ],
+    "queryStrategy": "exact-wand",
+    "environment": {
+      "node": "v22.21.1",
+      "platform": "darwin",
+      "architecture": "arm64",
+      "exposedGarbageCollector": true
+    },
+    "scales": [
+      {
+        "referenceCount": 500,
+        "queries": 40,
+        "index": {
+          "serializedFormat": "deterministic-json-delta-varint-base64-columns-v1",
+          "serializedBytes": 2561082,
+          "bytesPerReference": 5122.164,
+          "sha256": "c2cee34fd86c2d70db3798f10e68e91ed28394c05596ed426f54c02d7d3e653a",
+          "indexedTokens": 409844,
+          "postingEntries": 760005,
+          "droppedHighFrequencyTokens": 0
+        },
+        "resources": {
+          "buildMilliseconds": 905.619625,
+          "serializationMilliseconds": 32.57045900000003,
+          "loadMilliseconds": 24.09129099999973,
+          "buildHeapGrowthBytes": -29927888,
+          "buildArrayBufferGrowthBytes": 8873704,
+          "buildResidentSetGrowthBytes": 161660928,
+          "loadHeapGrowthBytes": 1492512,
+          "loadArrayBufferGrowthBytes": 0,
+          "loadResidentSetGrowthBytes": 5144576,
+          "queryMilliseconds": {
+            "count": 40,
+            "p50": 47.554041000000325,
+            "p95": 58.46195799999987,
+            "maximum": 59.02429200000006
+          }
+        },
+        "selectivity": {
+          "candidatesScored": {
+            "count": 40,
+            "p50": 165,
+            "p95": 181,
+            "maximum": 193
+          },
+          "candidatesScoredFraction": {
+            "count": 40,
+            "p50": 0.33,
+            "p95": 0.362,
+            "maximum": 0.386
+          },
+          "postingEntriesAvailable": {
+            "count": 40,
+            "p50": 16843,
+            "p95": 17090,
+            "maximum": 17130
+          },
+          "postingEntriesInspected": {
+            "count": 40,
+            "p50": 53316,
+            "p95": 56376,
+            "maximum": 56632
+          },
+          "postingEntriesInspectedFraction": {
+            "count": 40,
+            "p50": 3.168938136999289,
+            "p95": 3.3197503238723356,
+            "maximum": 3.3645437262357416
+          },
+          "postingEntriesSkipped": {
+            "count": 40,
+            "p50": 9853,
+            "p95": 10380,
+            "maximum": 10485
+          }
+        },
+        "exactness": {
+          "loadedRankingExact": true,
+          "candidateRankingSha256": "e96c64bf24e676da6061232f4b6a954a0caa63d27810c634bb623bbb4bee28cf",
+          "trueSourceRecallAt1": 1,
+          "candidateLimitBounded": true
+        }
+      },
+      {
+        "referenceCount": 1000,
+        "queries": 40,
+        "index": {
+          "serializedFormat": "deterministic-json-delta-varint-base64-columns-v1",
+          "serializedBytes": 4839171,
+          "bytesPerReference": 4839.171,
+          "sha256": "d2c5e3d047a8f105c8fbcf4ca53667feaa7e3df3b99860773c4c02d2976d0653",
+          "indexedTokens": 656621,
+          "postingEntries": 1520019,
+          "droppedHighFrequencyTokens": 0
+        },
+        "resources": {
+          "buildMilliseconds": 1346.4506250000004,
+          "serializationMilliseconds": 45.7133330000006,
+          "loadMilliseconds": 39.16912500000035,
+          "buildHeapGrowthBytes": -60439096,
+          "buildArrayBufferGrowthBytes": 12900868,
+          "buildResidentSetGrowthBytes": 148258816,
+          "loadHeapGrowthBytes": 3095128,
+          "loadArrayBufferGrowthBytes": 0,
+          "loadResidentSetGrowthBytes": 3080192,
+          "queryMilliseconds": {
+            "count": 40,
+            "p50": 101.91779200000019,
+            "p95": 128.0263330000016,
+            "maximum": 128.6682090000013
+          }
+        },
+        "selectivity": {
+          "candidatesScored": {
+            "count": 40,
+            "p50": 201,
+            "p95": 218,
+            "maximum": 219
+          },
+          "candidatesScoredFraction": {
+            "count": 40,
+            "p50": 0.201,
+            "p95": 0.218,
+            "maximum": 0.219
+          },
+          "postingEntriesAvailable": {
+            "count": 40,
+            "p50": 32627,
+            "p95": 33303,
+            "maximum": 33343
+          },
+          "postingEntriesInspected": {
+            "count": 40,
+            "p50": 154996,
+            "p95": 158366,
+            "maximum": 159410
+          },
+          "postingEntriesInspectedFraction": {
+            "count": 40,
+            "p50": 4.74969400244798,
+            "p95": 4.830020603563204,
+            "maximum": 4.860249697946033
+          },
+          "postingEntriesSkipped": {
+            "count": 40,
+            "p50": 24105,
+            "p95": 24742,
+            "maximum": 25044
+          }
+        },
+        "exactness": {
+          "loadedRankingExact": true,
+          "candidateRankingSha256": "58dd469f69ff02a18edfadb93bd273a9b99f7f799298a69ddcc68539c2dd3b0f",
+          "trueSourceRecallAt1": 1,
+          "candidateLimitBounded": true
+        }
+      },
+      {
+        "referenceCount": 2000,
+        "queries": 40,
+        "index": {
+          "serializedFormat": "deterministic-json-delta-varint-base64-columns-v1",
+          "serializedBytes": 8734535,
+          "bytesPerReference": 4367.2675,
+          "sha256": "cc187690eb15898115646e27e3d5cf6570be42d5990b09d97a2f06b5cc5c7803",
+          "indexedTokens": 900830,
+          "postingEntries": 3039841,
+          "droppedHighFrequencyTokens": 0
+        },
+        "resources": {
+          "buildMilliseconds": 2354.582625000001,
+          "serializationMilliseconds": 80.80895800000144,
+          "loadMilliseconds": 67.69854200000191,
+          "buildHeapGrowthBytes": -125292880,
+          "buildArrayBufferGrowthBytes": 19956992,
+          "buildResidentSetGrowthBytes": 192102400,
+          "loadHeapGrowthBytes": 8725192,
+          "loadArrayBufferGrowthBytes": 0,
+          "loadResidentSetGrowthBytes": 8732672,
+          "queryMilliseconds": {
+            "count": 40,
+            "p50": 235.05058300000383,
+            "p95": 283.9609580000033,
+            "maximum": 285.7336249999935
+          }
+        },
+        "selectivity": {
+          "candidatesScored": {
+            "count": 40,
+            "p50": 237,
+            "p95": 252,
+            "maximum": 261
+          },
+          "candidatesScoredFraction": {
+            "count": 40,
+            "p50": 0.1185,
+            "p95": 0.126,
+            "maximum": 0.1305
+          },
+          "postingEntriesAvailable": {
+            "count": 40,
+            "p50": 64240,
+            "p95": 65447,
+            "maximum": 65701
+          },
+          "postingEntriesInspected": {
+            "count": 40,
+            "p50": 418765,
+            "p95": 430592,
+            "maximum": 431044
+          },
+          "postingEntriesInspectedFraction": {
+            "count": 40,
+            "p50": 6.5276307596513075,
+            "p95": 6.651002428242326,
+            "maximum": 6.653357643932137
+          },
+          "postingEntriesSkipped": {
+            "count": 40,
+            "p50": 54271,
+            "p95": 55319,
+            "maximum": 55460
+          }
+        },
+        "exactness": {
+          "loadedRankingExact": true,
+          "candidateRankingSha256": "68f817ccc6bde7f3072207ed87a91c2c1086192ab79be48fb8224fee08bc5612",
+          "trueSourceRecallAt1": 1,
+          "candidateLimitBounded": true
+        }
+      }
+    ]
+  }
+}

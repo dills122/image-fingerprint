@@ -4,6 +4,7 @@ import {
   buildCropLocalItemColorRetrievalIndex,
   loadCropLocalItemColorRetrievalIndex,
   queryCropLocalItemColorRetrievalIndex,
+  queryCropLocalItemColorRetrievalIndexExactWand,
   serializeCropLocalItemColorRetrievalIndex,
 } from '../benchmarks/crop-local/item-color-retrieval-index.mjs';
 
@@ -54,6 +55,12 @@ describe('crop-local item-color retrieval index', () => {
         'serialized-bytes-lower-at-every-scale',
         '2000-reference-load-managed-memory-growth-lower-than-baseline',
         '2000-reference-query-p50-no-more-than-10-percent-higher-than-baseline',
+      ],
+      selectiveAcceptance: [
+        'candidate-ranking-sha256-unchanged-at-every-scale',
+        '2000-reference-candidates-scored-p50-at-most-25-percent',
+        '2000-reference-posting-entries-inspected-p50-at-most-50-percent',
+        '2000-reference-query-p50-no-more-than-10-percent-higher-than-compact-full-sort',
       ],
     });
   });
@@ -117,6 +124,11 @@ describe('crop-local item-color retrieval index', () => {
     );
     expect(tied.candidates.map(({ id }) => id)).toEqual(['alpha']);
     expect(tied.candidatesWithEvidence).toBe(2);
+    expect(queryCropLocalItemColorRetrievalIndexExactWand(
+      loaded,
+      fingerprint('b'.repeat(64), 'a'.repeat(64)),
+      1,
+    ).candidates).toEqual(tied.candidates);
 
     const legacyDocument = {
       ...built.document,

@@ -14,6 +14,8 @@ All notable changes to `image-fingerprint` are documented here.
   latency, and report evidence coverage independently from the returned candidate limit.
 - Add an internal schema-v2 columnar delta-varint posting representation that retains schema-v1
   loading and exact rankings while reducing the measured 2,000-reference index by 65.9%.
+- Retain compact full-sort querying after an exact WAND candidate reduced fully scored references
+  but increased 2,000-reference p50 latency by roughly 75 times.
 
 ## 0.1.1 - 2026-08-10
 
