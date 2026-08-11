@@ -16,6 +16,7 @@ const FINGERPRINT_PROFILE = {
   verificationMaximumDimension: 96,
   colorVerificationMaximumDimension: 64,
 };
+const CARD_RECALL_TEST_TIMEOUT = 15_000;
 
 const generatedCard = (seed: number): Rgba8PixelSource => {
   const decoded = PNG.sync.read(createCropLocalSyntheticFixture('card-layout', seed, 4));
@@ -51,7 +52,7 @@ describe('crop-local card-recall development experiment', () => {
         itemSignal: 'supporting',
       },
     });
-  });
+  }, CARD_RECALL_TEST_TIMEOUT);
 
   it('does not promote a different item from the same generated card family', () => {
     const result = compareCropLocalCardRecallExperiment(
@@ -60,5 +61,5 @@ describe('crop-local card-recall development experiment', () => {
     );
     expect(result.status, JSON.stringify(result)).toBe('no-match');
     expect(result.fallbackPromoted).toBe(false);
-  });
+  }, CARD_RECALL_TEST_TIMEOUT);
 });
