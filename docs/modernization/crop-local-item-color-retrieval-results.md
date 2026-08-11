@@ -103,6 +103,42 @@ The retained evidence is
 and
 [`item-color-retrieval-top-k-candidate-node22-2026-08-10.json`](../../benchmarks/crop-local/item-color-retrieval-top-k-candidate-node22-2026-08-10.json).
 
+## Accepted Compact Posting Representation
+
+Internal retrieval schema v2 replaces per-token JSON ordinal arrays with three canonical
+delta-varint columns: numeric positional token IDs, posting lengths, and source ordinals. The
+columns are carried as base64 in deterministic JSON and hydrate into a direct fixed token lookup,
+posting offsets, and one contiguous ordinal array. Schema-v1 indexes remain loadable. This is an
+internal benchmark schema, not a new package API or persisted compatibility promise.
+
+The candidate preserved the candidate-ranking SHA-256 and index statistics at every generated
+scale. Against the retained ordinal-array baseline:
+
+| References | Baseline size | Compact size | Size change | Compact load managed memory | Query p50 change |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 500 | 8.36 MB | 2.56 MB | -69.4% | 11.46 MB | -18.9% |
+| 1,000 | 14.71 MB | 4.84 MB | -67.1% | 17.76 MB | -9.6% |
+| 2,000 | 25.59 MB | 8.73 MB | -65.9% | 28.75 MB | -2.6% |
+
+Managed memory combines JavaScript heap and typed-array buffers rather than hiding typed-array
+storage outside the heap metric. At 2,000 references it fell 84.3% from the baseline's measured
+182.5 MB heap growth. Load time changed from 601.5 ms to 67.0 ms, while p50 query time stayed within
+the predeclared 10% regression budget and measured slightly lower in the retained run. Timing is
+environment-specific; exact rankings, statistics, and bytes are the deterministic acceptance
+evidence.
+
+The retained accepted report is
+[`item-color-retrieval-compact-postings-node22-2026-08-10.json`](../../benchmarks/crop-local/item-color-retrieval-compact-postings-node22-2026-08-10.json).
+Posting traversal and evidence coverage are intentionally unchanged, so this resolves the compact
+representation gate but not the selective-retrieval gate.
+
+As an implementation-regression check, the compact index was also rerun once against the already
+inspected frozen 500-reference holdout. Counts, every retrieval summary, final verified outcomes,
+the evaluation gate, and index statistics exactly matched the retained ordinal-array report. The
+index changed from 5.90 MB to 1.87 MB (-68.3%), and retrieval query p50 measured 0.99 ms instead of
+1.42 ms. This reuses inspected data and makes no new quality claim; it verifies that the storage
+change did not alter the frozen result.
+
 ## What 500 References Establish
 
 The holdout establishes reproducibility, source-disjoint candidate recall at the measured size,
@@ -116,19 +152,18 @@ or latency at 10,000 to 1,000,000 references. The generated scaling study now me
 growth and process memory through 2,000 references, but no larger provenance-safe quality corpus
 was available, so no quality or query-latency extrapolation is reported.
 
-For storage planning only, linear arithmetic at the observed 11,800.5 bytes/reference gives about
-118 MB at 10,000 references, 1.18 GB at 100,000, and 11.8 GB at 1,000,000. These are not benchmark
-measurements: vocabulary growth, token document frequency, ordinal encoding, and JSON overhead can
-all change the slope. A fixed `K=50` would reduce verifier comparisons relative to exhaustive
-comparison by 99.5%, 99.95%, and 99.995% at those reference counts, respectively, but says nothing
-about the cost or recall of producing those 50 candidates.
+The old holdout representation measured 11,800.5 bytes/reference, while the compact generated
+2,000-reference index measured 4,367.3 bytes/reference. Neither slope may be extrapolated as a
+production budget: vocabulary growth, token document frequency, corpus composition, and ordinal
+encoding change with scale. A fixed `K=50` still says nothing about the cost or recall of producing
+those 50 candidates.
 
 ## Next Gates
 
 Before considering a public or production retrieval contract:
 
-1. Replace the research JSON representation with a compact measured posting encoding and record
-   resident-memory as well as serialized-size budgets.
+1. Reproduce the compact schema against the next provenance-safe quality corpus and set explicit
+   serialized-size, managed-memory, and load-time budgets at a larger scale.
 2. Replace all-reference evidence accumulation with genuinely selective candidate formation, then
    demonstrate sublinear scoring on a larger provenance-safe, source-disjoint corpus and report
    recall and latency by domain without retuning the verifier.

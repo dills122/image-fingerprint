@@ -12,6 +12,8 @@ All notable changes to `image-fingerprint` are documented here.
   selectivity, latency, and exact round-trip ranking evidence.
 - Retain the full-sort research ranker after an exact bounded top-50 heap increased measured query
   latency, and report evidence coverage independently from the returned candidate limit.
+- Add an internal schema-v2 columnar delta-varint posting representation that retains schema-v1
+  loading and exact rankings while reducing the measured 2,000-reference index by 65.9%.
 
 ## 0.1.1 - 2026-08-10
 

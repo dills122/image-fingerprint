@@ -51,7 +51,9 @@ describe('crop-local item-color retrieval index', () => {
       optimizationAcceptance: [
         'candidate-ranking-sha256-unchanged-at-every-scale',
         'index-statistics-unchanged-at-every-scale',
-        '2000-reference-query-p50-lower-than-full-sort-baseline',
+        'serialized-bytes-lower-at-every-scale',
+        '2000-reference-load-managed-memory-growth-lower-than-baseline',
+        '2000-reference-query-p50-no-more-than-10-percent-higher-than-baseline',
       ],
     });
   });
@@ -64,11 +66,30 @@ describe('crop-local item-color retrieval index', () => {
       serializeCropLocalItemColorRetrievalIndex(reverse),
     );
     expect(forward.document.referenceIds).toEqual(['alpha', 'bravo', 'charlie', 'delta', 'echo']);
+    expect(forward.document).toMatchObject({
+      schemaVersion: 2,
+      postingEncoding: 'delta-varint-base64-columns-v1',
+    });
     expect(forward.document.statistics).toEqual({
       indexedTokens: 80,
       postingEntries: 80,
       droppedHighFrequencyTokens: 16,
     });
+
+    const singleton = buildCropLocalItemColorRetrievalIndex([references()[0]]);
+    const reloadedSingleton = loadCropLocalItemColorRetrievalIndex(
+      serializeCropLocalItemColorRetrievalIndex(singleton),
+    );
+    expect(reloadedSingleton.document.statistics).toEqual({
+      indexedTokens: 0,
+      postingEntries: 0,
+      droppedHighFrequencyTokens: 32,
+    });
+    expect(queryCropLocalItemColorRetrievalIndex(
+      reloadedSingleton,
+      references()[0].fingerprint,
+      1,
+    ).candidates).toEqual([]);
   });
 
   it('round-trips the index and ranks matching descriptor evidence with stable ties', () => {
@@ -96,6 +117,28 @@ describe('crop-local item-color retrieval index', () => {
     );
     expect(tied.candidates.map(({ id }) => id)).toEqual(['alpha']);
     expect(tied.candidatesWithEvidence).toBe(2);
+
+    const legacyDocument = {
+      ...built.document,
+      schemaVersion: 1,
+      postingEncoding: undefined,
+      postings: ['a', 'b', 'c', 'd', 'e'].flatMap((value, ordinal) => (
+        Array.from({ length: 16 }, (_, position) => [
+          `${position}:${value.repeat(4)}`,
+          [ordinal],
+        ])
+      )).sort(([left], [right]) => left.localeCompare(right)),
+    };
+    const legacy = queryCropLocalItemColorRetrievalIndex(
+      loadCropLocalItemColorRetrievalIndex(JSON.stringify(legacyDocument)),
+      fingerprint('b'.repeat(64), 'a'.repeat(64)),
+      2,
+    );
+    expect(legacy.candidates).toEqual(tied.candidates.concat({
+      id: 'bravo',
+      matchedTokens: 16,
+      score: tied.candidates[0].score,
+    }));
   });
 
   it('rejects duplicate references, malformed descriptors, invalid limits, and corrupt indexes', () => {
@@ -118,7 +161,7 @@ describe('crop-local item-color retrieval index', () => {
       1,
     )).toThrow('must be hydrated');
     const document = JSON.parse(serializeCropLocalItemColorRetrievalIndex(index));
-    document.postings[0][1] = [99];
+    document.postings.ordinals = 'AA==';
     expect(() => loadCropLocalItemColorRetrievalIndex(JSON.stringify(document))).toThrow(
       'posting ordinals',
     );

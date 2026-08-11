@@ -30,7 +30,9 @@ const PLAN = Object.freeze({
   optimizationAcceptance: [
     'candidate-ranking-sha256-unchanged-at-every-scale',
     'index-statistics-unchanged-at-every-scale',
-    '2000-reference-query-p50-lower-than-full-sort-baseline',
+    'serialized-bytes-lower-at-every-scale',
+    '2000-reference-load-managed-memory-growth-lower-than-baseline',
+    '2000-reference-query-p50-no-more-than-10-percent-higher-than-baseline',
   ],
 });
 
@@ -117,7 +119,11 @@ const summarize = (values) => {
 const memory = () => {
   globalThis.gc?.();
   const usage = process.memoryUsage();
-  return { heapUsedBytes: usage.heapUsed, residentSetBytes: usage.rss };
+  return {
+    arrayBuffersBytes: usage.arrayBuffers,
+    heapUsedBytes: usage.heapUsed,
+    residentSetBytes: usage.rss,
+  };
 };
 
 const measureQueries = (index, referenceCount) => {
@@ -180,7 +186,9 @@ const runScale = (referenceCount) => {
     referenceCount,
     queries: loadedRows.length,
     index: {
-      serializedFormat: 'deterministic-json-v1',
+      serializedFormat: loaded.document.postingEncoding === undefined
+        ? 'deterministic-json-ordinal-arrays-v1'
+        : `deterministic-json-${loaded.document.postingEncoding}`,
       serializedBytes,
       bytesPerReference: serializedBytes / referenceCount,
       sha256: createHash('sha256').update(serialized).digest('hex'),
@@ -191,8 +199,10 @@ const runScale = (referenceCount) => {
       serializationMilliseconds,
       loadMilliseconds,
       buildHeapGrowthBytes: afterBuild.heapUsedBytes - beforeBuild.heapUsedBytes,
+      buildArrayBufferGrowthBytes: afterBuild.arrayBuffersBytes - beforeBuild.arrayBuffersBytes,
       buildResidentSetGrowthBytes: afterBuild.residentSetBytes - beforeBuild.residentSetBytes,
       loadHeapGrowthBytes: afterLoad.heapUsedBytes - beforeLoad.heapUsedBytes,
+      loadArrayBufferGrowthBytes: afterLoad.arrayBuffersBytes - beforeLoad.arrayBuffersBytes,
       loadResidentSetGrowthBytes: afterLoad.residentSetBytes - beforeLoad.residentSetBytes,
       queryMilliseconds: summarize(loadedRows.map(({ milliseconds }) => milliseconds)),
     },
@@ -247,6 +257,16 @@ try {
         postingEntries: baselineReport.scales[index]?.index?.postingEntries,
         droppedHighFrequencyTokens: baselineReport.scales[index]?.index?.droppedHighFrequencyTokens,
       }),
+      serializedBytesChange: scale.index.serializedBytes
+        / baselineReport.scales[index].index.serializedBytes - 1,
+      loadHeapGrowthChange: scale.resources.loadHeapGrowthBytes
+        / baselineReport.scales[index].resources.loadHeapGrowthBytes - 1,
+      loadManagedMemoryGrowthChange: (
+        scale.resources.loadHeapGrowthBytes + scale.resources.loadArrayBufferGrowthBytes
+      ) / (
+        baselineReport.scales[index].resources.loadHeapGrowthBytes
+        + (baselineReport.scales[index].resources.loadArrayBufferGrowthBytes ?? 0)
+      ) - 1,
       queryP50Change: scale.resources.queryMilliseconds.p50
         / baselineReport.scales[index].resources.queryMilliseconds.p50 - 1,
       queryP95Change: scale.resources.queryMilliseconds.p95
@@ -255,13 +275,20 @@ try {
     if (comparisons.some(result => !result.rankingExact || !result.indexStatisticsExact)) {
       throw new Error('retrieval optimization changed ranking or index statistics');
     }
-    const accepted = comparisons.at(-1).queryP50Change < 0;
+    const largestScale = comparisons.at(-1);
+    const acceptance = {
+      serializedBytesLowerAtEveryScale: comparisons.every(result => result.serializedBytesChange < 0),
+      largestScaleLoadManagedMemoryGrowthLower: largestScale.loadManagedMemoryGrowthChange < 0,
+      largestScaleQueryP50WithinBudget: largestScale.queryP50Change <= 0.1,
+    };
+    const accepted = Object.values(acceptance).every(Boolean);
     report = {
       profileVersion: 1,
-      study: 'crop-local-item-color-retrieval-ranking-optimization-v1',
+      study: 'crop-local-item-color-retrieval-index-optimization-v1',
       baseline: relative(process.cwd(), baseline),
       accepted,
-      decision: accepted ? 'accept' : 'reject-query-p50-not-lower-at-largest-scale',
+      decision: accepted ? 'accept' : 'reject-acceptance-gate-failed',
+      acceptance,
       comparisons,
       baselineReport,
       optimizedReport: current,

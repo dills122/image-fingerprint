@@ -141,7 +141,8 @@ scales without reopening quality thresholds or using licensed pixels:
 
 ```sh
 pnpm crop-local:item-color:retrieval:scale -- \
-  --output benchmarks/crop-local/item-color-retrieval-scaling-full-sort-baseline-node22-2026-08-10.json
+  --baseline benchmarks/crop-local/item-color-retrieval-scaling-full-sort-baseline-node22-2026-08-10.json \
+  --output benchmarks/crop-local/item-color-retrieval-compact-postings-node22-2026-08-10.json
 ```
 
 The generated descriptor corpus intentionally combines broad sub-threshold posting lists with
@@ -153,6 +154,11 @@ The retained full-sort report establishes the current baseline. The companion
 `item-color-retrieval-top-k-candidate-node22-2026-08-10.json` report records an exact bounded-heap
 candidate that preserved rankings and index statistics but was rejected because it increased query
 latency at the measured scales. The research index therefore still uses the simpler full sort.
+
+The accepted compact-postings report records internal schema v2: three canonical delta-varint
+columns for token IDs, posting lengths, and source ordinals, carried as base64 in deterministic
+JSON and hydrated into fixed typed arrays. It retains schema-v1 loading and exact ranking behavior.
+This improves storage and load memory; it does not make candidate formation selective.
 
 Measure exact-output implementation changes and the separately identified compact transport
 experiment on deterministic procedural fixtures without reopening or tuning the holdout:
